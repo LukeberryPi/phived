@@ -1,15 +1,20 @@
+import { useState, useEffect } from "react";
 import { placeholders } from "./content";
 import { getRandomElement, resetAllInputs, reloadPage } from "./utils";
 
 export default function App(content: any) {
-  const { ok } = content;
+  const [darkMode, setDarkMode] = useState(true);
+
+  function toggleDarkMode() {
+    setDarkMode(!darkMode);
+  }
 
   return (
     <main className="flex h-screen flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue">
       <nav className="fixed top-0 flex h-16 w-full justify-center px-10 md:justify-end">
-        <div className="flex w-[300px] justify-between md:w-1/5">
+        <div className="flex w-[280px] justify-between lg:w-1/4">
           <button className="text-lg decoration-berryBlue hover:underline">
-            lights off
+            go to dark mode
           </button>
           <button
             onClick={resetAllInputs}
@@ -18,7 +23,7 @@ export default function App(content: any) {
             reset list
           </button>
           <button className="text-lg decoration-berryBlue hover:underline">
-            why?
+            about
           </button>
         </div>
       </nav>
@@ -53,7 +58,7 @@ export default function App(content: any) {
         &#632; phived
       </span>
       <footer className=" fixed bottom-0 flex h-20 w-full justify-center px-10 md:justify-start">
-        <div className="flex w-[300px] items-center justify-between md:w-1/5">
+        <div className="flex w-[300px] items-center justify-between lg:w-1/4">
           <a
             className="text-lg decoration-berryBlue hover:underline"
             target="_blank"
@@ -73,7 +78,7 @@ export default function App(content: any) {
             target="_blank"
             href="https://twitter.com/lukeberrypi"
           >
-            @lukeberrypi
+            by @lukeberrypi
           </a>
         </div>
       </footer>
