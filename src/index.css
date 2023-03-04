@@ -1,5 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla:wght@200;300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .box-shadow-dark {
+    box-shadow: 3px 3px #222;
+  }
+
+  .box-shadow-light {
+    box-shadow: 2px 2px #f1f2f3;
+  }
+}
