@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { placeholders } from "./content";
 import { getRandomElement, resetAllInputs, reloadPage } from "./utils";
 
-export default function App(content: any) {
+export function App(content: any) {
   const [darkMode, setDarkMode] = useState(true);
   const [currentPlaceholder, setCurrentPlaceholder] = useState("");
 
@@ -11,10 +11,11 @@ export default function App(content: any) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark");
+    if (darkMode) document.documentElement.classList.add("dark");
+    else document.documentElement.classList.remove("dark");
   }, [darkMode]);
 
-  function toggleDarkMode() {
+  function toggleLightMode() {
     setDarkMode(!darkMode);
   }
 
@@ -23,7 +24,7 @@ export default function App(content: any) {
       <nav className="fixed top-0 flex h-16 w-full items-center justify-center px-10 md:justify-end">
         <div className="flex w-[260px] justify-between lg:w-1/4">
           <button
-            onClick={toggleDarkMode}
+            onClick={toggleLightMode}
             className="text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange"
           >
             {darkMode ? "light" : "dark"} mode
@@ -32,7 +33,7 @@ export default function App(content: any) {
             onClick={resetAllInputs}
             className="text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange"
           >
-            reset list
+            clear list
           </button>
           <button className="text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange">
             about
@@ -40,16 +41,17 @@ export default function App(content: any) {
         </div>
       </nav>
       <div className="border-black box-shadow-dark dark:box-shadow-light w-[360px] rounded-2xl border border-solid dark:border-snowWhite">
-        <div className="flex w-full rounded-t-2xl border-b dark:border-snowWhite">
+        <div className="group flex w-full rounded-t-2xl border-b dark:border-snowWhite">
           <input
+            id="task-1"
             type="text"
             autoFocus
-            placeholder={currentPlaceholder}
-            className="w-[260px] rounded-tl-2xl py-4 px-5 text-lg focus:outline-none dark:bg-blackNight dark:text-snowWhite"
+            placeholder="commit irrelevant github code"
+            className="w-full rounded-t-2xl py-4 px-5 text-lg focus:outline-none dark:bg-blackNight dark:text-snowWhite"
           />
           <span
             onClick={resetAllInputs}
-            className="flex w-[100px] cursor-pointer items-center justify-center rounded-tr-2xl border-l bg-berryBlue text-lg dark:bg-channelOrange dark:text-snowWhite"
+            className="hidden w-36 cursor-pointer items-center justify-center rounded-tr-2xl border-l bg-berryBlue text-lg group-hover:flex dark:bg-channelOrange dark:text-snowWhite"
           >
             done?
           </span>
