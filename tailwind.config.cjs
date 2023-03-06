@@ -5,11 +5,12 @@ module.exports = {
   theme: {
     colors: {
       berryBlue: "#79CBE3",
-      petrolBlue: "#037b96",
-      sushiWhite: "#f7f7f7",
-      snowWhite: "#f1f2f3",
       blackDawn: "#121215",
       blackNight: "#151518",
+      channelOrange: "#F76F02",
+      petrolBlue: "#037b96",
+      snowWhite: "#f1f2f3",
+      sushiWhite: "#f7f7f7",
     },
     extend: {},
     fontFamily: {
@@ -17,5 +18,6 @@ module.exports = {
       heading: ["DM Sans", "sans-serif"],
     },
   },
+  darkMode: "class",
   plugins: [],
 };

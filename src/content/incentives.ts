@@ -5,7 +5,10 @@ export const incentives: string[] = [
   "killed it!",
   "amazing!",
   "superb!",
-  "you needed that!",
   "just in time!",
   "that was fast!",
-]
+  "nice!",
+  "well played!",
+  "nailed it!",
+  "awesome!",
+];
