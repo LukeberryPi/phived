@@ -1,3 +1,3 @@
-export { content } from "./content";
-export { placeholders } from "./placeholders";
-export { incentives } from "./incentives";
+export { headerContent } from "./Header.content";
+export { footerContent } from "./Footer.content";
+export { logoContent } from "./Logo.content";
