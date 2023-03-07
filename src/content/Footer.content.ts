@@ -8,7 +8,7 @@ export const footerContent = [
     link: "https://twitter.com/phivedphived",
   },
   {
-    name: "github",
+    name: "by @lukeberrypi",
     link: "https://twitter.com/lukeberrypi",
   },
 ];

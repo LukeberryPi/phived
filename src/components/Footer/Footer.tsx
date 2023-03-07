@@ -4,7 +4,7 @@ export const Footer = ({ content }: FooterProps) => {
   const anchorMap = content.map((anchor, i) => {
     return (
       <a
-        id={i.toString()}
+        key={i}
         className="text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange"
         target="_blank"
         href={anchor.link}

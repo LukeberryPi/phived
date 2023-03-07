@@ -8,9 +8,9 @@ import {
 } from "src/utils";
 import { footerContent, headerContent, logoContent } from "src/content";
 
-export function App() {
+export default function App() {
   const [tasks, setTasks] = useState(Array(5).fill(""));
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState("");
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export function App() {
         className={`group flex w-full rounded-t-2xl rounded-b-2xl dark:border-snowWhite`}
       >
         <input
-          id={i.toString()}
+          key={i}
           type="text"
           defaultValue={task}
           autoFocus={isFirstTask}

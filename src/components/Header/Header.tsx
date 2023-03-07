@@ -4,7 +4,7 @@ export const Header = ({ content }: HeaderProps) => {
   const buttonMap = content.map((button, i) => {
     return (
       <button
-        id={i.toString()}
+        key={i}
         // onClick={toggleDarkMode}
         className="h-full text-lg decoration-berryBlue dark:text-snowWhite dark:decoration-channelOrange"
       >
