@@ -1,22 +1,29 @@
+import { clearInputs } from "src/utils";
 import { HeaderProps } from "./Header.types";
 
-export const Header = ({ content }: HeaderProps) => {
-  const buttonMap = content.map((button, i) => {
-    return (
-      <button
-        key={i}
-        // onClick={toggleDarkMode}
-        className="h-full text-lg decoration-berryBlue dark:text-snowWhite dark:decoration-channelOrange"
-      >
-        {button.name}
-      </button>
-    );
-  });
+export const Header = ({ darkMode, setDarkMode }: HeaderProps) => {
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   return (
     <nav className="fixed top-0 flex h-16 w-full items-center justify-center px-10 md:justify-end">
       <div className="flex h-full w-[260px] justify-between lg:w-1/4">
-        {buttonMap}
+        <button
+          onClick={toggleDarkMode}
+          className="h-full text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange"
+        >
+          {darkMode ? "light" : "dark"} mode
+        </button>
+        <button
+          onClick={clearInputs}
+          className="h-full text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange"
+        >
+          clear tasks
+        </button>
+        <button className="h-full text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange">
+          help
+        </button>
       </div>
     </nav>
   );
