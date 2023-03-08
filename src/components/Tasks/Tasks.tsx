@@ -27,16 +27,15 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
     setTaskList([...updatedArray, ""]);
   };
 
-  const taskListMap = taskList.map((_, idx) => {
+  const taskListMap = taskList.map((task, idx) => {
     const isFirstTask = idx === 0;
     const isLastTask = idx === taskList.length - 1;
 
     return (
-      <div className="group flex w-full">
+      <div key={idx} className="group flex w-full">
         <input
-          key={idx}
           type="text"
-          defaultValue=""
+          value={task}
           onChange={(e) => handleInputChange(e, idx)}
           autoFocus={isFirstTask}
           placeholder={`${isFirstTask ? currentPlaceholder : ""}`}
@@ -59,11 +58,8 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
   });
 
   return (
-    <>
-      <div className="border-black box-shadow-dark dark:box-shadow-light w-[360px] rounded-2xl border border-solid dark:border-snowWhite">
-        {taskListMap}
-      </div>
-      <p className="mt-5 bg-berryBlue">{JSON.stringify(taskList)}</p>
-    </>
+    <div className="border-black box-shadow-dark dark:box-shadow-light w-[360px] rounded-2xl border border-solid dark:border-snowWhite">
+      {taskListMap}
+    </div>
   );
 };

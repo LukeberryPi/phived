@@ -29,6 +29,7 @@ export default function App() {
 
   const clearTasks = () => {
     setTaskList(taskList.map((_) => ""));
+    document.querySelector("input")?.focus();
   };
 
   return (
