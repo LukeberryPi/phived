@@ -9,31 +9,35 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
     setCurrentPlaceholder(getRandomElement(placeholders));
   }, []);
 
-  const handleInputChange = (
-    e: React.FormEvent<HTMLInputElement>,
-    i: number
-  ) => {
-    const currentTask = e.currentTarget.value;
-    
-    setTaskList(taskList.map((e, idx) => {
-      if (idx === i) {
-        return currentTask;
-      }
-      return e;
-    }));
+  const handleInputChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
+    const currentTask = event.currentTarget.value;
+
+    setTaskList(
+      taskList.map((item, idx) => {
+        if (idx === i) {
+          return currentTask;
+        }
+        return item;
+      })
+    );
   };
 
-  const tasksMap = taskList.map((_, i) => {
-    const isFirstTask = i === 0;
-    const isLastTask = i === taskList.length - 1;
+  const handleDone = (i: number) => {
+    const updatedArray = taskList.filter((_, idx) => idx !== i);
+    setTaskList([...updatedArray, ""]);
+  };
+
+  const taskListMap = taskList.map((_, idx) => {
+    const isFirstTask = idx === 0;
+    const isLastTask = idx === taskList.length - 1;
 
     return (
       <div className="group flex w-full">
         <input
-          key={i}
+          key={idx}
           type="text"
           defaultValue=""
-          onChange={(e) => handleInputChange(e, i)}
+          onChange={(e) => handleInputChange(e, idx)}
           autoFocus={isFirstTask}
           placeholder={`${isFirstTask ? currentPlaceholder : ""}`}
           className={`w-full ${isFirstTask ? "rounded-t-2xl" : ""} ${
@@ -43,6 +47,7 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
           } bg-snowWhite py-4 px-5 text-lg focus:outline-none dark:bg-blackNight dark:text-snowWhite`}
         />
         <span
+          onClick={() => handleDone(idx)}
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
           } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-lg group-hover:flex dark:bg-channelOrange dark:text-snowWhite`}
@@ -56,7 +61,7 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
   return (
     <>
       <div className="border-black box-shadow-dark dark:box-shadow-light w-[360px] rounded-2xl border border-solid dark:border-snowWhite">
-        {tasksMap}
+        {taskListMap}
       </div>
       <p className="mt-5 bg-berryBlue">{JSON.stringify(taskList)}</p>
     </>

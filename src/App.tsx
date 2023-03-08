@@ -12,7 +12,7 @@ export default function App() {
     const title = document.querySelector("title") as HTMLTitleElement;
     if (taskList.some((task) => !!task)) {
       link.href = "/alert-icon.png";
-      title.innerText = `[${taskList.filter(e => !!e).length}] phived`;
+      title.innerText = `[${taskList.filter((e) => !!e).length}] phived`;
     } else {
       link.href = "/default-icon.png";
       title.innerText = "phived";
@@ -21,15 +21,15 @@ export default function App() {
 
   useEffect(() => {
     if (darkMode) {
-      document.documentElement.classList.add("dark")
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove("dark")
-    };
+      document.documentElement.classList.remove("dark");
+    }
   }, [darkMode]);
 
   const clearTasks = () => {
-    setTaskList(taskList.map(_ => ""))
-  }
+    setTaskList(taskList.map((_) => ""));
+  };
 
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-channelOrange">
