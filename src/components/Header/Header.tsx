@@ -1,7 +1,6 @@
-import { clearInputs } from "src/utils";
 import { HeaderProps } from "./Header.types";
 
-export const Header = ({ darkMode, setDarkMode }: HeaderProps) => {
+export const Header = ({ darkMode, setDarkMode, clearTasks }: HeaderProps) => {
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
@@ -16,7 +15,7 @@ export const Header = ({ darkMode, setDarkMode }: HeaderProps) => {
           {darkMode ? "light" : "dark"} mode
         </button>
         <button
-          onClick={clearInputs}
+          onClick={clearTasks}
           className="h-full text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange"
         >
           clear tasks

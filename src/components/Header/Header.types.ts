@@ -6,6 +6,7 @@ type Button = {
 
 export type HeaderProps = {
   content: Button[];
+  clearTasks: () => void;
   darkMode: boolean;
   setDarkMode: Dispatch<boolean>;
 };
