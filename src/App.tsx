@@ -4,17 +4,23 @@ import { reloadPage } from "src/utils";
 import { footerContent, headerContent, logoContent } from "src/content";
 
 export default function App() {
-  const [taskList, setTaskList] = useState(["", "", "", "", ""]);
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [taskList, setTaskList] = useState<Array<string>>(
+    localStorage.getItem("pendingTasks")
+      ? JSON.parse(localStorage.getItem("pendingTasks") || "")
+      : Array(5).fill("")
+  );
+  const [darkMode, setDarkMode] = useState<boolean>(
+    localStorage.getItem("darkMode") === "dark" ? true : false
+  );
 
   useEffect(() => {
     const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
     const title = document.querySelector("title") as HTMLTitleElement;
     if (taskList.some((task) => !!task)) {
-      link.href = "/alert-icon.png";
+      link.href = "/favicon-alert.png";
       title.innerText = `[${taskList.filter((e) => !!e).length}] phived`;
     } else {
-      link.href = "/default-icon.png";
+      link.href = "/favicon-default.png";
       title.innerText = "phived";
     }
   }, [taskList]);
@@ -22,8 +28,10 @@ export default function App() {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("darkMode", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("darkMode", "light");
     }
   }, [darkMode]);
 

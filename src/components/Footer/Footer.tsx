@@ -16,7 +16,7 @@ export const Footer = ({ content }: FooterProps) => {
 
   return (
     <footer className=" fixed bottom-0 flex h-20 w-full justify-center px-10 md:justify-start">
-      <div className="flex w-[300px] items-center justify-between text-center lg:w-1/4">
+      <div className="flex w-[320px] items-center justify-between text-center lg:w-1/4">
         {anchorMap}
       </div>
     </footer>

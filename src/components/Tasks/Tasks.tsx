@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { getRandomElement, placeholders } from "src/utils";
+import { getRandomElement } from "src/utils";
+import { placeholders } from "src/content";
 import { TaskListProps } from "./Tasks.types";
 
 export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
-  const [currentPlaceholder, setCurrentPlaceholder] = useState("");
+  const [currentPlaceholder, setCurrentPlaceholder] = useState<string>();
 
   useEffect(() => {
     setCurrentPlaceholder(getRandomElement(placeholders));
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("pendingTasks", JSON.stringify(taskList));
+  }, [taskList]);
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
