@@ -5,8 +5,8 @@ import { footerContent, headerContent, logoContent } from "src/content";
 
 export default function App() {
   const [taskList, setTaskList] = useState<Array<string>>(
-    localStorage.getItem("pendingTasks")
-      ? JSON.parse(localStorage.getItem("pendingTasks") || "")
+    localStorage.getItem("formerTasks")
+      ? JSON.parse(localStorage.getItem("formerTasks") || "")
       : Array(5).fill("")
   );
   const [darkMode, setDarkMode] = useState<boolean>(

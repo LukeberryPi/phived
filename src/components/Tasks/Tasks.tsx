@@ -11,7 +11,7 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("pendingTasks", JSON.stringify(taskList));
+    localStorage.setItem("formerTasks", JSON.stringify(taskList));
   }, [taskList]);
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
