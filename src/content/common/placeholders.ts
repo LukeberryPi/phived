@@ -44,5 +44,6 @@ export const placeholders: string[] = [
   "uninstall league of legends",
   "upgrade node version",
   "walk for 20 minutes",
+  "wash the dishes",
   "watch the office",
 ];
