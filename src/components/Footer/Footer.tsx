@@ -1,11 +1,11 @@
 import { FooterProps } from "./Footer.types";
 
-export const Footer = ({ content }: FooterProps) => {
+export function Footer({ content }: FooterProps) {
   const anchorMap = content.map((anchor, i) => {
     return (
       <a
         key={i}
-        className="text-lg decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange"
+        className="text-base decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange sm:text-lg"
         target="_blank"
         href={anchor.link}
       >
@@ -15,10 +15,10 @@ export const Footer = ({ content }: FooterProps) => {
   });
 
   return (
-    <footer className=" fixed bottom-0 flex h-20 w-full justify-center px-10 md:justify-start">
-      <div className="flex w-[320px] items-center justify-between text-center lg:w-1/4">
+    <footer className="fixed bottom-0 flex h-20 w-full items-center justify-center sm:justify-start">
+      <div className="flex h-full w-64 items-center justify-between sm:w-96 sm:pl-10">
         {anchorMap}
       </div>
     </footer>
   );
-};
+}

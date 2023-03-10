@@ -5,8 +5,8 @@ import { footerContent, headerContent, logoContent } from "src/content";
 
 export default function App() {
   const [taskList, setTaskList] = useState<Array<string>>(
-    localStorage.getItem("formerTasks")
-      ? JSON.parse(localStorage.getItem("formerTasks") || "")
+    localStorage.getItem("persistentTasks")
+      ? JSON.parse(localStorage.getItem("persistentTasks") || "")
       : Array(5).fill("")
   );
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -41,7 +41,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-channelOrange">
+    <div className="flex h-full flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-channelOrange">
       <Header
         clearTasks={clearTasks}
         darkMode={darkMode}

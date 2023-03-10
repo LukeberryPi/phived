@@ -1,4 +1,4 @@
-export const reloadPage = () => {
+export function reloadPage() {
   location.reload();
   return;
-};
+}

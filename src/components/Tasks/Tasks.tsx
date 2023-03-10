@@ -3,7 +3,7 @@ import { getRandomElement } from "src/utils";
 import { placeholders } from "src/content";
 import { TaskListProps } from "./Tasks.types";
 
-export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
+export function Tasks({ taskList, setTaskList }: TaskListProps) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState<string>();
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("formerTasks", JSON.stringify(taskList));
+    localStorage.setItem("persistentTasks", JSON.stringify(taskList));
   }, [taskList]);
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
@@ -48,13 +48,13 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
             isLastTask ? "rounded-b-2xl" : ""
           } ${
             !isLastTask ? "border-b" : ""
-          } bg-snowWhite py-4 px-5 text-lg focus:outline-none dark:bg-blackNight dark:text-snowWhite`}
+          } bg-snowWhite py-4 px-5 text-base focus:outline-none dark:bg-blackNight dark:text-snowWhite sm:text-lg`}
         />
         <span
           onClick={() => handleDone(idx)}
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
-          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-lg group-hover:flex dark:bg-channelOrange dark:text-snowWhite`}
+          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base group-hover:flex dark:bg-channelOrange dark:text-snowWhite sm:text-lg`}
         >
           done?
         </span>
@@ -63,8 +63,8 @@ export const Tasks = ({ taskList, setTaskList }: TaskListProps) => {
   });
 
   return (
-    <div className="border-black box-shadow-dark dark:box-shadow-light w-[360px] rounded-2xl border border-solid dark:border-snowWhite">
+    <div className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite sm:w-[360px]">
       {taskListMap}
     </div>
   );
-};
+}
