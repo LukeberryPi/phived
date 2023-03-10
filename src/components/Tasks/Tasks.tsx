@@ -48,13 +48,13 @@ export function Tasks({ taskList, setTaskList }: TaskListProps) {
             isLastTask ? "rounded-b-2xl" : ""
           } ${
             !isLastTask ? "border-b" : ""
-          } bg-snowWhite py-4 px-5 text-base text-blackDawn focus:outline-none dark:bg-blackNight dark:text-snowWhite sm:text-lg`}
+          } bg-snowWhite py-4 px-5 text-base text-blackDawn focus:outline-none dark:bg-blackNight dark:text-snowWhite xs:text-lg`}
         />
         <span
           onClick={() => handleDone(idx)}
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
-          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base group-hover:flex dark:bg-petrolBlue dark:text-snowWhite sm:text-lg`}
+          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base group-hover:flex dark:bg-petrolBlue dark:text-snowWhite xs:text-lg`}
         >
           done?
         </span>
@@ -63,7 +63,7 @@ export function Tasks({ taskList, setTaskList }: TaskListProps) {
   });
 
   return (
-    <main className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite sm:w-[360px]">
+    <main className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite xs:w-[360px]">
       {taskListMap}
     </main>
   );

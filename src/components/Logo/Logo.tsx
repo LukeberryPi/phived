@@ -8,7 +8,7 @@ export function Logo({ content, onClick }: LogoProps) {
   return (
     <h1
       onClick={handleLogoClick}
-      className="mt-5 cursor-pointer text-5xl font-bold text-blackDawn dark:text-snowWhite sm:text-6xl"
+      className="mt-5 cursor-pointer text-5xl font-bold text-blackDawn dark:text-snowWhite xs:text-6xl"
     >
       {content.logoName}
     </h1>
