@@ -4,12 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
+body * {
+  @apply transition-colors duration-200;
+}
+
 @layer utilities {
   .box-shadow-dark {
     box-shadow: 3px 3px #222;
   }
 
   .box-shadow-light {
-    box-shadow: 1.5px 1.5px #f1f2f3;
+    box-shadow: 2px 2px #f1f2f3;
   }
 }

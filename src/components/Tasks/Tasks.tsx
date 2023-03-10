@@ -37,7 +37,7 @@ export function Tasks({ taskList, setTaskList }: TaskListProps) {
     const isLastTask = idx === taskList.length - 1;
 
     return (
-      <div key={idx} className="group flex w-full">
+      <main key={idx} className="group flex w-full">
         <input
           type="text"
           value={task}
@@ -48,17 +48,17 @@ export function Tasks({ taskList, setTaskList }: TaskListProps) {
             isLastTask ? "rounded-b-2xl" : ""
           } ${
             !isLastTask ? "border-b" : ""
-          } bg-snowWhite py-4 px-5 text-base focus:outline-none dark:bg-blackNight dark:text-snowWhite sm:text-lg`}
+          } bg-snowWhite py-4 px-5 text-base text-blackDawn focus:outline-none dark:bg-blackNight dark:text-snowWhite sm:text-lg`}
         />
         <span
           onClick={() => handleDone(idx)}
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
-          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base group-hover:flex dark:bg-channelOrange dark:text-snowWhite sm:text-lg`}
+          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base group-hover:flex dark:bg-petrolBlue dark:text-snowWhite sm:text-lg`}
         >
           done?
         </span>
-      </div>
+      </main>
     );
   });
 

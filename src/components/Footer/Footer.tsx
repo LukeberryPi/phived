@@ -5,7 +5,7 @@ export function Footer({ content }: FooterProps) {
     return (
       <a
         key={i}
-        className="text-base decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange sm:text-lg"
+        className="text-base text-blackDawn decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-petrolBlue sm:text-lg"
         target="_blank"
         href={anchor.link}
       >

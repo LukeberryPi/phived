@@ -10,17 +10,17 @@ export const Header = ({ darkMode, setDarkMode, clearTasks }: HeaderProps) => {
       <div className="flex h-full w-64 items-center justify-between sm:w-96 sm:pr-8">
         <button
           onClick={toggleDarkMode}
-          className="h-full text-base decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange sm:text-lg"
+          className="h-full text-base text-blackDawn decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-petrolBlue sm:text-lg"
         >
           {darkMode ? "light" : "dark"} mode
         </button>
         <button
           onClick={clearTasks}
-          className="h-full text-base decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange sm:text-lg"
+          className="h-full text-base text-blackDawn decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-petrolBlue sm:text-lg"
         >
           clear tasks
         </button>
-        <button className="h-full text-base decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-channelOrange sm:text-lg">
+        <button className="h-full text-base text-blackDawn decoration-berryBlue hover:underline dark:text-snowWhite dark:decoration-petrolBlue sm:text-lg">
           help
         </button>
       </div>

@@ -5,10 +5,9 @@ module.exports = {
   theme: {
     colors: {
       berryBlue: "#79CBE3",
-      blackDawn: "#121215",
-      blackNight: "#151518",
-      channelOrange: "#F76F02",
-      petrolBlue: "#037b96",
+      petrolBlue: "#2A536B",
+      blackDawn: "#080810",
+      blackNight: "#111117",
       snowWhite: "#f1f2f3",
       sushiWhite: "#f7f7f7",
     },

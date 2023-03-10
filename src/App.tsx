@@ -41,7 +41,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-full flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-channelOrange">
+    <div className="flex h-full w-full flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-petrolBlue">
       <Header
         clearTasks={clearTasks}
         darkMode={darkMode}
