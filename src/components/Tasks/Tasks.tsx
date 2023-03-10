@@ -37,7 +37,7 @@ export function Tasks({ taskList, setTaskList }: TaskListProps) {
     const isLastTask = idx === taskList.length - 1;
 
     return (
-      <main key={idx} className="group flex w-full">
+      <div key={idx} className="group flex w-full">
         <input
           type="text"
           value={task}
@@ -58,13 +58,13 @@ export function Tasks({ taskList, setTaskList }: TaskListProps) {
         >
           done?
         </span>
-      </main>
+      </div>
     );
   });
 
   return (
-    <div className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite sm:w-[360px]">
+    <main className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite sm:w-[360px]">
       {taskListMap}
-    </div>
+    </main>
   );
 }
