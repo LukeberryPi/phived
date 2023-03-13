@@ -14,7 +14,7 @@ module.exports = {
       blackDawn: "#080810",
       blackNight: "#111117",
       snowWhite: "#fcfcff",
-      sushiWhite: "#fcfcf8",
+      sushiWhite: "#fbfbfd",
     },
     extend: {},
     fontFamily: {
