@@ -64,7 +64,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
   });
 
   return (
-    <form name="tasks" className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite xs:w-[360px]">
+    <form className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite xs:w-[360px]">
       {tasksMap}
     </form>
   );
