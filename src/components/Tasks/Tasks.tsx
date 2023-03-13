@@ -39,11 +39,15 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
 
     return (
       <div key={idx} className="group flex w-full">
+        <label htmlFor={`task-${idx}`}></label>
         <input
+          id={`task-${idx}`}
+          name={`task-${idx}`}
           type="text"
           value={task}
           onChange={(e) => handleChange(e, idx)}
           autoFocus={isFirstTask}
+          autoComplete="off"
           placeholder={`${isFirstTask ? placeholder : ""}`}
           className={`w-full ${isFirstTask ? "rounded-t-2xl" : ""} ${
             isLastTask ? "rounded-b-2xl" : "border-b"
