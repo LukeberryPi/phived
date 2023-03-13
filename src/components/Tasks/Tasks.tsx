@@ -44,7 +44,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           value={task}
           onChange={(e) => handleChange(e, idx)}
           autoFocus={isFirstTask}
-          placeholder={`${isFirstTask ? placeholder : " "}`}
+          placeholder={`${isFirstTask ? placeholder : ""}`}
           className={`w-full ${isFirstTask ? "rounded-t-2xl" : ""} ${
             isLastTask ? "rounded-b-2xl" : "border-b"
           } bg-snowWhite py-4 px-5 text-base text-blackDawn focus:outline-none dark:bg-blackNight dark:text-snowWhite xs:text-lg`}
