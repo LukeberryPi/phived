@@ -1,6 +1,21 @@
+import { useEffect, useState } from "react";
 import { HeaderProps } from "./Header.types";
 
-export const Header = ({ darkMode, setDarkMode, clearTasks }: HeaderProps) => {
+export const Header = ({ clearTasks }: HeaderProps) => {
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("darkMode") === "dark" ? true : false
+  );
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkMode", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("darkMode", "light");
+    }
+  }, [darkMode]);
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };

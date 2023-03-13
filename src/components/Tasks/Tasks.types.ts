@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 
-export type TaskListProps = {
-  taskList: string[];
-  setTaskList: Dispatch<string[]>;
+export type tasksProps = {
+  tasks: string[];
+  setTasks: Dispatch<string[]>;
 };

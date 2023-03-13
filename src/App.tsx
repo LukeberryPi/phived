@@ -2,53 +2,36 @@ import { useState, useEffect } from "react";
 import { Footer, Header, Logo, Tasks } from "src/components";
 import { reloadPage } from "src/utils";
 import { footerContent, headerContent, logoContent } from "src/content";
+import { useLocalStorage } from "src/hooks";
 
 export default function App() {
-  const [taskList, setTaskList] = useState<Array<string>>(
-    localStorage.getItem("persistentTasks")
-      ? JSON.parse(localStorage.getItem("persistentTasks") || "")
-      : Array(5).fill("")
-  );
-  const [darkMode, setDarkMode] = useState<boolean>(
-    localStorage.getItem("darkMode") === "dark" ? true : false
-  );
+  const [tasks, setTasks] = useLocalStorage("persistentTasks", Array(5).fill(""));
 
   useEffect(() => {
     const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
     const title = document.querySelector("title") as HTMLTitleElement;
-    if (taskList.some((task) => !!task)) {
+
+    if (tasks.some((task) => !!task)) {
       link.href = "/favicon-alert.png";
-      title.innerText = `[${taskList.filter((e) => !!e).length}] phived`;
+      title.innerText = `[${tasks.filter((e) => !!e).length}] phived`;
     } else {
       link.href = "/favicon-default.png";
       title.innerText = "phived";
     }
-  }, [taskList]);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("darkMode", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("darkMode", "light");
-    }
-  }, [darkMode]);
+  }, [tasks]);
 
   const clearTasks = () => {
-    setTaskList(taskList.map((_) => ""));
-    document.querySelector("input")?.focus();
+    setTasks(
+      tasks.map((_) => {
+        return "";
+      })
+    );
   };
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-petrolBlue">
-      <Header
-        clearTasks={clearTasks}
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-        content={headerContent}
-      />
-      <Tasks taskList={taskList} setTaskList={setTaskList} />
+      <Header clearTasks={clearTasks} content={headerContent} />
+      <Tasks tasks={tasks} setTasks={setTasks} />
       <Logo content={logoContent} onClick={reloadPage} />
       <Footer content={footerContent} />
     </div>
