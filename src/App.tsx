@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Footer, Header, Logo, Tasks } from "src/components";
 import { reloadPage } from "src/utils";
 import { footerContent, headerContent, logoContent } from "src/content";

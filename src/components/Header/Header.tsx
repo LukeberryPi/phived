@@ -14,6 +14,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("darkMode", "light");
     }
+    document.querySelector("input")?.focus();
   }, [darkMode]);
 
   const toggleDarkMode = () => {
@@ -31,11 +32,11 @@ export const Header = ({ clearTasks }: HeaderProps) => {
         </button>
         <button
           onClick={clearTasks}
-          className="h-full pl-4 text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:text-lg"
+          className="h-full sm:pl-4 text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:text-lg"
         >
           clear tasks
         </button>
-        <button className="h-full pl-4 text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:text-lg">
+        <button className="h-full sm:pl-4 text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:text-lg">
           help
         </button>
       </div>
