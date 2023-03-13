@@ -39,10 +39,10 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
 
     return (
       <div key={idx} className="group flex w-full">
-        <label htmlFor={`task-${idx}`}></label>
+        <label htmlFor={`label-task-${idx}`} className="hidden">{`label-task-${idx}`}</label>
         <input
           id={`task-${idx}`}
-          name={`task-${idx}`}
+          aria-labelledby={`label-task-${idx}`}
           type="text"
           value={task}
           onChange={(e) => handleChange(e, idx)}
