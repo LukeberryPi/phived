@@ -5,7 +5,7 @@ export function Footer({ content }: FooterProps) {
     return (
       <a
         key={i}
-        className="flex h-full items-center text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pr-2 sm:text-lg"
+        className="underline-offset-4 font-medium flex h-full items-center text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pr-2 sm:text-lg"
         target="_blank"
         href={anchor.link}
       >

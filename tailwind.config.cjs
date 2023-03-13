@@ -11,10 +11,10 @@ module.exports = {
     colors: {
       berryBlue: "#79CBE3",
       petrolBlue: "#254F66",
-      blackDawn: "#080810",
+      blackDawn: "#080811",
       blackNight: "#111117",
-      snowWhite: "#fcfcff",
-      sushiWhite: "#fbfbfd",
+      snowWhite: "#fdfdff",
+      sushiWhite: "#fcfcfd",
     },
     extend: {},
     fontFamily: {

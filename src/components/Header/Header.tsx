@@ -26,17 +26,17 @@ export const Header = ({ clearTasks }: HeaderProps) => {
       <div className="flex h-full w-64 items-center justify-between xs:w-80 sm:w-96 sm:pr-8">
         <button
           onClick={toggleDarkMode}
-          className="h-full text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pl-4 sm:text-lg"
+          className="h-full text-base font-medium text-blackDawn decoration-petrolBlue underline-offset-4 hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pl-4 sm:text-lg"
         >
           {darkMode ? "light" : "dark"} mode
         </button>
         <button
           onClick={clearTasks}
-          className="h-full sm:pl-4 text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:text-lg"
+          className="h-full text-base font-medium text-blackDawn decoration-petrolBlue underline-offset-4 hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pl-4 sm:text-lg"
         >
           clear tasks
         </button>
-        <button className="h-full sm:pl-4 text-base text-blackDawn decoration-petrolBlue hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:text-lg">
+        <button className="h-full text-base font-medium text-blackDawn decoration-petrolBlue underline-offset-4 hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pl-4 sm:text-lg">
           help
         </button>
       </div>
