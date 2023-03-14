@@ -6,11 +6,11 @@ export function Logo({ content, onClick }: LogoProps) {
   };
 
   return (
-    <h1
+    <span
       onClick={handleLogoClick}
-      className="mt-5 cursor-pointer text-5xl font-bold text-blackDawn dark:text-snowWhite xs:text-6xl"
+      className="mt-5 hidden cursor-pointer text-6xl font-bold text-blackDawn dark:text-snowWhite xs:block"
     >
       {content.logoName}
-    </h1>
+    </span>
   );
 }
