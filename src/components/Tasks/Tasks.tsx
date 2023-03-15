@@ -38,16 +38,14 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
 
     return (
       <div key={idx} className="group flex w-full">
-        <label htmlFor={`label-task-${idx}`} className="hidden">{`label-task-${idx}`}</label>
         <input
           id={`task-${idx}`}
-          aria-labelledby={`label-task-${idx}`}
           type="text"
           value={task}
           onChange={(e) => handleChange(e, idx)}
           autoFocus={isFirstTask}
           autoComplete="off"
-          placeholder={placeholder}
+          placeholder={`${isFirstTask ? placeholder : ""}`}
           className={`w-full ${isFirstTask ? "rounded-t-2xl" : ""} ${
             isLastTask ? "rounded-b-2xl" : "border-b"
           } bg-snowWhite py-4 px-5 text-base text-blackDawn focus:outline-none dark:bg-blackNight dark:text-snowWhite xs:text-lg`}
@@ -67,11 +65,8 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
   });
 
   return (
-    <form
-      name="tasks"
-      className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite xs:w-[360px]"
-    >
+    <main className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite xs:w-[360px]">
       {tasksMap}
-    </form>
+    </main>
   );
 }
