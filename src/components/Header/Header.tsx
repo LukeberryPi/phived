@@ -26,17 +26,17 @@ export const Header = ({ clearTasks }: HeaderProps) => {
       <div className="flex h-full w-64 items-center justify-between xs:w-80 sm:w-96 sm:pr-8">
         <button
           onClick={toggleDarkMode}
-          className="h-full text-base font-medium text-blackDawn decoration-petrolBlue underline-offset-4 hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pl-4 sm:text-lg"
+          className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-darkBlack xs:hover:text-lighterWhite xs:dark:hover:bg-lightWhite xs:dark:hover:text-darkBlack sm:text-lg"
         >
           {darkMode ? "light" : "dark"} mode
         </button>
         <button
           onClick={clearTasks}
-          className="h-full text-base font-medium text-blackDawn decoration-petrolBlue underline-offset-4 hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pl-4 sm:text-lg"
+          className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lightWhite xs:px-4 xs:hover:bg-alertRed xs:hover:text-lighterWhite sm:text-lg"
         >
           clear tasks
         </button>
-        <button className="h-full text-base font-medium text-blackDawn decoration-petrolBlue underline-offset-4 hover:underline dark:text-snowWhite dark:decoration-berryBlue sm:pl-4 sm:text-lg">
+        <button className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-berryBlue xs:dark:hover:bg-everGreen sm:text-lg">
           help
         </button>
       </div>

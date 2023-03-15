@@ -39,16 +39,19 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
     return (
       <div key={idx} className="group flex w-full">
         <input
-          id={`task-${idx}`}
           type="text"
           value={task}
           onChange={(e) => handleChange(e, idx)}
           autoFocus={isFirstTask}
           autoComplete="off"
-          placeholder={`${isFirstTask ? placeholder : ""}`}
-          className={`w-full ${isFirstTask ? "rounded-t-2xl" : ""} ${
+          placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
+          className={`w-full ${
+            isFirstTask
+              ? "rounded-t-2xl"
+              : "placeholder:text-lighterWhite dark:placeholder:text-darkBlack "
+          } ${
             isLastTask ? "rounded-b-2xl" : "border-b"
-          } bg-snowWhite py-4 px-5 text-base text-blackDawn focus:outline-none dark:bg-blackNight dark:text-snowWhite xs:text-lg`}
+          } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkerBlack dark:text-lighterWhite xs:text-lg`}
         />
         <span
           onClick={() => handleDone(idx)}
@@ -56,7 +59,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
             isLastTask ? "rounded-br-2xl" : ""
           } ${
             isEmptyTask ? "hidden" : "group-hover:flex"
-          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-petrolBlue dark:text-snowWhite xs:text-lg`}
+          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-everGreen dark:text-lighterWhite xs:text-lg`}
         >
           done?
         </span>
@@ -65,7 +68,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
   });
 
   return (
-    <main className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-snowWhite xs:w-[360px]">
+    <main className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-lighterWhite xs:w-[360px]">
       {tasksMap}
     </main>
   );

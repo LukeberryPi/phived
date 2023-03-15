@@ -23,7 +23,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-petrolBlue">
+    <div className="flex h-full w-full flex-col items-center justify-center bg-lightWhite selection:bg-berryBlue dark:bg-darkerBlack dark:selection:bg-everGreen">
       <Header clearTasks={clearTasks} />
       <Tasks tasks={tasks} setTasks={setTasks} />
       <Logo />
