@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { Footer, Header, Logo, Tasks } from "src/components";
-import { reloadPage } from "src/utils";
-import { footerContent, headerContent, logoContent } from "src/content";
 import { useLocalStorage } from "src/hooks";
 
 export default function App() {
@@ -21,19 +19,15 @@ export default function App() {
   }, [tasks]);
 
   const clearTasks = () => {
-    setTasks(
-      tasks.map((_) => {
-        return "";
-      })
-    );
+    setTasks(tasks.map((task) => ""));
   };
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center bg-sushiWhite selection:bg-berryBlue dark:bg-blackDawn dark:selection:bg-petrolBlue">
-      <Header clearTasks={clearTasks} content={headerContent} />
+      <Header clearTasks={clearTasks} />
       <Tasks tasks={tasks} setTasks={setTasks} />
-      <Logo content={logoContent} onClick={reloadPage} />
-      <Footer content={footerContent} />
+      <Logo />
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRandomElement } from "src/utils";
-import { placeholders } from "src/content";
+import { getRandomElement, placeholders } from "src/utils";
 import { TasksProps } from "./Tasks.types";
 
 export function Tasks({ tasks, setTasks }: TasksProps) {
@@ -48,7 +47,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           onChange={(e) => handleChange(e, idx)}
           autoFocus={isFirstTask}
           autoComplete="off"
-          placeholder={`${isFirstTask ? placeholder : ""}`}
+          placeholder={placeholder}
           className={`w-full ${isFirstTask ? "rounded-t-2xl" : ""} ${
             isLastTask ? "rounded-b-2xl" : "border-b"
           } bg-snowWhite py-4 px-5 text-base text-blackDawn focus:outline-none dark:bg-blackNight dark:text-snowWhite xs:text-lg`}

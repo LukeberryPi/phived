@@ -1,16 +1,12 @@
-import { LogoProps } from "./Logo.types";
+import { reloadPage } from "src/utils";
 
-export function Logo({ content, onClick }: LogoProps) {
-  const handleLogoClick = () => {
-    onClick && onClick();
-  };
-
+export function Logo() {
   return (
     <span
-      onClick={handleLogoClick}
+      onClick={reloadPage}
       className="mt-5 hidden cursor-pointer text-6xl font-bold text-blackDawn dark:text-snowWhite xs:block"
     >
-      {content.logoName}
+      phived
     </span>
   );
 }
