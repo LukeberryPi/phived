@@ -8,15 +8,15 @@ export default function App() {
   const [tasks, setTasks] = useLocalStorage("persistentTasks", Array(5).fill(""));
 
   useEffect(() => {
-    const tabIcon = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-    const tabTitle = document.querySelector("title") as HTMLTitleElement;
+    const icon = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    const title = document.querySelector("title") as HTMLTitleElement;
 
     if (tasks.some((task) => !!task)) {
-      tabIcon.href = "/favicon-alert.png";
-      tabTitle.innerText = `[${tasks.filter((e) => !!e).length}] phived`;
+      icon.href = "/favicon-alert.png";
+      title.innerText = `[${tasks.filter((task) => !!task).length}] phived`;
     } else {
-      tabIcon.href = "/favicon-default.png";
-      tabTitle.innerText = "phived";
+      icon.href = "/favicon-default.png";
+      title.innerText = "phived";
     }
   }, [tasks]);
 
