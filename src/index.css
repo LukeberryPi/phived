@@ -6,6 +6,7 @@
 
 input {
   -webkit-appearance: none;
+  -webkit-border-radius: 0px;
 }
 
 @layer utilities {
