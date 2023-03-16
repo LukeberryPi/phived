@@ -1,7 +1,5 @@
 # [phived.com](https://www.phived.com/)
 
-the anti-procrastination to-do list
-
 ---
 
 ## motivation
