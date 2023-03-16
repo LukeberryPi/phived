@@ -36,7 +36,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
           clear tasks
         </button>
         <div className="flex flex-col items-center justify-center">
-          <button className="peer h-10 select-none rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-berryBlue xs:dark:hover:bg-purpleRain sm:text-lg">
+          <button className="peer h-10 cursor-default select-none rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-berryBlue xs:dark:hover:bg-purpleRain sm:text-lg">
             help
           </button>
           <span className="absolute top-16 hidden text-sm peer-hover:block dark:text-lightWhite">
