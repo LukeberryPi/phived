@@ -22,7 +22,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
 
   return (
     <header className="fixed top-0 flex h-16 w-full items-center justify-center sm:justify-end">
-      <div className="flex h-full w-64 items-center justify-between xs:w-80 sm:w-96 sm:pr-8">
+      <div className="flex h-full w-64 items-center justify-between xs:w-80 sm:w-96 sm:pr-4">
         <button
           onClick={toggleDarkMode}
           className="h-10 select-none rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-darkBlack xs:hover:text-lighterWhite xs:dark:hover:bg-lightWhite xs:dark:hover:text-darkBlack sm:text-lg"
