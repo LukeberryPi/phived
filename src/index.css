@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+input {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+}
+
 @layer utilities {
   .box-shadow-dark {
     box-shadow: 3px 3px #080811;
