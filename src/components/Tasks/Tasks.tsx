@@ -52,10 +52,10 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           className={`peer w-full ${
             isFirstTask
               ? "rounded-t-2xl"
-              : "placeholder:text-lighterWhite dark:placeholder:text-darkerBlack"
+              : "placeholder:text-lighterWhite dark:placeholder:text-darkBlack"
           } ${
             isLastTask ? "rounded-b-2xl" : "border-b"
-          } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkerBlack dark:text-lighterWhite xs:text-lg`}
+          } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
         />
         <span
           onClick={() => handleDone(idx)}
