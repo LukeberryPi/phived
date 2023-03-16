@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { placeholders } from "src/utils";
+import { placeholders } from "src/content";
 import { TasksProps } from "./Tasks.types";
 
 export function Tasks({ tasks, setTasks }: TasksProps) {
