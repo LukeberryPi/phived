@@ -25,22 +25,24 @@ export const Header = ({ clearTasks }: HeaderProps) => {
       <div className="flex h-full w-64 items-center justify-between xs:w-80 sm:w-96 sm:pr-8">
         <button
           onClick={toggleDarkMode}
-          className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-darkBlack xs:hover:text-lighterWhite xs:dark:hover:bg-lightWhite xs:dark:hover:text-darkBlack sm:text-lg"
+          className="h-10 select-none rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-darkBlack xs:hover:text-lighterWhite xs:dark:hover:bg-lightWhite xs:dark:hover:text-darkBlack sm:text-lg"
         >
           {darkMode ? "light" : "dark"} mode
         </button>
         <button
           onClick={clearTasks}
-          className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lightWhite xs:px-4 xs:hover:bg-alertRed xs:hover:text-lighterWhite sm:text-lg"
+          className="h-10 select-none rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lightWhite xs:px-4 xs:hover:bg-alertRed xs:hover:text-lighterWhite sm:text-lg"
         >
           clear tasks
         </button>
-        <button
-          disabled
-          className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-berryBlue xs:dark:hover:bg-everGreen sm:text-lg"
-        >
-          help
-        </button>
+        <div className="flex flex-col items-center justify-center">
+          <button className="peer h-10 select-none rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-berryBlue xs:dark:hover:bg-purpleRain sm:text-lg">
+            help
+          </button>
+          <span className="absolute top-16 hidden text-sm peer-hover:block dark:text-lightWhite">
+            🚧 soon 🚧
+          </span>
+        </div>
       </div>
     </header>
   );

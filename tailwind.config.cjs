@@ -16,7 +16,7 @@ module.exports = {
       lightWhite: "#fcfcfd",
       lighterWhite: "#fdfdff",
       twitterBlue: "#1DA1F2",
-      everGreen: "#962fbf",
+      purpleRain: "#642D80",
       instagramPink: "#d62976",
       instagramPurple: "#962fbf",
       instagramOrange: "#fa7e1e",

@@ -63,7 +63,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
             isLastTask ? "rounded-br-2xl" : ""
           } ${
             isEmptyTask ? "hidden" : "group-hover:flex"
-          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-everGreen dark:text-lighterWhite xs:text-lg`}
+          } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-purpleRain dark:text-lighterWhite xs:text-lg`}
         >
           done?
         </span>
