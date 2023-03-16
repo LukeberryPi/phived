@@ -6,6 +6,7 @@
 
 input {
   -webkit-appearance: none;
+  /* ignore this warning, it's necessary*/
   -webkit-border-radius: 0px;
 }
 
