@@ -9,10 +9,10 @@ export default function App() {
     const icon = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
     const title = document.querySelector("title") as HTMLTitleElement;
     if (tasks.some((task) => !!task)) {
-      icon.href = "/favicon-alert.png";
+      icon.href = "/favicon-alert.ico";
       title.innerText = `[${tasks.filter((task) => !!task).length}] phived`;
     } else {
-      icon.href = "/favicon-default.png";
+      icon.href = "/favicon-default.ico";
       title.innerText = "phived";
     }
   }, [tasks]);
