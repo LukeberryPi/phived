@@ -21,13 +21,7 @@ module.exports = {
       instagramPurple: "#962fbf",
       instagramOrange: "#fa7e1e",
     },
-    extend: {
-      screens: {
-        truehover: {
-          raw: "(hover: hover)",
-        },
-      },
-    },
+    extend: {},
     fontFamily: {
       sans: ["DM Sans", "sans-serif"],
       heading: ["DM Sans", "sans-serif"],
