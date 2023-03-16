@@ -19,7 +19,7 @@ export function Footer() {
         <a
           className="flex h-10 items-center rounded-2xl from-instagramPink via-instagramOrange to-instagramPurple text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-gradient-to-r xs:hover:text-lightWhite sm:text-lg"
           target="_blank"
-          href="https://twitter.com/lukeberrypi"
+          href="https://www.instagram.com/phivedphived/"
         >
           instagram
         </a>

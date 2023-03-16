@@ -14,7 +14,6 @@ export const Header = ({ clearTasks }: HeaderProps) => {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("darkMode", "light");
     }
-    document.querySelector("input")?.focus();
   }, [darkMode]);
 
   const toggleDarkMode = () => {

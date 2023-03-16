@@ -16,12 +16,18 @@ module.exports = {
       lightWhite: "#fcfcfd",
       lighterWhite: "#fdfdff",
       twitterBlue: "#1DA1F2",
-      everGreen: "#008953",
+      everGreen: "#962fbf",
       instagramPink: "#d62976",
       instagramPurple: "#962fbf",
       instagramOrange: "#fa7e1e",
     },
-    extend: {},
+    extend: {
+      screens: {
+        truehover: {
+          raw: "(hover: hover)",
+        },
+      },
+    },
     fontFamily: {
       sans: ["DM Sans", "sans-serif"],
       heading: ["DM Sans", "sans-serif"],
