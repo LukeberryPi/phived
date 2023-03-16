@@ -4,7 +4,7 @@
 
 ## motivation
 
-have you ever clicked on a website just to be bombarded with cookie modals, newsletter beggers, and ads everywhere? i'm fine with this when i'm on piratebay, but if i'm seeking productivity — i need a zero-distractions experience to get it done.
+have you ever clicked on a website just to be bombarded with cookie modals, newsletter beggers, and ads everywhere? this is fine if you're on piratebay, but if you're seeking productivity — you need a zero-distraction experience to get it done.
 
 **phived is a dead-simple, zero-distractions to-do list**. you can have up to 5 tasks at a time. to add more tasks, complete some of your ongoing ones. no login, no cookies, no images and no ads. just you and your next few steps.
 
