@@ -49,7 +49,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           autoFocus={isFirstTask}
           autoComplete="off"
           placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
-          className={`w-full ${
+          className={`peer w-full ${
             isFirstTask
               ? "rounded-t-2xl"
               : "placeholder:text-lighterWhite dark:placeholder:text-darkerBlack"
@@ -62,7 +62,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
           } ${
-            isEmptyTask ? "hidden" : "truehover:group-hover:flex"
+            isEmptyTask ? "hidden" : "group-hover:flex"
           } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-everGreen dark:text-lighterWhite xs:text-lg`}
         >
           done?

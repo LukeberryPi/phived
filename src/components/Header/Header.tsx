@@ -35,7 +35,10 @@ export const Header = ({ clearTasks }: HeaderProps) => {
         >
           clear tasks
         </button>
-        <button className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-berryBlue xs:dark:hover:bg-everGreen sm:text-lg">
+        <button
+          disabled
+          className="h-10 rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-berryBlue xs:dark:hover:bg-everGreen sm:text-lg"
+        >
           help
         </button>
       </div>
