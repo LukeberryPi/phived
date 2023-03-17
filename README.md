@@ -33,11 +33,11 @@ finally, you should install dependencies:
 
 `npm install`
 
-and open the website:
+and build the website:
 
 `npm run dev`
 
-the following url should be running phived:
+this url should be running phived:
 
 [http://localhost:5173/](http://localhost:5173/)
 
