@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from 'react-dom';
 import { Footer, Header, Logo, Tasks } from "src/components";
 import { useLocalStorage } from "src/hooks";
 
 export default function App() {
   const [tasks, setTasks] = useLocalStorage("persistentTasks", Array(5).fill(""));
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   useEffect(() => {
     const icon = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
@@ -19,6 +21,7 @@ export default function App() {
 
   const clearTasks = () => {
     setTasks(tasks.map((task) => ""));
+    setShowAlert(true);
   };
 
   return (
@@ -27,6 +30,10 @@ export default function App() {
       <Tasks tasks={tasks} setTasks={setTasks} />
       <Logo />
       <Footer />
+      {showAlert && createPortal(
+        <div>Teste</div>,
+        document.body
+      )}
     </div>
   );
 }
