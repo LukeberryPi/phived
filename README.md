@@ -6,7 +6,9 @@
 
 have you ever clicked on a website just to be bombarded with cookie modals, newsletter beggers, and ads everywhere? this is fine if you're on piratebay, but if you're seeking productivity — you need a zero-distraction experience to get it done.
 
-**phived is a dead-simple, zero-distractions to-do list**. you can have up to 5 tasks at a time. to add more tasks, complete some of your ongoing ones. no login, no cookies, no images and no ads. just you and your next few steps.
+**phived is a dead-simple, anti-procrastination to-do list**. you can have up to 5 tasks at a time. to add more tasks, complete some of your ongoing ones. no login, no cookies, no images and no ads.
+
+just you and your next few steps.
 
 ---
 
@@ -31,11 +33,11 @@ finally, you should install dependencies:
 
 `npm install`
 
-and open the website:
+and build the website:
 
 `npm run dev`
 
-the following url should be running phived:
+this url should be running phived:
 
 [http://localhost:5173/](http://localhost:5173/)
 
