@@ -35,10 +35,21 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
     setTasks([...ongoingTasks, ""]);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, i: number) => {
-    if (e.ctrlKey && e.key === "Enter") {
-      e.preventDefault();
-      handleDone(i);
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
+    switch (event.key) {
+      case "Enter":
+        if (event.ctrlKey) {
+          event.preventDefault();
+          return handleDone(idx);
+        }
+        if (event.shiftKey) {
+          event.preventDefault();
+          return document.querySelectorAll("input")[idx - 1]?.focus();
+        }
+        if (!event.ctrlKey) {
+          event.preventDefault();
+          return document.querySelectorAll("input")[idx + 1]?.focus();
+        }
     }
   };
 
@@ -55,8 +66,8 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           onChange={(e) => handleChange(e, idx)}
           autoFocus={isFirstTask}
           autoComplete="off"
-          placeholder={`${isFirstTask ? placeholder : `task-${idx}`}`}
-          onKeyDown={(e) => handleKeyDown(e, idx)}
+          placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
+          onKeyDown={(event) => handleKeyDown(event, idx)}
           className={`peer w-full ${
             isFirstTask
               ? "rounded-t-2xl"
