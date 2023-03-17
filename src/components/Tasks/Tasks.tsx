@@ -55,7 +55,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           onChange={(e) => handleChange(e, idx)}
           autoFocus={isFirstTask}
           autoComplete="off"
-          placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
+          placeholder={`${isFirstTask ? placeholder : `task-${idx}`}`}
           onKeyDown={(e) => handleKeyDown(e, idx)}
           className={`peer w-full ${
             isFirstTask
