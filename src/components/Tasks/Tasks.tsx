@@ -49,6 +49,12 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           autoFocus={isFirstTask}
           autoComplete="off"
           placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
+          onKeyDown={(event) => {
+            if (event.ctrlKey && event.key === "Enter") {
+              event.preventDefault();
+              handleDone(idx);
+            }
+          }}
           className={`peer w-full ${
             isFirstTask
               ? "rounded-t-2xl"
