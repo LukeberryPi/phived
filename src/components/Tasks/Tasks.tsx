@@ -42,13 +42,13 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           event.preventDefault();
           return handleDone(idx);
         }
-        if (!event.ctrlKey) {
-          event.preventDefault();
-          return document.querySelectorAll("input")[idx + 1]?.focus();
-        }
         if (event.shiftKey) {
           event.preventDefault();
           return document.querySelectorAll("input")[idx - 1]?.focus();
+        }
+        if (!event.ctrlKey) {
+          event.preventDefault();
+          return document.querySelectorAll("input")[idx + 1]?.focus();
         }
     }
   };
