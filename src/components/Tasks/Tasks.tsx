@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { placeholders } from "src/content";
 import { TasksProps } from "./Tasks.types";
 
 export function Tasks({ tasks, setTasks }: TasksProps) {
-  const [placeholder, setPlaceholder] = useState<string>("");
 
   const getRandomElement = (arr: any[]) => {
     return arr[Math.floor(Math.random() * arr.length)];
   };
 
-  useEffect(() => {
-    setPlaceholder(getRandomElement(placeholders));
-  }, []);
+  const placeholder = getRandomElement(placeholders)
 
   useEffect(() => {
     localStorage.setItem("persistentTasks", JSON.stringify(tasks));
@@ -76,22 +73,23 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
             isLastTask ? "rounded-b-2xl" : "border-b"
           } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
         />
-        <span
+        <button
           onClick={() => handleDone(idx)}
+          type="button"
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
           } ${
-            isEmptyTask ? "hidden" : "group-hover:flex"
+            isEmptyTask ? "hidden" : "group-hover:flex group-focus-within:flex group-focus:flex"
           } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-purpleRain dark:text-lighterWhite xs:text-lg`}
         >
-          done?
-        </span>
+          <span className="sr-only">move task {idx+1} to</span>&nbsp;done?
+        </button>
       </div>
     );
   });
 
   return (
-    <form className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-lighterWhite xs:w-[360px]">
+    <form className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-lighterWhite xs:w-[360px]" title="phived tasklist">
       {tasksMap}
     </form>
   );
