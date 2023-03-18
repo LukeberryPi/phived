@@ -20,7 +20,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
 
   return (
     <header className="fixed top-0 flex h-16 w-full items-center justify-center sm:justify-end">
-      <div className="flex h-full w-64 items-center justify-between xs:w-80 sm:w-96 sm:pr-4">
+      <nav className="flex h-full w-64 items-center justify-between xs:w-80 sm:w-96 sm:pr-4">
         <button
           role="switch"
           aria-checked={darkMode}
@@ -52,7 +52,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
             🚧 soon 🚧
           </span>
         </div>
-      </div>
+      </nav>
     </header>
   );
 };
