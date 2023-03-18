@@ -13,11 +13,16 @@ export const Alert = ({
     if (alertBtnRef.current) {
       alertBtnRef.current.focus();
     }
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 5000);
   }, []);
 
   const handleDismiss = () => {
     setShowAlert(false);
   };
+
   return (
     <div
       role="alert"
