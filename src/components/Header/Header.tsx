@@ -24,7 +24,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
         <button
           role="switch"
           aria-checked={darkMode}
-          aria-label={`${darkMode == true ? "dark" : "light"} is set`}
+          aria-describedby={`${darkMode == true ? "dark" : "light"} is set`}
           onClick={toggleDarkMode}
           className="h-10 select-none rounded-2xl text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lighterWhite xs:px-4 xs:hover:bg-darkBlack xs:hover:text-lighterWhite xs:dark:hover:bg-lightWhite xs:dark:hover:text-darkBlack sm:text-lg"
         >
