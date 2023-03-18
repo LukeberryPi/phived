@@ -64,11 +64,11 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
         <input
           type="text"
           value={task}
-          onChange={(e) => handleChange(e, idx)}
+          onChange={(event) => handleChange(event, idx)}
           autoFocus={isFirstTask}
           autoComplete="off"
           placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
-          onKeyDown={(e) => handleKeyDown(e, idx)}
+          onKeyDown={(event) => handleKeyDown(event, idx)}
           className={`peer w-full ${
             isFirstTask
               ? "rounded-t-2xl"
