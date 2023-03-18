@@ -4,14 +4,14 @@ import { placeholders } from "src/content";
 import { Alert } from "../Alert";
 import { TasksProps } from "./Tasks.types";
 
+const getRandomElement = (arr: any[]) => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+const placeholder = getRandomElement(placeholders);
+
 export function Tasks({ tasks, setTasks }: TasksProps) {
   const [showAlert, setShowAlert] = useState<boolean>(false);
-
-  const getRandomElement = (arr: any[]) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
-
-  const placeholder = getRandomElement(placeholders);
 
   useEffect(() => {
     localStorage.setItem("persistentTasks", JSON.stringify(tasks));

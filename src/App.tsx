@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import { createPortal } from 'react-dom';
-import { Footer, Header, Logo, Tasks, Alert } from "src/components";
+import { useEffect, useState, memo } from "react";
+import { createPortal } from "react-dom";
+import { Footer, Header, Logo, Tasks as T, Alert } from "src/components";
 import { useLocalStorage } from "src/hooks";
+
+const Tasks = memo(T);
 
 export default function App() {
   const [tasks, setTasks] = useLocalStorage("persistentTasks", Array(5).fill(""));
@@ -30,10 +32,11 @@ export default function App() {
       <Tasks tasks={tasks} setTasks={setTasks} />
       <Logo />
       <Footer />
-      {showAlert && createPortal(
-        <Alert setShowAlert={setShowAlert}>Tasks cleared successfully</Alert>,
-        document.body
-      )}
+      {showAlert &&
+        createPortal(
+          <Alert setShowAlert={setShowAlert}>Tasks cleared successfully</Alert>,
+          document.body
+        )}
     </div>
   );
 }
