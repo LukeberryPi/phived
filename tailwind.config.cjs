@@ -22,7 +22,12 @@ module.exports = {
       instagramPurple: "#962fbf",
       instagramOrange: "#fa7e1e",
     },
-    extend: {},
+    extend: {
+      boxShadow: {
+        ['brutalist-dark']: '3px 3px #080811',
+        ['brutalist-light']: '2px 2px #f1f2f3',
+      }
+    },
     fontFamily: {
       sans: ["DM Sans", "sans-serif"],
       heading: ["DM Sans", "sans-serif"],
