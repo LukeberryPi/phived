@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from 'react-dom';
-import { Footer, Header, Logo, Tasks } from "src/components";
+import { Footer, Header, Logo, Tasks, Alert } from "src/components";
 import { useLocalStorage } from "src/hooks";
 
 export default function App() {
@@ -31,7 +31,7 @@ export default function App() {
       <Logo />
       <Footer />
       {showAlert && createPortal(
-        <div>Teste</div>,
+        <Alert setShowAlert={setShowAlert}>Tasks cleared successfully</Alert>,
         document.body
       )}
     </div>
