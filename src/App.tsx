@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Footer, Header, Logo, Tasks } from "src/components";
-import { useLocalStorage } from "src/hooks";
+import { useLocalStorage } from "src/hooks/useLocalStorage";
 
 export default function App() {
   const [tasks, setTasks] = useLocalStorage("persistentTasks", Array(5).fill(""));
