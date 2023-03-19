@@ -3,7 +3,7 @@ import { TasksContext } from "src/contexts";
 import { handleSetTheme, isThemeSetToDark } from "src/utils/helpers/theme";
 
 export const Header = () => {
-  const { resetTasks } = useContext(TasksContext);
+  const { clearTasks } = useContext(TasksContext);
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export const Header = () => {
           {isDarkMode ? "light" : "dark"} mode
         </button>
         <button
-          onClick={() => resetTasks()}
+          onClick={clearTasks}
           className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-alertRed hover:text-lighterWhite hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4"
         >
           clear tasks

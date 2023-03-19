@@ -16,20 +16,30 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
     setTasks(newTasklist as Tasks);
   }
 
-  const resetTasks: TasksContextTypes['resetTasks'] = (index) => {
-    if(index !== undefined) {
-      const ongoingTasks = tasks.filter((_, idx) => idx !== index);
-      setTasks([...ongoingTasks, ""] as Tasks);
-    } else {
-      setTasks(initialState.tasks);
-    }
+  const completeTask: TasksContextTypes['completeTask'] = (index) => {
+    const ongoingTasks = tasks.filter((_, idx) => idx !== index);
+    setTasks([...ongoingTasks, initialState.tasks[index]] as Tasks);
+  }
+
+  const clearTasks: TasksContextTypes['clearTasks'] = () => {
+    setTasks(initialState.tasks);
   };
 
   useEffect(() => {
     setStoredTasks(tasks);
   }, [tasks]);
 
-  return <TasksContext.Provider value={{ tasks, setTasks, resetTasks, changeTask }}>
-    {children}
-  </TasksContext.Provider>
+  return (
+    <TasksContext.Provider
+      value={{
+        tasks,
+        setTasks,
+        completeTask,
+        changeTask,
+        clearTasks 
+      }}
+    >
+      {children}
+    </TasksContext.Provider>
+  )
 }

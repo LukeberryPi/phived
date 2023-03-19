@@ -3,7 +3,7 @@ import { placeholders } from "src/content";
 import { TasksContext } from "src/contexts";
 
 export function Tasks() {
-  const { tasks, changeTask, resetTasks } = useContext(TasksContext);
+  const { tasks, changeTask, completeTask } = useContext(TasksContext);
   const [placeholder, setPlaceholder] = useState<string>("");
 
   const getRandomElement = (arr: any[]) => {
@@ -20,7 +20,7 @@ export function Tasks() {
   };
 
   const handleDone = (i: number) => {
-    resetTasks(i)
+    completeTask(i)
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
