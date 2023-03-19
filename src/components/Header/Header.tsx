@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-
-type HeaderProps = {
-  clearTasks: () => void;
-};
+import { HeaderProps } from "./Header.types";
 
 export const Header = ({ clearTasks }: HeaderProps) => {
   const [darkMode, setDarkMode] = useState(
