@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { TasksContext } from "src/contexts/TasksContext";
+import { TasksContext } from "src/contexts";
 
 export const Header = () => {
   const { resetTasks } = useContext(TasksContext);

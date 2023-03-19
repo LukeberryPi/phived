@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { placeholders } from "src/content";
-import { TasksContext } from "src/contexts/TasksContext";
+import { TasksContext } from "src/contexts";
 
 export function Tasks() {
   const { tasks, changeTask, resetTasks } = useContext(TasksContext);
