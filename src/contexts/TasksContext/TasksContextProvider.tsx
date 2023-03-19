@@ -1,10 +1,10 @@
 import { PropsWithChildren, useEffect, useState } from "react"
 import { TasksContext, initialState } from "./TasksContext"
 import { Tasks, TasksContextTypes } from "./TasksContext.types";
-import { useLocalStorage } from "src/hooks";
+import { useLocalStorage } from "src/hooks/useLocalStorage";
 
 export const TasksContextProvider = ({ children }: PropsWithChildren) => {
-  const [ storedTasks, setStoredTasks ] = useLocalStorage("persistentTasks", initialState.tasks);
+  const [storedTasks, setStoredTasks] = useLocalStorage("persistentTasks", initialState.tasks);
   const [tasks, setTasks] = useState(storedTasks);
 
   const changeTask: TasksContextTypes['changeTask'] = (taskIndex, newValue) => {
