@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { placeholders } from "src/content";
-import { TasksProps } from "./Tasks.types";
+import type { TasksProps } from "src/components/Tasks/Tasks.types";
 
 export function Tasks({ tasks, setTasks }: TasksProps) {
   const [placeholder, setPlaceholder] = useState<string>("");
 
-  const getRandomElement = (arr: string[]) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
+  const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
 
   useEffect(() => {
     setPlaceholder(getRandomElement(placeholders));
