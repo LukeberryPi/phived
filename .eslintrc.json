@@ -23,10 +23,10 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
-    "linebreak-style": ["error", "unix"],
+    "linebreak-style": 0,
     "quotes": ["error", "double"],
-    "semi": "off",
-    "eol-last": ["error", "always"],
+    "semi": "warn",
+    "eol-last": ["warn", "always"],
     "arrow-parens": ["error", "always"],
     "eqeqeq": ["error", "always"],
     "arrow-body-style": ["error", "as-needed"],
