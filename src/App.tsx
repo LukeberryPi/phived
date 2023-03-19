@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Footer, Header, Logo, Tasks } from "src/components";
-import { useLocalStorage } from "src/hooks";
+import { TasksContext } from "./contexts/TasksContext";
 
 export default function App() {
-  const [tasks, setTasks] = useLocalStorage("persistentTasks", Array(5).fill(""));
+  const { tasks } = useContext(TasksContext);
 
   useEffect(() => {
     const icon = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
@@ -17,16 +17,12 @@ export default function App() {
     }
   }, [tasks]);
 
-  const clearTasks = () => {
-    setTasks(tasks.map((task) => ""));
-  };
-
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center bg-lightWhite selection:bg-berryBlue dark:bg-darkerBlack dark:selection:bg-purpleRain">
-      <Header clearTasks={clearTasks} />
-      <Tasks tasks={tasks} setTasks={setTasks} />
-      <Logo />
-      <Footer />
-    </div>
+      <div className="flex h-full w-full flex-col items-center justify-center bg-lightWhite selection:bg-berryBlue dark:bg-darkerBlack dark:selection:bg-purpleRain">
+        <Header />
+        <Tasks />
+        <Logo />
+        <Footer />
+      </div>
   );
 }

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { placeholders } from "src/content";
-import { TasksProps } from "./Tasks.types";
+import { TasksContext } from "src/contexts/TasksContext";
 
-export function Tasks({ tasks, setTasks }: TasksProps) {
+export function Tasks() {
+  const { tasks, changeTask, resetTasks } = useContext(TasksContext);
   const [placeholder, setPlaceholder] = useState<string>("");
 
   const getRandomElement = (arr: any[]) => {
@@ -13,26 +14,13 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
     setPlaceholder(getRandomElement(placeholders));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("persistentTasks", JSON.stringify(tasks));
-  }, [tasks]);
-
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
-
-    setTasks(
-      tasks.map((task, idx) => {
-        if (idx === i) {
-          return currentTask;
-        }
-        return task;
-      })
-    );
+    changeTask(i, currentTask);
   };
 
   const handleDone = (i: number) => {
-    const ongoingTasks = tasks.filter((_, idx) => idx !== i);
-    setTasks([...ongoingTasks, ""]);
+    resetTasks(i)
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {

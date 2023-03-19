@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import { HeaderProps } from "./Header.types";
+import { useContext, useEffect, useState } from "react";
+import { TasksContext } from "src/contexts/TasksContext";
 
-export const Header = ({ clearTasks }: HeaderProps) => {
+export const Header = () => {
+  const { resetTasks } = useContext(TasksContext);
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "dark" ? true : false
   );
@@ -30,7 +31,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
           {darkMode ? "light" : "dark"} mode
         </button>
         <button
-          onClick={clearTasks}
+          onClick={() => resetTasks()}
           className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-alertRed hover:text-lighterWhite hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4"
         >
           clear tasks
