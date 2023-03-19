@@ -1,10 +1,6 @@
-import { useEffect, useState, Dispatch } from "react";
-import { placeholders } from "src/content/contents";
-
-export type TasksProps = {
-  tasks: string[];
-  setTasks: Dispatch<string[]>;
-};
+import { useEffect, useState } from "react";
+import { placeholders } from "src/content";
+import { TasksProps } from "./Tasks.types";
 
 export function Tasks({ tasks, setTasks }: TasksProps) {
   const [placeholder, setPlaceholder] = useState<string>("");
