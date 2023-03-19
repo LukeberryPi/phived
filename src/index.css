@@ -9,13 +9,3 @@ input {
   /* ignore this warning, it's necessary*/
   -webkit-border-radius: 0px;
 }
-
-@layer utilities {
-  .box-shadow-dark {
-    box-shadow: 3px 3px #080811;
-  }
-
-  .box-shadow-light {
-    box-shadow: 2px 2px #f1f2f3;
-  }
-}
