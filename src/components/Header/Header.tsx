@@ -10,7 +10,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(currentDarkMode => !currentDarkMode);
+    setIsDarkMode((currentDarkMode) => !currentDarkMode);
   };
 
   return (

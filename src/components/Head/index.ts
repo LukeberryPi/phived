@@ -1,1 +1,1 @@
-export { Head } from "./Head"
+export { Head } from "./Head";

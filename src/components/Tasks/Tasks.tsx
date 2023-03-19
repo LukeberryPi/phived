@@ -5,7 +5,7 @@ import { TasksProps } from "./Tasks.types";
 export function Tasks({ tasks, setTasks }: TasksProps) {
   const [placeholder, setPlaceholder] = useState<string>("");
 
-  const getRandomElement = (arr: any[]) => {
+  const getRandomElement = (arr: string[]) => {
     return arr[Math.floor(Math.random() * arr.length)];
   };
 

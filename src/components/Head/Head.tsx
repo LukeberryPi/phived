@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet-async"
+import { Helmet } from "react-helmet-async";
 import { HeadProps } from "./Head.types";
 import { useEffect, useState } from "react";
 
@@ -21,5 +21,5 @@ export const Head = ({ tasks }: HeadProps) => {
       <title>{title}</title>
       <link rel="icon" type="image/x-icon" href={icon} />
     </Helmet>
-  )
-}
+  );
+};
