@@ -1,5 +1,5 @@
 export function isThemeSetToDark() {
-  return localStorage.getItem("theme") === "dark"
+  return localStorage.getItem("theme") === "dark";
 }
 
 export function handleSetTheme(isDarkMode: boolean) {

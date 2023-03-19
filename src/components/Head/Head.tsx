@@ -1,6 +1,6 @@
-import { Helmet } from "react-helmet-async"
-import { HeadProps } from "./Head.types";
+import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
+import type { HeadProps } from "src/components/Head/Head.types";
 
 export const Head = ({ tasks }: HeadProps) => {
   const [title, setTitle] = useState("phived");
@@ -21,5 +21,5 @@ export const Head = ({ tasks }: HeadProps) => {
       <title>{title}</title>
       <link rel="icon" type="image/x-icon" href={icon} />
     </Helmet>
-  )
-}
+  );
+};

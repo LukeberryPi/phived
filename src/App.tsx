@@ -6,7 +6,7 @@ export default function App() {
   const [tasks, setTasks] = useLocalStorage("persistentTasks", Array(5).fill(""));
 
   const clearTasks = () => {
-    setTasks(tasks.map((task) => ""));
+    setTasks(tasks.map(() => ""));
   };
 
   return (

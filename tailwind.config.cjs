@@ -1,3 +1,4 @@
+/* eslint-disable */
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require("tailwindcss/defaultTheme");
 
@@ -24,8 +25,8 @@ module.exports = {
     },
     extend: {
       boxShadow: {
-        ['brutalist-dark']: '3px 3px #080811',
-        ['brutalist-light']: '2px 2px #f1f2f3',
+        ["brutalist-dark"]: "3px 3px #080811",
+        ["brutalist-light"]: "2px 2px #f1f2f3",
       }
     },
     fontFamily: {

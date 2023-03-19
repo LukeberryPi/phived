@@ -6,6 +6,7 @@ export function Footer() {
           className="flex h-10 select-none items-center rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lightWhite hover:ease-in dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"
           target="_blank"
           href="https://github.com/LukeberryPi/phived"
+          rel="noreferrer"
         >
           github
         </a>
@@ -13,6 +14,7 @@ export function Footer() {
           className="flex h-10 select-none items-center rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-twitterBlue hover:text-lightWhite hover:ease-in dark:text-lighterWhite xs:text-lg sm:px-4"
           target="_blank"
           href="https://twitter.com/phivedphived"
+          rel="noreferrer"
         >
           twitter
         </a>
@@ -20,6 +22,7 @@ export function Footer() {
           className="flex h-10 select-none items-center rounded-2xl from-instagramPink via-instagramOrange to-instagramPurple px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-gradient-to-r hover:text-lightWhite hover:ease-in dark:text-lighterWhite xs:text-lg sm:px-4"
           target="_blank"
           href="https://www.instagram.com/phivedphived/"
+          rel="noreferrer"
         >
           instagram
         </a>

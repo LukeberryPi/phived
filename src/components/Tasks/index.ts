@@ -1,1 +1,1 @@
-export { Tasks } from "./Tasks";
+export { Tasks } from "src/components/Tasks/Tasks";
