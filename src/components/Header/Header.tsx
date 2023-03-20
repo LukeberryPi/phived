@@ -1,23 +1,16 @@
 import { useEffect, useState } from "react";
-import { HeaderProps } from "./Header.types";
+import { handleSetTheme, isThemeSetToDark } from "src/utils/helpers/theme";
+import type { HeaderProps } from "src/components/Header/Header.types";
 
 export const Header = ({ clearTasks }: HeaderProps) => {
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("darkMode") === "dark" ? true : false
-  );
+  const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("darkMode", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("darkMode", "light");
-    }
-  }, [darkMode]);
+    handleSetTheme(isDarkMode);
+  }, [isDarkMode]);
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    setIsDarkMode((currentDarkMode) => !currentDarkMode);
   };
 
   return (
@@ -27,7 +20,7 @@ export const Header = ({ clearTasks }: HeaderProps) => {
           onClick={toggleDarkMode}
           className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lighterWhite hover:ease-in dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"
         >
-          {darkMode ? "light" : "dark"} mode
+          {isDarkMode ? "light" : "dark"} mode
         </button>
         <button
           onClick={clearTasks}

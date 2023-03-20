@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { placeholders } from "src/content";
-import { TasksProps } from "./Tasks.types";
+import type { TasksProps } from "src/components/Tasks/Tasks.types";
 
 export function Tasks({ tasks, setTasks }: TasksProps) {
   const [placeholder, setPlaceholder] = useState<string>("");
 
-  const getRandomElement = (arr: any[]) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
+  const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
 
   useEffect(() => {
     setPlaceholder(getRandomElement(placeholders));
@@ -91,7 +89,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
   });
 
   return (
-    <form className="box-shadow-dark dark:box-shadow-light w-72 rounded-2xl border dark:border-lighterWhite tiny:w-80 xs:w-96">
+    <form className="shadow-brutalist-dark dark:shadow-brutalist-light w-72 rounded-2xl border dark:border-lighterWhite tiny:w-80 xs:w-96">
       {tasksMap}
     </form>
   );

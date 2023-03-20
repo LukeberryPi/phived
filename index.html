@@ -22,6 +22,20 @@
     <meta name="twitter:description" content="the anti-procrastination to-do list" />
     <meta name="twitter:image" content="https://www.phived.com/share-banner.png" />
     <meta name="theme-color" content="#f1f2f3" />
+    <script>
+      /* This script is an optimized copy of helpers/theme.ts 
+         However since it will be blocking the render of the page, 
+         no imports should be here to make this script run as fast as possible.
+      */
+
+      if (localStorage.getItem("theme") === "dark") {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
+    </script>
   </head>
   <body class="h-full w-full">
     <div class="h-full w-full" id="root"></div>
