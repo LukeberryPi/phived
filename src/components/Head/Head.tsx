@@ -11,7 +11,9 @@ export const Head = () => {
     if (tasks.some((task) => !!task)) {
       setIcon("/favicon-alert.ico");
       setTitle(
-        `[${tasks.filter((task) => !!task).length}] phived · the anti-procrastination to-do list`
+        `[${
+          tasks.filter((task) => !!task && task.trim()).length
+        }] phived · the anti-procrastination to-do list`
       );
     } else {
       setIcon("/favicon-default.ico");
