@@ -2,11 +2,11 @@
   "theme_color": "#f1f2f3",
   "background_color": "#f1f2f3",
   "display": "standalone",
-  "name": "Phived",
+  "name": "phived",
   "scope": "/",
   "start_url": "/",
-  "short_name": "Phived",
-  "description": "Phived is a dead-simple, zero-distractions to-do list",
+  "short_name": "phived",
+  "description": "phived is a dead-simple, zero-distractions to-do list",
   "icons": [
     {
       "src": "/icon-192x192.png",
