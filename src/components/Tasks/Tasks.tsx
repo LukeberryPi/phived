@@ -6,9 +6,7 @@ export function Tasks() {
   const { tasks, changeTask, completeTask } = useTasksContext();
   const [placeholder, setPlaceholder] = useState<string>("");
 
-  const getRandomElement = (arr: any[]) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
+  const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
 
   useEffect(() => {
     setPlaceholder(getRandomElement(placeholders));
@@ -20,7 +18,7 @@ export function Tasks() {
   };
 
   const handleDone = (i: number) => {
-    completeTask(i)
+    completeTask(i);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {

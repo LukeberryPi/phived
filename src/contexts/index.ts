@@ -1,2 +1,2 @@
-export { useTasksContext } from "./TasksContext/TasksContext";
-export { TasksContextProvider } from "./TasksContext/TasksContextProvider";
+export { useTasksContext } from "src/contexts/TasksContext/TasksContext";
+export { TasksContextProvider } from "src/contexts/TasksContext/TasksContextProvider";

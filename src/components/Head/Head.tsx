@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet-async"
+import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 
@@ -10,10 +10,10 @@ export const Head = () => {
   useEffect(() => {
     if (tasks.some((task) => !!task)) {
       setIcon("/favicon-alert.ico");
-      setTitle(`[${tasks.filter((task) => !!task).length}] phived`);
+      setTitle(`[${tasks.filter((task) => !!task).length}] phived - the anti-procrastination to-do list`);
     } else {
       setIcon("/favicon-default.ico");
-      setTitle("phived");
+      setTitle("phived - the anti-procrastination to-do list");
     }
   }, [tasks]);
 
@@ -22,5 +22,5 @@ export const Head = () => {
       <title>{title}</title>
       <link rel="icon" type="image/x-icon" href={icon} />
     </Helmet>
-  )
-}
+  );
+};

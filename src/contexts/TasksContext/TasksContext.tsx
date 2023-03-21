@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { TaskContextType } from "./TasksContext.types";
+import type { TaskContextType } from "src/contexts/TasksContext/TasksContext.types";
 
 export const initialState = {
   tasks: Array<string>(5).fill("")

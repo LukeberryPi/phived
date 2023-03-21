@@ -1,6 +1,7 @@
-import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react"
-import { TasksContext } from "./TasksContext"
-import { Task } from "./TasksContext.types";
+import type { PropsWithChildren} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { TasksContext } from "src/contexts/TasksContext/TasksContext";
+import type { Task } from "src/contexts/TasksContext/TasksContext.types";
 import { useLocalStorage } from "src/hooks/useLocalStorage";
 
 export const TasksContextProvider = ({ children }: PropsWithChildren) => {
@@ -11,15 +12,15 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
 
   const changeTask = useCallback((taskIndex: number, newValue: Task) => {
     const taskCopy = [...tasks];
-    taskCopy[taskIndex] = newValue
+    taskCopy[taskIndex] = newValue;
 
     setTasks(taskCopy);
-  }, [tasks, setTasks])
+  }, [tasks, setTasks]);
 
   const completeTask = useCallback((index: number) => {
     const ongoingTasks = tasks.filter((_, idx) => idx !== index);
     setTasks([...ongoingTasks, ""]);
-  }, [tasks, setTasks])
+  }, [tasks, setTasks]);
 
   const clearTasks = useCallback(() => {
     setTasks(Array(5).fill(""));
@@ -41,5 +42,5 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
     >
       {children}
     </TasksContext.Provider>
-  )
-}
+  );
+};

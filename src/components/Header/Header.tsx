@@ -11,7 +11,7 @@ export const Header = () => {
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(currentDarkMode => !currentDarkMode);
+    setIsDarkMode((currentDarkMode) => !currentDarkMode);
   };
 
   return (
