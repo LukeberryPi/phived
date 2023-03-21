@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction } from "react";
 
 export type Task = string;
 
-export type Tasks = [Task, Task, Task, Task, Task];
+export type Tasks = Task[];
 
-export type TasksContextTypes = {
+export type TaskContextType = {
   tasks: Tasks;
-  setTasks: Dispatch<SetStateAction<TasksContextTypes["tasks"]>>;
+  setTasks: Dispatch<SetStateAction<TaskContextType["tasks"]>>;
   completeTask: (index: number) => void;
   clearTasks: () => void;
   changeTask: (taskIndex: number, newValue: Task) => void;

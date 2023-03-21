@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import { TasksContext } from "src/contexts";
+import { useEffect, useState } from "react";
+import { useTasksContext } from "src/contexts";
 import { handleSetTheme, isThemeSetToDark } from "src/utils/helpers/theme";
 
 export const Header = () => {
-  const { clearTasks } = useContext(TasksContext);
+  const { clearTasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
 
   useEffect(() => {

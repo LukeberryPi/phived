@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet-async"
-import { useContext, useEffect, useState } from "react";
-import { TasksContext } from "src/contexts";
+import { useEffect, useState } from "react";
+import { useTasksContext } from "src/contexts";
 
 export const Head = () => {
-  const { tasks } = useContext(TasksContext);
+  const { tasks } = useTasksContext();
   const [title, setTitle] = useState("phived");
   const [icon, setIcon] = useState("/favicon-default.ico");
 

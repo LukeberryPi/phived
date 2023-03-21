@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { placeholders } from "src/content";
-import { TasksContext } from "src/contexts";
+import { useTasksContext } from "src/contexts";
 
 export function Tasks() {
-  const { tasks, changeTask, completeTask } = useContext(TasksContext);
+  const { tasks, changeTask, completeTask } = useTasksContext();
   const [placeholder, setPlaceholder] = useState<string>("");
 
   const getRandomElement = (arr: any[]) => {

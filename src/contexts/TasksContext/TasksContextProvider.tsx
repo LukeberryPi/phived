@@ -1,38 +1,38 @@
-import { PropsWithChildren, useEffect, useState } from "react"
-import { TasksContext, initialState } from "./TasksContext"
-import { Tasks, TasksContextTypes } from "./TasksContext.types";
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react"
+import { TasksContext } from "./TasksContext"
+import { Task } from "./TasksContext.types";
 import { useLocalStorage } from "src/hooks/useLocalStorage";
 
 export const TasksContextProvider = ({ children }: PropsWithChildren) => {
-  const [storedTasks, setStoredTasks] = useLocalStorage("persistentTasks", initialState.tasks);
+  const [storedTasks, setStoredTasks] = useLocalStorage("persistentTasks", Array<string>(5).fill(""));
   const [tasks, setTasks] = useState(storedTasks);
+  
+  const memoizedTasks = useMemo(() => tasks, [tasks]);
 
-  const changeTask: TasksContextTypes['changeTask'] = (taskIndex, newValue) => {
+  const changeTask = useCallback((taskIndex: number, newValue: Task) => {
     const taskCopy = [...tasks];
-    const newTasklist = taskCopy.map((task, index) =>
-      (index === taskIndex) ? newValue : task
-    );
+    taskCopy[taskIndex] = newValue
 
-    setTasks(newTasklist as Tasks);
-  }
+    setTasks(taskCopy);
+  }, [tasks, setTasks])
 
-  const completeTask: TasksContextTypes['completeTask'] = (index) => {
+  const completeTask = useCallback((index: number) => {
     const ongoingTasks = tasks.filter((_, idx) => idx !== index);
-    setTasks([...ongoingTasks, initialState.tasks[index]] as Tasks);
-  }
+    setTasks([...ongoingTasks, ""]);
+  }, [tasks, setTasks])
 
-  const clearTasks: TasksContextTypes['clearTasks'] = () => {
-    setTasks(initialState.tasks);
-  };
+  const clearTasks = useCallback(() => {
+    setTasks(Array(5).fill(""));
+  }, [setTasks]);
 
   useEffect(() => {
     setStoredTasks(tasks);
-  }, [tasks]);
+  }, [tasks, setStoredTasks]);
 
   return (
     <TasksContext.Provider
       value={{
-        tasks,
+        tasks: memoizedTasks,
         setTasks,
         completeTask,
         changeTask,
