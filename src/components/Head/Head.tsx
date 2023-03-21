@@ -1,16 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import { useTasksContext } from "src/contexts";
-
-const ALERT_ICON = "favicon-alert.ico"
-const DEFAULT_ICON = "favicon-default.ico"
-const BASE_PAGE_TITLE = "phived - the anti-procrastination to-do list"
+import { headConstants } from "./headConstants";
 
 export const Head = () => {
   const { tasks } = useTasksContext();
-  const enableTasks = tasks.filter(Boolean)
-  const titlePrefix= enableTasks.length ? `[${enableTasks.length}]` : ''
-  const title = `${titlePrefix} ${BASE_PAGE_TITLE}`.trim();
-  const iconPath = `/${enableTasks.length ? ALERT_ICON : DEFAULT_ICON}`;
+  const { baseTitle, icons } = headConstants
+  const pendingTasks = tasks.filter(Boolean)
+  const titlePrefix= pendingTasks.length ? `[${pendingTasks.length}]` : ''
+  const title = `${titlePrefix} ${baseTitle}`.trim();
+  const iconPath = `/${pendingTasks.length ? icons.alert : icons.default}`;
 
   return (
     <Helmet>
