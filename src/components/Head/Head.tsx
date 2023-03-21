@@ -5,10 +5,10 @@ const ALERT_ICON = "/favicon-alert.ico"
 const DEFAULT_ICON = "/favicon-default.ico"
 
 export const Head = ({ tasks }: HeadProps) => {
-  const enableTasks = tasks.filter((task) => Boolean(task))
+  const enableTasks = tasks.filter(Boolean)
   const titlePrefix= enableTasks.length ? `[${enableTasks.length}]` : undefined
   const defaultTitle = "phived - the anti-procrastination to-do list"
-
+  console.log('is rendered')
   return (
     <Helmet>
       <title>{
