@@ -9,10 +9,12 @@ export const Head = ({ tasks }: HeadProps) => {
   useEffect(() => {
     if (tasks.some((task) => !!task)) {
       setIcon("/favicon-alert.ico");
-      setTitle(`[${tasks.filter((task) => !!task).length}] phived - the anti-procrastination to-do list`);
+      setTitle(
+        `[${tasks.filter((task) => !!task).length}] phived · the anti-procrastination to-do list`
+      );
     } else {
       setIcon("/favicon-default.ico");
-      setTitle("phived - the anti-procrastination to-do list");
+      setTitle("phived · the anti-procrastination to-do list");
     }
   }, [tasks]);
 
