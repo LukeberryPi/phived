@@ -1,14 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import type { HeadProps } from "src/components/Head/Head.types";
+import { useTasksContext } from "src/contexts";
 
 const ALERT_ICON = "/favicon-alert.ico"
 const DEFAULT_ICON = "/favicon-default.ico"
 
-export const Head = ({ tasks }: HeadProps) => {
+export const Head = () => {
+  const { tasks } = useTasksContext();
   const enableTasks = tasks.filter(Boolean)
   const titlePrefix= enableTasks.length ? `[${enableTasks.length}]` : undefined
   const defaultTitle = "phived - the anti-procrastination to-do list"
-  console.log('is rendered')
+
   return (
     <Helmet>
       <title>{
