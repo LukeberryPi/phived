@@ -9,16 +9,16 @@ export const Head = () => {
   const { tasks } = useTasksContext();
   const enableTasks = tasks.filter(Boolean)
   const titlePrefix= enableTasks.length ? `[${enableTasks.length}]` : ''
+  const title = `${titlePrefix} ${BASE_PAGE_TITLE}`.trim();
+  const iconPath = `/${enableTasks.length ? ALERT_ICON : DEFAULT_ICON}`;
 
   return (
     <Helmet>
-      <title>{
-        `${titlePrefix} ${BASE_PAGE_TITLE}`
-      }</title>
+      <title>{title}</title>
       <link 
         rel="icon" 
         type="image/x-icon" 
-        href={`/${enableTasks.length ? ALERT_ICON : DEFAULT_ICON}`} 
+        href={iconPath} 
       />
     </Helmet>
   );
