@@ -1,8 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
-import type { HeadProps } from "src/components/Head/Head.types";
+import { useTasksContext } from "src/contexts";
 
-export const Head = ({ tasks }: HeadProps) => {
+export const Head = () => {
+  const { tasks } = useTasksContext();
   const [title, setTitle] = useState("phived");
   const [icon, setIcon] = useState("/favicon-default.ico");
 
