@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { placeholders } from "src/content";
-import type { TasksProps } from "src/components/Tasks/Tasks.types";
+import { useTasksContext } from "src/contexts";
 
-export function Tasks({ tasks, setTasks }: TasksProps) {
+export function Tasks() {
+  const { tasks, changeTask, completeTask } = useTasksContext();
   const [placeholder, setPlaceholder] = useState<string>("");
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
@@ -11,26 +12,13 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
     setPlaceholder(getRandomElement(placeholders));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("persistentTasks", JSON.stringify(tasks));
-  }, [tasks]);
-
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
-
-    setTasks(
-      tasks.map((task, idx) => {
-        if (idx === i) {
-          return currentTask;
-        }
-        return task;
-      })
-    );
+    changeTask(i, currentTask);
   };
 
   const handleDone = (i: number) => {
-    const ongoingTasks = tasks.filter((_, idx) => idx !== i);
-    setTasks([...ongoingTasks, ""]);
+    completeTask(i);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
@@ -89,7 +77,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
   });
 
   return (
-    <form className="shadow-brutalist-dark dark:shadow-brutalist-light w-72 rounded-2xl border dark:border-lighterWhite tiny:w-80 xs:w-96">
+    <form className="w-72 rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
       {tasksMap}
     </form>
   );
