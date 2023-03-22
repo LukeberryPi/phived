@@ -77,7 +77,7 @@ export function Tasks() {
   });
 
   return (
-    <form className="w-72 rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+    <form className="shadow-brutalist-dark dark:shadow-brutalist-light w-72 rounded-2xl border dark:border-lighterWhite tiny:w-80 xs:w-96">
       {tasksMap}
     </form>
   );
