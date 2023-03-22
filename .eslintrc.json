@@ -12,7 +12,8 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended"
   ],
   "overrides": [],
   "parser": "@typescript-eslint/parser",
@@ -20,7 +21,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "jsx-a11y"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": 0,
@@ -58,6 +59,7 @@
         },
         "multilineDetection": "brackets"
       }
-    ]
+    ],
+    "jsx-a11y/no-autofocus": "off"
   }
 }

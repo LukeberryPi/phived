@@ -62,7 +62,8 @@ export function Tasks() {
             isLastTask ? "rounded-b-2xl" : "border-b"
           } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
         />
-        <span
+        <button
+          type="button"
           onClick={() => handleDone(idx)}
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
@@ -71,7 +72,7 @@ export function Tasks() {
           } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-purpleRain dark:text-lighterWhite xs:text-lg`}
         >
           done?
-        </span>
+        </button>
       </div>
     );
   });
