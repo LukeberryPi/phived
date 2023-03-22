@@ -4,12 +4,10 @@ import App from "src/App";
 import "src/index.css";
 import { TasksContextProvider } from "src/contexts";
 
-ReactDOM
-  .createRoot(document.getElementById("root") as HTMLElement)
-  .render(
-    <React.StrictMode>
-      <TasksContextProvider>
-        <App />
-      </TasksContextProvider>
-    </React.StrictMode>
-  );
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <TasksContextProvider>
+      <App />
+    </TasksContextProvider>
+  </React.StrictMode>
+);

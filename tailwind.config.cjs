@@ -27,7 +27,7 @@ module.exports = {
       boxShadow: {
         ["brutalist-dark"]: "3px 3px #080811",
         ["brutalist-light"]: "2px 2px #f1f2f3",
-      }
+      },
     },
     fontFamily: {
       sans: ["DM Sans", "sans-serif"],
