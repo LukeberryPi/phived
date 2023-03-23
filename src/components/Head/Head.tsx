@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useTasksContext } from "src/contexts";
-import { headConstants } from "./headConstants";
+import { headConstants } from "src/components/Head/headConstants";
 
 export const Head = () => {
   const { tasks } = useTasksContext();
