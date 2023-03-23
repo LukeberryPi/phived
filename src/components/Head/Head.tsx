@@ -4,9 +4,9 @@ import { headConstants } from "src/components/Head/headConstants";
 
 export const Head = () => {
   const { tasks } = useTasksContext();
-  const { baseTitle, icons } = headConstants
-  const pendingTasks = tasks.filter(Boolean)
-  const titlePrefix= pendingTasks.length ? `[${pendingTasks.length}]` : ''
+  const { baseTitle, icons } = headConstants;
+  const pendingTasks = tasks.filter(Boolean);
+  const titlePrefix= pendingTasks.length ? `[${pendingTasks.length}]` : "";
   const title = `${titlePrefix} ${baseTitle}`.trim();
   const iconPath = `/${pendingTasks.length ? icons.alert : icons.default}`;
 

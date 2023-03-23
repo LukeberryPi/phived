@@ -4,4 +4,4 @@ export const headConstants = {
     alert: "favicon-alert.ico"
   },
   baseTitle: "phived - the anti-procrastination to-do list"
-}
+};
