@@ -1,28 +1,23 @@
 import { Helmet } from "react-helmet-async";
-import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
+import { headConstants } from "src/components/Head/headConstants";
 
 export const Head = () => {
   const { tasks } = useTasksContext();
-  const [title, setTitle] = useState("phived");
-  const [icon, setIcon] = useState("/favicon-default.ico");
-
-  useEffect(() => {
-    if (tasks.some((task) => !!task)) {
-      setIcon("/favicon-alert.ico");
-      setTitle(
-        `[${tasks.filter((task) => !!task).length}] phived · the anti-procrastination to-do list`
-      );
-    } else {
-      setIcon("/favicon-default.ico");
-      setTitle("phived · the anti-procrastination to-do list");
-    }
-  }, [tasks]);
+  const { baseTitle, icons } = headConstants;
+  const pendingTasks = tasks.filter(Boolean);
+  const titlePrefix= pendingTasks.length ? `[${pendingTasks.length}]` : "";
+  const title = `${titlePrefix} ${baseTitle}`.trim();
+  const iconPath = `/${pendingTasks.length ? icons.alert : icons.default}`;
 
   return (
     <Helmet>
       <title>{title}</title>
-      <link rel="icon" type="image/x-icon" href={icon} />
+      <link 
+        rel="icon" 
+        type="image/x-icon" 
+        href={iconPath} 
+      />
     </Helmet>
   );
 };
