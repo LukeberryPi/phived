@@ -79,7 +79,7 @@ export function Tasks({ tasks, setTasks }: TasksProps) {
           className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
             isLastTask ? "rounded-br-2xl" : ""
           } ${
-            isEmptyTask ? "hidden" : "group-hover:flex"
+            isEmptyTask ? "hidden" : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
           } hidden w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-purpleRain dark:text-lighterWhite xs:text-lg`}
         >
           done?
