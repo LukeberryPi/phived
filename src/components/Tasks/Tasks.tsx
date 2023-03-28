@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMemo, useEffect } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { useResizeDetector } from "react-resize-detector";
@@ -6,14 +6,10 @@ import { useLocalStorage } from "src/hooks";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask } = useTasksContext();
-  const [placeholder, setPlaceholder] = useState<string>("");
   const [storedWidth, setStoredWidth] = useLocalStorage("width", "");
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const { width, height, ref } = useResizeDetector();
-
-  useEffect(() => {
-    setPlaceholder(getRandomElement(placeholders));
-  }, []);
+  const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
   useEffect(() => {
     const resizeListener = () => {
