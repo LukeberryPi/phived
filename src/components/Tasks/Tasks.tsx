@@ -8,7 +8,7 @@ export function Tasks() {
   const { tasks, changeTask, completeTask } = useTasksContext();
   const [storedWidth, setStoredWidth] = useLocalStorage("width", "");
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
-  const { width, height, ref } = useResizeDetector();
+  const { width, ref } = useResizeDetector();
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export function Tasks() {
     <form
       ref={ref}
       style={{ width: storedWidth + "px" }}
-      className="min-w-[20%] max-w-[80%] cursor-e-resize resize-x overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+      className="min-w-[20%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:cursor-e-resize md:resize-x md:overflow-hidden"
     >
       {tasksMap}
     </form>
