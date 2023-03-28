@@ -9,11 +9,3 @@ input {
   /* ignore this warning, it's necessary to keep it this way*/
   -webkit-border-radius: 0px;
 }
-
-.grabber {
-}
-
-.grabber::-webkit-resizer {
-  border: 2px solid black;
-  background: red;
-}
