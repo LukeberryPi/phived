@@ -12,6 +12,7 @@ export const placeholders: string[] = [
   "commit irrelevant github code",
   "configure neovim",
   "contribute to open source",
+  "stretch your legs",
   "crack photoshop",
   "create spotify playlist",
   "delete tiktok",
