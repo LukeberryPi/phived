@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { useResizeDetector } from "react-resize-detector";
+import { useLocalStorage } from "src/hooks";
 
 export function Tasks() {
-  const widthInStorage = localStorage.getItem("width");
   const { tasks, changeTask, completeTask } = useTasksContext();
   const [placeholder, setPlaceholder] = useState<string>("");
+  const [storedWidth, setStoredWidth] = useLocalStorage("width", "");
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const { width, height, ref } = useResizeDetector();
 
@@ -16,7 +17,7 @@ export function Tasks() {
 
   useEffect(() => {
     const resizeListener = () => {
-      localStorage.setItem("width", String(width));
+      setStoredWidth(String(width));
     };
     window.addEventListener("unload", resizeListener);
 
@@ -92,7 +93,7 @@ export function Tasks() {
   return (
     <form
       ref={ref}
-      style={{ width: widthInStorage + "px" }}
+      style={{ width: storedWidth + "px" }}
       className="min-w-[20%] max-w-[80%] cursor-e-resize resize-x overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
     >
       {tasksMap}
