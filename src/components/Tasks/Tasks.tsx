@@ -20,7 +20,7 @@ export function Tasks() {
     return () => {
       window.removeEventListener("unload", resizeListener);
     };
-  }, [width]);
+  }, [setStoredWidth, width]);
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
@@ -52,7 +52,7 @@ export function Tasks() {
   const tasksMap = tasks.map((task, idx) => {
     const isFirstTask = idx === 0;
     const isLastTask = idx === tasks.length - 1;
-    const isEmptyTask = task === "";
+    const isEmptyTask = task.trim() === "";
 
     return (
       <div key={idx} className="group flex w-full">
@@ -89,6 +89,7 @@ export function Tasks() {
   return (
     <form
       ref={ref}
+      // inline style required, `w-[${width}px]` doesn't work
       style={{ width: storedWidth + "px" }}
       className="min-w-[20%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:cursor-e-resize md:resize-x md:overflow-hidden"
     >
