@@ -1,11 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 input {
   -webkit-appearance: none;
-  /* ignore this warning, it's necessary to keep it this way*/
+  /* we need this to have decent input borders on iOS, ignore warning */
   -webkit-border-radius: 0px;
 }

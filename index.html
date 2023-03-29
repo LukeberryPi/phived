@@ -23,12 +23,15 @@
     <meta name="twitter:image" content="https://www.phived.com/share-banner.png" />
     <meta name="google-site-verification" content="R6_yqIps0bS9JxwYUtpbusnOBIb6KfY4Aiwx9TruGZs" />
     <meta name="theme-color" content="#f1f2f3" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- the script below is a copy of helpers/theme.ts. since it
+    blocks the page render, it isn't imported for maximum performance. -->
     <script>
-      /* This script is an optimized copy of helpers/theme.ts 
-         However since it will be blocking the render of the page, 
-         no imports should be here to make this script run as fast as possible.
-      */
-
       if (localStorage.getItem("theme") === "dark") {
         document.documentElement.classList.add("dark");
         localStorage.setItem("theme", "dark");
