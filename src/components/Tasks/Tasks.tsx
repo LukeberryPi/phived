@@ -90,8 +90,10 @@ export function Tasks() {
   return (
     <form
       ref={resizeRef}
-      // inline style required, `w-[${width}px]` doesn't work
-      style={{ width: storedWidth + "px" }}
+      /* inline style required, `w-[${width}px]` doesn't work
+      +2 magically allows it to not shrink every page reload
+      do not change :) */
+      style={{ width: Number(storedWidth) + 2 + "px" }}
       className="min-w-[20%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:cursor-e-resize md:resize-x md:overflow-hidden"
     >
       {tasksMap}
