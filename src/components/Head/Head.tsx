@@ -5,10 +5,10 @@ import { headConstants } from "src/components/Head/headConstants";
 export const Head = () => {
   const { tasks } = useTasksContext();
   const { baseTitle, icons } = headConstants;
-  const pendingTasks = tasks.filter(Boolean);
-  const titlePrefix = pendingTasks.length ? `[${pendingTasks.length}]` : "";
+  const ongoingTasks = tasks.filter((task) => task.trim() !== "");
+  const titlePrefix = ongoingTasks.length ? `[${ongoingTasks.length}]` : "";
   const title = `${titlePrefix} ${baseTitle}`.trim();
-  const iconPath = `/${pendingTasks.length ? icons.alert : icons.default}`;
+  const iconPath = `/${ongoingTasks.length ? icons.alert : icons.default}`;
 
   return (
     <Helmet>
