@@ -1,16 +1,26 @@
-import { useEffect, useState } from "react";
+import { useMemo, useEffect } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
+import { useResizeDetector } from "react-resize-detector";
+import { useLocalStorage } from "src/hooks";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask } = useTasksContext();
-  const [placeholder, setPlaceholder] = useState<string>("");
-
+  const [storedWidth, setStoredWidth] = useLocalStorage("width", "");
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const { width, ref } = useResizeDetector();
+  const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
   useEffect(() => {
-    setPlaceholder(getRandomElement(placeholders));
-  }, []);
+    const resizeListener = () => {
+      setStoredWidth(String(width));
+    };
+    window.addEventListener("unload", resizeListener);
+
+    return () => {
+      window.removeEventListener("unload", resizeListener);
+    };
+  }, [width]);
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
@@ -77,7 +87,11 @@ export function Tasks() {
   });
 
   return (
-    <form className="w-72 rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+    <form
+      ref={ref}
+      style={{ width: storedWidth + "px" }}
+      className="min-w-[20%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:cursor-e-resize md:resize-x md:overflow-hidden"
+    >
       {tasksMap}
     </form>
   );
