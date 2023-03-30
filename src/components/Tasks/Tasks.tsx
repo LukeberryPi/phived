@@ -56,6 +56,7 @@ export function Tasks() {
 
   function handleDragEnd(result: DropResult) {
     const destinationIndex = result.destination?.index;
+
     if (destinationIndex || destinationIndex === 0) {
       setTasks((prev) => {
         const actualTasks = [...prev];
@@ -70,6 +71,10 @@ export function Tasks() {
 
         return newTasksArray;
       });
+    }
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
     }
   }
 
@@ -113,7 +118,7 @@ export function Tasks() {
                   isEmptyTask || tasksLength <= 1
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
-                } flex hidden items-center justify-center bg-lighterWhite pr-2 text-base text-darkerBlack placeholder:select-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
+                } hidden items-center justify-center bg-lighterWhite pr-2 text-base text-darkerBlack placeholder:select-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
                 {...provided.dragHandleProps}
                 tabIndex={-1}
               >
