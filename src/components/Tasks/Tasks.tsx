@@ -100,10 +100,10 @@ export function Tasks() {
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
                   isFirstTask
-                    ? "rounded-tl-2xl"
+                    ? "rounded-t-2xl"
                     : "placeholder:text-lighterWhite dark:placeholder:text-darkBlack"
                 } ${
-                  isLastTask ? "rounded-bl-2xl" : "border-b"
+                  isLastTask ? "rounded-b-2xl" : "border-b"
                 } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
               />
               <div
