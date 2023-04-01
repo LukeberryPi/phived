@@ -143,10 +143,7 @@ export function Tasks() {
     <form
       ref={resizeRef}
       onSubmit={(e) => e.preventDefault()}
-      /* inline style required, `w-[${width}px]` doesn't work
-      +2 magically allows it to not shrink every page reload
-      do not change :) */
-      style={{ width: Number(storedWidth) + 2 + "px" }}
+      style={{ width: storedWidth + "px" }}
       className="min-w-[70%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:min-w-[20%] md:resize-x md:overflow-hidden"
     >
       <DragDropContext onDragEnd={handleDragEnd}>
