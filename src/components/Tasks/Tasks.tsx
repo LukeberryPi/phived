@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useCallback } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { useResizeDetector } from "react-resize-detector";
@@ -9,23 +9,15 @@ import { DragIcon } from "src/components/icons/DragIcon";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
-  const [storedWidth, setStoredWidth] = useLocalStorage("width", "");
-  const { width, ref: resizeRef } = useResizeDetector();
-
+  const [storedWidth, setStoredWidth] = useLocalStorage("width", "400");
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
   const tasksLength = tasks.filter((t) => t.trim() !== "").length;
 
-  useEffect(() => {
-    const resizeListener = () => {
-      setStoredWidth(String(width));
-    };
-    window.addEventListener("unload", resizeListener);
-
-    return () => {
-      window.removeEventListener("unload", resizeListener);
-    };
-  }, [setStoredWidth, width]);
+  const onResize = useCallback((width?: number) => {
+    setStoredWidth(String(width));
+  }, []);
+  const { width, ref: resizeRef } = useResizeDetector({ onResize });
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
@@ -145,11 +137,12 @@ export function Tasks() {
   return (
     <form
       ref={resizeRef}
+      onSubmit={(e) => e.preventDefault()}
       /* inline style required, `w-[${width}px]` doesn't work
       +2 magically allows it to not shrink every page reload
       do not change :) */
       style={{ width: Number(storedWidth) + 2 + "px" }}
-      className="min-w-[20%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:resize-x md:overflow-hidden"
+      className="min-w-[70%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:min-w-[20%] md:resize-x md:overflow-hidden"
     >
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="tasksList">
