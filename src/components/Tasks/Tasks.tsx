@@ -137,6 +137,7 @@ export function Tasks() {
   return (
     <form
       ref={resizeRef}
+      onSubmit={(e) => e.preventDefault()}
       /* inline style required, `w-[${width}px]` doesn't work
       +2 magically allows it to not shrink every page reload
       do not change :) */
