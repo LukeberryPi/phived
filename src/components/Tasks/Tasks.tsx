@@ -1,33 +1,23 @@
-import { useMemo, useEffect, useCallback } from "react";
+import { useMemo } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
-import { useResizeDetector } from "react-resize-detector";
-import { useLocalStorage } from "src/hooks";
 import type { DropResult } from "react-beautiful-dnd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { DragIcon } from "src/components/icons/DragIcon";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
-  const [storedWidth, setStoredWidth] = useLocalStorage("width", "400");
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
   const tasksLength = tasks.filter((t) => t.trim() !== "").length;
-
-  const onResize = useCallback((width?: number) => {
-    setStoredWidth(String(width));
-  }, []);
-  const { width, ref: resizeRef } = useResizeDetector({ onResize });
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
     changeTask(i, currentTask);
   };
-
   const handleDone = (i: number) => {
     completeTask(i);
   };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
     switch (event.key) {
       case "Enter":
@@ -45,41 +35,28 @@ export function Tasks() {
         }
     }
   };
-
   function handleDragEnd(result: DropResult) {
     const destinationIndex = result.destination?.index;
-
     if (destinationIndex || destinationIndex === 0) {
       setTasks((prev) => {
         const actualTasks = [...prev];
-
         const draggedTask = actualTasks.splice(result.source.index, 1)[0];
         actualTasks.splice(destinationIndex, 0, draggedTask);
-
         const filledTasks = actualTasks.filter((t) => t !== "");
-
         const newTasksArray = Array(5).fill("");
         newTasksArray.splice(0, filledTasks.length, ...filledTasks);
-
         return newTasksArray;
       });
     }
-
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
   }
-
   const tasksMap = tasks.map((task, idx) => {
     const isFirstTask = idx === 0;
     const isLastTask = idx === tasks.length - 1;
     const isEmptyTask = task.trim() === "";
-
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
           const isDragging = snapshot.isDragging;
-
           return (
             <div
               key={idx}
@@ -138,13 +115,10 @@ export function Tasks() {
       </Draggable>
     );
   });
-
   return (
     <form
-      ref={resizeRef}
       onSubmit={(e) => e.preventDefault()}
-      style={{ width: storedWidth + "px" }}
-      className="min-w-[70%] max-w-[80%] rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 md:min-w-[20%] md:resize-x md:overflow-hidden"
+      className="overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
     >
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="tasksList">
