@@ -113,7 +113,7 @@ export function Tasks() {
                 className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
                   isLastTask ? "rounded-br-2xl" : ""
                 } ${
-                  isEmptyTask && isDragging
+                  isEmptyTask
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
