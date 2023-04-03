@@ -83,6 +83,7 @@ export function Tasks() {
                 } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
               />
               <div
+                tabIndex={-1}
                 className={`${isLastTask ? "" : "border-b"} ${
                   isEmptyTask || tasksLength <= 1
                     ? "hidden"
@@ -91,7 +92,6 @@ export function Tasks() {
                   !isDragging && "hidden"
                 } flex items-center justify-center bg-lighterWhite pr-2 text-base text-darkerBlack placeholder:select-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
                 {...provided.dragHandleProps}
-                tabIndex={-1}
               >
                 <DragIcon />
               </div>
@@ -100,7 +100,7 @@ export function Tasks() {
                 className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
                   isLastTask ? "rounded-br-2xl" : ""
                 } ${
-                  isEmptyTask
+                  isEmptyTask && isDragging
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
-import { handleSetTheme, isThemeSetToDark } from "src/utils/helpers/theme";
+import { handleSetTheme, isThemeSetToDark } from "src/utils";
 
-export const Header = () => {
+export function Header() {
   const { clearTasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
 
@@ -45,4 +45,4 @@ export const Header = () => {
       </nav>
     </header>
   );
-};
+}

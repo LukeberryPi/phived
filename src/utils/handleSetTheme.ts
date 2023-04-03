@@ -1,7 +1,3 @@
-export function isThemeSetToDark() {
-  return localStorage.getItem("theme") === "dark";
-}
-
 export function handleSetTheme(isDarkMode: boolean) {
   if (isDarkMode) {
     document.documentElement.classList.add("dark");
