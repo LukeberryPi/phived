@@ -7,17 +7,20 @@ import { DragIcon } from "src/components/icons/DragIcon";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
+  const tasksLength = tasks.filter((t) => t.trim() !== "").length;
+
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
-  const tasksLength = tasks.filter((t) => t.trim() !== "").length;
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
     changeTask(i, currentTask);
   };
+
   const handleDone = (i: number) => {
     completeTask(i);
   };
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
     switch (event.key) {
       case "Enter":
@@ -35,20 +38,29 @@ export function Tasks() {
         }
     }
   };
+
   function handleDragEnd(result: DropResult) {
     const destinationIndex = result.destination?.index;
+
     if (destinationIndex || destinationIndex === 0) {
       setTasks((prev) => {
         const actualTasks = [...prev];
         const draggedTask = actualTasks.splice(result.source.index, 1)[0];
         actualTasks.splice(destinationIndex, 0, draggedTask);
+
         const filledTasks = actualTasks.filter((t) => t !== "");
         const newTasksArray = Array(5).fill("");
         newTasksArray.splice(0, filledTasks.length, ...filledTasks);
+
         return newTasksArray;
       });
     }
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   }
+
   const tasksMap = tasks.map((task, idx) => {
     const isFirstTask = idx === 0;
     const isLastTask = idx === tasks.length - 1;
