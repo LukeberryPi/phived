@@ -53,6 +53,7 @@ export function Tasks() {
     const isFirstTask = idx === 0;
     const isLastTask = idx === tasks.length - 1;
     const isEmptyTask = task.trim() === "";
+
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
@@ -74,7 +75,7 @@ export function Tasks() {
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
                   isFirstTask
-                    ? `rounded-t-2xl ${!isEmptyTask && "focus:rounded-tr-none lg:rounded-tr-none"} `
+                    ? `rounded-t-2xl ${!isEmptyTask && "focus:rounded-tr-none lg:rounded-tr-none"}`
                     : "placeholder:text-lighterWhite dark:placeholder:text-darkBlack"
                 } ${
                   isLastTask
@@ -115,6 +116,7 @@ export function Tasks() {
       </Draggable>
     );
   });
+
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
