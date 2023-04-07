@@ -132,7 +132,7 @@ export function Tasks() {
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className="overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+      className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
     >
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="tasksList">
