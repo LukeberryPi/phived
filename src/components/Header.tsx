@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
+import { Logo } from "src/components/Logo";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
 
 export function Header() {
-  const { clearTasks } = useTasksContext();
+  const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
+
+  const tasksMap = tasks.map((task) => (task === "" ? true : false));
+  const isDisabled = tasksMap.every((item) => item === true);
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
@@ -15,8 +19,10 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 flex h-16 w-full items-center justify-center sm:justify-end">
-      <nav className="flex h-full w-72 items-center justify-between xs:w-80 sm:w-96 sm:pr-4">
+    <header className="fixed top-0 flex h-16 w-full items-center justify-between p-10">
+      <Logo />
+
+      <nav className="flex h-full w-full items-center justify-end xs:w-80 sm:w-96 sm:pr-4">
         <button
           onClick={toggleDarkMode}
           className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lighterWhite hover:ease-in dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"
@@ -25,14 +31,17 @@ export function Header() {
         </button>
         <button
           onClick={clearTasks}
-          className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-alertRed hover:text-lighterWhite hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4"
+          className={`${
+            isDisabled ? "cursor-not-allowed" : "cursor-pointer"
+          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-alertRed hover:text-lighterWhite hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4`}
+          disabled={isDisabled}
         >
           clear tasks
         </button>
         <div className="flex justify-center">
           <button
             disabled
-            className="peer h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-berryBlue hover:ease-in dark:text-lighterWhite dark:hover:bg-purpleRain xs:text-lg sm:px-4"
+            className="peer h-10 cursor-pointer select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-berryBlue hover:ease-in dark:text-lighterWhite dark:hover:bg-purpleRain xs:text-lg sm:px-4"
           >
             help
           </button>

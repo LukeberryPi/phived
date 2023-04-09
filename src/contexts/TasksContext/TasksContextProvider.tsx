@@ -11,7 +11,7 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
     Array<string>(5).fill("")
   );
   const [tasks, setTasks] = useState(storedTasks);
-  const [incentiveMessage, setIncentiveMessage] = useState<string>("phived");
+  const [message, setMessage] = useState<string>("");
   const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);
 
   const memoizedTasks = useMemo(() => tasks, [tasks]);
@@ -21,13 +21,13 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const incentive = useMemo(() => getRandomIncentive(incentives), [tasks]);
 
-  const displayIncentiveMessage = useCallback(
-    (incentive: string) => {
-      setIncentiveMessage(incentive);
+  const displayMessage = useCallback(
+    (message: string) => {
+      setMessage(message);
       clearTimeout(timeoutId);
       const newTimeoutId = setTimeout(() => {
-        setIncentiveMessage("phived");
-      }, 2000);
+        setMessage("");
+      }, 3000);
 
       setTimeoutId(newTimeoutId);
     },
@@ -48,13 +48,14 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
     (index: number) => {
       const ongoingTasks = tasks.filter((_, idx) => idx !== index);
       setTasks([...ongoingTasks, ""]);
-      displayIncentiveMessage(incentive);
+      displayMessage(incentive);
     },
     [tasks, setTasks]
   );
 
   const clearTasks = useCallback(() => {
     setTasks(Array(5).fill(""));
+    displayMessage("tasks cleared!");
   }, [setTasks]);
 
   useEffect(() => {
@@ -69,9 +70,9 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
         completeTask,
         changeTask,
         clearTasks,
-        displayIncentiveMessage,
-        incentiveMessage,
-        setIncentiveMessage,
+        displayMessage,
+        message,
+        setMessage,
       }}
     >
       {children}
