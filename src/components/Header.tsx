@@ -19,10 +19,9 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 flex h-16 w-full items-center justify-between p-10">
+    <header className="fixed top-0 flex h-16 w-full items-center justify-center sm:justify-between sm:px-6">
       <Logo />
-
-      <nav className="flex h-full w-full items-center justify-end xs:w-80 sm:w-96 sm:pr-4">
+      <nav className="flex h-full w-72 items-center justify-between xs:w-80 sm:w-96">
         <button
           onClick={toggleDarkMode}
           className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lighterWhite hover:ease-in dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"

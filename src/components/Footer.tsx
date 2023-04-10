@@ -1,7 +1,7 @@
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:justify-start">
-      <div className="flex h-full w-72 items-center justify-between xs:w-80 sm:w-96 sm:pl-4">
+    <footer className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:justify-start sm:px-6">
+      <div className="flex h-full w-72 items-center justify-between xs:w-80 sm:w-96">
         <a
           className="flex h-10 select-none items-center rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lightWhite hover:ease-in dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"
           target="_blank"
