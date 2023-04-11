@@ -27,7 +27,7 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
       clearTimeout(timeoutId);
       const newTimeoutId = setTimeout(() => {
         setMessage("");
-      }, 3000);
+      }, 3500);
 
       setTimeoutId(newTimeoutId);
     },
@@ -50,13 +50,13 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
       setTasks([...ongoingTasks, ""]);
       displayMessage(incentive);
     },
-    [tasks, setTasks]
+    [displayMessage, incentive, tasks, setTasks]
   );
 
   const clearTasks = useCallback(() => {
     setTasks(Array(5).fill(""));
     displayMessage("tasks cleared!");
-  }, [setTasks]);
+  }, [displayMessage, setTasks]);
 
   useEffect(() => {
     setStoredTasks(tasks);

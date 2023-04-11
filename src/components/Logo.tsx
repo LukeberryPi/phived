@@ -1,17 +1,12 @@
 export function Logo() {
-  const reloadPage = () => {
-    location.reload();
-    return;
-  };
-
   return (
-    <span
-      onClick={reloadPage}
+    <a
+      href="/"
       className={
-        "hidden cursor-pointer text-3xl font-bold text-darkerBlack dark:text-lighterWhite sm:block"
+        "hidden h-full cursor-pointer items-center text-4xl font-bold text-darkerBlack dark:text-lighterWhite sm:flex"
       }
     >
       phived
-    </span>
+    </a>
   );
 }

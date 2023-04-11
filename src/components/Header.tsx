@@ -7,8 +7,7 @@ export function Header() {
   const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
 
-  const tasksMap = tasks.map((task) => (task === "" ? true : false));
-  const isDisabled = tasksMap.every((item) => item === true);
+  const noTasks = tasks.filter(Boolean).length === 0;
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
@@ -31,9 +30,11 @@ export function Header() {
         <button
           onClick={clearTasks}
           className={`${
-            isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-alertRed hover:text-lighterWhite hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4`}
-          disabled={isDisabled}
+            noTasks
+              ? "cursor-not-allowed hover:bg-dragLight hover:text-darkBlack dark:hover:bg-dragDark"
+              : "cursor-pointer hover:text-lighterWhite"
+          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-alertRed hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4`}
+          disabled={noTasks}
         >
           clear tasks
         </button>
