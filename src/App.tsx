@@ -1,5 +1,5 @@
 import { HelmetProvider } from "react-helmet-async";
-import { Footer, Header, Logo, Tasks, Head } from "src/components";
+import { Footer, Header, Message, Tasks, Head } from "src/components";
 
 export default function App() {
   return (
@@ -9,7 +9,7 @@ export default function App() {
       </HelmetProvider>
       <Header />
       <Tasks />
-      <Logo />
+      <Message />
       <Footer />
     </div>
   );
