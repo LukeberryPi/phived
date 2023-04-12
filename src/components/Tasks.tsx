@@ -85,7 +85,7 @@ export function Tasks() {
                 autoComplete="off"
                 placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
-                className={`peer w-full ${
+                className={`peer w-full ${!isEmptyTask && tasksLength > 1 && "group-hover:pr-2"} ${
                   isFirstTask
                     ? `rounded-t-2xl ${!isEmptyTask && "focus:rounded-tr-none lg:rounded-tr-none"}`
                     : "placeholder:text-lighterWhite dark:placeholder:text-darkBlack"
@@ -93,26 +93,26 @@ export function Tasks() {
                   isLastTask
                     ? `rounded-b-2xl ${!isEmptyTask && "focus:rounded-br-none lg:rounded-br-none"}`
                     : "border-b"
-                } bg-lighterWhite py-4 px-5 text-base text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
+                } bg-lighterWhite py-4 px-5 text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
               />
-              <div
+              <span
+                /* rbd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
+                https://github.com/atlassian/react-beautiful-dnd/issues/1827 */
                 tabIndex={-1}
-                className={`${isLastTask ? "" : "border-b"} ${
+                className={`${!isLastTask && "border-b"} ${
                   isEmptyTask || tasksLength <= 1
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   !isDragging && "hidden"
-                } flex items-center justify-center bg-lighterWhite pr-2 text-base text-darkerBlack placeholder:select-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
+                } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
                 {...provided.dragHandleProps}
               >
                 <DragIcon />
-              </div>
+              </span>
               <button
                 onClick={() => handleDone(idx)}
-                className={`${isFirstTask ? "rounded-tr-2xl" : ""} ${
-                  isLastTask ? "rounded-br-2xl" : ""
-                } ${
+                className={`${isFirstTask && "rounded-tr-2xl"} ${isLastTask && "rounded-br-2xl"} ${
                   isEmptyTask
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"

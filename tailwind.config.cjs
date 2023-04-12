@@ -22,8 +22,8 @@ module.exports = {
       instagramPink: "#d62976",
       instagramPurple: "#962fbf",
       instagramOrange: "#fa7e1e",
-      dragLight: "#C4C4C5",
-      dragDark: "#34343A",
+      greyLight: "#B8B9B9",
+      greyDark: "#616168",
     },
     extend: {
       boxShadow: {

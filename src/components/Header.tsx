@@ -31,9 +31,9 @@ export function Header() {
           onClick={clearTasks}
           className={`${
             noTasks
-              ? "cursor-not-allowed hover:bg-dragLight hover:text-darkBlack dark:hover:bg-dragDark"
-              : "cursor-pointer hover:text-lighterWhite"
-          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-alertRed hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4`}
+              ? "cursor-not-allowed"
+              : "cursor-pointer hover:bg-alertRed hover:text-lighterWhite"
+          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4`}
           disabled={noTasks}
         >
           clear tasks
