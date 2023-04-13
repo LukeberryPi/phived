@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import type { DropResult } from "react-beautiful-dnd";
@@ -8,6 +8,7 @@ import { DragIcon } from "src/components/icons/DragIcon";
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
   const tasksLength = tasks.filter((t) => t.trim() !== "").length;
+  const [dragging, setDragging] = useState(false);
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
@@ -59,6 +60,8 @@ export function Tasks() {
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
+
+    setDragging(false);
   }
 
   const tasksMap = tasks.map((task, idx) => {
@@ -69,11 +72,11 @@ export function Tasks() {
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
-          const isDragging = snapshot.isDragging;
+          const draggingTask = snapshot.isDragging;
           return (
             <div
               key={idx}
-              className={`group flex w-full ${isDragging && "cursor-grabbing"}`}
+              className={`group flex w-full ${draggingTask && "cursor-grabbing"}`}
               {...provided.draggableProps}
               ref={provided.innerRef}
             >
@@ -100,11 +103,11 @@ export function Tasks() {
                 https://github.com/atlassian/react-beautiful-dnd/issues/1827 */
                 tabIndex={-1}
                 className={`${!isLastTask && "border-b"} ${
-                  isEmptyTask || tasksLength <= 1
+                  isEmptyTask || tasksLength <= 1 || (!draggingTask && dragging)
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
-                  !isDragging && "hidden"
+                  !draggingTask && "hidden"
                 } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
                 {...provided.dragHandleProps}
               >
@@ -113,11 +116,11 @@ export function Tasks() {
               <button
                 onClick={() => handleDone(idx)}
                 className={`${isFirstTask && "rounded-tr-2xl"} ${isLastTask && "rounded-br-2xl"} ${
-                  isEmptyTask
+                  isEmptyTask || (!draggingTask && dragging)
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
-                  !isDragging && "hidden"
+                  !draggingTask && "hidden"
                 } w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-purpleRain dark:text-lighterWhite xs:text-lg`}
               >
                 done?
@@ -134,7 +137,7 @@ export function Tasks() {
       onSubmit={(e) => e.preventDefault()}
       className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
     >
-      <DragDropContext onDragEnd={handleDragEnd}>
+      <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
         <Droppable droppableId="tasksList">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
