@@ -1,9 +1,12 @@
 import type { PropsWithChildren } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { incentives } from "src/content";
+
 import { TasksContext } from "src/contexts/TasksContext/TasksContext";
 import type { Task } from "src/contexts/TasksContext/TasksContext.types";
+
 import { useLocalStorage } from "src/hooks/useLocalStorage";
+
+import { incentives } from "src/content";
 
 export const TasksContextProvider = ({ children }: PropsWithChildren) => {
   const [storedTasks, setStoredTasks] = useLocalStorage(

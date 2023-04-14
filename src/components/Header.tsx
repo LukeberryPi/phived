@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { useTasksContext } from "src/contexts";
+
 import { Logo } from "src/components/Logo";
+
+import { useTasksContext } from "src/contexts";
+
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
 
 export function Header() {

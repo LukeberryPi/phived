@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
-import { placeholders } from "src/content";
-import { useTasksContext } from "src/contexts";
 import type { DropResult } from "react-beautiful-dnd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import { DragIcon } from "src/components/icons/DragIcon";
+
+import { useTasksContext } from "src/contexts";
+
+import { placeholders } from "src/content";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
