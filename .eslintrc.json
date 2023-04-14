@@ -21,7 +21,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "prettier", "eslint-plugin-import-helpers"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -39,6 +39,7 @@
     "arrow-body-style": ["error", "as-needed"],
     "react/react-in-jsx-scope": "off",
     "react/self-closing-comp": ["error", { "component": true, "html": true }],
+    "@typescript-eslint/semi": ["error", "always"],
     "no-restricted-imports": [
       "error",
       {
@@ -51,7 +52,6 @@
         "prefer": "type-imports"
       }
     ],
-    "@typescript-eslint/semi": ["error", "always"],
     "@typescript-eslint/member-delimiter-style": [
       "error",
       {
@@ -64,6 +64,25 @@
           "requireLast": false
         },
         "multilineDetection": "brackets"
+      }
+    ],
+    "import-helpers/order-imports": [
+      "warn",
+      {
+          "newlinesBetween": "always",
+          "alphabetize": { "order": "asc", "ignoreCase": true },
+          "groups": [
+            "/^react/",
+            "module",
+            ["/^vite/", "/^@vite/"],
+            "/^src/components/",
+            "/^src/contexts/",
+            "/^src/hooks/",
+            "/^src/utils/",
+            "/^src/content/",
+            "/^src/",
+            ["parent", "sibling", "index"]
+          ]
       }
     ]
   }
