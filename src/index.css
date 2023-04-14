@@ -5,5 +5,6 @@
 input {
   -webkit-appearance: none;
   /* we need this to have decent input borders on iOS, ignore warning */
+  border-radius: 0;
   -webkit-border-radius: 0px;
 }
