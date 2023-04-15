@@ -46,6 +46,8 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
 
   const completeTask = useCallback(
     (index: number) => {
+      if (!tasks[index]) return;
+
       const ongoingTasks = tasks.filter((_, idx) => idx !== index);
       setTasks([...ongoingTasks, ""]);
       displayMessage(incentive);
