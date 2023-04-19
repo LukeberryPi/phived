@@ -38,7 +38,13 @@ export function Header() {
         >
           clear tasks
         </button>
-        <div className="flex justify-center">
+        <a
+          href="https://twitter.com/intent/tweet?via=phivedphived&text=happy%20bday%2C%20@sophbt_%21"
+          className="mt-2 flex h-10 select-none items-center rounded-2xl px-3 text-center text-base font-medium text-darkerBlack transition duration-100 hover:bg-twitterBlue hover:text-lightWhite hover:ease-in dark:text-lighterWhite dark:hover:bg-twitterBlue xs:mt-3 xs:text-lg sm:mt-0 sm:px-4"
+        >
+          soph day!
+        </a>
+        {/* <div className="flex justify-center">
           <button
             disabled
             className="peer h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-berryBlue hover:ease-in dark:text-lighterWhite dark:hover:bg-purpleRain xs:text-lg sm:px-4"
@@ -50,7 +56,7 @@ export function Header() {
             <br />
             soon 🚧
           </span>
-        </div>
+        </div> part of the playful birthday present, will be reset after 19/04 */}
       </nav>
     </header>
   );
