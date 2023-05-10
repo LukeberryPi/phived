@@ -3,7 +3,7 @@ import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import type { DropResult } from "react-beautiful-dnd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { DragIcon } from "src/components/icons/DragIcon";
+import { DragIcon } from "src/icons";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
