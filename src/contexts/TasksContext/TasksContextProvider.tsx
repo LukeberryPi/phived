@@ -56,7 +56,7 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
   );
 
   const clearTasks = useCallback(() => {
-    const isUserCertain = confirm("do you want to delete all your tasks?");
+    const isUserCertain = confirm("this will delete all your tasks?");
 
     if (!isUserCertain) {
       return;
