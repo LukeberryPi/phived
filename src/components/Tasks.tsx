@@ -111,7 +111,7 @@ export function Tasks() {
                 } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
                 {...provided.dragHandleProps}
               >
-                <DragIcon />
+                <DragIcon className="fill-greyLight dark:fill-greyDark" />
               </span>
               <button
                 onClick={() => handleDone(idx)}
