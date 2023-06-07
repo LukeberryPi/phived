@@ -23,7 +23,7 @@ export function Header() {
       <nav className="flex h-full w-72 items-center justify-between xs:w-80 sm:w-96">
         <button
           onClick={toggleDarkMode}
-          className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lighterWhite hover:ease-in dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"
+          className="h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lighterWhite hover:ease-in-out dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"
         >
           {isDarkMode ? "light" : "dark"} mode
         </button>
@@ -33,7 +33,7 @@ export function Header() {
             noTasks
               ? "cursor-not-allowed"
               : "cursor-pointer hover:bg-alertRed hover:text-lighterWhite"
-          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:ease-in dark:text-lightWhite xs:text-lg sm:px-4`}
+          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:ease-in-out dark:text-lightWhite xs:text-lg sm:px-4`}
           disabled={noTasks}
         >
           clear tasks
@@ -41,7 +41,7 @@ export function Header() {
         <div className="flex justify-center">
           <button
             disabled
-            className="peer h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-berryBlue hover:ease-in dark:text-lighterWhite dark:hover:bg-purpleRain xs:text-lg sm:px-4"
+            className="peer h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-berryBlue hover:ease-in-out dark:text-lighterWhite dark:hover:bg-purpleRain xs:text-lg sm:px-4"
           >
             help
           </button>
