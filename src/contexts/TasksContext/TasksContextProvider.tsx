@@ -27,7 +27,7 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
       clearTimeout(timeoutId);
       const newTimeoutId = setTimeout(() => {
         setMessage("");
-      }, 3500);
+      }, 4000);
 
       setTimeoutId(newTimeoutId);
     },

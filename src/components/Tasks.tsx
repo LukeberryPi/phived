@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
-import type { DropResult } from "react-beautiful-dnd";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
 import { DragIcon } from "src/icons";
 
 export function Tasks() {
@@ -133,20 +132,26 @@ export function Tasks() {
   });
 
   return (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
-    >
-      <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
-        <Droppable droppableId="tasksList">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {tasksMap}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </form>
+    <div className="flex flex-col items-center gap-6">
+      <p className="text-2xl">
+        what do you want to get{" "}
+        <span className="inset-2 inline-block skew-y-3 bg-berryBlue p-1">
+          <span className="block -skew-y-3 font-semibold">done</span>
+        </span>{" "}
+        today?
+      </p>
+      <section className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+        <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
+          <Droppable droppableId="tasksList">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {tasksMap}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </section>
+    </div>
   );
 }
