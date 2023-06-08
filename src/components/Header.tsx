@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 import { Logo } from "src/components/Logo";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
-import { DarkModeIcon, LightModeIcon } from "src/icons";
+import { ClearTasksIcon, DarkModeIcon, HelpIcon, LightModeIcon } from "src/icons";
 
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
@@ -22,39 +22,38 @@ export function Header() {
     <header className="fixed top-0 flex h-16 w-full items-center justify-center sm:justify-between sm:px-6">
       <Logo />
       <nav className="flex h-full w-72 items-center justify-between xs:w-80 sm:w-96">
-        <div className="group flex select-none items-center gap-2 rounded-2xl py-2 px-3 transition duration-100 hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite sm:px-4">
-          {isDarkMode ? <LightModeIcon className="" /> : <DarkModeIcon />}
-          <button
-            onClick={toggleDarkMode}
-            className="xs:text-lgtext-darkerBlack text-base font-medium hover:text-lighterWhite dark:text-lighterWhite dark:hover:text-darkBlack"
-          >
+        <button
+          onClick={toggleDarkMode}
+          className="group flex cursor-pointer select-none items-center gap-2 rounded-2xl px-3 py-2 transition duration-100 hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"
+        >
+          {isDarkMode ? (
+            <LightModeIcon className="fill-lightWhite group-hover:fill-darkBlack" />
+          ) : (
+            <DarkModeIcon className="fill-lightBlack group-hover:fill-lightWhite" />
+          )}
+          <p className="text-base font-medium text-darkerBlack group-hover:text-lighterWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
             {isDarkMode ? "light" : "dark"} mode
-          </button>
-        </div>
+          </p>
+        </button>
         <button
           onClick={clearTasks}
           className={`${
             noTasks
-              ? "cursor-not-allowed"
+              ? "cursor-not-allowed hover:bg-lightWhite/5 dark:hover:hover:bg-darkBlack/5"
               : "cursor-pointer hover:bg-alertRed hover:text-lighterWhite"
-          }  h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:ease-in-out dark:text-lightWhite xs:text-lg sm:px-4`}
+          } group flex select-none items-center gap-2 rounded-2xl px-3 py-2 text-base font-medium text-darkerBlack transition duration-100 hover:ease-in-out dark:text-lightWhite xs:text-lg sm:px-4`}
           disabled={noTasks}
         >
-          clear tasks
+          <ClearTasksIcon
+            className={`fill-darkBlack dark:fill-lightWhite ${
+              noTasks ? "dark:group-hover:fill-lightWhite" : "group-hover:fill-lightWhite"
+            } `}
+          />
+          <p>clear tasks</p>
         </button>
-        <div className="flex justify-center">
-          <button
-            disabled
-            className="peer h-10 select-none rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-berryBlue hover:ease-in-out dark:text-lighterWhite dark:hover:bg-purpleRain xs:text-lg sm:px-4"
-          >
-            help
-          </button>
-          <span className="absolute top-14 hidden translate-x-1 text-sm peer-hover:block dark:text-lightWhite">
-            coming
-            <br />
-            soon 🚧
-          </span>
-        </div>
+        <button className="select-none rounded-full px-3 py-2 hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain">
+          <HelpIcon className="fill-darkBlack transition duration-100 dark:fill-lightWhite" />
+        </button>
       </nav>
     </header>
   );

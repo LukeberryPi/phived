@@ -86,7 +86,7 @@ export function Tasks() {
                 onChange={(event) => handleChange(event, idx)}
                 autoFocus={isFirstTask}
                 autoComplete="off"
-                placeholder={`${isFirstTask ? placeholder : `task-${idx + 1}`}`}
+                placeholder={`${isFirstTask ? `${placeholder}?` : `task-${idx + 1}`}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${!isEmptyTask && tasksLength > 1 && "group-hover:pr-2"} ${
                   isFirstTask
