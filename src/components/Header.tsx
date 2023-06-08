@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTasksContext } from "src/contexts";
-import { Logo } from "src/components/Logo";
+import { Logo, HelpMenu } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
 import { ClearTasksIcon, DarkModeIcon, HelpIcon, LightModeIcon } from "src/icons";
 
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
-  const [isHelpMenuOpen, setIsHelpMenuOpen] = useState(false);
+  const [showHelpMenu, setShowHelpMenu] = useState(false);
+
+  const modalRef = useRef(null);
 
   const noTasks = tasks.filter(Boolean).length === 0;
 
@@ -20,7 +22,7 @@ export function Header() {
   };
 
   const toggleHelpMenu = () => {
-    setIsHelpMenuOpen((currentMenuState) => !currentMenuState);
+    setShowHelpMenu((currentMenuState) => !currentMenuState);
   };
 
   return (
@@ -63,13 +65,16 @@ export function Header() {
           />
           <p className="text-base font-medium dark:text-lightWhite xs:text-lg">clear tasks</p>
         </button>
-        <button
-          onClick={toggleHelpMenu}
-          className="group flex select-none items-center gap-3 rounded-full px-3 py-2 hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain"
-        >
-          <HelpIcon className="fill-darkBlack transition duration-100 dark:fill-lightWhite" />
-          <p className="text-base font-medium dark:text-lightWhite xs:text-lg">help</p>
-        </button>
+        <div className="flex flex-col items-center">
+          <button
+            onClick={toggleHelpMenu}
+            className="group flex select-none items-center gap-3 rounded-2xl px-3 py-2 hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain"
+          >
+            <HelpIcon className="fill-darkBlack transition duration-100 dark:fill-lightWhite" />
+            <p className="text-base font-medium dark:text-lightWhite xs:text-lg">help</p>
+          </button>
+          {showHelpMenu && <HelpMenu ref={modalRef} />}
+        </div>
       </nav>
     </header>
   );

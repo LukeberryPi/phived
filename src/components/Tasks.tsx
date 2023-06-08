@@ -100,7 +100,7 @@ export function Tasks() {
                 } bg-lighterWhite py-4 px-5 text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
               />
               <span
-                /* rbd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
+                /* rbdnd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
                 https://github.com/atlassian/react-beautiful-dnd/issues/1827 */
                 tabIndex={-1}
                 className={`${!isLastTask && "border-b"} ${
@@ -135,16 +135,12 @@ export function Tasks() {
 
   return (
     <main className="flex flex-col items-center gap-6">
-      <p
-        className={`${
-          !noTasks && "select-none text-opacity-0 dark:text-opacity-0"
-        } text-2xl text-darkBlack dark:text-lightWhite`}
-      >
+      <p className={`${!noTasks && "invisible"} text-2xl text-darkBlack dark:text-lightWhite`}>
         what do you want to get{" "}
         <span
-          className={`${
+          className={`inset-0 inline-block skew-y-3 bg-berryBlue p-1 dark:bg-purpleRain ${
             !noTasks && "bg-lightWhite dark:bg-darkBlack"
-          } inset-0 inline-block skew-y-3 bg-berryBlue p-1 dark:bg-purpleRain`}
+          } `}
         >
           <span className="block -skew-y-3 font-semibold">done</span>
         </span>
