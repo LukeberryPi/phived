@@ -9,6 +9,8 @@ export function Tasks() {
   const tasksLength = tasks.filter((t) => t.trim() !== "").length;
   const [dragging, setDragging] = useState(false);
 
+  const noTasks = tasks.filter(Boolean).length === 0;
+
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
@@ -132,13 +134,21 @@ export function Tasks() {
   });
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <p className="text-2xl">
+    <main className="flex flex-col items-center gap-6">
+      <p
+        className={`${
+          !noTasks && "select-none text-opacity-0 dark:text-opacity-0"
+        } text-2xl text-darkBlack dark:text-lightWhite`}
+      >
         what do you want to get{" "}
-        <span className="inset-2 inline-block skew-y-3 bg-berryBlue p-1">
+        <span
+          className={`${
+            !noTasks && "bg-lightWhite dark:bg-darkBlack"
+          } inset-0 inline-block skew-y-3 bg-berryBlue p-1 dark:bg-purpleRain`}
+        >
           <span className="block -skew-y-3 font-semibold">done</span>
-        </span>{" "}
-        today?
+        </span>
+        ?
       </p>
       <section className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
@@ -152,6 +162,6 @@ export function Tasks() {
           </Droppable>
         </DragDropContext>
       </section>
-    </div>
+    </main>
   );
 }

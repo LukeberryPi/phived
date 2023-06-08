@@ -41,7 +41,7 @@ export function Header() {
           ) : (
             <>
               <DarkModeIcon className="fill-lightBlack group-hover:fill-lightWhite" />
-              <p className="text-base font-medium text-darkerBlack group-hover:text-lighterWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
+              <p className="text-base font-medium text-darkBlack group-hover:text-lightWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
                 dark mode
               </p>
             </>
@@ -53,7 +53,7 @@ export function Header() {
             noTasks
               ? "cursor-not-allowed hover:bg-greyLight/60 focus:translate-x-2 focus:outline-none dark:hover:bg-greyDark/40"
               : "cursor-pointer hover:bg-alertRed hover:text-lighterWhite"
-          } group flex select-none items-center gap-3 rounded-2xl px-3 py-2 text-base font-medium text-darkerBlack transition duration-100 hover:ease-in-out dark:text-lightWhite xs:text-lg sm:px-4`}
+          } group flex select-none items-center gap-3 rounded-2xl px-3 py-2 transition duration-100 hover:ease-in-out sm:px-4`}
           disabled={noTasks}
         >
           <ClearTasksIcon
@@ -61,13 +61,14 @@ export function Header() {
               noTasks ? "dark:group-hover:fill-lightWhite" : "group-hover:fill-lightWhite"
             } `}
           />
-          <p>clear tasks</p>
+          <p className="text-base font-medium dark:text-lightWhite xs:text-lg">clear tasks</p>
         </button>
         <button
           onClick={toggleHelpMenu}
-          className="select-none rounded-full px-3 py-2 hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain"
+          className="group flex select-none items-center gap-3 rounded-full px-3 py-2 hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain"
         >
           <HelpIcon className="fill-darkBlack transition duration-100 dark:fill-lightWhite" />
+          <p className="text-base font-medium dark:text-lightWhite xs:text-lg">help</p>
         </button>
       </nav>
     </header>
