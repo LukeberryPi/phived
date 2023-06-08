@@ -6,3 +6,4 @@ export { HelpIcon } from "src/icons/HelpIcon";
 export { InstagramIcon } from "src/icons/InstagramIcon";
 export { GithubIcon } from "src/icons/GithubIcon";
 export { TwitterIcon } from "src/icons/TwitterIcon";
+export { CloseIcon } from "src/icons/CloseIcon";

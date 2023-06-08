@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 import { Logo, HelpMenu } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
@@ -8,8 +8,6 @@ export function Header() {
   const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useState(false);
-
-  const modalRef = useRef(null);
 
   const noTasks = tasks.filter(Boolean).length === 0;
 
@@ -73,7 +71,7 @@ export function Header() {
             <HelpIcon className="fill-darkBlack transition duration-100 dark:fill-lightWhite" />
             <p className="text-base font-medium dark:text-lightWhite xs:text-lg">help</p>
           </button>
-          {showHelpMenu && <HelpMenu ref={modalRef} />}
+          {showHelpMenu && <HelpMenu />}
         </div>
       </nav>
     </header>
