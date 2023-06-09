@@ -13,18 +13,17 @@ export function HelpMenu() {
         want to add more tasks? <strong>complete existing ones</strong>.
       </p>
       <br />
-
       <p className="text-darkBlack dark:text-lightWhite">
         reorder tasks by <strong>clicking and dragging</strong> the icon besides the done button.
       </p>
       <br />
-
       <p className="text-darkBlack dark:text-lightWhite">
         <strong>wanna know more?</strong> access{" "}
         <a
           rel="noreferrer"
           target="_blank"
-          className="cursor-pointer underline decoration-berryBlue underline-offset-2 dark:decoration-purpleRain"
+          href="https://twitter.com/phivedphived/status/1636734098252128257?s=20"
+          className="cursor-pointer underline decoration-darkBlack decoration-1 underline-offset-2 dark:decoration-lightWhite"
         >
           this post{" "}
         </a>
@@ -32,7 +31,8 @@ export function HelpMenu() {
         <a
           rel="noreferrer"
           target="_blank"
-          className="cursor-pointer underline decoration-berryBlue underline-offset-2 dark:decoration-purpleRain"
+          href="https://twitter.com/LukeberryPi"
+          className="cursor-pointer underline decoration-darkBlack decoration-1 underline-offset-2 dark:decoration-lightWhite"
         >
           DM me
         </a>
@@ -68,7 +68,7 @@ export function HelpMenu() {
             enter
           </kbd>{" "}
           will complete the current task, or just click{" "}
-          <span className="rounded border border-darkBlack bg-berryBlue py-1 px-2 dark:border-lightWhite dark:bg-purpleRain">
+          <span className="rounded-r-md border border-darkBlack bg-berryBlue py-1 px-2 dark:border-lightWhite dark:bg-purpleRain">
             done?
           </span>
         </p>

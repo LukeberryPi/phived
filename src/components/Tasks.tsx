@@ -134,15 +134,19 @@ export function Tasks() {
   });
 
   return (
-    <main className="flex flex-col items-center gap-6">
-      <p className={`${!noTasks && "invisible"} text-2xl text-darkBlack dark:text-lightWhite`}>
-        what do you want to get{" "}
+    <main className="flex flex-col items-center gap-4">
+      <p
+        className={`${
+          !noTasks && "invisible"
+        } text-lg text-darkBlack dark:text-lightWhite xs:text-xl sm:text-2xl`}
+      >
+        what do you want to{" "}
         <span
           className={`inset-0 inline-block skew-y-3 bg-berryBlue p-1 dark:bg-purpleRain ${
             !noTasks && "bg-lightWhite dark:bg-darkBlack"
           } `}
         >
-          <span className="block -skew-y-3 font-semibold">done</span>
+          <span className="block -skew-y-3 font-semibold">do</span>
         </span>
         ?
       </p>

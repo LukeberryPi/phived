@@ -2,7 +2,7 @@ import { GithubIcon, InstagramIcon, TwitterIcon } from "src/icons";
 
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:justify-start sm:px-6">
+    <footer className="fixed bottom-0 hidden h-16 w-full items-center justify-center sm:flex sm:justify-start sm:px-6">
       <div className="flex h-full items-center justify-between space-x-8">
         <a
           className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"

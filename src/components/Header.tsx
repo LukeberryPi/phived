@@ -7,7 +7,7 @@ import { ClearTasksIcon, DarkModeIcon, ArrowUpIcon, ArrowDownIcon, LightModeIcon
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
-  const [showHelpMenu, setShowHelpMenu] = useState(true);
+  const [showHelpMenu, setShowHelpMenu] = useState(false);
 
   const noTasks = tasks.filter(Boolean).length === 0;
 
@@ -24,9 +24,9 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 flex h-16 w-full items-center justify-center sm:justify-between sm:px-6">
+    <header className="fixed bottom-12 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <Logo />
-      <nav className="flex h-full items-center justify-between space-x-6">
+      <nav className="flex h-full items-center justify-between space-x-2 xs:space-x-10 sm:space-x-6">
         <button
           onClick={toggleDarkMode}
           className="group flex cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"
@@ -65,12 +65,12 @@ export function Header() {
         </button>
         <button
           onClick={toggleHelpMenu}
-          className="group flex cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain"
+          className="group hidden cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain lg:flex"
         >
           {showHelpMenu ? (
-            <ArrowUpIcon className="fill-darkBlack transition-all dark:fill-lightWhite" />
+            <ArrowUpIcon className="fill-darkBlack dark:fill-lightWhite" />
           ) : (
-            <ArrowDownIcon className="fill-darkBlack transition-all dark:fill-lightWhite" />
+            <ArrowDownIcon className="fill-darkBlack dark:fill-lightWhite" />
           )}
           <p className="text-base font-medium dark:text-lightWhite xs:text-lg">help</p>
         </button>

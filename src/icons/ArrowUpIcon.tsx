@@ -1,6 +1,6 @@
 import { type DefaultIconProps } from "src/utils/defaultIconProps";
 
-export function ArrowUpIcon({ className, squareWidthAndHeight = 30 }: DefaultIconProps) {
+export function ArrowUpIcon({ className, squareWidthAndHeight = 28 }: DefaultIconProps) {
   return (
     <svg
       className={className}
