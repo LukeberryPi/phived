@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:justify-start sm:px-6">
       <div className="flex h-full items-center justify-between space-x-8">
         <a
-          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition duration-100 hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite sm:px-4"
+          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"
           target="_blank"
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
@@ -16,7 +16,7 @@ export function Footer() {
           </p>
         </a>
         <a
-          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition duration-100 hover:bg-twitterBlue hover:ease-in-out sm:px-4"
+          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-twitterBlue hover:ease-in-out"
           target="_blank"
           href="https://twitter.com/phivedphived"
           rel="noreferrer"
@@ -27,7 +27,7 @@ export function Footer() {
           </p>
         </a>
         <a
-          className="group flex select-none items-center gap-3 rounded-2xl from-instagramPink via-instagramOrange to-instagramPurple py-2 px-3 transition duration-100 hover:bg-gradient-to-r hover:ease-in-out sm:px-4"
+          className="group flex select-none items-center gap-3 rounded-2xl from-instagramPink via-instagramOrange to-instagramPurple py-2 px-3 transition-all hover:bg-gradient-to-r hover:ease-in-out"
           target="_blank"
           href="https://www.instagram.com/phivedphived/"
           rel="noreferrer"
