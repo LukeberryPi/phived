@@ -1,6 +1,6 @@
 import { type DefaultIconProps } from "src/utils/defaultIconProps";
 
-export function ClearTasksIcon({ className, squareWidthAndHeight = 26 }: DefaultIconProps) {
+export function ClearTasksIcon({ className, squareWidthAndHeight = 28 }: DefaultIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

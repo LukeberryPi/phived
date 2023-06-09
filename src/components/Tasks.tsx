@@ -142,13 +142,12 @@ export function Tasks() {
       >
         what do you want to{" "}
         <span
-          className={`inset-0 inline-block skew-y-3 bg-berryBlue p-1 dark:bg-purpleRain ${
+          className={`inset-0 inline-block skew-y-3 rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain ${
             !noTasks && "bg-lightWhite dark:bg-darkBlack"
           } `}
         >
-          <span className="block -skew-y-3 font-semibold">do</span>
+          <span className="block -skew-y-3 font-semibold">do?</span>
         </span>
-        ?
       </p>
       <section className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
