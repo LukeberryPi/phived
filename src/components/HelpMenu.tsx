@@ -1,4 +1,4 @@
-import { CloseIcon } from "src/icons";
+// import { CloseIcon } from "src/icons";
 
 export function HelpMenu() {
   return (
