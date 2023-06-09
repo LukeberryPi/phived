@@ -22,8 +22,6 @@ module.exports = {
       instagramPink: "#d62976",
       instagramPurple: "#962fbf",
       instagramOrange: "#fa7e1e",
-      greyLight: "#b8b9b9",
-      greyDark: "#616168",
       unavailableLight: "#d9d9de",
       unavailableDark: "#202028",
     },
