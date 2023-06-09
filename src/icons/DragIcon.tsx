@@ -1,13 +1,14 @@
-import { type classNameProp } from "src/utils/classNameProp";
+import { type DefaultIconProps } from "src/utils/defaultIconProps";
 
-export function DragIcon({ className }: classNameProp) {
+export function DragIcon({ className, squareWidthAndHeight = 26 }: DefaultIconProps) {
   return (
-    <svg width="24" height="24" viewBox="0 0 512 512" className="hover:cursor-grab">
-      <g
-        transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-        className={className}
-        stroke="none"
-      >
+    <svg
+      width={squareWidthAndHeight}
+      height={squareWidthAndHeight}
+      viewBox="0 0 512 512"
+      className={className}
+    >
+      <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
         <path
           d="M1573 4672 c-164 -59 -276 -202 -290 -373 -21 -254 202 -477 456
 -456 132 11 253 82 322 190 55 85 72 150 67 256 -7 159 -92 287 -236 358 -68
