@@ -10,7 +10,6 @@ export function Header() {
   const [showHelpMenu, setShowHelpMenu] = useState(false);
 
   const noTasks = tasks.filter(Boolean).length === 0;
-  const date = new Date();
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
