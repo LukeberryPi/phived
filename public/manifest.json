@@ -6,7 +6,7 @@
   "scope": "/",
   "start_url": "/",
   "short_name": "phived",
-  "description": "phived is a dead-simple, zero-distractions to-do list",
+  "description": "phived is a dead-simple, no-distractions to-do list",
   "icons": [
     {
       "src": "/icon-192x192.png",
