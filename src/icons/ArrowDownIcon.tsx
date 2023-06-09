@@ -8,6 +8,7 @@ export function ArrowDownIcon({ className, squareWidthAndHeight = 30 }: DefaultI
       width={squareWidthAndHeight}
       height={squareWidthAndHeight}
       viewBox="0 0 24 24"
+      // viewBox="8 8 16 8"
     >
       <path className={className} d="M16.59 8.59L12 13.17L7.41 8.59L6 10l6 6l6-6z" />
     </svg>

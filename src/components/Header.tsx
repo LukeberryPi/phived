@@ -51,7 +51,7 @@ export function Header() {
           onClick={clearTasks}
           className={`${
             noTasks
-              ? "cursor-not-allowed hover:bg-greyLight/60 focus:outline-none dark:hover:bg-greyDark/40"
+              ? "cursor-not-allowed hover:bg-unavailableLight dark:hover:bg-unavailableDark"
               : "cursor-pointer hover:bg-alertRed hover:text-lighterWhite"
           } group flex select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:ease-in-out`}
           disabled={noTasks}

@@ -2,7 +2,7 @@ import { CloseIcon } from "src/icons";
 
 export function HelpMenu() {
   return (
-    <div className="absolute right-5 top-full max-w-xs rounded-2xl border border-darkBlack bg-lightWhite py-4 px-5 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light">
+    <div className="absolute right-7 top-full max-w-xs rounded-2xl border border-darkBlack bg-lightWhite py-4 px-5 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light">
       {/* <CloseIcon className="absolute top-0 right-0 m-2 cursor-pointer fill-darkBlack dark:fill-lightWhite" /> */}
       <p className="text-darkBlack dark:text-lightWhite">
         welcome to the <strong>anti-procrastination to-do list</strong>!
@@ -36,6 +36,7 @@ export function HelpMenu() {
         >
           DM me
         </a>
+        .
       </p>
       <br />
       <hr className="mb-7 h-px w-full border-darkBlack dark:border-lightWhite" />
@@ -67,7 +68,7 @@ export function HelpMenu() {
             enter
           </kbd>{" "}
           will complete the current task, or just click{" "}
-          <span className="rounded border border-darkBlack bg-berryBlue py-1 px-3 dark:border-lightWhite dark:bg-purpleRain">
+          <span className="rounded border border-darkBlack bg-berryBlue py-1 px-2 dark:border-lightWhite dark:bg-purpleRain">
             done?
           </span>
         </p>

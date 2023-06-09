@@ -24,6 +24,8 @@ module.exports = {
       instagramOrange: "#fa7e1e",
       greyLight: "#B8B9B9",
       greyDark: "#616168",
+      unavailableLight: "#e2e2e4",
+      unavailableDark: "#181824",
     },
     extend: {
       boxShadow: {
