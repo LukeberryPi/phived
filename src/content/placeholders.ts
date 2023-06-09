@@ -16,7 +16,7 @@ export const placeholders: string[] = [
   "crack adobe photoshop",
   "create a spotify playlist",
   "delete tiktok",
-  "do math homework",
+  "math homework",
   "donate to adblock",
   "drink 2L water",
   "eat some pizza",
