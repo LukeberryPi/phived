@@ -1,14 +1,15 @@
 import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
-import type { DropResult } from "react-beautiful-dnd";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
 import { DragIcon } from "src/icons";
 
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
   const tasksLength = tasks.filter((t) => t.trim() !== "").length;
   const [dragging, setDragging] = useState(false);
+
+  const noTasks = tasks.filter(Boolean).length === 0;
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
@@ -99,7 +100,7 @@ export function Tasks() {
                 } bg-lighterWhite py-4 px-5 text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
               />
               <span
-                /* rbd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
+                /* rbdnd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
                 https://github.com/atlassian/react-beautiful-dnd/issues/1827 */
                 tabIndex={-1}
                 className={`${!isLastTask && "border-b"} ${
@@ -133,20 +134,33 @@ export function Tasks() {
   });
 
   return (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
-    >
-      <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
-        <Droppable droppableId="tasksList">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {tasksMap}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </form>
+    <main className="flex flex-col items-center gap-4">
+      <p
+        className={`${
+          !noTasks && "invisible"
+        } text-lg text-darkBlack dark:text-lightWhite xs:text-xl sm:text-2xl`}
+      >
+        what do you want to{" "}
+        <span
+          className={`inset-0 inline-block skew-y-3 rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain ${
+            !noTasks && "bg-lightWhite dark:bg-darkBlack"
+          } `}
+        >
+          <span className="block -skew-y-3 font-semibold">do?</span>
+        </span>
+      </p>
+      <section className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+        <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
+          <Droppable droppableId="tasksList">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {tasksMap}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </section>
+    </main>
   );
 }

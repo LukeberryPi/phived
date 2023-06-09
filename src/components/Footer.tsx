@@ -1,30 +1,41 @@
+import { GithubIcon, InstagramIcon, TwitterIcon } from "src/icons";
+
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:justify-start sm:px-6">
-      <div className="flex h-full w-72 items-center justify-between xs:w-80 sm:w-96">
+    <footer className="fixed bottom-0 hidden h-16 w-full items-center justify-center sm:flex sm:justify-start sm:px-6">
+      <div className="flex h-full items-center justify-between space-x-8">
         <a
-          className="flex h-10 select-none items-center rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-darkBlack hover:text-lightWhite hover:ease-in-out dark:text-lighterWhite dark:hover:bg-lightWhite dark:hover:text-darkBlack xs:text-lg sm:px-4"
+          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"
           target="_blank"
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
         >
-          github
+          <GithubIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite dark:group-hover:fill-darkBlack" />
+          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
+            github
+          </p>
         </a>
         <a
-          className="flex h-10 select-none items-center rounded-2xl px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-twitterBlue hover:text-lightWhite hover:ease-in-out dark:text-lighterWhite xs:text-lg sm:px-4"
+          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-twitterBlue hover:ease-in-out"
           target="_blank"
           href="https://twitter.com/phivedphived"
           rel="noreferrer"
         >
-          twitter
+          <TwitterIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
+          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite xs:text-lg">
+            twitter
+          </p>
         </a>
         <a
-          className="flex h-10 select-none items-center rounded-2xl from-instagramPink via-instagramOrange to-instagramPurple px-3 text-base font-medium text-darkerBlack transition duration-100 hover:bg-gradient-to-r hover:text-lightWhite hover:ease-in-out dark:text-lighterWhite xs:text-lg sm:px-4"
+          className="group flex select-none items-center gap-3 rounded-2xl from-instagramPink via-instagramOrange to-instagramPurple py-2 px-3 transition-all hover:bg-gradient-to-r hover:ease-in-out"
           target="_blank"
           href="https://www.instagram.com/phivedphived/"
           rel="noreferrer"
         >
-          instagram
+          <InstagramIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
+          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite xs:text-lg">
+            instagram
+          </p>
         </a>
       </div>
     </footer>
