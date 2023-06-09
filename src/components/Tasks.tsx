@@ -121,7 +121,7 @@ export function Tasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   !draggingTask && "hidden"
-                } w-36 cursor-pointer items-center justify-center border-l border-b bg-berryBlue text-base dark:bg-purpleRain dark:text-lighterWhite xs:text-lg`}
+                } cursor-pointer items-center justify-center border-l border-b bg-berryBlue px-4 text-base dark:bg-purpleRain dark:text-lighterWhite xs:px-6 xs:text-lg`}
               >
                 done?
               </button>
