@@ -25,7 +25,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed bottom-12 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
+    <header className="fixed bottom-4 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <Logo />
       <nav className="flex h-full items-center justify-between space-x-2 xs:space-x-10 sm:space-x-6">
         <button

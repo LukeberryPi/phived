@@ -1,9 +1,6 @@
-// import { CloseIcon } from "src/icons";
-
 export function HelpMenu() {
   return (
-    <div className="absolute right-7 top-full max-w-xs rounded-2xl border border-darkBlack bg-lightWhite py-4 px-5 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light">
-      {/* <CloseIcon className="absolute top-0 right-0 m-2 cursor-pointer fill-darkBlack dark:fill-lightWhite" /> */}
+    <div className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-darkBlack bg-lightWhite px-5 pt-5 pb-3 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light lg:flex">
       <p className="text-darkBlack dark:text-lightWhite">
         welcome to the <strong>anti-procrastination to-do list</strong>!
       </p>
@@ -23,7 +20,7 @@ export function HelpMenu() {
           rel="noreferrer"
           target="_blank"
           href="https://twitter.com/phivedphived/status/1636734098252128257?s=20"
-          className="cursor-pointer underline decoration-darkBlack decoration-1 underline-offset-2 dark:decoration-lightWhite"
+          className="cursor-pointer underline decoration-darkBlack underline-offset-2 dark:decoration-lightWhite"
         >
           this post{" "}
         </a>
@@ -32,7 +29,7 @@ export function HelpMenu() {
           rel="noreferrer"
           target="_blank"
           href="https://twitter.com/LukeberryPi"
-          className="cursor-pointer underline decoration-darkBlack decoration-1 underline-offset-2 dark:decoration-lightWhite"
+          className="cursor-pointer underline decoration-darkBlack underline-offset-2 dark:decoration-lightWhite"
         >
           DM me
         </a>
@@ -56,10 +53,10 @@ export function HelpMenu() {
           <kbd className="rounded border border-darkBlack px-2 py-1 font-sans dark:border-lightWhite">
             enter
           </kbd>{" "}
-          to the previous one,
+          navigates to the previous task,
         </p>
         <br />
-        <p className="leading-7 text-darkBlack dark:text-lightWhite">
+        <p className="-translate-y-3 leading-7 text-darkBlack dark:text-lightWhite">
           <kbd className="rounded border border-darkBlack px-2 py-1 font-sans dark:border-lightWhite">
             ctrl
           </kbd>{" "}
