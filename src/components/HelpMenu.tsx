@@ -11,10 +11,6 @@ export function HelpMenu() {
       </p>
       <br />
       <p className="text-darkBlack dark:text-lightWhite">
-        reorder tasks by <strong>clicking and dragging</strong> the icon besides the done button.
-      </p>
-      <br />
-      <p className="text-darkBlack dark:text-lightWhite">
         <strong>wanna know more?</strong> access{" "}
         <a
           rel="noreferrer"
@@ -31,7 +27,7 @@ export function HelpMenu() {
           href="https://twitter.com/LukeberryPi"
           className="cursor-pointer underline decoration-darkBlack underline-offset-2 dark:decoration-lightWhite"
         >
-          DM me
+          send me a message
         </a>
         .
       </p>
