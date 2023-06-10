@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 import { Logo, HelpMenu } from "src/components";
-import { handleSetTheme, isThemeSetToDark } from "src/utils";
-import { ClearTasksIcon, DarkModeIcon, ArrowUpIcon, ArrowDownIcon, LightModeIcon } from "src/icons";
+import { handleSetTheme, isThemeSetToDark, takeScreenshot } from "src/utils";
+import {
+  ClearTasksIcon,
+  DarkModeIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  LightModeIcon,
+  ScreenshotIcon,
+} from "src/icons";
 
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
@@ -23,10 +30,25 @@ export function Header() {
     setShowHelpMenu((currentMenuState) => !currentMenuState);
   };
 
+  const handleTakeScreenshot = async () => {
+    const element = document.getElementById("tasks-list");
+    if (!element) return;
+    takeScreenshot(element);
+  };
+
   return (
     <header className="fixed bottom-4 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <Logo />
       <nav className="flex h-full items-center justify-between space-x-2 xs:space-x-10 sm:space-x-6">
+        <button
+          onClick={handleTakeScreenshot}
+          className="group hidden cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-twitterBlue hover:ease-in-out dark:hover:bg-twitterBlue lg:flex"
+        >
+          <ScreenshotIcon className="fill-darkBlack dark:fill-lightWhite" />
+          <p className="text-base font-medium text-darkBlack group-hover:text-darkBlack dark:text-lightWhite dark:group-hover:text-lightWhite xs:text-lg">
+            screenshot
+          </p>
+        </button>
         <button
           onClick={toggleDarkMode}
           className="group flex cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"

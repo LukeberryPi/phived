@@ -89,7 +89,7 @@ export function Tasks() {
                 onChange={(event) => handleChange(event, idx)}
                 autoFocus={isFirstTask}
                 autoComplete="off"
-                placeholder={`${isFirstTask ? `${placeholder}?` : `task-${idx + 1}`}`}
+                placeholder={`${isFirstTask ? `${placeholder}?` : ""}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${!isEmptyTask && tasksLength > 1 && "group-hover:pr-2"} ${
                   isFirstTask
@@ -151,7 +151,10 @@ export function Tasks() {
           <span className="block -skew-y-3 font-semibold">do?</span>
         </span>
       </p>
-      <section className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+      <section
+        className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+        id="tasks-list"
+      >
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
           <Droppable droppableId="tasksList">
             {(provided) => (
