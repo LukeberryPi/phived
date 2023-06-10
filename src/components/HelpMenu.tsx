@@ -17,10 +17,10 @@ export function HelpMenu() {
         </a>
         or{" "}
         <a
-          rel="noreferrer"
           target="_blank"
           href="https://twitter.com/LukeberryPi"
           className="cursor-pointer underline decoration-darkBlack underline-offset-2 dark:decoration-lightWhite"
+          rel="noreferrer"
         >
           send me a message
         </a>
