@@ -9,3 +9,4 @@ export { GithubIcon } from "src/icons/GithubIcon";
 export { TwitterIcon } from "src/icons/TwitterIcon";
 export { DownloadPromptIcon } from "src/icons/DownloadPromptIcon";
 export { OpenNewIcon } from "src/icons/OpenNewIcon";
+export { ScreenshotIcon } from "src/icons/ScreenshotIcon";
