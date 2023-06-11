@@ -43,7 +43,7 @@ export function Tasks() {
     }
   };
 
-  function handleDragEnd(result: DropResult) {
+  const handleDragEnd = (result: DropResult) => {
     const destinationIndex = result.destination?.index;
 
     if (destinationIndex || destinationIndex === 0) {
@@ -65,7 +65,7 @@ export function Tasks() {
     }
 
     setDragging(false);
-  }
+  };
 
   const tasksMap = tasks.map((task, idx) => {
     const isFirstTask = idx === 0;
@@ -137,17 +137,9 @@ export function Tasks() {
 
   return (
     <main className="flex flex-col items-center gap-4">
-      <p
-        className={`${
-          !noTasks && "invisible"
-        } text-lg text-darkBlack dark:text-lightWhite xs:text-xl sm:text-2xl`}
-      >
+      <p className={"text-lg text-darkBlack dark:text-lightWhite xs:text-xl sm:text-2xl"}>
         what do you want to{" "}
-        <span
-          className={`inset-0 inline-block skew-y-3 rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain ${
-            !noTasks && "bg-lightWhite dark:bg-darkBlack"
-          } `}
-        >
+        <span className="inset-0 inline-block skew-y-3 rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain">
           <span className="block -skew-y-3 font-semibold">do?</span>
         </span>
       </p>
