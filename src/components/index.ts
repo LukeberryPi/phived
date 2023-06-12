@@ -5,3 +5,4 @@ export { Tasks } from "src/components/Tasks";
 export { Head } from "src/components/Head";
 export { Message } from "src/components/Message";
 export { HelpMenu } from "src/components/HelpMenu";
+export { ClearTasksDialog } from "src/components/ClearTasksDialog";

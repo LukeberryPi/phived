@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
-import { Logo, HelpMenu } from "src/components";
+import { Logo, HelpMenu, ClearTasksDialog } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
 import { ClearTasksIcon, DarkModeIcon, ArrowUpIcon, ArrowDownIcon, LightModeIcon } from "src/icons";
 
 export function Header() {
-  const { clearTasks, tasks } = useTasksContext();
+  const { tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useState(false);
+  const [showClearTasksDialog, setShowClearTasksDialog] = useState(false);
 
   const noTasks = tasks.filter(Boolean).length === 0;
 
@@ -20,7 +21,17 @@ export function Header() {
   };
 
   const toggleHelpMenu = () => {
+    if (showClearTasksDialog) setShowClearTasksDialog(false);
     setShowHelpMenu((currentMenuState) => !currentMenuState);
+  };
+
+  const toggleClearTasksDialog = () => {
+    if (showHelpMenu) setShowHelpMenu(false);
+    setShowClearTasksDialog((currentMenuState) => !currentMenuState);
+  };
+
+  const closeClearTasksDialog = () => {
+    setShowClearTasksDialog(false);
   };
 
   return (
@@ -48,7 +59,7 @@ export function Header() {
           )}
         </button>
         <button
-          onClick={clearTasks}
+          onClick={toggleClearTasksDialog}
           className={`${
             noTasks
               ? "cursor-not-allowed hover:bg-unavailableLight dark:hover:bg-unavailableDark"
@@ -63,6 +74,7 @@ export function Header() {
           />
           <p className="text-base font-medium dark:text-lightWhite xs:text-lg">clear tasks</p>
         </button>
+        {showClearTasksDialog && <ClearTasksDialog onClose={closeClearTasksDialog} />}
         <button
           onClick={toggleHelpMenu}
           className="group hidden cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain lg:flex"
@@ -79,3 +91,4 @@ export function Header() {
     </header>
   );
 }
+4;
