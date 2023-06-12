@@ -11,8 +11,6 @@ export function Tasks() {
   const tasksLength = tasks.filter((t) => t.trim() !== "").length;
   const [dragging, setDragging] = useState(false);
 
-  const noTasks = tasks.filter(Boolean).length === 0;
-
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
