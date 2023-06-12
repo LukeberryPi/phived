@@ -13,7 +13,7 @@ export function ClearTasksDialog({ onClose }: ClearTasksDialogProps) {
   };
 
   return (
-    <div className="absolute top-full hidden max-w-xs -translate-x-3 flex-col rounded-2xl border border-darkBlack bg-lightWhite px-5 pt-5 pb-3 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light lg:flex">
+    <div className="absolute bottom-20 left-1/2 flex h-fit w-72 max-w-xs -translate-x-[calc(50%+10px)] flex-col rounded-2xl border border-darkBlack bg-lightWhite px-5 pt-5 pb-3 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light tiny:left-auto tiny:w-max tiny:-translate-x-3 sm:top-full">
       <p className="text-darkBlack dark:text-lightWhite">
         Are you sure you want to <b>delete</b> all your tasks?
       </p>
