@@ -9,7 +9,7 @@ import { DragIcon } from "src/icons";
 export function Tasks() {
   const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
   const tasksLength = tasks.filter((t) => t.trim() !== "").length;
-  const [dragging, setDragging] = useState(false);
+  const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
@@ -62,7 +62,7 @@ export function Tasks() {
       document.activeElement.blur();
     }
 
-    setDragging(false);
+    setSomeDragIsHappening(false);
   };
 
   const tasksMap = tasks.map((task, idx) => {
@@ -73,11 +73,11 @@ export function Tasks() {
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
-          const draggingTask = snapshot.isDragging;
+          const isBeingDragged = snapshot.isDragging;
           return (
             <div
               key={idx}
-              className={`group flex w-full ${draggingTask && "cursor-grabbing"}`}
+              className={`group flex w-full ${isBeingDragged && "cursor-grabbing"}`}
               {...provided.draggableProps}
               ref={provided.innerRef}
             >
@@ -91,25 +91,21 @@ export function Tasks() {
                 aria-label={`task-${idx}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${!isEmptyTask && tasksLength > 1 && "group-hover:pr-2"} ${
-                  isFirstTask
-                    ? `rounded-t-2xl ${!isEmptyTask && "focus:rounded-tr-none lg:rounded-tr-none"}`
-                    : "placeholder:text-lighterWhite dark:placeholder:text-darkBlack"
+                  isFirstTask && "rounded-t-2xl"
                 } ${
-                  isLastTask
-                    ? `rounded-b-2xl ${!isEmptyTask && "focus:rounded-br-none lg:rounded-br-none"}`
-                    : "border-b"
-                } bg-lighterWhite py-4 px-5 text-darkerBlack placeholder:select-none focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
+                  isLastTask ? "rounded-b-2xl" : "border-b"
+                } bg-lighterWhite py-4 px-5 text-darkerBlack focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
               />
               <span
                 /* rbdnd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
                 https://github.com/atlassian/react-beautiful-dnd/issues/1827 */
                 tabIndex={-1}
                 className={`${!isLastTask && "border-b"} ${
-                  isEmptyTask || tasksLength <= 1 || (!draggingTask && dragging)
+                  isEmptyTask || tasksLength <= 1 || (!isBeingDragged && someDragIsHappening)
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
-                  !draggingTask && "hidden"
+                  !isBeingDragged && "hidden"
                 } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
                 {...provided.dragHandleProps}
               >
@@ -118,11 +114,11 @@ export function Tasks() {
               <button
                 onClick={() => handleDone(idx)}
                 className={`${isFirstTask && "rounded-tr-2xl"} ${isLastTask && "rounded-br-2xl"} ${
-                  isEmptyTask || (!draggingTask && dragging)
+                  isEmptyTask || (!isBeingDragged && someDragIsHappening)
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
-                  !draggingTask && "hidden"
+                  !isBeingDragged && "hidden"
                 } cursor-pointer items-center justify-center border-l border-b bg-berryBlue px-4 text-base dark:bg-purpleRain dark:text-lighterWhite xs:px-6 xs:text-lg`}
               >
                 done?
@@ -143,7 +139,7 @@ export function Tasks() {
         </span>
       </p>
       <section className="w-72 overflow-hidden rounded-2xl border shadow-brutalist-dark dark:border-lighterWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
-        <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setDragging(true)}>
+        <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
           <Droppable droppableId="tasksList">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
