@@ -43,7 +43,7 @@ export function Header() {
 
   // if the user is using the WEB VERSION
   const isOnWeb = false;
-  // until this issue is solved (), this boolean must be hardcoded to false,
+  // until this issue is solved https://github.com/LukeberryPi/phived/issues/58, this boolean must be hardcoded to false,
   // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
 
   // if the user has INSTALLED the PWA VERSION
