@@ -6,6 +6,11 @@ export function HelpMenu() {
       </p>
       <br />
       <p className="text-darkBlack dark:text-lightWhite">
+        list five things you wish to get done. want to add more tasks?{" "}
+        <strong>complete existing ones!</strong>!
+      </p>
+      <br />
+      <p className="text-darkBlack dark:text-lightWhite">
         <strong>wanna know more?</strong> access{" "}
         <a
           rel="noreferrer"
