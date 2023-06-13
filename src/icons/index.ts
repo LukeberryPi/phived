@@ -7,5 +7,5 @@ export { ArrowDownIcon } from "src/icons/ArrowDownIcon";
 export { InstagramIcon } from "src/icons/InstagramIcon";
 export { GithubIcon } from "src/icons/GithubIcon";
 export { TwitterIcon } from "src/icons/TwitterIcon";
-export { DownloadPromptIcon } from "src/icons/DownloadPromptIcon";
+export { InstallIcon } from "src/icons/InstallIcon";
 export { OpenNewIcon } from "src/icons/OpenNewIcon";

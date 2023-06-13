@@ -1,14 +1,14 @@
 export function HelpMenu() {
   return (
     <div className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-darkBlack bg-lightWhite px-5 pt-5 pb-3 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light lg:flex">
-      <p className="text-darkBlack dark:text-lightWhite">
+      <h1 className="text-darkBlack dark:text-lightWhite">
         welcome to the <strong>anti-procrastination to-do list</strong>!
-      </p>
+      </h1>
       <br />
-      <p className="text-darkBlack dark:text-lightWhite">
+      <h2 className="text-darkBlack dark:text-lightWhite">
         list five things you wish to get done. want to add more tasks?{" "}
-        <strong>complete existing ones!</strong>!
-      </p>
+        <strong>complete existing ones!</strong>
+      </h2>
       <br />
       <p className="text-darkBlack dark:text-lightWhite">
         <strong>wanna know more?</strong> access{" "}

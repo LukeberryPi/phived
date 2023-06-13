@@ -1,12 +1,12 @@
 import { type DefaultIconProps } from "src/utils/defaultIconProps";
 
-export function DragIcon({ className, squareWidthAndHeight = 26 }: DefaultIconProps) {
+export function DragIcon({ className, widthAndHeight = 26 }: DefaultIconProps) {
   return (
     <svg
       className={className}
       xmlns="http://www.w3.org/2000/svg"
-      width={squareWidthAndHeight}
-      height={squareWidthAndHeight}
+      width={widthAndHeight}
+      height={widthAndHeight}
       viewBox="0 0 256 256"
     >
       <path

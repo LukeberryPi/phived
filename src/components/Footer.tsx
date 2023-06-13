@@ -11,7 +11,7 @@ export function Footer() {
           rel="noreferrer"
         >
           <GithubIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite dark:group-hover:fill-darkBlack" />
-          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
+          <p className="text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite dark:group-hover:text-darkBlack sm:text-lg">
             github
           </p>
         </a>
@@ -22,7 +22,7 @@ export function Footer() {
           rel="noreferrer"
         >
           <TwitterIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
-          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite xs:text-lg">
+          <p className="text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite sm:text-lg">
             twitter
           </p>
         </a>
@@ -33,7 +33,7 @@ export function Footer() {
           rel="noreferrer"
         >
           <InstagramIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
-          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite xs:text-lg">
+          <p className="text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite sm:text-lg">
             instagram
           </p>
         </a>

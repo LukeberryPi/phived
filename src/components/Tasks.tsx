@@ -94,7 +94,7 @@ export function Tasks() {
                   isFirstTask && "rounded-t-2xl"
                 } ${
                   isLastTask ? "rounded-b-2xl" : "border-b"
-                } bg-lighterWhite py-4 px-5 text-darkerBlack focus:outline-none dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
+                } bg-lighterWhite py-4 px-5 text-darkerBlack focus:outline-none dark:bg-darkBlack dark:text-lighterWhite sm:text-lg`}
               />
               <span
                 /* rbdnd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
@@ -106,7 +106,7 @@ export function Tasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   !isBeingDragged && "hidden"
-                } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite xs:text-lg`}
+                } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite sm:text-lg`}
                 {...provided.dragHandleProps}
               >
                 <DragIcon className="fill-darkBlack dark:fill-lightWhite" />
@@ -119,7 +119,7 @@ export function Tasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   !isBeingDragged && "hidden"
-                } cursor-pointer items-center justify-center border-l border-b bg-berryBlue px-4 text-base dark:bg-purpleRain dark:text-lighterWhite xs:px-6 xs:text-lg`}
+                } cursor-pointer items-center justify-center border-l border-b bg-berryBlue px-4 dark:bg-purpleRain dark:text-lighterWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>

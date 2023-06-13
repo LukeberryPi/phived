@@ -1,11 +1,11 @@
 import { type DefaultIconProps } from "src/utils/defaultIconProps";
 
-export function InstagramIcon({ className, squareWidthAndHeight = 26 }: DefaultIconProps) {
+export function InstagramIcon({ className, widthAndHeight = 26 }: DefaultIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={squareWidthAndHeight}
-      height={squareWidthAndHeight}
+      width={widthAndHeight}
+      height={widthAndHeight}
       viewBox="0 0 26 26"
     >
       <path
