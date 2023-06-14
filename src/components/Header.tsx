@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 import { Logo, HelpMenu } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, ArrowUp, ArrowDown, Sun, Install, Open } from "src/icons";
+import { Trash, Moon, Arrow, Sun, Install, Open } from "src/icons";
 
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
@@ -124,9 +124,14 @@ export function Header() {
             showHelpMenu && "bg-berryBlue dark:bg-purpleRain"
           } hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 text-xs transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-berryBlue sm:hover:ease-in-out dark:sm:hover:bg-purpleRain lg:flex`}
         >
-          {showHelpMenu && <ArrowUp className="stroke-darkBlack dark:stroke-lightWhite" />}
-          {!showHelpMenu && <ArrowDown className="stroke-darkBlack dark:stroke-lightWhite" />}
-          <p className="text-base text-darkBlack dark:text-lightWhite sm:text-lg">help</p>
+          <span
+            className={`h-fit w-fit ${
+              showHelpMenu ? "rotate-0" : "rotate-180"
+            } transition-transform duration-200`}
+          >
+            <Arrow className="stroke-darkBlack focus:rotate-180 dark:stroke-lightWhite" />
+          </span>
+          <p className="text-sm dark:text-lightWhite sm:text-lg">help</p>
         </button>
         {showHelpMenu && <HelpMenu />}
       </nav>
