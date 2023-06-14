@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { DragIcon } from "src/icons";
+import { Drag } from "src/icons";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
@@ -109,7 +109,7 @@ export function Tasks() {
                 } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite sm:text-lg`}
                 {...provided.dragHandleProps}
               >
-                <DragIcon className="fill-darkBlack dark:fill-lightWhite" />
+                <Drag className="fill-darkBlack dark:fill-lightWhite" />
               </span>
               <button
                 onClick={() => handleDone(idx)}

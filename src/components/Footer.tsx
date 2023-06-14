@@ -1,4 +1,4 @@
-import { GithubIcon, InstagramIcon, TwitterIcon } from "src/icons";
+import { Github, Instagram, Twitter } from "src/icons";
 
 export function Footer() {
   return (
@@ -10,7 +10,7 @@ export function Footer() {
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
         >
-          <GithubIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite dark:group-hover:fill-darkBlack" />
+          <Github className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite dark:group-hover:fill-darkBlack" />
           <p className="text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite dark:group-hover:text-darkBlack sm:text-lg">
             github
           </p>
@@ -21,7 +21,7 @@ export function Footer() {
           href="https://twitter.com/phivedphived"
           rel="noreferrer"
         >
-          <TwitterIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
+          <Twitter className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
           <p className="text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite sm:text-lg">
             twitter
           </p>
@@ -32,7 +32,7 @@ export function Footer() {
           href="https://www.instagram.com/phivedphived/"
           rel="noreferrer"
         >
-          <InstagramIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
+          <Instagram className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
           <p className="text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite sm:text-lg">
             instagram
           </p>
