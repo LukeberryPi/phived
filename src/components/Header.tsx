@@ -34,12 +34,12 @@ export function Header() {
   // the DOWNLOAD/OPEN BUTTON logic will be implemented considering:
 
   // if the user is using the WEB VERSION
-  const isOnWeb = false;
+  const isOnWeb = true;
   // until this issue is solved https://github.com/LukeberryPi/phived/issues/58, this boolean must be hardcoded to false,
   // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
 
   // if the user has INSTALLED the PWA VERSION
-  const hasInstalledPwa = false;
+  const hasInstalledPwa = true;
 
   // if they are using the WEB VERSION and don't have the PWA installed, show INSTALL BUTTON
   const showInstallButton = isOnWeb && !hasInstalledPwa;
@@ -60,7 +60,7 @@ export function Header() {
           {isDarkMode && (
             <>
               <Sun className="fill-lightWhite sm:group-hover:fill-darkBlack" />
-              <p className="text-sm text-darkerBlack dark:text-lighterWhite sm:text-lg sm:group-hover:text-lighterWhite dark:sm:group-hover:text-darkBlack">
+              <p className="text-base text-darkerBlack dark:text-lighterWhite sm:text-lg sm:group-hover:text-lighterWhite dark:sm:group-hover:text-darkBlack">
                 light mode
               </p>
             </>
@@ -68,7 +68,7 @@ export function Header() {
           {!isDarkMode && (
             <>
               <Moon className="fill-lightBlack sm:group-hover:fill-lightWhite" />
-              <p className="text-sm text-darkBlack dark:text-lighterWhite sm:text-lg sm:group-hover:text-lightWhite dark:sm:group-hover:text-darkBlack">
+              <p className="text-base text-darkBlack dark:text-lighterWhite sm:text-lg sm:group-hover:text-lightWhite dark:sm:group-hover:text-darkBlack">
                 dark mode
               </p>
             </>
@@ -80,7 +80,7 @@ export function Header() {
             noTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
               : "cursor-pointer sm:hover:bg-alertRed sm:hover:text-lighterWhite"
-          } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-sm transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
+          } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
           disabled={noTasks}
         >
           <Trash
@@ -91,7 +91,7 @@ export function Header() {
             } `}
           />
           <p
-            className={`text-sm ${
+            className={`text-base ${
               noTasks
                 ? "text-darkBlack/40 dark:text-lightWhite/30"
                 : "text-darkBlack group-hover:text-lightWhite dark:text-lightWhite"
@@ -106,7 +106,7 @@ export function Header() {
             className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-xs transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
             <Install className="fill-darkBlack dark:fill-lightWhite" />
-            <p className="text-sm dark:text-lightWhite sm:text-lg">install app</p>
+            <p className="text-base dark:text-lightWhite sm:text-lg">install app</p>
           </button>
         )}
         {showOpenButton && (
@@ -115,7 +115,7 @@ export function Header() {
             className="group flex select-none flex-col items-center rounded-2xl p-2 text-xs transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
             <Open className=" fill-darkBlack dark:fill-lightWhite" />
-            <p className="text-sm dark:text-lightWhite sm:text-lg">open app</p>
+            <p className="text-base dark:text-lightWhite sm:text-lg">open app</p>
           </button>
         )}
         <button
@@ -126,7 +126,7 @@ export function Header() {
         >
           {showHelpMenu && <ArrowUp className="stroke-darkBlack dark:stroke-lightWhite" />}
           {!showHelpMenu && <ArrowDown className="stroke-darkBlack dark:stroke-lightWhite" />}
-          <p className="text-sm dark:text-lightWhite sm:text-lg">help</p>
+          <p className="text-base dark:text-lightWhite sm:text-lg">help</p>
         </button>
         {showHelpMenu && <HelpMenu />}
       </nav>
