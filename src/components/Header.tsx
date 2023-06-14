@@ -34,7 +34,7 @@ export function Header() {
   // the DOWNLOAD/OPEN BUTTON logic will be implemented considering:
 
   // if the user is using the WEB VERSION
-  const isOnWeb = true;
+  const isOnWeb = false;
   // until this issue is solved https://github.com/LukeberryPi/phived/issues/58, this boolean must be hardcoded to false,
   // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
 
