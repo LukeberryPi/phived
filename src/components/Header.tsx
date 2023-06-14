@@ -114,8 +114,8 @@ export function Header() {
             onClick={handleOpenClick}
             className="group flex select-none flex-col items-center rounded-2xl p-2 text-xs transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
-            <Open className=" fill-darkBlack dark:fill-lightWhite" />
-            <p className="text-base dark:text-lightWhite sm:text-lg">open app</p>
+            <Open className="fill-darkBlack dark:fill-lightWhite" />
+            <p className="text-base text-darkBlack dark:text-lightWhite sm:text-lg">open app</p>
           </button>
         )}
         <button
@@ -126,7 +126,7 @@ export function Header() {
         >
           {showHelpMenu && <ArrowUp className="stroke-darkBlack dark:stroke-lightWhite" />}
           {!showHelpMenu && <ArrowDown className="stroke-darkBlack dark:stroke-lightWhite" />}
-          <p className="text-base dark:text-lightWhite sm:text-lg">help</p>
+          <p className="text-base text-darkBlack dark:text-lightWhite sm:text-lg">help</p>
         </button>
         {showHelpMenu && <HelpMenu />}
       </nav>
