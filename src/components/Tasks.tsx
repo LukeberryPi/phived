@@ -92,8 +92,8 @@ export function Tasks() {
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${!isEmptyTask && tasksLength > 1 && "group-hover:pr-2"} ${
                   isFirstTask && "rounded-t-2xl"
-                } ${
-                  isLastTask ? "rounded-b-2xl" : "border-b"
+                } ${isLastTask ? "rounded-b-2xl" : "border-b"} ${
+                  someDragIsHappening && "cursor-grabbing"
                 } bg-lighterWhite py-4 px-5 text-darkerBlack focus:outline-none dark:bg-darkBlack dark:text-lighterWhite sm:text-lg`}
               />
               <span

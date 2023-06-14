@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 import { Logo, HelpMenu } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, ArrowDown, Sun, Install, Open, Check } from "src/icons";
+import { Trash, Moon, ArrowDown, Sun, Install, Open } from "src/icons";
 
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
@@ -57,10 +57,6 @@ export function Header() {
     <header className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <div className="hidden items-center gap-8 text-darkBlack sm:flex">
         <Logo />
-        {/* <div className="flex items-center gap-2">
-          <p>your tasks have been saved</p>
-          <Check className="fill-darkBlack dark:fill-lightWhite" />
-        </div>*/}
       </div>
       <nav className="flex h-full items-center justify-between space-x-4 tiny:space-x-10 sm:space-x-6">
         <button
