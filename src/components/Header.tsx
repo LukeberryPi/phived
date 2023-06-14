@@ -12,16 +12,37 @@ import {
   OpenNewIcon,
 } from "src/icons";
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: "accepted" | "dismissed";
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useState(false);
+  const [promptInstall, setPromptInstall] = useState<BeforeInstallPromptEvent | null>(null);
 
   const noTasks = tasks.filter(Boolean).length === 0;
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
   }, [isDarkMode]);
+
+  // This useEffect will set the promptInstall
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setPromptInstall(e as BeforeInstallPromptEvent);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+
+    return () => window.removeEventListener("transitionend", handler);
+  }, []);
 
   const toggleDarkMode = () => {
     setIsDarkMode((currentDarkMode) => !currentDarkMode);
@@ -32,17 +53,27 @@ export function Header() {
   };
 
   const handleInstallClick = () => {
-    console.log("installed the app!");
+    if (!promptInstall) {
+      return;
+    }
+    promptInstall.prompt();
   };
 
   const handleOpenClick = () => {
     console.log("opened the app!");
   };
 
+  function isPwa() {
+    const displayModes = ["fullscreen", "standalone", "minimal-ui"];
+    return displayModes.some(
+      (displayMode) => window.matchMedia("(display-mode: " + displayMode + ")").matches
+    );
+  }
+
   // the DOWNLOAD/OPEN BUTTON logic will be implemented considering:
 
   // if the user is using the WEB VERSION
-  const isOnWeb = false;
+  const isOnWeb = !isPwa();
   // until this issue is solved https://github.com/LukeberryPi/phived/issues/58, this boolean must be hardcoded to false,
   // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
 
@@ -84,26 +115,23 @@ export function Header() {
         </button>
         <button
           onClick={clearTasks}
-          className={`${
-            noTasks
+          className={`${noTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
               : "cursor-pointer sm:hover:bg-alertRed sm:hover:text-lighterWhite"
-          } group flex select-none flex-col items-center rounded-2xl p-2 text-sm transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
+            } group flex select-none flex-col items-center rounded-2xl p-2 text-sm transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
           disabled={noTasks}
         >
           <ClearTasksIcon
-            className={`fill-darkBlack dark:fill-lightWhite ${
-              noTasks
+            className={`fill-darkBlack dark:fill-lightWhite ${noTasks
                 ? "fill-darkBlack/30 dark:fill-lightWhite/30"
                 : "sm:group-hover:fill-lightWhite"
-            } `}
+              } `}
           />
           <p
-            className={`text-sm ${
-              noTasks
+            className={`text-sm ${noTasks
                 ? "text-darkBlack/40 dark:text-lightWhite/30"
                 : "text-darkBlack group-hover:text-lightWhite dark:text-lightWhite"
-            } sm:text-lg`}
+              } sm:text-lg`}
           >
             clear tasks
           </p>
