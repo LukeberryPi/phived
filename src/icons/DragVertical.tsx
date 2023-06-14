@@ -1,6 +1,6 @@
 import { type DefaultSvgProps } from "src/utils/defaultSvgProps";
 
-export function Drag({ className, size = 26 }: DefaultSvgProps) {
+export function DragVertical({ className, size = 26 }: DefaultSvgProps) {
   return (
     <svg
       className={className}

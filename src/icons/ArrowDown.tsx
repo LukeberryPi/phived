@@ -1,6 +1,6 @@
 import { type DefaultSvgProps } from "src/utils/defaultSvgProps";
 
-export function Arrow({ className, size = 20 }: DefaultSvgProps) {
+export function ArrowDown({ className, size = 20 }: DefaultSvgProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 256 256">
       <path

@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Drag } from "src/icons";
+import { DragVertical } from "src/icons";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
@@ -109,7 +109,7 @@ export function Tasks() {
                 } flex items-center justify-center bg-lighterWhite pr-2 text-darkerBlack placeholder:select-none hover:cursor-grab dark:bg-darkBlack dark:text-lighterWhite sm:text-lg`}
                 {...provided.dragHandleProps}
               >
-                <Drag className="fill-darkBlack dark:fill-lightWhite" />
+                <DragVertical className="fill-darkBlack dark:fill-lightWhite" />
               </span>
               <button
                 onClick={() => handleDone(idx)}
@@ -132,7 +132,7 @@ export function Tasks() {
 
   return (
     <main className="flex flex-col items-center gap-4">
-      <p className={"text-lg text-darkBlack dark:text-lightWhite xs:text-xl sm:text-2xl"}>
+      <p className="text-lg text-darkBlack dark:text-lightWhite xs:text-xl sm:text-2xl">
         what do you want to{" "}
         <span className="inset-0 inline-block skew-y-3 rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain">
           <span className="block -skew-y-3 font-semibold">do?</span>
