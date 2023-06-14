@@ -19,8 +19,12 @@ export function Header() {
     setIsDarkMode((currentDarkMode) => !currentDarkMode);
   };
 
-  const toggleHelpMenu = () => {
-    setShowHelpMenu((currentMenuState) => !currentMenuState);
+  const openHelpMenu = () => {
+    setShowHelpMenu(true);
+  };
+
+  const closeHelpMenu = () => {
+    setShowHelpMenu(false);
   };
 
   const handleInstallClick = () => {
@@ -120,7 +124,7 @@ export function Header() {
           </button>
         )}
         <button
-          onClick={toggleHelpMenu}
+          onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
           className={`group ${
             showHelpMenu && "bg-berryBlue dark:bg-purpleRain"
           } hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-berryBlue sm:hover:ease-in-out dark:sm:hover:bg-purpleRain lg:flex`}
@@ -132,7 +136,7 @@ export function Header() {
           </span>
           <p className="dark:text-lightWhite tiny:text-lg">help</p>
         </button>
-        {showHelpMenu && <HelpMenu />}
+        {showHelpMenu && <HelpMenu onCloseClick={closeHelpMenu} />}
       </nav>
     </header>
   );
