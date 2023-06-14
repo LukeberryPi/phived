@@ -8,7 +8,7 @@ export function Arrow({ className, size = 26 }: DefaultSvgProps) {
         className={className}
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="m7 10l5 5l5-5"
+        d="m17 14l-5-5l-5 5"
       />
     </svg>
   );
