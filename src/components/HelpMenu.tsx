@@ -25,7 +25,7 @@ export function HelpMenu({ onCloseClick }: HelpMenuProps) {
       </h2>
       <br />
       <p className="text-darkBlack dark:text-lightWhite">
-        <strong>wanna know more?</strong> access{" "}
+        <strong>want to know more?</strong> access{" "}
         <a
           rel="noreferrer"
           target="_blank"
