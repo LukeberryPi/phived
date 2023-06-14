@@ -6,7 +6,7 @@ export function HelpMenu() {
       </h1>
       <br />
       <h2 className="text-darkBlack dark:text-lightWhite">
-        list five things you wish to get done. want to add more tasks?{" "}
+        list <strong>five things</strong> you wish to get done. want to add more tasks?{" "}
         <strong>complete existing ones!</strong>
       </h2>
       <br />

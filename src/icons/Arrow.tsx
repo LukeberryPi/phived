@@ -1,14 +1,11 @@
 import { type DefaultSvgProps } from "src/utils/defaultSvgProps";
 
-export function Arrow({ className, size = 26 }: DefaultSvgProps) {
+export function Arrow({ className, size = 20 }: DefaultSvgProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 256 256">
       <path
-        fill="none"
         className={className}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="m17 14l-5-5l-5 5"
+        d="M213.66 165.66a8 8 0 0 1-11.32 0L128 91.31l-74.34 74.35a8 8 0 0 1-11.32-11.32l80-80a8 8 0 0 1 11.32 0l80 80a8 8 0 0 1 0 11.32Z"
       />
     </svg>
   );

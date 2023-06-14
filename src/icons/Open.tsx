@@ -9,7 +9,7 @@ export function Open({ className, size = 26 }: DefaultSvgProps) {
       height={size}
       viewBox="0 0 500 500"
     >
-      <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)" className={className}>
+      <g transform="translate(0, 500) scale(0.1, -0.1)" className={className}>
         <path
           d="M1145 3981 c-52 -23 -103 -74 -126 -126 -18 -38 -19 -103 -19 -1365
 0 -1262 1 -1327 19 -1365 23 -52 74 -103 126 -126 38 -18 103 -19 1365 -19
