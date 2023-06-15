@@ -55,7 +55,7 @@ export function HelpMenu({ onCloseClick }: HelpMenuProps) {
           navigates to the next task,{" "}
         </p>
         <br />
-        <p className="text-darkBlack dark:text-lightWhite">
+        <p className="leading-7 text-darkBlack dark:text-lightWhite">
           <kbd className="rounded border border-darkBlack px-2 py-1 font-sans dark:border-lightWhite">
             shift
           </kbd>{" "}
