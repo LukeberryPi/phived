@@ -26,6 +26,17 @@ export function Header() {
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useState(false);
   const [promptInstall, setPromptInstall] = useState<BeforeInstallPromptEvent | null>(null);
+  const [hasInstalledPwa, setHasInstalledPwa] = useState(false);
+
+  // This will run when the user install the pwa to save in localStorage
+  window.addEventListener("appinstalled", () => {
+    if (document.visibilityState !== "visible") {
+      return;
+    }
+
+    localStorage.setItem("pwaIsInstalled", "true");
+    setHasInstalledPwa(true);
+  });
 
   const noTasks = tasks.filter(Boolean).length === 0;
 
@@ -33,10 +44,17 @@ export function Header() {
     handleSetTheme(isDarkMode);
   }, [isDarkMode]);
 
+  useEffect(() => {
+    checkPwaIsInstalled();
+  }, []);
+
+  console.log(hasInstalledPwa);
+
   // This useEffect will set the promptInstall
   useEffect(() => {
     const handler = (e: Event) => {
       e.preventDefault();
+      localStorage.removeItem("pwaIsInstalled");
       setPromptInstall(e as BeforeInstallPromptEvent);
     };
     window.addEventListener("beforeinstallprompt", handler);
@@ -52,7 +70,7 @@ export function Header() {
     setShowHelpMenu((currentMenuState) => !currentMenuState);
   };
 
-  const handleInstallClick = () => {
+  const handleInstallClick = async () => {
     if (!promptInstall) {
       return;
     }
@@ -63,12 +81,17 @@ export function Header() {
     console.log("opened the app!");
   };
 
-  function isPwa() {
+  const isPwa = () => {
     const displayModes = ["fullscreen", "standalone", "minimal-ui"];
     return displayModes.some(
       (displayMode) => window.matchMedia("(display-mode: " + displayMode + ")").matches
     );
-  }
+  };
+
+  const checkPwaIsInstalled = () => {
+    const pwaIsInstalled = localStorage.getItem("pwaIsInstalled");
+    setHasInstalledPwa(!!pwaIsInstalled);
+  };
 
   // the DOWNLOAD/OPEN BUTTON logic will be implemented considering:
 
@@ -78,7 +101,6 @@ export function Header() {
   // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
 
   // if the user has INSTALLED the PWA VERSION
-  const hasInstalledPwa = false;
 
   // if they are using the WEB VERSION and don't have the PWA installed, show INSTALL BUTTON
   const showInstallButton = isOnWeb && !hasInstalledPwa;

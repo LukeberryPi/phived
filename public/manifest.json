@@ -7,7 +7,11 @@
   "start_url": "/",
   "short_name": "phived",
   "description": "phived is a dead-simple, no-distractions to-do list",
-  "web_manifest_url": "http://localhost:5173/manifest.json",
+  "url_handlers": [
+    {
+      "origin": "http://localhost:5173/"
+    }
+  ],
   "icons": [
     {
       "src": "/icon-192x192.png",
