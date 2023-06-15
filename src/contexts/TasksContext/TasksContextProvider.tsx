@@ -6,10 +6,7 @@ import type { Task } from "src/contexts/TasksContext/TasksContext.types";
 import { useLocalStorage } from "src/hooks/useLocalStorage";
 
 export const TasksContextProvider = ({ children }: PropsWithChildren) => {
-  const [storedTasks, setStoredTasks] = useLocalStorage(
-    "persistentTasks",
-    Array<string>(5).fill("")
-  );
+  const [storedTasks, setStoredTasks] = useLocalStorage("storedTasks", Array<string>(5).fill(""));
   const [tasks, setTasks] = useState(storedTasks);
   const [message, setMessage] = useState<string>("");
   const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);

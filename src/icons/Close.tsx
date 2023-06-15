@@ -1,10 +1,11 @@
-import { type DefaultSvgProps } from "src/utils/defaultSvgProps";
+import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
 
 export function Close({ className, size = 22 }: DefaultSvgProps) {
   return (
     <svg
       className={className}
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="Close Icon"
       width={size}
       height={size}
       viewBox="0 0 256 256"

@@ -75,7 +75,10 @@ export function HelpMenu({ onCloseClick }: HelpMenuProps) {
             enter
           </kbd>{" "}
           will complete the current task, or just click{" "}
-          <span className="rounded-r-md border border-darkBlack bg-berryBlue py-1 px-2 dark:border-lightWhite dark:bg-purpleRain">
+          <span
+            onClick={onCloseClick}
+            className="cursor-pointer rounded-r-md border border-darkBlack bg-berryBlue py-1 px-2 dark:border-lightWhite dark:bg-purpleRain"
+          >
             done?
           </span>
         </p>

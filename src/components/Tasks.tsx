@@ -2,14 +2,18 @@ import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { DragVertical } from "src/icons";
+import { Check, DragVertical } from "src/icons";
+import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
 export function Tasks() {
-  const { tasks, changeTask, completeTask, setTasks } = useTasksContext();
-  const tasksLength = tasks.filter((t) => t.trim() !== "").length;
+  const { message, tasks, changeTask, completeTask, setTasks } = useTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
+  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
+
+  const numberOfTasks = tasks.filter(Boolean).length;
+  const multipleTasks = numberOfTasks > 1;
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
@@ -21,6 +25,10 @@ export function Tasks() {
 
   const handleDone = (i: number) => {
     completeTask(i);
+  };
+
+  const hideTasksSaved = () => {
+    setShowTasksAreSaved(false);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
@@ -74,6 +82,8 @@ export function Tasks() {
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
           const isBeingDragged = snapshot.isDragging;
+          const anotherTaskIsBeingDragged = !isBeingDragged && someDragIsHappening;
+
           return (
             <div
               key={idx}
@@ -87,10 +97,11 @@ export function Tasks() {
                 onChange={(event) => handleChange(event, idx)}
                 autoFocus={isFirstTask}
                 autoComplete="off"
+                spellCheck="false"
                 placeholder={`${isFirstTask ? `${placeholder}?` : ""}`}
-                aria-label={`task-${idx}`}
+                aria-label={`Task ${idx}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
-                className={`peer w-full ${!isEmptyTask && tasksLength > 1 && "group-hover:pr-2"} ${
+                className={`peer w-full ${!isEmptyTask && multipleTasks && "group-hover:pr-2"} ${
                   isFirstTask && "rounded-t-2xl"
                 } ${isLastTask ? "rounded-b-2xl" : "border-b"} ${
                   someDragIsHappening && "cursor-grabbing"
@@ -100,8 +111,9 @@ export function Tasks() {
                 /* rbdnd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
                 https://github.com/atlassian/react-beautiful-dnd/issues/1827 */
                 tabIndex={-1}
+                aria-label="Drag handle to reorder task"
                 className={`${!isLastTask && "border-b"} ${
-                  isEmptyTask || tasksLength <= 1 || (!isBeingDragged && someDragIsHappening)
+                  isEmptyTask || !multipleTasks || anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
@@ -114,7 +126,7 @@ export function Tasks() {
               <button
                 onClick={() => handleDone(idx)}
                 className={`${isFirstTask && "rounded-tr-2xl"} ${isLastTask && "rounded-br-2xl"} ${
-                  isEmptyTask || (!isBeingDragged && someDragIsHappening)
+                  isEmptyTask || anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
@@ -150,6 +162,26 @@ export function Tasks() {
           </Droppable>
         </DragDropContext>
       </section>
+      <div
+        onClick={hideTasksSaved}
+        className={`${
+          (message || !multipleTasks || !showTasksAreSaved) && "invisible"
+        } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-lightWhite dark:bg-darkerBlack`}
+      >
+        <p
+          className="text-sm text-darkBlack/40
+          dark:text-lightWhite/40 xs:text-base"
+        >
+          your tasks won&apos;t be lost if you close the website
+        </p>
+        <span
+          className="flex items-center gap-1 rounded-md border border-darkBlack/30 py-0.5 pl-2 pr-1 text-sm text-darkBlack/40
+          dark:border-lightWhite/40 dark:text-lightWhite/40 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
+        >
+          ok
+          <Check className="rounded-sm fill-darkBlack/40 dark:fill-lightWhite/40" />
+        </span>
+      </div>
     </main>
   );
 }

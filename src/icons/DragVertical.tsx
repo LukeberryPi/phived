@@ -1,10 +1,11 @@
-import { type DefaultSvgProps } from "src/utils/defaultSvgProps";
+import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
 
 export function DragVertical({ className, size = 26 }: DefaultSvgProps) {
   return (
     <svg
       className={className}
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="Drag Icon"
       width={size}
       height={size}
       viewBox="0 0 256 256"

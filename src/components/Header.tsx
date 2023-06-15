@@ -3,11 +3,12 @@ import { useTasksContext } from "src/contexts";
 import { Logo, HelpMenu } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
 import { Trash, Moon, ArrowDown, Sun, Install, Open } from "src/icons";
+import { useLocalStorage } from "src/hooks";
 
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
-  const [showHelpMenu, setShowHelpMenu] = useState(false);
+  const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
 
   const noTasks = tasks.filter(Boolean).length === 0;
 

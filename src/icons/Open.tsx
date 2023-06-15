@@ -1,10 +1,10 @@
-import { type DefaultSvgProps } from "src/utils/defaultSvgProps";
+import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
 
 export function Open({ className, size = 26 }: DefaultSvgProps) {
   return (
     <svg
-      version="1.0"
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="Open App Icon"
       width={size}
       height={size}
       viewBox="0 0 500 500"
