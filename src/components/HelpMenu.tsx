@@ -6,7 +6,7 @@ interface HelpMenuProps {
 
 export function HelpMenu({ onCloseClick }: HelpMenuProps) {
   return (
-    <article className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-darkBlack bg-lighterWhite px-5 pt-4 pb-2 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light lg:flex">
+    <main className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-darkBlack bg-lighterWhite px-5 pt-4 pb-2 shadow-brutalist-dark dark:border-lightWhite dark:bg-darkBlack dark:shadow-brutalist-light lg:flex">
       <span
         onClick={onCloseClick}
         className="absolute right-3 top-3 h-fit w-fit cursor-pointer rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
@@ -83,6 +83,6 @@ export function HelpMenu({ onCloseClick }: HelpMenuProps) {
           </span>
         </p>
       </div>
-    </article>
+    </main>
   );
 }

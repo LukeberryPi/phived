@@ -143,7 +143,7 @@ export function Tasks() {
   });
 
   return (
-    <main className="flex flex-col items-center gap-4">
+    <section className="flex flex-col items-center gap-4">
       <p className="text-lg text-darkBlack dark:text-lightWhite xs:text-xl sm:text-2xl">
         what do you want to{" "}
         <span className="inset-0 inline-block skew-y-3 rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain">
@@ -182,6 +182,6 @@ export function Tasks() {
           <Check className="rounded-sm fill-darkBlack/40 dark:fill-lightWhite/40" />
         </span>
       </div>
-    </main>
+    </section>
   );
 }
