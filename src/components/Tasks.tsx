@@ -110,9 +110,6 @@ export function Tasks() {
                 } bg-trueWhite py-4 px-5 text-softBlack focus:outline-none dark:bg-softBlack dark:text-softWhite sm:text-lg`}
               />
               <span
-                /* rbdnd hardcodes dragHandle tabIndex to 0 by default, hence why this line doesn't work
-                https://github.com/atlassian/react-beautiful-dnd/issues/1827 */
-                tabIndex={-1}
                 aria-label="Drag handle to reorder task"
                 className={`${!isLastTask && "border-b border-trueBlack dark:border-trueWhite"} ${
                   isEmptyTask || !multipleTasks || anotherTaskIsBeingDragged
@@ -122,6 +119,7 @@ export function Tasks() {
                   !isBeingDragged && "hidden"
                 } flex items-center justify-center bg-trueWhite pr-2 text-softBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-softWhite sm:text-lg`}
                 {...provided.dragHandleProps}
+                tabIndex={-1}
               >
                 <DragVertical className="fill-softBlack dark:fill-softWhite" />
               </span>

@@ -130,6 +130,7 @@ export function Header() {
         )}
         <button
           type="button"
+          aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
           className={`group ${
             showHelpMenu && "bg-berryBlue dark:bg-purpleRain"
@@ -142,7 +143,7 @@ export function Header() {
           </span>
           <p className="dark:text-softWhite xs:text-lg">help</p>
         </button>
-        {showHelpMenu && <HelpMenu aria-expanded={showHelpMenu} onCloseClick={closeHelpMenu} />}
+        {showHelpMenu && <HelpMenu onCloseClick={closeHelpMenu} />}
       </nav>
     </header>
   );
