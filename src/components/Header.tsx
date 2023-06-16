@@ -63,7 +63,7 @@ export function Header() {
         <button
           onClick={toggleDarkMode}
           role="switch"
-          className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-softBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
+          className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
         >
           {isDarkMode && (
             <>
