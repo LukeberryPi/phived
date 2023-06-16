@@ -165,23 +165,24 @@ export function Tasks() {
       </ul>
       <div
         onClick={hideTasksSaved}
+        role="button"
         className={`${
           (message || !multipleTasks || !showTasksAreSaved) && "invisible"
         } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
         <p
-          className="text-sm text-softBlack/40
-          dark:text-softWhite/40 xs:text-base"
+          className="text-sm text-softBlack/50
+          dark:text-softWhite/50 xs:text-base"
         >
           your tasks won&apos;t be lost if you close the website
         </p>
         <button
           type="button"
-          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-softBlack/40
-          dark:border-trueWhite/40 dark:text-softWhite/40 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
+          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-softBlack/50
+          dark:border-trueWhite/50 dark:text-softWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
         >
           ok
-          <Check className="rounded-md fill-softBlack/40 dark:fill-softWhite/40" />
+          <Check className="rounded-md fill-softBlack/50 dark:fill-softWhite/50" />
         </button>
       </div>
     </section>
