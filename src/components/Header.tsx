@@ -62,6 +62,7 @@ export function Header() {
       <nav className="flex h-full items-center justify-between space-x-4 tiny:space-x-10 sm:space-x-6">
         <button
           onClick={toggleDarkMode}
+          type="button"
           role="switch"
           className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
         >
@@ -84,6 +85,7 @@ export function Header() {
         </button>
         <button
           onClick={clearTasks}
+          type="button"
           className={`${
             noTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
@@ -108,6 +110,7 @@ export function Header() {
         </button>
         {showInstallButton && (
           <button
+            type="button"
             onClick={handleInstallClick}
             className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
@@ -117,6 +120,7 @@ export function Header() {
         )}
         {showOpenButton && (
           <button
+            type="button"
             onClick={handleOpenClick}
             className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
@@ -125,6 +129,7 @@ export function Header() {
           </button>
         )}
         <button
+          type="button"
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
           className={`group ${
             showHelpMenu && "bg-berryBlue dark:bg-purpleRain"
@@ -137,7 +142,7 @@ export function Header() {
           </span>
           <p className="dark:text-softWhite xs:text-lg">help</p>
         </button>
-        {showHelpMenu && <HelpMenu onCloseClick={closeHelpMenu} />}
+        {showHelpMenu && <HelpMenu aria-expanded={showHelpMenu} onCloseClick={closeHelpMenu} />}
       </nav>
     </header>
   );

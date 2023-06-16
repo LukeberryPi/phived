@@ -9,6 +9,7 @@ export function HelpMenu({ onCloseClick }: HelpMenuProps) {
     <main className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-trueBlack bg-trueWhite px-5 pt-4 pb-2 shadow-brutalist-dark dark:border-trueWhite dark:bg-softBlack dark:shadow-brutalist-light lg:flex">
       <button
         onClick={onCloseClick}
+        type="button"
         className="absolute right-3 top-3 h-fit w-fit cursor-pointer rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
       >
         <Close className="fill-softBlack dark:fill-softWhite" />
