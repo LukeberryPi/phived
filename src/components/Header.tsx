@@ -70,8 +70,8 @@ export function Header() {
           onClick={handleTakeScreenshot}
           className="group hidden cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-twitterBlue hover:ease-in-out dark:hover:bg-twitterBlue lg:flex"
         >
-          <Screenshot className="fill-darkBlack dark:fill-lightWhite" />
-          <p className="text-darkBlack group-hover:text-darkBlack dark:text-lightWhite dark:group-hover:text-lightWhite text-base font-medium xs:text-lg">
+          <Screenshot className="fill-softBlack dark:fill-softWhite" />
+          <p className="text-base font-medium text-softBlack dark:text-softWhite xs:text-lg">
             screenshot
           </p>
         </button>
