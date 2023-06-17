@@ -5,9 +5,9 @@ export function Message() {
 
   return (
     <span
-      className={
-        "mt-5 inline-block h-16 text-3xl font-bold text-darkerBlack dark:text-lighterWhite xs:text-4xl sm:text-5xl"
-      }
+      className={`-mt-14 flex xs:-mt-16 ${
+        !message && "invisible"
+      } z-10 h-16 items-center rounded-2xl bg-softWhite px-4 text-3xl font-bold text-softBlack dark:bg-trueBlack dark:text-softWhite xs:text-4xl sm:text-5xl`}
     >
       {message}
     </span>

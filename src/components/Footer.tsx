@@ -1,17 +1,17 @@
-import { GithubIcon, InstagramIcon, TwitterIcon } from "src/icons";
+import { Github, Instagram, Twitter } from "src/icons";
 
 export function Footer() {
   return (
     <footer className="fixed bottom-0 hidden h-16 w-full items-center justify-center sm:flex sm:justify-start sm:px-6">
       <div className="flex h-full items-center justify-between space-x-8">
         <a
-          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"
+          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-trueBlack hover:ease-in-out dark:hover:bg-trueWhite"
           target="_blank"
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
         >
-          <GithubIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite dark:group-hover:fill-darkBlack" />
-          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
+          <Github className="fill-softBlack group-hover:fill-softWhite dark:fill-softWhite dark:group-hover:fill-softBlack" />
+          <p className="text-softBlack group-hover:text-softWhite dark:text-softWhite dark:group-hover:text-softBlack sm:text-lg">
             github
           </p>
         </a>
@@ -21,8 +21,8 @@ export function Footer() {
           href="https://twitter.com/phivedphived"
           rel="noreferrer"
         >
-          <TwitterIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
-          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite xs:text-lg">
+          <Twitter className="fill-softBlack group-hover:fill-softWhite dark:fill-softWhite" />
+          <p className="text-softBlack group-hover:text-softWhite dark:text-softWhite sm:text-lg">
             twitter
           </p>
         </a>
@@ -32,8 +32,8 @@ export function Footer() {
           href="https://www.instagram.com/phivedphived/"
           rel="noreferrer"
         >
-          <InstagramIcon className="fill-darkBlack group-hover:fill-lightWhite dark:fill-lightWhite" />
-          <p className="text-base font-medium text-darkerBlack group-hover:text-lightWhite dark:text-lighterWhite xs:text-lg">
+          <Instagram className="fill-softBlack group-hover:fill-softWhite dark:fill-softWhite" />
+          <p className="text-softBlack group-hover:text-softWhite dark:text-softWhite sm:text-lg">
             instagram
           </p>
         </a>

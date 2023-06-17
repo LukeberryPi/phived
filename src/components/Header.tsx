@@ -2,19 +2,13 @@ import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 import { Logo, HelpMenu } from "src/components";
 import { handleSetTheme, isThemeSetToDark, takeScreenshot } from "src/utils";
-import {
-  ClearTasksIcon,
-  DarkModeIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  LightModeIcon,
-  ScreenshotIcon,
-} from "src/icons";
+import { Trash, Moon, ArrowDown, Sun, Install, Open, Screenshot } from "src/icons";
+import { useLocalStorage } from "src/hooks";
 
 export function Header() {
   const { clearTasks, tasks } = useTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
-  const [showHelpMenu, setShowHelpMenu] = useState(false);
+  const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
 
   const noTasks = tasks.filter(Boolean).length === 0;
 
@@ -26,8 +20,20 @@ export function Header() {
     setIsDarkMode((currentDarkMode) => !currentDarkMode);
   };
 
-  const toggleHelpMenu = () => {
-    setShowHelpMenu((currentMenuState) => !currentMenuState);
+  const openHelpMenu = () => {
+    setShowHelpMenu(true);
+  };
+
+  const closeHelpMenu = () => {
+    setShowHelpMenu(false);
+  };
+
+  const handleInstallClick = () => {
+    console.log("installed the app!");
+  };
+
+  const handleOpenClick = () => {
+    console.log("opened the app!");
   };
 
   const handleTakeScreenshot = async () => {
@@ -36,34 +42,57 @@ export function Header() {
     takeScreenshot(element);
   };
 
+  // the DOWNLOAD/OPEN BUTTON logic will be implemented considering:
+
+  // if the user is using the WEB VERSION
+  const isOnWeb = true;
+  // until this issue is solved https://github.com/LukeberryPi/phived/issues/58, this boolean must be hardcoded to false,
+  // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
+
+  // if the user has INSTALLED the PWA VERSION
+  const hasInstalledPwa = false;
+
+  // if they are using the WEB VERSION and don't have the PWA installed, show INSTALL BUTTON
+  const showInstallButton = isOnWeb && !hasInstalledPwa;
+
+  // if they are using the WEB VERSION and have the PWA installed, show OPEN BUTTON
+  const showOpenButton = isOnWeb && hasInstalledPwa;
+
+  // if they are using the PWA version, no button will be shown (neither INSTALL nor OPEN)
+
   return (
-    <header className="fixed bottom-4 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
-      <Logo />
-      <nav className="flex h-full items-center justify-between space-x-2 xs:space-x-10 sm:space-x-6">
+    <header className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
+      <div className="hidden items-center gap-8 text-softBlack sm:flex">
+        <Logo />
+      </div>
+      <nav className="flex h-full items-center justify-between space-x-4 tiny:space-x-10 sm:space-x-6">
         <button
           onClick={handleTakeScreenshot}
           className="group hidden cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-twitterBlue hover:ease-in-out dark:hover:bg-twitterBlue lg:flex"
         >
-          <ScreenshotIcon className="fill-darkBlack dark:fill-lightWhite" />
-          <p className="text-base font-medium text-darkBlack group-hover:text-darkBlack dark:text-lightWhite dark:group-hover:text-lightWhite xs:text-lg">
+          <Screenshot className="fill-darkBlack dark:fill-lightWhite" />
+          <p className="text-darkBlack group-hover:text-darkBlack dark:text-lightWhite dark:group-hover:text-lightWhite text-base font-medium xs:text-lg">
             screenshot
           </p>
         </button>
         <button
           onClick={toggleDarkMode}
-          className="group flex cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-darkBlack hover:ease-in-out dark:hover:bg-lightWhite"
+          type="button"
+          role="switch"
+          className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
         >
-          {isDarkMode ? (
+          {isDarkMode && (
             <>
-              <LightModeIcon className="fill-lightWhite group-hover:fill-darkBlack" />
-              <p className="text-base font-medium text-darkerBlack group-hover:text-lighterWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
+              <Sun className="fill-softWhite sm:group-hover:fill-softBlack" />
+              <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg sm:group-hover:text-softWhite dark:sm:group-hover:text-softBlack">
                 light mode
               </p>
             </>
-          ) : (
+          )}
+          {!isDarkMode && (
             <>
-              <DarkModeIcon className="fill-lightBlack group-hover:fill-lightWhite" />
-              <p className="text-base font-medium text-darkBlack group-hover:text-lightWhite dark:text-lighterWhite dark:group-hover:text-darkBlack xs:text-lg">
+              <Moon className="fill-lightBlack sm:group-hover:fill-softWhite" />
+              <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg sm:group-hover:text-softWhite dark:sm:group-hover:text-softBlack">
                 dark mode
               </p>
             </>
@@ -71,32 +100,65 @@ export function Header() {
         </button>
         <button
           onClick={clearTasks}
+          type="button"
           className={`${
             noTasks
-              ? "cursor-not-allowed hover:bg-unavailableLight dark:hover:bg-unavailableDark"
-              : "cursor-pointer hover:bg-alertRed hover:text-lighterWhite"
-          } group flex select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:ease-in-out`}
+              ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
+              : "cursor-pointer sm:hover:bg-alertRed sm:hover:text-softWhite"
+          } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
           disabled={noTasks}
         >
-          <ClearTasksIcon
-            className={`fill-darkBlack dark:fill-lightWhite ${
-              noTasks ? "dark:group-hover:fill-lightWhite" : "group-hover:fill-lightWhite"
+          <Trash
+            className={`fill-softBlack dark:fill-softWhite ${
+              noTasks ? "fill-softBlack/30 dark:fill-softWhite/30" : "sm:group-hover:fill-softWhite"
             } `}
           />
-          <p className="text-base font-medium dark:text-lightWhite xs:text-lg">clear tasks</p>
+          <p
+            className={`${
+              noTasks
+                ? "text-softBlack/40 dark:text-softWhite/30"
+                : "text-softBlack group-hover:text-softWhite dark:text-softWhite"
+            } text-sm xs:text-lg`}
+          >
+            clear tasks
+          </p>
         </button>
+        {showInstallButton && (
+          <button
+            type="button"
+            onClick={handleInstallClick}
+            className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
+          >
+            <Install className="fill-softBlack dark:fill-softWhite" />
+            <p className="text-sm dark:text-softWhite xs:text-lg">install app</p>
+          </button>
+        )}
+        {showOpenButton && (
+          <button
+            type="button"
+            onClick={handleOpenClick}
+            className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
+          >
+            <Open className="fill-softBlack dark:fill-softWhite" />
+            <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg">open app</p>
+          </button>
+        )}
         <button
-          onClick={toggleHelpMenu}
-          className="group hidden cursor-pointer select-none items-center gap-3 rounded-2xl px-3 py-2 transition-all hover:bg-berryBlue hover:ease-in-out dark:hover:bg-purpleRain lg:flex"
+          type="button"
+          aria-expanded={showHelpMenu}
+          onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
+          className={`group ${
+            showHelpMenu && "bg-berryBlue dark:bg-purpleRain"
+          } hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-berryBlue sm:hover:ease-in-out dark:sm:hover:bg-purpleRain lg:flex`}
         >
-          {showHelpMenu ? (
-            <ArrowUpIcon className="fill-darkBlack dark:fill-lightWhite" />
-          ) : (
-            <ArrowDownIcon className="fill-darkBlack dark:fill-lightWhite" />
-          )}
-          <p className="text-base font-medium dark:text-lightWhite xs:text-lg">help</p>
+          <span
+            className={`h-fit w-fit ${showHelpMenu ? "rotate-0" : "rotate-180"} transition-all`}
+          >
+            <ArrowDown className="fill-softBlack dark:fill-softWhite" />
+          </span>
+          <p className="dark:text-softWhite xs:text-lg">help</p>
         </button>
-        {showHelpMenu && <HelpMenu />}
+        {showHelpMenu && <HelpMenu onCloseClick={closeHelpMenu} />}
       </nav>
     </header>
   );
