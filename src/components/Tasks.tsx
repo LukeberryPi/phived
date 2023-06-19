@@ -125,7 +125,6 @@ export function Tasks() {
               </span>
               <button
                 onClick={() => handleDone(idx)}
-                type="button"
                 className={`${isFirstTask && "rounded-tr-2xl"} ${isLastTask && "rounded-br-2xl"} ${
                   isEmptyTask || anotherTaskIsBeingDragged
                     ? "hidden"
@@ -177,7 +176,6 @@ export function Tasks() {
           your tasks won&apos;t be lost if you close the website
         </p>
         <button
-          type="button"
           className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-softBlack/50
           dark:border-trueWhite/50 dark:text-softWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
         >

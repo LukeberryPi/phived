@@ -40,7 +40,8 @@ export function Header() {
 
   // if the user is using the WEB VERSION
   const isOnWeb = false;
-  // until this issue is solved https://github.com/LukeberryPi/phived/issues/58, this boolean must be hardcoded to false,
+  // until this issue is solved https://github.com/LukeberryPi/phived/issues/58
+  // this boolean must be hardcoded to false,
   // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
 
   // if the user has INSTALLED the PWA VERSION
@@ -62,7 +63,6 @@ export function Header() {
       <nav className="flex h-full items-center justify-between space-x-4 tiny:space-x-10 sm:space-x-6">
         <button
           onClick={toggleDarkMode}
-          type="button"
           role="switch"
           className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
         >
@@ -85,7 +85,6 @@ export function Header() {
         </button>
         <button
           onClick={clearTasks}
-          type="button"
           className={`${
             noTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
@@ -110,7 +109,6 @@ export function Header() {
         </button>
         {showInstallButton && (
           <button
-            type="button"
             onClick={handleInstallClick}
             className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
@@ -120,7 +118,6 @@ export function Header() {
         )}
         {showOpenButton && (
           <button
-            type="button"
             onClick={handleOpenClick}
             className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
@@ -129,7 +126,6 @@ export function Header() {
           </button>
         )}
         <button
-          type="button"
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
           className={`group ${
