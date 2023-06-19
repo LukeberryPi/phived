@@ -92,14 +92,13 @@ export function Tasks() {
               ref={provided.innerRef}
             >
               <input
-                type="text"
                 value={task}
                 onChange={(event) => handleChange(event, idx)}
                 autoFocus={isFirstTask}
                 autoComplete="off"
                 spellCheck="false"
                 placeholder={`${isFirstTask ? `${placeholder}?` : ""}`}
-                aria-label={`Task ${idx}`}
+                aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${!isEmptyTask && multipleTasks && "group-hover:pr-2"} ${
                   isFirstTask && "rounded-t-2xl"

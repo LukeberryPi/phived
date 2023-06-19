@@ -1,10 +1,10 @@
 import { Close } from "src/icons";
 
-interface HelpMenuProps {
+interface Props {
   onClose?: () => void;
 }
 
-export function HelpMenu({ onClose }: HelpMenuProps) {
+export function HelpMenu({ onClose }: Props) {
   return (
     <main className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-trueBlack bg-trueWhite px-5 pt-4 pb-2 shadow-brutalist-dark dark:border-trueWhite dark:bg-softBlack dark:shadow-brutalist-light lg:flex">
       <button
