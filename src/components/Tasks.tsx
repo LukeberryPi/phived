@@ -86,14 +86,15 @@ export function Tasks() {
 
           return (
             <li
+              {...provided.draggableProps}
               key={idx}
               className={`group flex w-full ${isBeingDragged && "cursor-grabbing"}`}
-              {...provided.draggableProps}
               ref={provided.innerRef}
             >
               <input
                 value={task}
                 onChange={(event) => handleChange(event, idx)}
+                autoCapitalize="false"
                 autoFocus={isFirstTask}
                 autoComplete="off"
                 spellCheck="false"
@@ -109,6 +110,7 @@ export function Tasks() {
                 } bg-trueWhite py-4 px-5 text-softBlack focus:outline-none dark:bg-softBlack dark:text-softWhite sm:text-lg`}
               />
               <span
+                {...provided.dragHandleProps}
                 aria-label="Drag handle to reorder task"
                 className={`${!isLastTask && "border-b border-trueBlack dark:border-trueWhite"} ${
                   isEmptyTask || !multipleTasks || anotherTaskIsBeingDragged
@@ -117,7 +119,6 @@ export function Tasks() {
                 } ${
                   !isBeingDragged && "hidden"
                 } flex items-center justify-center bg-trueWhite pr-2 text-softBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-softWhite sm:text-lg`}
-                {...provided.dragHandleProps}
                 tabIndex={-1}
               >
                 <DragVertical className="fill-softBlack dark:fill-softWhite" />
