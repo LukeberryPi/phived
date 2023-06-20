@@ -1,14 +1,14 @@
 import { Close } from "src/icons";
 
 interface Props {
-  onClose?: () => void;
+  closeHelpMenu?: () => void;
 }
 
-export function HelpMenu({ onClose }: Props) {
+export function HelpMenu({ closeHelpMenu }: Props) {
   return (
     <main className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-trueBlack bg-trueWhite px-5 pt-4 pb-2 shadow-brutalist-dark dark:border-trueWhite dark:bg-softBlack dark:shadow-brutalist-light lg:flex">
       <button
-        onClick={onClose}
+        onClick={closeHelpMenu}
         className="absolute right-3 top-3 h-fit w-fit cursor-pointer rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
       >
         <Close className="fill-softBlack dark:fill-softWhite" />
@@ -76,7 +76,7 @@ export function HelpMenu({ onClose }: Props) {
           </kbd>{" "}
           will complete the current task, or just click{" "}
           <span
-            onClick={onClose}
+            onClick={closeHelpMenu}
             className="cursor-pointer rounded-r-md border border-trueBlack bg-berryBlue py-1 px-2 dark:border-trueWhite dark:bg-purpleRain"
           >
             done?

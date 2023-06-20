@@ -139,7 +139,7 @@ export function Header() {
           </span>
           <p className="dark:text-softWhite xs:text-lg">help</p>
         </button>
-        {showHelpMenu && <HelpMenu onClose={closeHelpMenu} />}
+        {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
       </nav>
     </header>
   );
