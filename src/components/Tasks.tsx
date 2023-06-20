@@ -88,7 +88,7 @@ export function Tasks() {
             <li
               {...provided.draggableProps}
               key={idx}
-              className={`group flex w-full ${isBeingDragged && "cursor-grabbing"}`}
+              className="group flex"
               ref={provided.innerRef}
             >
               <input
