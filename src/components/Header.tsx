@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
 import { Logo, HelpMenu } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, ArrowDown, Sun, Install, Open } from "src/icons";
+import { Trash, Moon, ArrowDown, Sun, InstallApp, OpenApp } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -40,8 +40,6 @@ export function Header() {
   useEffect(() => {
     checkPwaIsInstalled();
   }, []);
-
-  console.log(hasInstalledPwa);
 
   // This useEffect will set the promptInstall
   useEffect(() => {
@@ -163,7 +161,7 @@ export function Header() {
             onClick={handleInstallClick}
             className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
-            <Install className="fill-softBlack dark:fill-softWhite" />
+            <InstallApp className="fill-softBlack dark:fill-softWhite" />
             <p className="text-sm dark:text-softWhite xs:text-lg">install app</p>
           </button>
         )}
@@ -172,7 +170,7 @@ export function Header() {
             onClick={handleOpenClick}
             className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
-            <Open className="fill-softBlack dark:fill-softWhite" />
+            <OpenApp className="fill-softBlack dark:fill-softWhite" />
             <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg">open app</p>
           </button>
         )}
