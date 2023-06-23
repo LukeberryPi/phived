@@ -1,11 +1,12 @@
-import { type DefaultIconProps } from "src/utils/defaultIconProps";
+import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
 
-export function InstallIcon({ className, widthAndHeight = 22 }: DefaultIconProps) {
+export function Install({ className, size = 24 }: DefaultSvgProps) {
   return (
     <svg
+      aria-label="Install App Icon"
       xmlns="http://www.w3.org/2000/svg"
-      width={widthAndHeight}
-      height={widthAndHeight}
+      width={size}
+      height={size}
       viewBox="0 0 256 256"
     >
       <path
