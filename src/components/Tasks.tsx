@@ -88,7 +88,10 @@ export function Tasks() {
             <li
               {...provided.draggableProps}
               key={idx}
-              className="group flex"
+              className={`group flex ${
+                isBeingDragged &&
+                "overflow-hidden rounded-2xl border-x border-t border-trueBlack/30 dark:border-trueWhite/30"
+              }`}
               ref={provided.innerRef}
             >
               <input
@@ -101,8 +104,10 @@ export function Tasks() {
                 placeholder={`${isFirstTask ? `${placeholder}?` : ""}`}
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
-                className={`peer w-full ${!isEmptyTask && multipleTasks && "group-hover:pr-2"} ${
-                  isFirstTask && "rounded-t-2xl"
+                className={`peer w-full ${
+                  isBeingDragged && "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                } ${!isEmptyTask && multipleTasks && "group-hover:pr-2"} ${
+                  isFirstTask && "rounded-t-2xl border-t-0"
                 } ${
                   isLastTask ? "rounded-b-2xl" : "border-b border-trueBlack dark:border-trueWhite"
                 } ${
@@ -117,7 +122,9 @@ export function Tasks() {
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
-                  !isBeingDragged && "hidden"
+                  isBeingDragged
+                    ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                    : "hidden"
                 } flex items-center justify-center bg-trueWhite pr-2 text-softBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-softWhite sm:text-lg`}
                 tabIndex={-1}
               >
@@ -130,7 +137,9 @@ export function Tasks() {
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
-                  !isBeingDragged && "hidden"
+                  isBeingDragged
+                    ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
+                    : "hidden"
                 } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-softWhite xs:px-6 sm:text-lg`}
               >
                 done?
@@ -177,7 +186,7 @@ export function Tasks() {
         </p>
         <button
           className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-softBlack/50
-          dark:border-trueWhite/50 dark:text-softWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
+          dark:border-trueWhite/30 dark:text-softWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
         >
           ok
           <Check className="rounded-md fill-softBlack/50 dark:fill-softWhite/50" />
