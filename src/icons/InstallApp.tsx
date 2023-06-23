@@ -1,6 +1,6 @@
 import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
 
-export function Install({ className, size = 24 }: DefaultSvgProps) {
+export function InstallApp({ className, size = 24 }: DefaultSvgProps) {
   return (
     <svg
       aria-label="Install App Icon"
