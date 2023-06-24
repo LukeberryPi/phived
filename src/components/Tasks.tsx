@@ -90,7 +90,7 @@ export function Tasks() {
               key={idx}
               className={`group flex ${
                 isBeingDragged &&
-                "overflow-hidden rounded-2xl border-x border-t border-trueBlack/30 dark:border-trueWhite/30"
+                "overflow-hidden rounded-2xl border-l border-t border-trueBlack/30 dark:border-trueWhite/30"
               }`}
               ref={provided.innerRef}
             >
