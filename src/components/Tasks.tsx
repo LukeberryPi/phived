@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Check, DragVertical } from "src/icons";
+import { Check, Close, DragVertical } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
@@ -188,8 +188,8 @@ export function Tasks() {
           className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-softBlack/50
           dark:border-trueWhite/30 dark:text-softWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
         >
-          ok
-          <Check className="rounded-md fill-softBlack/50 dark:fill-softWhite/50" />
+          close this dialog
+          <Close className="rounded-md fill-softBlack/50 dark:fill-softWhite/50" />
         </button>
       </div>
     </section>
