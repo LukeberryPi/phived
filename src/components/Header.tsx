@@ -88,7 +88,7 @@ export function Header() {
           className={`${
             noTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
-              : "cursor-pointer sm:hover:bg-alertRed sm:hover:text-softWhite"
+              : "cursor-pointer sm:hover:bg-alertRed"
           } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
           disabled={noTasks}
         >
@@ -101,7 +101,7 @@ export function Header() {
             className={`${
               noTasks
                 ? "text-softBlack/40 dark:text-softWhite/30"
-                : "text-softBlack group-hover:text-softWhite dark:text-softWhite"
+                : "text-softBlack dark:text-softWhite sm:group-hover:text-softWhite"
             } text-sm xs:text-lg`}
           >
             clear tasks

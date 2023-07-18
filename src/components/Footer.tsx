@@ -2,7 +2,7 @@ import { Github, Instagram, Twitter } from "src/icons";
 
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 hidden h-16 w-full items-center justify-center sm:flex sm:justify-start sm:px-6">
+    <footer className="fixed bottom-0 hidden h-16 w-full items-center justify-center sm:flex sm:justify-between sm:px-6">
       <div className="flex h-full items-center justify-between space-x-8">
         <a
           className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-trueBlack hover:ease-in-out dark:hover:bg-trueWhite"
@@ -38,6 +38,14 @@ export function Footer() {
           </p>
         </a>
       </div>
+      <a
+        target="_blank"
+        rel="noreferrer"
+        href="https://twitter.com/LukeberryPi"
+        className="hidden rounded-2xl py-2 px-3 text-lg text-trueBlack hover:bg-berryBlue dark:text-trueWhite dark:hover:bg-purpleRain md:block"
+      >
+        ©2023 LukeberryPi
+      </a>
     </footer>
   );
 }
