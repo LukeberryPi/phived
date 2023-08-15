@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Check, Close, DragVertical } from "src/icons";
+import { Close, DragVertical } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
