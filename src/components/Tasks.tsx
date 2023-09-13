@@ -159,7 +159,7 @@ export function Tasks() {
           <span className="block -skew-y-3 font-semibold">do?</span>
         </span>
       </p>
-      <ul className="w-72 resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+      <ul className="w-72 min-w-[320px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
           <Droppable droppableId="tasksList">
             {(provided) => (
