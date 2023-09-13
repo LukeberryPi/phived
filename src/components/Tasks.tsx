@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Check, Close, DragVertical } from "src/icons";
+import { Close, DragVertical } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
@@ -159,7 +159,7 @@ export function Tasks() {
           <span className="block -skew-y-3 font-semibold">do?</span>
         </span>
       </p>
-      <ul className="w-72 overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+      <ul className="w-72 resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
           <Droppable droppableId="tasksList">
             {(provided) => (
