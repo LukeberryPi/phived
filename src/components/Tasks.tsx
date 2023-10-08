@@ -155,8 +155,8 @@ export function Tasks() {
     <section className="flex flex-col items-center gap-4">
       <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
         what do you want to{" "}
-        <span className="inset-0 inline-block skew-y-3 rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain">
-          <span className="block -skew-y-3 font-semibold">do?</span>
+        <span className="inset-0 inline-block rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain">
+          <span className="block">do?</span>
         </span>
       </p>
       <ul className="w-72 overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
