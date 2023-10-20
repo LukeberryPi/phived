@@ -6,3 +6,4 @@ export { Head } from "src/components/Head";
 export { Message } from "src/components/Message";
 export { HelpMenu } from "src/components/HelpMenu";
 export { ModeSelector } from "src/components/ModeSelector";
+export { Home } from "src/components/Home";
