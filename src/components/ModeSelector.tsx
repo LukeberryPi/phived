@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ArrowUp } from "src/icons";
+import { Link } from "react-router-dom";
+import { ArrowUp, OpenApp } from "src/icons";
 
 export function ModeSelector() {
   const [showModes, setShowModes] = useState(false);
@@ -9,17 +10,38 @@ export function ModeSelector() {
   };
 
   return (
-    <div className="flex flex-col">
-      <button
-        onClick={toggleShowModes}
-        className="group relative flex items-center gap-2 text-sm xs:text-lg"
-      >
-        <p>general</p>
-        <span className={`h-fit w-fit ${showModes ? "rotate-0" : "rotate-180"} transition-all`}>
-          <ArrowUp />
-        </span>
-      </button>
-      {showModes && <button className="h-fit w-full">switch to daily</button>}
+    <div className="relative hidden lg:flex">
+      <div className="flex flex-col">
+        <button
+          onClick={toggleShowModes}
+          className="group flex items-center gap-3 text-sm xs:text-lg"
+        >
+          <p>switch mode</p>
+          <span className={`h-fit w-fit ${showModes ? "rotate-0" : "rotate-180"} transition-all`}>
+            <ArrowUp />
+          </span>
+        </button>
+      </div>
+      {showModes && (
+        <div className="absolute top-11 flex h-fit w-48 flex-col divide-y divide-trueBlack overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark">
+          <Link
+            to="/"
+            onClick={toggleShowModes}
+            className="flex items-center justify-between px-5 py-3 text-sm xs:text-lg"
+          >
+            general
+            <OpenApp size={24} />
+          </Link>
+          <Link
+            to="/daily"
+            onClick={toggleShowModes}
+            className="flex items-center justify-between px-5 py-3 text-sm xs:text-lg"
+          >
+            daily
+            <OpenApp size={24} />
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
