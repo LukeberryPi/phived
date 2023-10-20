@@ -1,4 +1,4 @@
-export interface DefaultSvgProps {
+export type DefaultSvgProps = {
   className?: string;
   size?: number;
-}
+};

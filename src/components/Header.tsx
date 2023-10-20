@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTasksContext } from "src/contexts";
-import { Logo, HelpMenu } from "src/components";
+import { Logo, HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, ArrowDown, Sun, InstallApp, OpenApp } from "src/icons";
+import { Trash, Moon, ArrowUp, Sun, InstallApp, OpenApp } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 export function Header() {
@@ -59,6 +59,7 @@ export function Header() {
     <header className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <div className="hidden items-center gap-8 text-softBlack sm:flex">
         <Logo />
+        <ModeSelector />
       </div>
       <nav className="flex h-full items-center justify-between space-x-4 tiny:space-x-10 sm:space-x-6">
         <button
@@ -135,7 +136,7 @@ export function Header() {
           <span
             className={`h-fit w-fit ${showHelpMenu ? "rotate-0" : "rotate-180"} transition-all`}
           >
-            <ArrowDown className="fill-softBlack dark:fill-softWhite" />
+            <ArrowUp className="fill-softBlack dark:fill-softWhite" />
           </span>
           <p className="dark:text-softWhite xs:text-lg">help</p>
         </button>

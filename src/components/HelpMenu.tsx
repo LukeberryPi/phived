@@ -1,8 +1,8 @@
 import { Close } from "src/icons";
 
-interface Props {
+type Props = {
   closeHelpMenu?: () => void;
-}
+};
 
 export function HelpMenu({ closeHelpMenu }: Props) {
   return (
