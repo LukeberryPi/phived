@@ -42,7 +42,7 @@ export function Footer() {
         target="_blank"
         rel="noreferrer"
         href="https://twitter.com/LukeberryPi"
-        className="hidden rounded-2xl py-2 px-3 text-lg text-trueBlack hover:bg-berryBlue dark:text-trueWhite dark:hover:bg-purpleRain md:block"
+        className="hidden rounded-2xl py-2 px-3 text-lg text-trueBlack decoration-trueBlack underline-offset-4 hover:underline md:block"
       >
         ©2023 LukeberryPi
       </a>

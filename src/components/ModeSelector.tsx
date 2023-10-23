@@ -9,13 +9,14 @@ export function ModeSelector() {
     setShowModes((showModes) => !showModes);
   };
 
+  function isDailyPage() {
+    return window.location.href.includes("daily");
+  }
+
   return (
     <div className="relative hidden lg:flex">
       <div className="flex flex-col">
-        <button
-          onClick={toggleShowModes}
-          className="group flex items-center gap-3 text-sm xs:text-lg"
-        >
+        <button onClick={toggleShowModes} className="flex items-center gap-3 text-sm xs:text-lg">
           <p>switch mode</p>
           <span className={`h-fit w-fit ${showModes ? "rotate-0" : "rotate-180"} transition-all`}>
             <ArrowUp />
@@ -30,15 +31,15 @@ export function ModeSelector() {
             className="flex items-center justify-between px-5 py-3 text-sm xs:text-lg"
           >
             general
-            <OpenApp size={24} />
+            {isDailyPage() && <OpenApp size={24} />}
           </Link>
           <Link
             to="/daily"
             onClick={toggleShowModes}
-            className="flex items-center justify-between px-5 py-3 text-sm xs:text-lg"
+            className="relative flex items-center justify-between px-5 py-3 text-sm xs:text-lg"
           >
             daily
-            <OpenApp size={24} />
+            {!isDailyPage() && <OpenApp size={24} />}
           </Link>
         </div>
       )}
