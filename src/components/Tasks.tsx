@@ -2,13 +2,24 @@ import type { MouseEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useTasksContext } from "src/contexts";
+import { getViewportWidth } from "src/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
 import { Close, DragVertical } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
-const DEFAULT_WIDTH = 378;
+function setDefaultWidth() {
+  if (getViewportWidth() < 400) {
+    return 300;
+  }
+  if (getViewportWidth() < 500) {
+    return 320;
+  }
+  return 384;
+}
+
+const DEFAULT_WIDTH = setDefaultWidth();
 
 export function Tasks() {
   const { message, tasks, changeTask, completeTask, setTasks } = useTasksContext();
