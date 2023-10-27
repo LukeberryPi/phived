@@ -9,7 +9,9 @@ import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
+const DEFAULT_WIDTH = setDefaultWidth();
 function setDefaultWidth() {
+  console.log("function run!");
   if (getViewportWidth() < 400) {
     return 300;
   }
@@ -19,16 +21,14 @@ function setDefaultWidth() {
   return 384;
 }
 
-const DEFAULT_WIDTH = setDefaultWidth();
-
 export function Tasks() {
   const { message, tasks, changeTask, completeTask, setTasks } = useTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
     "taskComponentWidth",
     DEFAULT_WIDTH
-  );
-  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
+    );
+    const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
 
   const numberOfTasks = tasks.filter(Boolean).length;
   const multipleTasks = numberOfTasks > 1;
