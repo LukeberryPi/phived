@@ -26,8 +26,8 @@ export function Tasks() {
   const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
     "taskComponentWidth",
     DEFAULT_WIDTH
-    );
-    const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
+  );
+  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
 
   const numberOfTasks = tasks.filter(Boolean).length;
   const multipleTasks = numberOfTasks > 1;
