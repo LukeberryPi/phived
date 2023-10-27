@@ -11,7 +11,6 @@ import { useLocalStorage } from "src/hooks";
 
 const DEFAULT_WIDTH = setDefaultWidth();
 function setDefaultWidth() {
-  console.log("function run!");
   if (getViewportWidth() < 400) {
     return 300;
   }
