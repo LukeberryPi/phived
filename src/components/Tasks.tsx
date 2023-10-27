@@ -32,20 +32,18 @@ export function Tasks() {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
-    switch (event.key) {
-      case "Enter":
-        if (event.ctrlKey) {
-          event.preventDefault();
-          return handleDone(i);
-        }
-        if (event.shiftKey) {
-          event.preventDefault();
-          return document.querySelectorAll("input")[i - 1]?.focus();
-        }
-        if (!event.ctrlKey) {
-          event.preventDefault();
-          return document.querySelectorAll("input")[i + 1]?.focus();
-        }
+    // event.metaKey is macOS command key
+    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      return handleDone(i);
+    }
+    if (event.key === "Enter" && event.shiftKey) {
+      event.preventDefault();
+      return document.querySelectorAll("input")[i - 1]?.focus();
+    }
+    if (event.key === "Enter" && !event.ctrlKey) {
+      event.preventDefault();
+      return document.querySelectorAll("input")[i + 1]?.focus();
     }
   };
 
@@ -159,7 +157,7 @@ export function Tasks() {
           <span className="block">do?</span>
         </span>
       </p>
-      <ul className="w-72 min-w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
+      <ul className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96">
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
           <Droppable droppableId="tasksList">
             {(provided) => (
