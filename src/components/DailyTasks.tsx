@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { placeholders } from "src/content";
-import { useTasksContext } from "src/contexts";
+import { useGeneralTasksContext } from "src/contexts";
 import { getViewportWidth } from "src/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
 import { Close, DragVertical } from "src/icons";
@@ -20,8 +20,9 @@ function setDefaultWidth() {
   return 384;
 }
 
-export function Tasks() {
-  const { message, tasks, changeTask, completeTask, setTasks } = useTasksContext();
+export function DailyTasks() {
+  const { message, generalTasks, changeGeneralTask, completeGeneralTask, setGeneralTasks } =
+    useGeneralTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
     "taskComponentWidth",
@@ -29,7 +30,7 @@ export function Tasks() {
   );
   const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
 
-  const numberOfTasks = tasks.filter(Boolean).length;
+  const numberOfTasks = generalTasks.filter(Boolean).length;
   const multipleTasks = numberOfTasks > 1;
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
@@ -37,7 +38,7 @@ export function Tasks() {
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
-    changeTask(i, currentTask);
+    changeGeneralTask(i, currentTask);
   };
 
   const handleResize = (e: MouseEvent<HTMLUListElement>) => {
@@ -53,7 +54,7 @@ export function Tasks() {
   }, [taskComponentWidth]);
 
   const handleDone = (i: number) => {
-    completeTask(i);
+    completeGeneralTask(i);
   };
 
   const hideTasksSaved = () => {
@@ -80,7 +81,7 @@ export function Tasks() {
     const destinationIndex = result.destination?.index;
 
     if (destinationIndex || destinationIndex === 0) {
-      setTasks((prev) => {
+      setGeneralTasks((prev: string[]) => {
         const actualTasks = [...prev];
         const draggedTask = actualTasks.splice(result.source.index, 1)[0];
         actualTasks.splice(destinationIndex, 0, draggedTask);
@@ -100,9 +101,9 @@ export function Tasks() {
     setSomeDragIsHappening(false);
   };
 
-  const tasksMap = tasks.map((task, idx) => {
+  const generalTasksMap = generalTasks.map((task, idx) => {
     const isFirstTask = idx === 0;
-    const isLastTask = idx === tasks.length - 1;
+    const isLastTask = idx === generalTasks.length - 1;
     const isEmptyTask = task.trim() === "";
 
     return (
@@ -167,7 +168,7 @@ export function Tasks() {
                   isBeingDragged
                     ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-softWhite xs:px-6 sm:text-lg`}
+                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-softWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>
@@ -182,7 +183,7 @@ export function Tasks() {
     <section className="flex flex-col items-center gap-4">
       <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
         what do you want to{" "}
-        <span className="inset-0 inline-block rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain">
+        <span className="inset-0 inline-block rounded-md bg-dailyGreen px-2 py-1 dark:bg-purpleRain">
           <span className="block">do?</span>
         </span>
       </p>
@@ -195,7 +196,7 @@ export function Tasks() {
           <Droppable droppableId="tasksList">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {tasksMap}
+                {generalTasksMap}
                 {provided.placeholder}
               </div>
             )}

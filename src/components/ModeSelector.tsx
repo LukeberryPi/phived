@@ -30,7 +30,10 @@ export function ModeSelector() {
             onClick={toggleShowModes}
             className="flex items-center justify-between px-5 py-3 text-sm xs:text-lg"
           >
-            general
+            <div className="flex items-center gap-2">
+              general
+              <span className="h-2 w-2 rounded-full bg-berryBlue" />
+            </div>
             {isDailyPage() && <OpenApp size={24} />}
           </Link>
           <Link
@@ -38,7 +41,10 @@ export function ModeSelector() {
             onClick={toggleShowModes}
             className="relative flex items-center justify-between px-5 py-3 text-sm xs:text-lg"
           >
-            daily
+            <div className="flex items-center gap-2">
+              daily
+              <span className="h-2 w-2 rounded-full bg-dailyGreen" />
+            </div>
             {!isDailyPage() && <OpenApp size={24} />}
           </Link>
         </div>

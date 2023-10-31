@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useTasksContext } from "src/contexts";
+import { useGeneralTasksContext } from "src/contexts";
 import { Logo, HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
 import { Trash, Moon, ArrowUp, Sun, InstallApp, OpenApp } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 export function Header() {
-  const { clearTasks, tasks } = useTasksContext();
+  const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
 
-  const noTasks = tasks.filter(Boolean).length === 0;
+  const noTasks = generalTasks.filter(Boolean).length === 0;
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
@@ -85,7 +85,7 @@ export function Header() {
           )}
         </button>
         <button
-          onClick={clearTasks}
+          onClick={clearGeneralTasks}
           className={`${
             noTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"

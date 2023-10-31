@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useTasksContext } from "src/contexts";
+import { useGeneralTasksContext } from "src/contexts";
 
 const headConstants = {
   icons: {
@@ -10,9 +10,9 @@ const headConstants = {
 };
 
 export function Head() {
-  const { tasks } = useTasksContext();
+  const { generalTasks } = useGeneralTasksContext();
   const { baseTitle, icons } = headConstants;
-  const ongoingTasks = tasks.filter((task) => task.trim() !== "");
+  const ongoingTasks = generalTasks.filter((task: string) => task.trim() !== "");
 
   const titlePrefix = ongoingTasks.length ? `[${ongoingTasks.length}]` : "";
   const title = `${titlePrefix} ${baseTitle}`.trim();

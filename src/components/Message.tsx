@@ -1,7 +1,7 @@
-import { useTasksContext } from "src/contexts";
+import { useGeneralTasksContext } from "src/contexts";
 
 export function Message() {
-  const { message } = useTasksContext();
+  const { message } = useGeneralTasksContext();
 
   return (
     <span
