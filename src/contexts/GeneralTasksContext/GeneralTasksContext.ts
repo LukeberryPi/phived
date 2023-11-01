@@ -5,6 +5,6 @@ export const initialState = {
   generalTasks: Array<string>(5).fill(""),
 } as GeneralTaskContextType;
 
-export const TasksContext = createContext(initialState);
+export const GeneralTasksContext = createContext(initialState);
 
-export const useGeneralTasksContext = () => useContext(TasksContext);
+export const useGeneralTasksContext = () => useContext(GeneralTasksContext);

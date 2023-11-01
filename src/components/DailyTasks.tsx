@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { placeholders } from "src/content";
-import { useGeneralTasksContext } from "src/contexts";
+import { useDailyTasksContext } from "src/contexts";
 import { getViewportWidth } from "src/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
 import { Close, DragVertical } from "src/icons";
@@ -21,8 +21,8 @@ function setDefaultWidth() {
 }
 
 export function DailyTasks() {
-  const { message, generalTasks, changeGeneralTask, completeGeneralTask, setGeneralTasks } =
-    useGeneralTasksContext();
+  const { message, dailyTasks, changeDailyTask, completeDailyTask, setDailyTasks } =
+    useDailyTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
     "taskComponentWidth",
@@ -30,7 +30,7 @@ export function DailyTasks() {
   );
   const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
 
-  const numberOfTasks = generalTasks.filter(Boolean).length;
+  const numberOfTasks = dailyTasks.filter(Boolean).length;
   const multipleTasks = numberOfTasks > 1;
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
@@ -38,7 +38,7 @@ export function DailyTasks() {
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
-    changeGeneralTask(i, currentTask);
+    changeDailyTask(i, currentTask);
   };
 
   const handleResize = (e: MouseEvent<HTMLUListElement>) => {
@@ -54,7 +54,7 @@ export function DailyTasks() {
   }, [taskComponentWidth]);
 
   const handleDone = (i: number) => {
-    completeGeneralTask(i);
+    completeDailyTask(i);
   };
 
   const hideTasksSaved = () => {
@@ -81,7 +81,7 @@ export function DailyTasks() {
     const destinationIndex = result.destination?.index;
 
     if (destinationIndex || destinationIndex === 0) {
-      setGeneralTasks((prev: string[]) => {
+      setDailyTasks((prev: string[]) => {
         const actualTasks = [...prev];
         const draggedTask = actualTasks.splice(result.source.index, 1)[0];
         actualTasks.splice(destinationIndex, 0, draggedTask);
@@ -101,9 +101,9 @@ export function DailyTasks() {
     setSomeDragIsHappening(false);
   };
 
-  const generalTasksMap = generalTasks.map((task, idx) => {
+  const dailyTasksMap = dailyTasks.map((task, idx) => {
     const isFirstTask = idx === 0;
-    const isLastTask = idx === generalTasks.length - 1;
+    const isLastTask = idx === dailyTasks.length - 1;
     const isEmptyTask = task.trim() === "";
 
     return (
@@ -196,7 +196,7 @@ export function DailyTasks() {
           <Droppable droppableId="tasksList">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {generalTasksMap}
+                {dailyTasksMap}
                 {provided.placeholder}
               </div>
             )}

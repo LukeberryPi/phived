@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUp, OpenApp } from "src/icons";
+import { isDailyPage } from "src/utils";
 
 export function ModeSelector() {
   const [showModes, setShowModes] = useState(false);
@@ -8,10 +9,6 @@ export function ModeSelector() {
   const toggleShowModes = () => {
     setShowModes((showModes) => !showModes);
   };
-
-  function isDailyPage() {
-    return window.location.href.includes("daily");
-  }
 
   return (
     <div className="relative hidden lg:flex">

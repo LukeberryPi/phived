@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { incentives } from "src/content";
-import { TasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
+import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
 import { useLocalStorage } from "src/hooks/useLocalStorage";
 
@@ -71,7 +71,7 @@ export const GeneralTasksContextProvider = ({ children }: PropsWithChildren) => 
   }, [generalTasks, setStoredGeneralTasks]);
 
   return (
-    <TasksContext.Provider
+    <GeneralTasksContext.Provider
       value={{
         generalTasks: memoizedTasks,
         setGeneralTasks,
@@ -84,6 +84,6 @@ export const GeneralTasksContextProvider = ({ children }: PropsWithChildren) => 
       }}
     >
       {children}
-    </TasksContext.Provider>
+    </GeneralTasksContext.Provider>
   );
 };

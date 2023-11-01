@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGeneralTasksContext } from "src/contexts";
 import { Logo, HelpMenu, ModeSelector } from "src/components";
-import { handleSetTheme, isThemeSetToDark } from "src/utils";
+import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
 import { Trash, Moon, ArrowUp, Sun, InstallApp, OpenApp } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
@@ -9,6 +9,7 @@ export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
+  const [dailyPage, setDailyPage] = useState(isDailyPage());
 
   const noTasks = generalTasks.filter(Boolean).length === 0;
 
@@ -28,11 +29,11 @@ export function Header() {
     setShowHelpMenu(false);
   };
 
-  const handleInstallClick = () => {
+  const handleInstallAppClick = () => {
     console.log("installed the app!");
   };
 
-  const handleOpenClick = () => {
+  const handleOpenAppClick = () => {
     console.log("opened the app!");
   };
 
@@ -110,8 +111,8 @@ export function Header() {
         </button>
         {showInstallButton && (
           <button
-            onClick={handleInstallClick}
-            className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
+            onClick={handleInstallAppClick}
+            className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
             <InstallApp className="fill-softBlack dark:fill-softWhite" />
             <p className="text-sm dark:text-softWhite xs:text-lg">install app</p>
@@ -119,8 +120,8 @@ export function Header() {
         )}
         {showOpenButton && (
           <button
-            onClick={handleOpenClick}
-            className="group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
+            onClick={handleOpenAppClick}
+            className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
           >
             <OpenApp className="fill-softBlack dark:fill-softWhite" />
             <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg">open app</p>
@@ -129,9 +130,7 @@ export function Header() {
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className={`group ${
-            showHelpMenu && "bg-berryBlue dark:bg-purpleRain"
-          } hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-berryBlue sm:hover:ease-in-out dark:sm:hover:bg-purpleRain lg:flex`}
+          className="group relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out lg:flex"
         >
           <span
             className={`h-fit w-fit ${showHelpMenu ? "rotate-0" : "rotate-180"} transition-all`}
