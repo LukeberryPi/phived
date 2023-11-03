@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGeneralTasksContext } from "src/contexts";
 import { Logo, HelpMenu, ModeSelector } from "src/components";
-import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
+import { handleSetTheme, isThemeSetToDark } from "src/utils";
 import { Trash, Moon, ArrowUp, Sun, InstallApp, OpenApp } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
@@ -9,7 +9,6 @@ export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
-  const [dailyPage, setDailyPage] = useState(isDailyPage());
 
   const noTasks = generalTasks.filter(Boolean).length === 0;
 
