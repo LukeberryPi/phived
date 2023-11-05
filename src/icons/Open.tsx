@@ -1,6 +1,6 @@
 import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
 
-export function OpenApp({ className, size = 26 }: DefaultSvgProps) {
+export function Open({ className, size = 26 }: DefaultSvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

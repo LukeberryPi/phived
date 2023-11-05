@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUp, OpenApp } from "src/icons";
+import { ArrowUp, Open } from "src/icons";
 import { isDailyPage } from "src/utils";
 
 export function ModeSelector() {
@@ -31,7 +31,7 @@ export function ModeSelector() {
               general
               <span className="h-2 w-2 rounded-full bg-berryBlue" />
             </div>
-            {isDailyPage() && <OpenApp size={24} />}
+            {isDailyPage() && <Open size={24} />}
           </Link>
           <Link
             to="/daily"
@@ -42,7 +42,7 @@ export function ModeSelector() {
               daily
               <span className="h-2 w-2 rounded-full bg-dailyGreen" />
             </div>
-            {!isDailyPage() && <OpenApp size={24} />}
+            {!isDailyPage() && <Open size={24} />}
           </Link>
         </div>
       )}

@@ -181,12 +181,14 @@ export function GeneralTasks() {
 
   return (
     <section className="flex flex-col items-center gap-4">
-      <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
-        what do you want to{" "}
-        <span className="inset-0 inline-block rounded-md bg-berryBlue px-2 py-1 dark:bg-purpleRain">
-          <span className="block">do?</span>
-        </span>
-      </p>
+      <div className="flex flex-col gap-2 text-center">
+        <p className="sm:text-md mx-auto w-fit rounded-md bg-berryBlue px-2 py-1 text-sm">
+          general
+        </p>
+        <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
+          what do you want to do?
+        </p>
+      </div>
       <ul
         onMouseUp={handleResize}
         style={{ width: `${taskComponentWidth}px` }}

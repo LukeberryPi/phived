@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useGeneralTasksContext } from "src/contexts";
 import { Logo, HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, ArrowUp, Sun, InstallApp, OpenApp } from "src/icons";
+import { Trash, Moon, ArrowUp, Sun } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 export function Header() {
@@ -27,33 +27,6 @@ export function Header() {
   const closeHelpMenu = () => {
     setShowHelpMenu(false);
   };
-
-  const handleInstallAppClick = () => {
-    console.log("installed the app!");
-  };
-
-  const handleOpenAppClick = () => {
-    console.log("opened the app!");
-  };
-
-  // the DOWNLOAD/OPEN BUTTON logic will be implemented considering:
-
-  // if the user is using the WEB VERSION
-  const isOnWeb = false;
-  // until this issue is solved https://github.com/LukeberryPi/phived/issues/58
-  // this boolean must be hardcoded to false,
-  // so that INSTALL / OPEN BUTTON doesn't show up in prod with no functionality
-
-  // if the user has INSTALLED the PWA VERSION
-  const hasInstalledPwa = false;
-
-  // if they are using the WEB VERSION and don't have the PWA installed, show INSTALL BUTTON
-  const showInstallButton = isOnWeb && !hasInstalledPwa;
-
-  // if they are using the WEB VERSION and have the PWA installed, show OPEN BUTTON
-  const showOpenButton = isOnWeb && hasInstalledPwa;
-
-  // if they are using the PWA version, no button will be shown (neither INSTALL nor OPEN)
 
   return (
     <header className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
@@ -108,24 +81,6 @@ export function Header() {
             clear tasks
           </p>
         </button>
-        {showInstallButton && (
-          <button
-            onClick={handleInstallAppClick}
-            className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
-          >
-            <InstallApp className="fill-softBlack dark:fill-softWhite" />
-            <p className="text-sm dark:text-softWhite xs:text-lg">install app</p>
-          </button>
-        )}
-        {showOpenButton && (
-          <button
-            onClick={handleOpenAppClick}
-            className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:hidden sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out"
-          >
-            <OpenApp className="fill-softBlack dark:fill-softWhite" />
-            <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg">open app</p>
-          </button>
-        )}
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}

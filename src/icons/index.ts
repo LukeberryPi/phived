@@ -6,7 +6,6 @@ export { ArrowUp } from "src/icons/ArrowUp";
 export { Instagram } from "src/icons/Instagram";
 export { Github } from "src/icons/Github";
 export { Twitter } from "src/icons/Twitter";
-export { InstallApp } from "src/icons/InstallApp";
-export { OpenApp } from "src/icons/OpenApp";
+export { Open } from "src/icons/Open";
 export { Close } from "src/icons/Close";
 export { Check } from "src/icons/Check";
