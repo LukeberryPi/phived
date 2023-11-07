@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
-import { useGeneralTasksContext } from "src/contexts";
+import { useDailyTasksContext, useGeneralTasksContext } from "src/contexts";
 import { Logo, HelpMenu, ModeSelector } from "src/components";
-import { handleSetTheme, isThemeSetToDark } from "src/utils";
+import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
 import { Trash, Moon, ArrowUp, Sun } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
+  const { clearDailyTasks, dailyTasks } = useDailyTasksContext();
   const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
   const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
 
-  const noTasks = generalTasks.filter(Boolean).length === 0;
+  const noGeneralTasks = generalTasks.filter(Boolean).length === 0;
+  const noDailyTasks = dailyTasks.filter(Boolean).length === 0;
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
-  }, [isDarkMode]);
+    console.log("noGeneralTasks", noGeneralTasks);
+  }, [isDarkMode, noGeneralTasks]);
 
   const toggleDarkMode = () => {
     setIsDarkMode((currentDarkMode) => !currentDarkMode);
@@ -58,22 +61,24 @@ export function Header() {
           )}
         </button>
         <button
-          onClick={clearGeneralTasks}
+          onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}
           className={`${
-            noTasks
+            noGeneralTasks && noDailyTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
               : "cursor-pointer sm:hover:bg-alertRed"
           } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
-          disabled={noTasks}
+          disabled={(!isDailyPage() && noGeneralTasks) || (isDailyPage() && noDailyTasks)}
         >
           <Trash
             className={`fill-softBlack dark:fill-softWhite ${
-              noTasks ? "fill-softBlack/30 dark:fill-softWhite/30" : "sm:group-hover:fill-softWhite"
+              noGeneralTasks && noDailyTasks
+                ? "fill-softBlack/30 dark:fill-softWhite/30"
+                : "sm:group-hover:fill-softWhite"
             } `}
           />
           <p
             className={`${
-              noTasks
+              noGeneralTasks && noDailyTasks
                 ? "text-softBlack/40 dark:text-softWhite/30"
                 : "text-softBlack dark:text-softWhite sm:group-hover:text-softWhite"
             } text-sm xs:text-lg`}
