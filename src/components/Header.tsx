@@ -16,7 +16,6 @@ export function Header() {
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
-    console.log("noGeneralTasks", noGeneralTasks);
   }, [isDarkMode, noGeneralTasks]);
 
   const toggleDarkMode = () => {
