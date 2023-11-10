@@ -2,7 +2,10 @@ import type { PropsWithChildren } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { incentives } from "src/content";
 import { DailyTasksContext } from "src/contexts/DailyTasksContext/DailyTasksContext";
-import type { DailyTask } from "src/contexts/DailyTasksContext/DailyTasksContext.types";
+import type {
+  DailyTask,
+  DailyTasksLastDoneAt,
+} from "src/contexts/DailyTasksContext/DailyTasksContext.types";
 import { useLocalStorage } from "src/hooks/useLocalStorage";
 
 export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
@@ -13,6 +16,10 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   const [dailyTasks, setDailyTasks] = useState(storedDailyTasks);
   const [message, setMessage] = useState<string>("");
   const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);
+  const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] = useLocalStorage<DailyTasksLastDoneAt>(
+    "dailyTasksLastDoneAt",
+    []
+  );
 
   const memoizedTasks = useMemo(() => dailyTasks, [dailyTasks]);
 
@@ -45,18 +52,29 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   );
 
   const completeDailyTask = useCallback(
-    (index: number) => {
-      if (!dailyTasks[index]) return;
+    (taskIndex: number) => {
+      if (!dailyTasks[taskIndex]) return;
 
-      const ongoingTasks = dailyTasks.filter((_, idx) => idx !== index);
-      setDailyTasks([...ongoingTasks, ""]);
+      const ongoingTasks = dailyTasks.filter((_, idx) => idx !== taskIndex);
+      setDailyTasksLastDoneAt([
+        ...dailyTasksLastDoneAt,
+        { dailyTask: dailyTasks[taskIndex], monthDayLastCompleted: new Date() },
+      ]);
+      setDailyTasks([...ongoingTasks]);
       displayMessage(incentive);
     },
-    [displayMessage, incentive, dailyTasks, setDailyTasks]
+    [
+      displayMessage,
+      incentive,
+      dailyTasks,
+      setDailyTasks,
+      dailyTasksLastDoneAt,
+      setDailyTasksLastDoneAt,
+    ]
   );
 
   const clearDailyTasks = useCallback(() => {
-    const isUserCertain = window.confirm("Are you sure you want to DELETE all your tasks?");
+    const isUserCertain = window.confirm("Are you sure you want to DELETE all your daily tasks?");
 
     if (!isUserCertain) {
       return;
@@ -73,13 +91,15 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   return (
     <DailyTasksContext.Provider
       value={{
-        dailyTasks: memoizedTasks,
-        setDailyTasks,
-        completeDailyTask,
         changeDailyTask,
         clearDailyTasks,
+        completeDailyTask,
+        dailyTasks: memoizedTasks,
+        dailyTasksLastDoneAt,
         displayMessage,
         message,
+        setDailyTasks,
+        setDailyTasksLastDoneAt,
         setMessage,
       }}
     >

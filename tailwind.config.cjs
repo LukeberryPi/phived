@@ -17,6 +17,7 @@ module.exports = {
         alertRed: "#E35454",
         berryBlue: "#79CBE3",
         dailyGreen: "#64E9CF",
+        dailyOrange: "#B854E2",
         softBlack: "#101018",
         trueBlack: "#080811",
         softWhite: "#FCFCFD",

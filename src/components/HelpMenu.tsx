@@ -77,7 +77,7 @@ export function HelpMenu({ closeHelpMenu }: Props) {
           will complete the current task, or just click{" "}
           <span
             onClick={closeHelpMenu}
-            className="cursor-pointer rounded-r-md border border-trueBlack bg-berryBlue py-1 px-2 dark:border-trueWhite dark:bg-purpleRain"
+            className="cursor-pointer rounded-r-md border border-trueBlack bg-berryBlue py-1 px-2 dark:border-trueWhite dark:bg-dailyOrange"
           >
             done?
           </span>

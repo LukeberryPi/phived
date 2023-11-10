@@ -14,14 +14,14 @@ export function ModeSelector() {
     <div className="relative hidden lg:flex">
       <div className="flex flex-col">
         <button onClick={toggleShowModes} className="flex items-center gap-3 text-sm xs:text-lg">
-          <p>switch mode</p>
+          <p className="text-trueBlack dark:text-trueWhite">switch mode</p>
           <span className={`h-fit w-fit ${showModes ? "rotate-0" : "rotate-180"} transition-all`}>
-            <ArrowUp />
+            <ArrowUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
         </button>
       </div>
       {showModes && (
-        <div className="absolute top-11 flex h-fit w-48 flex-col divide-y divide-trueBlack overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark">
+        <div className="absolute top-11 flex h-fit w-48 flex-col divide-y divide-trueBlack overflow-hidden rounded-2xl border border-trueBlack bg-softWhite shadow-brutalist-dark dark:divide-trueWhite dark:border-trueWhite dark:bg-softBlack dark:text-trueWhite dark:shadow-brutalist-light">
           <Link
             to="/"
             onClick={toggleShowModes}
@@ -29,9 +29,9 @@ export function ModeSelector() {
           >
             <div className="flex items-center gap-2">
               general
-              <span className="h-2 w-2 rounded-full bg-berryBlue" />
+              <span className="h-2 w-2 rounded-full bg-berryBlue dark:bg-purpleRain" />
             </div>
-            {isDailyPage() && <Open size={24} />}
+            {isDailyPage() && <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />}
           </Link>
           <Link
             to="/daily"
@@ -40,9 +40,9 @@ export function ModeSelector() {
           >
             <div className="flex items-center gap-2">
               daily
-              <span className="h-2 w-2 rounded-full bg-dailyGreen" />
+              <span className="h-2 w-2 rounded-full bg-dailyGreen dark:bg-dailyOrange" />
             </div>
-            {!isDailyPage() && <Open size={24} />}
+            {!isDailyPage() && <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />}
           </Link>
         </div>
       )}

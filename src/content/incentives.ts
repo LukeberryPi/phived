@@ -1,4 +1,4 @@
-export const incentives: string[] = [
+export const incentives = [
   "amazing!",
   "awesome!",
   "marvelous!",

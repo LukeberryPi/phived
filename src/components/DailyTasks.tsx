@@ -4,8 +4,9 @@ import { placeholders } from "src/content";
 import { useDailyTasksContext } from "src/contexts";
 import { getViewportWidth } from "src/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Close, DragVertical } from "src/icons";
+import { Close, DragVertical, Open } from "src/icons";
 import { useLocalStorage } from "src/hooks";
+import { Link } from "react-router-dom";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
@@ -24,13 +25,14 @@ export function DailyTasks() {
   const { message, dailyTasks, changeDailyTask, completeDailyTask, setDailyTasks } =
     useDailyTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
-  const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
-    "taskComponentWidth",
+  const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
+    "tasksComponentWidth",
     DEFAULT_WIDTH
   );
   const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
 
   const numberOfTasks = dailyTasks.filter(Boolean).length;
+  const noTasks = numberOfTasks === 0;
   const multipleTasks = numberOfTasks > 1;
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
@@ -44,14 +46,14 @@ export function DailyTasks() {
   const handleResize = (e: MouseEvent<HTMLUListElement>) => {
     const newWidth = e.currentTarget.offsetWidth;
 
-    if (newWidth !== taskComponentWidth) {
-      setTaskComponentWidth(newWidth);
+    if (newWidth !== tasksComponentWidth) {
+      setTasksComponentWidth(newWidth);
     }
   };
 
   useEffect(() => {
-    localStorage.setItem("taskComponentWidth", String(taskComponentWidth));
-  }, [taskComponentWidth]);
+    setTasksComponentWidth(tasksComponentWidth);
+  }, [setTasksComponentWidth, tasksComponentWidth]);
 
   const handleDone = (i: number) => {
     completeDailyTask(i);
@@ -168,7 +170,7 @@ export function DailyTasks() {
                   isBeingDragged
                     ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-softWhite xs:px-6 sm:text-lg`}
+                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyOrange dark:text-softWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>
@@ -182,27 +184,45 @@ export function DailyTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="sm:text-md mx-auto w-fit rounded-md bg-dailyGreen px-2 py-1 text-sm">daily</p>
-        <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
-          what do you want to do?
+        <p className="sm:text-md mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-sm dark:bg-dailyOrange dark:text-trueWhite">
+          daily
         </p>
+        <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
+          {noTasks ? "come back tomorrow!" : "what do you want to do?"}
+        </p>
+        {noTasks && (
+          <Link
+            to="/"
+            className="mx-auto flex items-center gap-2 rounded-xl px-3 py-1.5 hover:bg-berryBlue dark:hover:bg-purpleRain"
+          >
+            <p className="text-trueBlack decoration-trueBlack dark:text-trueWhite dark:decoration-trueWhite">
+              go to general
+            </p>
+            <Open size={20} className="fill-trueBlack dark:fill-trueWhite" />
+          </Link>
+        )}
       </div>
-      <ul
-        onMouseUp={handleResize}
-        style={{ width: `${taskComponentWidth}px` }}
-        className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
-      >
-        <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
-          <Droppable droppableId="tasksList">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {dailyTasksMap}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </ul>
+      {!noTasks && (
+        <ul
+          onMouseUp={handleResize}
+          style={{ width: `${tasksComponentWidth}px` }}
+          className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+        >
+          <DragDropContext
+            onDragEnd={handleDragEnd}
+            onDragStart={() => setSomeDragIsHappening(true)}
+          >
+            <Droppable droppableId="tasksList">
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {dailyTasksMap}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </ul>
+      )}
       <div
         onClick={hideTasksSaved}
         role="button"

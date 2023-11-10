@@ -1,4 +1,4 @@
-export const placeholders: string[] = [
+export const placeholders = [
   "acquire the sauce",
   "activate windows",
   "answer mom in whatsapp",

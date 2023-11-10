@@ -45,10 +45,10 @@ export const GeneralTasksContextProvider = ({ children }: PropsWithChildren) => 
   );
 
   const completeGeneralTask = useCallback(
-    (index: number) => {
-      if (!generalTasks[index]) return;
+    (taskIndex: number) => {
+      if (!generalTasks[taskIndex]) return;
 
-      const ongoingTasks = generalTasks.filter((_, idx) => idx !== index);
+      const ongoingTasks = generalTasks.filter((_, idx) => idx !== taskIndex);
       setGeneralTasks([...ongoingTasks, ""]);
       displayMessage(incentive);
     },
@@ -73,13 +73,13 @@ export const GeneralTasksContextProvider = ({ children }: PropsWithChildren) => 
   return (
     <GeneralTasksContext.Provider
       value={{
-        generalTasks: memoizedTasks,
-        setGeneralTasks,
-        completeGeneralTask,
         changeGeneralTask,
         clearGeneralTasks,
+        completeGeneralTask,
         displayMessage,
+        generalTasks: memoizedTasks,
         message,
+        setGeneralTasks,
         setMessage,
       }}
     >

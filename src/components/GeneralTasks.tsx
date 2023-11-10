@@ -24,8 +24,8 @@ export function GeneralTasks() {
   const { message, generalTasks, changeGeneralTask, completeGeneralTask, setGeneralTasks } =
     useGeneralTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
-  const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
-    "taskComponentWidth",
+  const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
+    "tasksComponentWidth",
     DEFAULT_WIDTH
   );
   const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
@@ -44,14 +44,14 @@ export function GeneralTasks() {
   const handleResize = (e: MouseEvent<HTMLUListElement>) => {
     const newWidth = e.currentTarget.offsetWidth;
 
-    if (newWidth !== taskComponentWidth) {
-      setTaskComponentWidth(newWidth);
+    if (newWidth !== tasksComponentWidth) {
+      setTasksComponentWidth(newWidth);
     }
   };
 
   useEffect(() => {
-    localStorage.setItem("taskComponentWidth", String(taskComponentWidth));
-  }, [taskComponentWidth]);
+    setTasksComponentWidth(tasksComponentWidth);
+  }, [setTasksComponentWidth, tasksComponentWidth]);
 
   const handleDone = (i: number) => {
     completeGeneralTask(i);
@@ -182,7 +182,7 @@ export function GeneralTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="sm:text-md mx-auto w-fit rounded-md bg-berryBlue px-2 py-1 text-sm">
+        <p className="sm:text-md mx-auto w-fit rounded-lg bg-berryBlue px-2 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite">
           general
         </p>
         <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
@@ -191,7 +191,7 @@ export function GeneralTasks() {
       </div>
       <ul
         onMouseUp={handleResize}
-        style={{ width: `${taskComponentWidth}px` }}
+        style={{ width: `${tasksComponentWidth}px` }}
         className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
       >
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
