@@ -11,20 +11,20 @@ export function HelpMenu({ closeHelpMenu }: Props) {
         onClick={closeHelpMenu}
         className="absolute right-3 top-3 h-fit w-fit cursor-pointer rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
       >
-        <Close className="fill-softBlack dark:fill-softWhite" />
+        <Close className="fill-trueBlack dark:fill-trueWhite" />
       </button>
-      <h1 className="text-softBlack dark:text-softWhite">
+      <h1 className="text-trueBlack dark:text-trueWhite">
         welcome to the phived.com, the
         <br />
         <strong>anti-procrastination to-do list!</strong>
       </h1>
       <br />
-      <h2 className="text-softBlack dark:text-softWhite">
+      <h2 className="text-trueBlack dark:text-trueWhite">
         <strong>list five things you wish to get done.</strong> to add more tasks, complete existing
         ones!
       </h2>
       <br />
-      <p className="text-softBlack dark:text-softWhite">
+      <p className="text-trueBlack dark:text-trueWhite">
         <strong>want to know more?</strong> access{" "}
         <a
           rel="noreferrer"
@@ -48,14 +48,14 @@ export function HelpMenu({ closeHelpMenu }: Props) {
       <br />
       <hr className="mb-7 h-px w-full border-trueBlack dark:border-trueWhite" />
       <div className="space-y-3">
-        <p className="text-softBlack dark:text-softWhite">
+        <p className="text-trueBlack dark:text-trueWhite">
           <kbd className="rounded border border-trueBlack px-2 py-1 font-sans dark:border-trueWhite">
             enter
           </kbd>{" "}
           navigates to the next task,{" "}
         </p>
         <br />
-        <p className="leading-7 text-softBlack dark:text-softWhite">
+        <p className="leading-7 text-trueBlack dark:text-trueWhite">
           <kbd className="rounded border border-trueBlack px-2 py-1 font-sans dark:border-trueWhite">
             shift
           </kbd>{" "}
@@ -66,7 +66,7 @@ export function HelpMenu({ closeHelpMenu }: Props) {
           navigates to the previous task,
         </p>
         <br />
-        <p className="-translate-y-3 leading-7 text-softBlack dark:text-softWhite">
+        <p className="-translate-y-3 leading-7 text-trueBlack dark:text-trueWhite">
           <kbd className="rounded border border-trueBlack px-2 py-1 font-sans dark:border-trueWhite">
             ctrl
           </kbd>{" "}

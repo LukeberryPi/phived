@@ -14,7 +14,7 @@ export function ModeSelector() {
     <div className="relative hidden md:flex">
       <div className="flex flex-col">
         <button onClick={toggleShowModes} className="flex items-center gap-3 text-sm xs:text-lg">
-          <p className="text-trueBlack dark:text-trueWhite">switch mode</p>
+          <p className="text-trueBlack dark:text-trueWhite">switch tasks</p>
           <span className={`h-fit w-fit ${showModes ? "rotate-0" : "rotate-180"} transition-all`}>
             <ArrowUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>

@@ -9,3 +9,4 @@ export { Twitter } from "src/icons/Twitter";
 export { Open } from "src/icons/Open";
 export { Close } from "src/icons/Close";
 export { Check } from "src/icons/Check";
+export { Clock } from "src/icons/Clock";

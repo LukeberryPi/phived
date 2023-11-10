@@ -1,12 +1,12 @@
 import type { MouseEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { placeholders } from "src/content";
 import { useDailyTasksContext } from "src/contexts";
 import { getViewportWidth } from "src/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Close, DragVertical, Open } from "src/icons";
+import { Clock, Close, DragVertical, Open } from "src/icons";
 import { useLocalStorage } from "src/hooks";
-import { Link } from "react-router-dom";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
@@ -19,6 +19,55 @@ function setDefaultWidth() {
     return 320;
   }
   return 384;
+}
+
+function getTimeRemainingUntilMidnight() {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+
+  const timeRemaining = midnight.getTime() - now.getTime();
+
+  const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+  const seconds = Math.floor((timeRemaining / 1000) % 60);
+
+  return {
+    total: timeRemaining,
+    hours: String(hours).padStart(2, "0"),
+    minutes: String(minutes).padStart(2, "0"),
+    seconds: String(seconds).padStart(2, "0"),
+  };
+}
+
+export function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState(getTimeRemainingUntilMidnight());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const time = getTimeRemainingUntilMidnight();
+      setTimeLeft(time);
+
+      if (time.total <= 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <>
+      {timeLeft.total > 0 ? (
+        <div className="flex items-center gap-2">
+          <Clock className="text-trueBlack dark:text-trueWhite" />
+          <p className="tabular-nums text-trueBlack dark:text-trueWhite">
+            {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}
+          </p>
+        </div>
+      ) : null}
+    </>
+  );
 }
 
 export function DailyTasks() {
@@ -142,7 +191,7 @@ export function DailyTasks() {
                   isLastTask ? "rounded-b-2xl" : "border-b border-trueBlack dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
-                } bg-trueWhite py-4 px-5 text-softBlack focus:outline-none dark:bg-softBlack dark:text-softWhite sm:text-lg`}
+                } bg-trueWhite py-4 px-5 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
               />
               <span
                 {...provided.dragHandleProps}
@@ -155,10 +204,10 @@ export function DailyTasks() {
                   isBeingDragged
                     ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } flex items-center justify-center bg-trueWhite pr-2 text-softBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-softWhite sm:text-lg`}
+                } flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
                 tabIndex={-1}
               >
-                <DragVertical className="fill-softBlack dark:fill-softWhite" />
+                <DragVertical className="fill-trueBlack dark:fill-trueWhite" />
               </span>
               <button
                 onClick={() => handleDone(idx)}
@@ -170,7 +219,7 @@ export function DailyTasks() {
                   isBeingDragged
                     ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyOrange dark:text-softWhite xs:px-6 sm:text-lg`}
+                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyOrange dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>
@@ -187,19 +236,22 @@ export function DailyTasks() {
         <p className="sm:text-md mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-sm dark:bg-dailyOrange dark:text-trueWhite">
           daily
         </p>
-        <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
-          {noTasks ? "come back tomorrow!" : "what do you want to do?"}
+        <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
+          {noTasks ? "these tasks will be available again in" : "what do you want to do?"}
         </p>
         {noTasks && (
-          <Link
-            to="/"
-            className="mx-auto flex items-center gap-2 rounded-xl px-3 py-1.5 hover:bg-berryBlue dark:hover:bg-purpleRain"
-          >
-            <p className="text-trueBlack decoration-trueBlack dark:text-trueWhite dark:decoration-trueWhite">
-              go to general
-            </p>
-            <Open size={20} className="fill-trueBlack dark:fill-trueWhite" />
-          </Link>
+          <div className="mx-auto flex items-center gap-4">
+            <CountdownTimer />
+            <Link
+              to="/"
+              className="mx-auto flex items-center gap-2 rounded-xl px-2 py-1 hover:bg-berryBlue dark:hover:bg-purpleRain"
+            >
+              <p className="text-trueBlack decoration-trueBlack dark:text-trueWhite dark:decoration-trueWhite">
+                go to general
+              </p>
+              <Open size={22} className="fill-trueBlack dark:fill-trueWhite" />
+            </Link>
+          </div>
         )}
       </div>
       {!noTasks && (
@@ -231,17 +283,17 @@ export function DailyTasks() {
         } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
         <p
-          className="text-sm text-softBlack/50
-          dark:text-softWhite/50 xs:text-base"
+          className="text-sm text-trueBlack/50
+          dark:text-trueWhite/50 xs:text-base"
         >
           your tasks won&apos;t be lost if you close the website
         </p>
         <button
-          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-softBlack/50
-          dark:border-trueWhite/30 dark:text-softWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
+          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-trueBlack/50
+          dark:border-trueWhite/30 dark:text-trueWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
         >
           close this dialog
-          <Close className="rounded-md fill-softBlack/50 dark:fill-softWhite/50" />
+          <Close className="rounded-md fill-trueBlack/50 dark:fill-trueWhite/50" />
         </button>
       </div>
     </section>

@@ -10,8 +10,8 @@ export function Footer() {
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
         >
-          <Github className="fill-softBlack group-hover:fill-softWhite dark:fill-softWhite dark:group-hover:fill-softBlack" />
-          <p className="text-softBlack group-hover:text-softWhite dark:text-softWhite dark:group-hover:text-softBlack sm:text-lg">
+          <Github className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite dark:group-hover:fill-trueBlack" />
+          <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite dark:group-hover:text-trueBlack sm:text-lg">
             github
           </p>
         </a>
@@ -21,8 +21,8 @@ export function Footer() {
           href="https://twitter.com/phivedphived"
           rel="noreferrer"
         >
-          <Twitter className="fill-softBlack group-hover:fill-softWhite dark:fill-softWhite" />
-          <p className="text-softBlack group-hover:text-softWhite dark:text-softWhite sm:text-lg">
+          <Twitter className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite" />
+          <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite sm:text-lg">
             twitter
           </p>
         </a>
@@ -32,8 +32,8 @@ export function Footer() {
           href="https://www.instagram.com/phivedphived/"
           rel="noreferrer"
         >
-          <Instagram className="fill-softBlack group-hover:fill-softWhite dark:fill-softWhite" />
-          <p className="text-softBlack group-hover:text-softWhite dark:text-softWhite sm:text-lg">
+          <Instagram className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite" />
+          <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite sm:text-lg">
             instagram
           </p>
         </a>

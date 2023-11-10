@@ -32,7 +32,7 @@ export function Header() {
 
   return (
     <header className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
-      <div className="hidden items-center gap-8 text-softBlack sm:flex">
+      <div className="hidden items-center gap-8 text-trueBlack sm:flex">
         <Logo />
         <ModeSelector />
       </div>
@@ -44,16 +44,16 @@ export function Header() {
         >
           {isDarkMode && (
             <>
-              <Sun className="fill-softWhite sm:group-hover:fill-softBlack" />
-              <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg sm:group-hover:text-softWhite dark:sm:group-hover:text-softBlack">
+              <Sun className="fill-trueWhite sm:group-hover:fill-trueBlack" />
+              <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 light mode
               </p>
             </>
           )}
           {!isDarkMode && (
             <>
-              <Moon className="fill-lightBlack sm:group-hover:fill-softWhite" />
-              <p className="text-sm text-softBlack dark:text-softWhite xs:text-lg sm:group-hover:text-softWhite dark:sm:group-hover:text-softBlack">
+              <Moon className="fill-lightBlack sm:group-hover:fill-trueWhite" />
+              <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 dark mode
               </p>
             </>
@@ -69,17 +69,17 @@ export function Header() {
           disabled={(!isDailyPage() && noGeneralTasks) || (isDailyPage() && noDailyTasks)}
         >
           <Trash
-            className={`fill-softBlack dark:fill-softWhite ${
+            className={`fill-trueBlack dark:fill-trueWhite ${
               noGeneralTasks && noDailyTasks
-                ? "fill-softBlack/30 dark:fill-softWhite/30"
-                : "sm:group-hover:fill-softWhite"
+                ? "fill-trueBlack/30 dark:fill-trueWhite/30"
+                : "sm:group-hover:fill-trueWhite"
             } `}
           />
           <p
             className={`${
               noGeneralTasks && noDailyTasks
-                ? "text-softBlack/40 dark:text-softWhite/30"
-                : "text-softBlack dark:text-softWhite sm:group-hover:text-softWhite"
+                ? "text-trueBlack/40 dark:text-trueWhite/30"
+                : "text-trueBlack dark:text-trueWhite sm:group-hover:text-trueWhite"
             } text-sm xs:text-lg`}
           >
             clear tasks
@@ -93,9 +93,9 @@ export function Header() {
           <span
             className={`h-fit w-fit ${showHelpMenu ? "rotate-0" : "rotate-180"} transition-all`}
           >
-            <ArrowUp className="fill-softBlack dark:fill-softWhite" />
+            <ArrowUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
-          <p className="dark:text-softWhite xs:text-lg">help</p>
+          <p className="dark:text-trueWhite xs:text-lg">help</p>
         </button>
         {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
       </nav>

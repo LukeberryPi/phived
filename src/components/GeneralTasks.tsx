@@ -140,7 +140,7 @@ export function GeneralTasks() {
                   isLastTask ? "rounded-b-2xl" : "border-b border-trueBlack dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
-                } bg-trueWhite py-4 px-5 text-softBlack focus:outline-none dark:bg-softBlack dark:text-softWhite sm:text-lg`}
+                } bg-trueWhite py-4 px-5 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
               />
               <span
                 {...provided.dragHandleProps}
@@ -153,10 +153,10 @@ export function GeneralTasks() {
                   isBeingDragged
                     ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } flex items-center justify-center bg-trueWhite pr-2 text-softBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-softWhite sm:text-lg`}
+                } flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
                 tabIndex={-1}
               >
-                <DragVertical className="fill-softBlack dark:fill-softWhite" />
+                <DragVertical className="fill-trueBlack dark:fill-trueWhite" />
               </span>
               <button
                 onClick={() => handleDone(idx)}
@@ -168,7 +168,7 @@ export function GeneralTasks() {
                   isBeingDragged
                     ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-softWhite xs:px-6 sm:text-lg`}
+                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>
@@ -185,7 +185,7 @@ export function GeneralTasks() {
         <p className="sm:text-md mx-auto w-fit rounded-lg bg-berryBlue px-2 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite">
           general
         </p>
-        <p className="text-lg text-softBlack dark:text-softWhite xs:text-xl sm:text-2xl">
+        <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
           what do you want to do?
         </p>
       </div>
@@ -213,17 +213,17 @@ export function GeneralTasks() {
         } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
         <p
-          className="text-sm text-softBlack/50
-          dark:text-softWhite/50 xs:text-base"
+          className="text-sm text-trueBlack/50
+          dark:text-trueWhite/50 xs:text-base"
         >
           your tasks won&apos;t be lost if you close the website
         </p>
         <button
-          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-softBlack/50
-          dark:border-trueWhite/30 dark:text-softWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
+          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-trueBlack/50
+          dark:border-trueWhite/30 dark:text-trueWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
         >
           close this dialog
-          <Close className="rounded-md fill-softBlack/50 dark:fill-softWhite/50" />
+          <Close className="rounded-md fill-trueBlack/50 dark:fill-trueWhite/50" />
         </button>
       </div>
     </section>
