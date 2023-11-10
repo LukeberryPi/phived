@@ -13,13 +13,13 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
     "storedDailyTasks",
     Array<string>(5).fill("")
   );
-  const [dailyTasks, setDailyTasks] = useState(storedDailyTasks);
-  const [message, setMessage] = useState<string>("");
-  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);
   const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] = useLocalStorage<DailyTasksLastDoneAt>(
     "dailyTasksLastDoneAt",
     []
   );
+  const [dailyTasks, setDailyTasks] = useState(storedDailyTasks);
+  const [message, setMessage] = useState<string>("");
+  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);
 
   const memoizedTasks = useMemo(() => dailyTasks, [dailyTasks]);
 

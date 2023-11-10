@@ -11,7 +11,7 @@ export function ModeSelector() {
   };
 
   return (
-    <div className="relative hidden lg:flex">
+    <div className="relative hidden md:flex">
       <div className="flex flex-col">
         <button onClick={toggleShowModes} className="flex items-center gap-3 text-sm xs:text-lg">
           <p className="text-trueBlack dark:text-trueWhite">switch mode</p>
