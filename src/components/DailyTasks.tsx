@@ -1,5 +1,5 @@
 import type { MouseEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { placeholders } from "src/content";
 import { useDailyTasksContext } from "src/contexts";
@@ -9,6 +9,13 @@ import { Clock, Close, DragVertical, Open } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
+
+function isPosteriorDay(date1: Date, date2: Date): boolean {
+  const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+  return d2 > d1;
+}
 
 const DEFAULT_WIDTH = setDefaultWidth();
 function setDefaultWidth() {
@@ -56,23 +63,26 @@ export function CountdownTimer() {
     return () => clearInterval(interval);
   }, []);
 
-  return (
-    <>
-      {timeLeft.total > 0 ? (
-        <div className="flex items-center gap-2">
-          <Clock className="text-trueBlack dark:text-trueWhite" />
-          <p className="tabular-nums text-trueBlack dark:text-trueWhite">
-            {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}
-          </p>
-        </div>
-      ) : null}
-    </>
-  );
+  return timeLeft.total > 0 ? (
+    <div className="flex items-center gap-2">
+      <Clock className="text-trueBlack dark:text-trueWhite" />
+      <p className="tabular-nums text-trueBlack dark:text-trueWhite">
+        {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}
+      </p>
+    </div>
+  ) : null;
 }
 
 export function DailyTasks() {
-  const { message, dailyTasks, changeDailyTask, completeDailyTask, setDailyTasks } =
-    useDailyTasksContext();
+  const {
+    message,
+    dailyTasks,
+    changeDailyTask,
+    completeDailyTask,
+    setDailyTasks,
+    dailyTasksLastDoneAt,
+    setDailyTasksLastDoneAt,
+  } = useDailyTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
     "tasksComponentWidth",
@@ -80,9 +90,9 @@ export function DailyTasks() {
   );
   const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
 
-  const numberOfTasks = dailyTasks.filter(Boolean).length;
-  const noTasks = numberOfTasks === 0;
-  const multipleTasks = numberOfTasks > 1;
+  const numberOfDailyTasks = dailyTasks.filter(Boolean).length;
+  const multipleDailyTasks = numberOfDailyTasks > 1;
+  const allDailyTasksDone = dailyTasks.length === 0;
 
   const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
@@ -103,6 +113,25 @@ export function DailyTasks() {
   useEffect(() => {
     setTasksComponentWidth(tasksComponentWidth);
   }, [setTasksComponentWidth, tasksComponentWidth]);
+
+  const fetchLastDoneDailyTasks = useCallback(() => {
+    const tasksToRepopulate = dailyTasksLastDoneAt.map((item) => item.dailyTask);
+
+    if (!tasksToRepopulate) return;
+
+    setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
+    setDailyTasksLastDoneAt([]);
+  }, [dailyTasks, setDailyTasks, dailyTasksLastDoneAt, setDailyTasksLastDoneAt]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchLastDoneDailyTasks();
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [fetchLastDoneDailyTasks]);
 
   const handleDone = (i: number) => {
     completeDailyTask(i);
@@ -185,7 +214,7 @@ export function DailyTasks() {
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
                   isBeingDragged && "border-b border-trueBlack/30 dark:border-trueWhite/30"
-                } ${!isEmptyTask && multipleTasks && "group-hover:pr-2"} ${
+                } ${!isEmptyTask && multipleDailyTasks && "group-hover:pr-2"} ${
                   isFirstTask && "rounded-t-2xl border-t-0"
                 } ${
                   isLastTask ? "rounded-b-2xl" : "border-b border-trueBlack dark:border-trueWhite"
@@ -195,17 +224,18 @@ export function DailyTasks() {
               />
               <span
                 {...provided.dragHandleProps}
+                tabIndex={-1}
                 aria-label="Drag handle to reorder task"
                 className={`${!isLastTask && "border-b border-trueBlack dark:border-trueWhite"} ${
-                  isEmptyTask || !multipleTasks || anotherTaskIsBeingDragged
+                  isEmptyTask || !multipleDailyTasks || anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   isBeingDragged
                     ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
-                tabIndex={-1}
+                } flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none
+                hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
               >
                 <DragVertical className="fill-trueBlack dark:fill-trueWhite" />
               </span>
@@ -237,14 +267,14 @@ export function DailyTasks() {
           daily
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
-          {noTasks ? "these tasks will be available again in" : "what do you want to do?"}
+          {allDailyTasksDone ? "these tasks will be available again in" : "what do you want to do?"}
         </p>
-        {noTasks && (
+        {allDailyTasksDone && (
           <div className="mx-auto flex items-center gap-4">
             <CountdownTimer />
             <Link
               to="/"
-              className="mx-auto flex items-center gap-2 rounded-xl px-2 py-1 hover:bg-berryBlue dark:hover:bg-purpleRain"
+              className="mx-auto flex items-center gap-2 rounded-xl px-2.5 py-1.5 hover:bg-berryBlue dark:hover:bg-purpleRain"
             >
               <p className="text-trueBlack decoration-trueBlack dark:text-trueWhite dark:decoration-trueWhite">
                 go to general
@@ -254,7 +284,7 @@ export function DailyTasks() {
           </div>
         )}
       </div>
-      {!noTasks && (
+      {!allDailyTasksDone && (
         <ul
           onMouseUp={handleResize}
           style={{ width: `${tasksComponentWidth}px` }}
@@ -279,7 +309,7 @@ export function DailyTasks() {
         onClick={hideTasksSaved}
         role="button"
         className={`${
-          (message || !multipleTasks || !showTasksAreSaved) && "invisible"
+          (message || !multipleDailyTasks || !showTasksAreSaved) && "invisible"
         } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
         <p

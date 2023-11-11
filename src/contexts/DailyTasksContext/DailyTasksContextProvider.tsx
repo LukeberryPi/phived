@@ -58,7 +58,7 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
       const ongoingTasks = dailyTasks.filter((_, idx) => idx !== taskIndex);
       setDailyTasksLastDoneAt([
         ...dailyTasksLastDoneAt,
-        { dailyTask: dailyTasks[taskIndex], monthDayLastCompleted: new Date() },
+        { dailyTask: dailyTasks[taskIndex], dateCompleted: new Date() },
       ]);
       setDailyTasks([...ongoingTasks]);
       displayMessage(incentive);
@@ -81,8 +81,9 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
     }
 
     setDailyTasks(Array(5).fill(""));
+    setDailyTasksLastDoneAt([]);
     displayMessage("tasks cleared!");
-  }, [displayMessage, setDailyTasks]);
+  }, [displayMessage, setDailyTasks, setDailyTasksLastDoneAt]);
 
   useEffect(() => {
     setStoredDailyTasks(dailyTasks);

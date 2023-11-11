@@ -5,8 +5,8 @@ export type DailyTask = string;
 export type DailyTasks = DailyTask[];
 
 export type DailyTaskLastDoneAt = {
-  dailyTask?: string;
-  monthDayLastCompleted?: Date;
+  dailyTask: string;
+  dateCompleted: Date;
 };
 
 export type DailyTasksLastDoneAt = DailyTaskLastDoneAt[];
