@@ -10,11 +10,17 @@ import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
-function isPosteriorDay(date1: Date, date2: Date): boolean {
-  const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-  const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+function isPosteriorDay(date: Date) {
+  const now = new Date();
+  const dateWithoutSeconds = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes()
+  );
 
-  return d2 > d1;
+  return now > dateWithoutSeconds;
 }
 
 const DEFAULT_WIDTH = setDefaultWidth();
@@ -123,15 +129,29 @@ export function DailyTasks() {
     setDailyTasksLastDoneAt([]);
   }, [dailyTasks, setDailyTasks, dailyTasksLastDoneAt, setDailyTasksLastDoneAt]);
 
+  const handleTabFocus = useCallback(() => {
+    if (dailyTasksLastDoneAt.length === 0) {
+      return;
+    }
+
+    const lastCompleted = new Date(dailyTasksLastDoneAt[0].dateCompleted);
+
+    if (!isPosteriorDay(lastCompleted)) {
+      console.log("same date?");
+      return;
+    }
+
+    console.log("fetching tasks");
+    fetchLastDoneDailyTasks();
+  }, [fetchLastDoneDailyTasks, dailyTasksLastDoneAt]);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchLastDoneDailyTasks();
-    }, 3000);
+    window.addEventListener("focus", handleTabFocus);
 
     return () => {
-      clearTimeout(timer);
+      window.removeEventListener("focus", handleTabFocus);
     };
-  }, [fetchLastDoneDailyTasks]);
+  }, [handleTabFocus]);
 
   const handleDone = (i: number) => {
     completeDailyTask(i);
@@ -283,6 +303,8 @@ export function DailyTasks() {
             </Link>
           </div>
         )}
+        <button onClick={() => setDailyTasks(Array(5).fill(""))}>repopulate</button>
+        <button onClick={() => setDailyTasksLastDoneAt([])}>clear cache</button>
       </div>
       {!allDailyTasksDone && (
         <ul
