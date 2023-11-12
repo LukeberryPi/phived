@@ -240,7 +240,7 @@ export function DailyTasks() {
             <CountdownTimer />
             <Link
               to="/"
-              className="mx-auto flex items-center gap-2 rounded-xl px-2.5 py-1.5 hover:bg-berryBlue dark:hover:bg-purpleRain"
+              className="mx-auto flex items-center gap-2 rounded-xl px-2.5 py-1 hover:bg-berryBlue dark:hover:bg-purpleRain"
             >
               <p className="text-trueBlack decoration-trueBlack dark:text-trueWhite dark:decoration-trueWhite">
                 go to general
