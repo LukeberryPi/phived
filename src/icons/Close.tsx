@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
+import type { DefaultSvgProps } from "src/utils";
 
 export function Close({ className, size = 22 }: DefaultSvgProps) {
   return (

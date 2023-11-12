@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
+import type { DefaultSvgProps } from "src/utils";
 
 export function Open({ className, size = 26 }: DefaultSvgProps) {
   return (

@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
+import type { DefaultSvgProps } from "src/utils";
 
 export function Twitter({ className, size = 24 }: DefaultSvgProps) {
   return (

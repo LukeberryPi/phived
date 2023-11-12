@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils/defaultSvgProps";
+import type { DefaultSvgProps } from "src/utils";
 
 export function ArrowUp({ className, size = 20 }: DefaultSvgProps) {
   return (

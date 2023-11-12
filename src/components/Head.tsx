@@ -1,27 +1,18 @@
 import { Helmet } from "react-helmet-async";
 import { useGeneralTasksContext } from "src/contexts";
 
-const headConstants = {
-  icons: {
-    default: "favicon-default.ico",
-    alert: "favicon-alert.ico",
-  },
-  baseTitle: "phived · the anti-procrastination to-do list",
-};
-
 export function Head() {
   const { generalTasks } = useGeneralTasksContext();
-  const { baseTitle, icons } = headConstants;
-  const ongoingTasks = generalTasks.filter((task: string) => task.trim() !== "");
+  // assures tasks filled with spaces are not accounted for on the tab's title
+  const ongoingGeneralTasks = generalTasks.filter((generalTask) => generalTask.trim() !== "");
 
-  const titlePrefix = ongoingTasks.length ? `[${ongoingTasks.length}]` : "";
-  const title = `${titlePrefix} ${baseTitle}`.trim();
-  const iconPath = `/${ongoingTasks.length ? icons.alert : icons.default}`;
+  const titlePrefix = ongoingGeneralTasks.length ? `[${ongoingGeneralTasks.length}]` : "";
+  const title = `${titlePrefix} phived · the anti-procrastination to-do list`.trim();
 
   return (
     <Helmet>
       <title>{title}</title>
-      <link rel="icon" type="image/x-icon" href={iconPath} />
+      <link rel="icon" type="image/x-icon" href="/favicon-default.ico" />
     </Helmet>
   );
 }
