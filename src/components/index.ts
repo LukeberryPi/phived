@@ -9,3 +9,4 @@ export { ModeSelector } from "src/components/ModeSelector";
 export { Home } from "src/components/Home";
 export { Daily } from "src/components/Daily";
 export { DailyTasks } from "src/components/DailyTasks";
+export { CountdownTimer } from "src/components/CountdownTimer";

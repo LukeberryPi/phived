@@ -3,80 +3,28 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { placeholders } from "src/content";
 import { useDailyTasksContext } from "src/contexts";
-import { getViewportWidth } from "src/utils";
+import { setTasksDefaultWidth } from "src/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Clock, Close, DragVertical, Open } from "src/icons";
+import { Close, DragVertical, Open } from "src/icons";
 import { useLocalStorage } from "src/hooks";
+import { CountdownTimer } from "src/components";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
+const DEFAULT_WIDTH = setTasksDefaultWidth();
+
 function isPosteriorDay(date: Date) {
   const now = new Date();
-  const dateWithoutSeconds = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes()
-  );
+  const target = new Date(date);
 
-  return now > dateWithoutSeconds;
-}
-
-const DEFAULT_WIDTH = setDefaultWidth();
-function setDefaultWidth() {
-  if (getViewportWidth() < 400) {
-    return 300;
+  if (
+    now.getDay() === target.getDay() &&
+    (now.getMonth() !== target.getMonth() || now.getFullYear() !== target.getFullYear())
+  ) {
+    return true;
   }
-  if (getViewportWidth() < 500) {
-    return 320;
-  }
-  return 384;
-}
 
-function getTimeRemainingUntilMidnight() {
-  const now = new Date();
-  const midnight = new Date();
-  midnight.setHours(24, 0, 0, 0);
-
-  const timeRemaining = midnight.getTime() - now.getTime();
-
-  const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
-  const seconds = Math.floor((timeRemaining / 1000) % 60);
-
-  return {
-    total: timeRemaining,
-    hours: String(hours).padStart(2, "0"),
-    minutes: String(minutes).padStart(2, "0"),
-    seconds: String(seconds).padStart(2, "0"),
-  };
-}
-
-export function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState(getTimeRemainingUntilMidnight());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const time = getTimeRemainingUntilMidnight();
-      setTimeLeft(time);
-
-      if (time.total <= 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return timeLeft.total > 0 ? (
-    <div className="flex items-center gap-2">
-      <Clock className="text-trueBlack dark:text-trueWhite" />
-      <p className="tabular-nums text-trueBlack dark:text-trueWhite">
-        {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}
-      </p>
-    </div>
-  ) : null;
+  return now.getDay() !== target.getDay();
 }
 
 export function DailyTasks() {
@@ -137,11 +85,9 @@ export function DailyTasks() {
     const lastCompleted = new Date(dailyTasksLastDoneAt[0].dateCompleted);
 
     if (!isPosteriorDay(lastCompleted)) {
-      console.log("same date?");
       return;
     }
 
-    console.log("fetching tasks");
     fetchLastDoneDailyTasks();
   }, [fetchLastDoneDailyTasks, dailyTasksLastDoneAt]);
 
@@ -303,8 +249,6 @@ export function DailyTasks() {
             </Link>
           </div>
         )}
-        <button onClick={() => setDailyTasks(Array(5).fill(""))}>repopulate</button>
-        <button onClick={() => setDailyTasksLastDoneAt([])}>clear cache</button>
       </div>
       {!allDailyTasksDone && (
         <ul
