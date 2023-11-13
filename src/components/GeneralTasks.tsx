@@ -201,7 +201,7 @@ export function GeneralTasks() {
         role="button"
         className={`${
           (message || !multipleTasks || !showTasksAreSaved) && "invisible"
-        } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
+        } group flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
         <p
           className="text-sm text-trueBlack/50

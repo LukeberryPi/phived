@@ -14,7 +14,7 @@ import { CountdownTimer } from "src/components";
 const DEFAULT_WIDTH = setTasksDefaultWidth();
 
 // currently, if the user is on the page and reloads, it won't fetch the dailyTasks from yesterday,
-// even if it is indeed a different day. this, along with a minor performance issue on cmd + option + arrow,
+// even if it is indeed a different day. this, along with a minor performance issue on switching tabs
 // is leading me away from handleTabFocus.
 
 // why not a regenerate tasks button? that fetches the dailyTasksDoneAnotherDay onClick and repopulates
@@ -287,7 +287,7 @@ export function DailyTasks() {
         role="button"
         className={`${
           (message || !multipleDailyTasks || !showTasksAreSaved) && "invisible"
-        } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
+        } group flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
         <p className="text-sm text-trueBlack/50 dark:text-trueWhite/50 xs:text-base">
           your tasks won&apos;t be lost if you close the website
