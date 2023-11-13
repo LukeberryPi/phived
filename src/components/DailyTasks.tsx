@@ -13,14 +13,24 @@ import { CountdownTimer } from "src/components";
 
 const DEFAULT_WIDTH = setTasksDefaultWidth();
 
+// currently, if the user is on the page and reloads, it won't fetch the dailyTasks from yesterday,
+// even if it is indeed a different day. this, along with a minor performance issue on cmd + option + arrow,
+// is leading me away from handleTabFocus.
+
+// why not a regenerate tasks button? that fetches the dailyTasksDoneAnotherDay onClick and repopulates
+
+// what if a user uses a google chrome window with only phived on it? it would never fetch dailyTasksDone,
+// because focus needs to come from another tab on the same window ??
 function isPosteriorDay(date: Date) {
   const now = new Date();
   const target = new Date(date);
 
-  if (
-    now.getDay() === target.getDay() &&
-    (now.getMonth() !== target.getMonth() || now.getFullYear() !== target.getFullYear())
-  ) {
+  const sameDayDifferentMonth =
+    now.getDay() === target.getDay() && now.getMonth() !== target.getMonth();
+  const sameDayDifferentYear =
+    now.getDay() === target.getDay() && now.getFullYear() !== target.getFullYear();
+
+  if (sameDayDifferentMonth || sameDayDifferentYear) {
     return true;
   }
 
@@ -249,6 +259,7 @@ export function DailyTasks() {
             </Link>
           </div>
         )}
+        <button onClick={() => setDailyTasks(Array(5).fill("a"))}>repopulate</button>
       </div>
       {!allDailyTasksDone && (
         <ul
