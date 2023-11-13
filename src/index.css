@@ -7,3 +7,15 @@ input {
   /* we need this to have decent input borders on iOS, ignore warning */
   -webkit-border-radius: 0px;
 }
+
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  /* Your custom styles for the scrollbar track */
+  visibility: hidden;
+  position: relative;
+  bottom: 1px;
+}
+ 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 0px; /* Width of the entire scrollbar */
+}

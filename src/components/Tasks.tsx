@@ -26,8 +26,8 @@ export function Tasks() {
   const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
     "taskComponentWidth",
     DEFAULT_WIDTH
-    );
-    const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
+  );
+  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
 
   const numberOfTasks = tasks.filter(Boolean).length;
   const multipleTasks = numberOfTasks > 1;
@@ -189,7 +189,7 @@ export function Tasks() {
       <ul
         onMouseUp={handleResize}
         style={{ width: `${taskComponentWidth}px` }}
-        className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+        className="custom-scrollbar w-[300px] resize-x overflow-x-scroll rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
       >
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
           <Droppable droppableId="tasksList">
