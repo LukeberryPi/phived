@@ -1,5 +1,5 @@
 import { HelmetProvider } from "react-helmet-async";
-import { Footer, Header, Message, GeneralTasks, Head } from "src/components";
+import { Footer, Header, Message, GeneralTasks, Head, ModeSelectorMobile } from "src/components";
 import { GeneralTasksContextProvider } from "src/contexts";
 
 export function Home() {
@@ -9,6 +9,7 @@ export function Home() {
         <HelmetProvider>
           <Head />
         </HelmetProvider>
+        <ModeSelectorMobile />
         <Header />
         <GeneralTasks />
         <Message />

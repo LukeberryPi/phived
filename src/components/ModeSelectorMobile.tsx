@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowUp, Open } from "src/icons";
 import { isDailyPage } from "src/utils";
 
-export function ModeSelector() {
+export function ModeSelectorMobile() {
   const [showModes, setShowModes] = useState(false);
 
   const toggleShowModes = () => {
@@ -11,7 +11,7 @@ export function ModeSelector() {
   };
 
   return (
-    <div className="relative md:flex">
+    <div className="absolute top-6 sm:hidden">
       <div className="flex flex-col">
         <button onClick={toggleShowModes} className="flex items-center gap-3 text-sm xs:text-lg">
           <p className="text-trueBlack dark:text-trueWhite">switch tasks</p>
@@ -21,7 +21,7 @@ export function ModeSelector() {
         </button>
       </div>
       {showModes && (
-        <div className="absolute top-11 flex h-fit w-48 flex-col divide-y divide-trueBlack overflow-hidden rounded-2xl border border-trueBlack bg-softWhite shadow-brutalist-dark dark:divide-trueWhite dark:border-trueWhite dark:bg-softBlack dark:text-trueWhite dark:shadow-brutalist-light">
+        <div className="absolute top-10 -left-8 flex h-fit w-48 flex-col divide-y divide-trueBlack overflow-hidden rounded-2xl border border-trueBlack bg-softWhite shadow-brutalist-dark dark:divide-trueWhite dark:border-trueWhite dark:bg-softBlack dark:text-trueWhite dark:shadow-brutalist-light">
           <Link
             to="/"
             onClick={toggleShowModes}

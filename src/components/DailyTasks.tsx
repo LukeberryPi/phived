@@ -278,10 +278,7 @@ export function DailyTasks() {
           (message || !multipleDailyTasks || !showTasksAreSaved) && "invisible"
         } group z-10 flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
-        <p
-          className="text-sm text-trueBlack/50
-          dark:text-trueWhite/50 xs:text-base"
-        >
+        <p className="text-sm text-trueBlack/50 dark:text-trueWhite/50 xs:text-base">
           your tasks won&apos;t be lost if you close the website
         </p>
         <button

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDailyTasksContext, useGeneralTasksContext } from "src/contexts";
-import { Logo, HelpMenu, ModeSelector } from "src/components";
+import { HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
 import { Trash, Moon, ArrowUp, Sun } from "src/icons";
 import { useLocalStorage } from "src/hooks";
@@ -33,7 +33,12 @@ export function Header() {
   return (
     <header className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <div className="hidden items-center gap-8 text-trueBlack sm:flex">
-        <Logo />
+        <a
+          href="/"
+          className="hidden cursor-pointer text-4xl font-bold text-trueBlack transition-transform active:scale-95 dark:text-trueWhite md:flex"
+        >
+          phived
+        </a>
         <ModeSelector />
       </div>
       <nav className="flex h-full items-center justify-between space-x-4 tiny:space-x-10 sm:space-x-6">
