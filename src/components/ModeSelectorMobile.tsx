@@ -21,7 +21,7 @@ export function ModeSelectorMobile() {
         </button>
       </div>
       {showModes && (
-        <div className="absolute top-10 -left-8 flex h-fit w-48 flex-col divide-y divide-trueBlack overflow-hidden rounded-2xl border border-trueBlack bg-softWhite shadow-brutalist-dark dark:divide-trueWhite dark:border-trueWhite dark:bg-softBlack dark:text-trueWhite dark:shadow-brutalist-light">
+        <div className="absolute top-10 -left-10 flex h-fit w-48 flex-col divide-y divide-trueBlack overflow-hidden rounded-2xl border border-trueBlack bg-softWhite shadow-brutalist-dark dark:divide-trueWhite dark:border-trueWhite dark:bg-softBlack dark:text-trueWhite dark:shadow-brutalist-light">
           <Link
             to="/"
             onClick={toggleShowModes}

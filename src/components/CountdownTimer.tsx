@@ -13,7 +13,6 @@ function getTimeRemainingUntilMidnight() {
   const seconds = Math.floor((timeRemaining / 1000) % 60);
 
   return {
-    total: timeRemaining,
     hours: String(hours).padStart(2, "0"),
     minutes: String(minutes).padStart(2, "0"),
     seconds: String(seconds).padStart(2, "0"),

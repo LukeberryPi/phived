@@ -70,7 +70,6 @@ export function DailyTasks() {
     setDailyTasksCanBeRenegerated(
       dailyTasksLastDoneAt.length > 0 && isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)
     );
-    console.log("dailyTasksCanBeGenerated", dailyTasksCanBeRegenerated);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -220,9 +219,7 @@ export function DailyTasks() {
             className="mx-auto flex items-center gap-2"
             onClick={() => {
               const tasksToRepopulate = dailyTasksLastDoneAt.map((item) => item.dailyTask);
-
               if (!tasksToRepopulate) return;
-
               setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
               setDailyTasksLastDoneAt([]);
               setDailyTasksCanBeRenegerated(false);
