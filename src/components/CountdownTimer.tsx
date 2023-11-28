@@ -32,7 +32,7 @@ export function CountdownTimer() {
   }, [timeLeft]);
 
   return (
-    <div className="mx-auto flex items-center gap-2">
+    <div className="flex items-center gap-2">
       <Clock className="text-trueBlack dark:text-trueWhite" />
       <p className="tabular-nums text-trueBlack dark:text-trueWhite">
         {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}

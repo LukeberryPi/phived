@@ -9,9 +9,10 @@ import {
   Draggable,
   type DropResult,
 } from "react-beautiful-dnd";
-import { Close, CounterClockWise, DragVertical, Light } from "src/icons";
+import { Close, CounterClockWise, DragVertical, Light, Open } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 import { CountdownTimer } from "src/components";
+import { Link } from "react-router-dom";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
@@ -244,7 +245,18 @@ export function DailyTasks() {
             ? "these tasks will be available again in"
             : "what do you want to do?"}
         </p>
-        {allDailyTasksDone && !dailyTasksCanBeRegenerated && <CountdownTimer />}
+        {allDailyTasksDone && !dailyTasksCanBeRegenerated && (
+          <div className="flex items-center justify-center gap-4">
+            <CountdownTimer />
+            <Link
+              to="/"
+              className="flex items-center gap-2 rounded-xl px-3 py-1 text-trueBlack hover:bg-berryBlue dark:text-trueWhite hover:dark:bg-purpleRain"
+            >
+              go to general
+              <Open size={20} className="fill-trueBlack dark:fill-trueWhite" />
+            </Link>
+          </div>
+        )}
         {allDailyTasksDone && dailyTasksCanBeRegenerated && (
           <button
             className="mx-auto flex items-center gap-2"
