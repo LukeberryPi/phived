@@ -1,11 +1,10 @@
 import type { MouseEvent } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useDailyTasksContext } from "src/contexts";
 import { setTasksDefaultWidth } from "src/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
-import { Close, DragVertical, Open } from "src/icons";
+import { Close, CounterClockWise, DragVertical, Light } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 import { CountdownTimer } from "src/components";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
@@ -13,14 +12,6 @@ import { CountdownTimer } from "src/components";
 
 const DEFAULT_WIDTH = setTasksDefaultWidth();
 
-// currently, if the user is on the page and reloads, it won't fetch the dailyTasks from yesterday,
-// even if it is indeed a different day. this, along with a minor performance issue on switching tabs
-// is leading me away from handleTabFocus.
-
-// why not a regenerate tasks button? that fetches the dailyTasksDoneAnotherDay onClick and repopulates
-
-// what if a user uses a google chrome window with only phived on it? it would never fetch dailyTasksDone,
-// because focus needs to come from another tab on the same window ??
 function isPosteriorDay(date: Date) {
   const now = new Date();
   const target = new Date(date);
@@ -53,6 +44,7 @@ export function DailyTasks() {
     DEFAULT_WIDTH
   );
   const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
+  const [dailyTasksCanBeRegenerated, setDailyTasksCanBeRenegerated] = useState(false);
 
   const numberOfDailyTasks = dailyTasks.filter(Boolean).length;
   const multipleDailyTasks = numberOfDailyTasks > 1;
@@ -75,39 +67,16 @@ export function DailyTasks() {
   };
 
   useEffect(() => {
-    setTasksComponentWidth(tasksComponentWidth);
-  }, [setTasksComponentWidth, tasksComponentWidth]);
-
-  const fetchLastDoneDailyTasks = useCallback(() => {
-    const tasksToRepopulate = dailyTasksLastDoneAt.map((item) => item.dailyTask);
-
-    if (!tasksToRepopulate) return;
-
-    setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
-    setDailyTasksLastDoneAt([]);
-  }, [dailyTasks, setDailyTasks, dailyTasksLastDoneAt, setDailyTasksLastDoneAt]);
-
-  const handleTabFocus = useCallback(() => {
-    if (dailyTasksLastDoneAt.length === 0) {
-      return;
-    }
-
-    const lastCompleted = new Date(dailyTasksLastDoneAt[0].dateCompleted);
-
-    if (!isPosteriorDay(lastCompleted)) {
-      return;
-    }
-
-    fetchLastDoneDailyTasks();
-  }, [fetchLastDoneDailyTasks, dailyTasksLastDoneAt]);
+    setDailyTasksCanBeRenegerated(
+      dailyTasksLastDoneAt.length > 0 && isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)
+    );
+    console.log("dailyTasksCanBeGenerated", dailyTasksCanBeRegenerated);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("focus", handleTabFocus);
-
-    return () => {
-      window.removeEventListener("focus", handleTabFocus);
-    };
-  }, [handleTabFocus]);
+    setTasksComponentWidth(tasksComponentWidth);
+  }, [setTasksComponentWidth, tasksComponentWidth]);
 
   const handleDone = (i: number) => {
     completeDailyTask(i);
@@ -245,26 +214,31 @@ export function DailyTasks() {
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
           {allDailyTasksDone ? "these tasks will be available again in" : "what do you want to do?"}
         </p>
-        {allDailyTasksDone && (
-          <div className="mx-auto flex items-center gap-4">
-            <CountdownTimer />
-            <Link
-              to="/"
-              className="mx-auto flex items-center gap-2 rounded-xl px-2.5 py-1 hover:bg-berryBlue dark:hover:bg-purpleRain"
-            >
-              <p className="text-trueBlack decoration-trueBlack dark:text-trueWhite dark:decoration-trueWhite">
-                go to general
-              </p>
-              <Open size={22} className="fill-trueBlack dark:fill-trueWhite" />
-            </Link>
-          </div>
+        {allDailyTasksDone && !dailyTasksCanBeRegenerated && <CountdownTimer />}
+        {allDailyTasksDone && dailyTasksCanBeRegenerated && (
+          <button
+            className="mx-auto flex items-center gap-2"
+            onClick={() => {
+              const tasksToRepopulate = dailyTasksLastDoneAt.map((item) => item.dailyTask);
+
+              if (!tasksToRepopulate) return;
+
+              setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
+              setDailyTasksLastDoneAt([]);
+              setDailyTasksCanBeRenegerated(false);
+            }}
+          >
+            <CounterClockWise />
+            <p>regenerate tasks</p>
+          </button>
         )}
-        <button onClick={() => setDailyTasks(Array(5).fill("a"))}>repopulate</button>
       </div>
       {!allDailyTasksDone && (
         <ul
           onMouseUp={handleResize}
-          style={{ width: `${tasksComponentWidth}px` }}
+          style={{
+            width: `${tasksComponentWidth}px`,
+          }}
           className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
         >
           <DragDropContext
@@ -283,21 +257,20 @@ export function DailyTasks() {
         </ul>
       )}
       <div
-        onClick={hideTasksSaved}
-        role="button"
         className={`${
           (message || !multipleDailyTasks || !showTasksAreSaved) && "invisible"
-        } group flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
+        } group flex items-center gap-4 text-trueBlack dark:text-trueWhite`}
       >
-        <p className="text-sm text-trueBlack/50 dark:text-trueWhite/50 xs:text-base">
-          your tasks won&apos;t be lost if you close the website
+        <Light size={24} />
+        <p className="text-sm xs:text-base">
+          your tasks won&apos;t be lost <br />
+          if you close the website
         </p>
         <button
-          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-trueBlack/50
-          dark:border-trueWhite/30 dark:text-trueWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
+          onClick={hideTasksSaved}
+          className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
         >
-          close this dialog
-          <Close className="rounded-md fill-trueBlack/50 dark:fill-trueWhite/50" />
+          <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />
         </button>
       </div>
     </section>

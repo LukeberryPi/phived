@@ -10,3 +10,5 @@ export { Open } from "src/icons/Open";
 export { Close } from "src/icons/Close";
 export { Check } from "src/icons/Check";
 export { Clock } from "src/icons/Clock";
+export { CounterClockWise } from "src/icons/CounterClockWise";
+export { Light } from "src/icons/Light";
