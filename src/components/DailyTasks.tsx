@@ -253,7 +253,7 @@ export function DailyTasks() {
               className="flex items-center gap-2 rounded-xl px-3 py-1 text-trueBlack hover:bg-berryBlue dark:text-trueWhite hover:dark:bg-purpleRain"
             >
               go to general
-              <Open size={20} className="fill-trueBlack dark:fill-trueWhite" />
+              <Open size={21} className="fill-trueBlack dark:fill-trueWhite" />
             </Link>
           </div>
         )}
