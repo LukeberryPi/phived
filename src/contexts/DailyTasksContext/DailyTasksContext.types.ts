@@ -20,6 +20,8 @@ export type DailyTaskContextType = {
   displayMessage: (incentive: string) => void;
   message: string;
   setDailyTasks: Dispatch<SetStateAction<DailyTaskContextType["dailyTasks"]>>;
-  setDailyTasksLastDoneAt: Dispatch<SetStateAction<DailyTaskContextType["dailyTasksLastDoneAt"]>>;
+  setDailyTasksLastDoneAt: Dispatch<
+    SetStateAction<DailyTaskContextType["dailyTasksLastDoneAt"]>
+  >;
   setMessage: Dispatch<SetStateAction<DailyTaskContextType["message"]>>;
 };

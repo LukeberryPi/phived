@@ -5,21 +5,29 @@ import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTas
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
 import { useLocalStorage } from "src/hooks/useLocalStorage";
 
-export const GeneralTasksContextProvider = ({ children }: PropsWithChildren) => {
+export const GeneralTasksContextProvider = ({
+  children,
+}: PropsWithChildren) => {
   const [storedGeneralTasks, setStoredGeneralTasks] = useLocalStorage(
     "storedGeneralTasks",
     Array<string>(5).fill("")
   );
   const [generalTasks, setGeneralTasks] = useState(storedGeneralTasks);
   const [message, setMessage] = useState<string>("");
-  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);
+  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(
+    undefined
+  );
 
   const memoizedTasks = useMemo(() => generalTasks, [generalTasks]);
 
-  const getRandomIncentive = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const getRandomIncentive = (arr: string[]) =>
+    arr[Math.floor(Math.random() * arr.length)];
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const incentive = useMemo(() => getRandomIncentive(incentives), [generalTasks]);
+  const incentive = useMemo(
+    () => getRandomIncentive(incentives),
+    [generalTasks]
+  );
 
   const displayMessage = useCallback(
     (message: string) => {
@@ -56,7 +64,9 @@ export const GeneralTasksContextProvider = ({ children }: PropsWithChildren) => 
   );
 
   const clearGeneralTasks = useCallback(() => {
-    const isUserCertain = window.confirm("Are you sure you want to DELETE all your tasks?");
+    const isUserCertain = window.confirm(
+      "Are you sure you want to DELETE all your tasks?"
+    );
 
     if (!isUserCertain) {
       return;

@@ -13,9 +13,16 @@ export function ModeSelector() {
   return (
     <div className="relative md:flex">
       <div className="flex flex-col">
-        <button onClick={toggleShowModes} className="flex items-center gap-3 text-sm xs:text-lg">
+        <button
+          onClick={toggleShowModes}
+          className="flex items-center gap-3 text-sm xs:text-lg"
+        >
           <p className="text-trueBlack dark:text-trueWhite">switch tasks</p>
-          <span className={`h-fit w-fit ${showModes ? "rotate-0" : "rotate-180"} transition-all`}>
+          <span
+            className={`h-fit w-fit ${
+              showModes ? "rotate-0" : "rotate-180"
+            } transition-all`}
+          >
             <ArrowUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
         </button>
@@ -31,7 +38,9 @@ export function ModeSelector() {
               general
               <span className="h-2 w-2 rounded-full bg-berryBlue dark:bg-purpleRain" />
             </div>
-            {isDailyPage() && <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />}
+            {isDailyPage() && (
+              <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />
+            )}
           </Link>
           <Link
             to="/daily"
@@ -42,7 +51,9 @@ export function ModeSelector() {
               daily
               <span className="h-2 w-2 rounded-full bg-dailyGreen dark:bg-dailyOrange" />
             </div>
-            {!isDailyPage() && <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />}
+            {!isDailyPage() && (
+              <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />
+            )}
           </Link>
         </div>
       )}

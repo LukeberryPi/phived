@@ -11,6 +11,8 @@ export type GeneralTaskContextType = {
   displayMessage: (incentive: string) => void;
   generalTasks: GeneralTasks;
   message: string;
-  setGeneralTasks: Dispatch<SetStateAction<GeneralTaskContextType["generalTasks"]>>;
+  setGeneralTasks: Dispatch<
+    SetStateAction<GeneralTaskContextType["generalTasks"]>
+  >;
   setMessage: Dispatch<SetStateAction<GeneralTaskContextType["message"]>>;
 };

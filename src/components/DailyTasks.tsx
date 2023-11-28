@@ -3,7 +3,12 @@ import { useEffect, useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useDailyTasksContext } from "src/contexts";
 import { setTasksDefaultWidth } from "src/utils";
-import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DropResult,
+} from "react-beautiful-dnd";
 import { Close, CounterClockWise, DragVertical, Light } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 import { CountdownTimer } from "src/components";
@@ -19,7 +24,8 @@ function isPosteriorDay(date: Date) {
   const sameDayDifferentMonth =
     now.getDay() === target.getDay() && now.getMonth() !== target.getMonth();
   const sameDayDifferentYear =
-    now.getDay() === target.getDay() && now.getFullYear() !== target.getFullYear();
+    now.getDay() === target.getDay() &&
+    now.getFullYear() !== target.getFullYear();
 
   if (sameDayDifferentMonth || sameDayDifferentYear) {
     return true;
@@ -43,17 +49,25 @@ export function DailyTasks() {
     "tasksComponentWidth",
     DEFAULT_WIDTH
   );
-  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
-  const [dailyTasksCanBeRegenerated, setDailyTasksCanBeRenegerated] = useState(false);
+  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage(
+    "showTasksAreSaved",
+    true
+  );
+  const [dailyTasksCanBeRegenerated, setDailyTasksCanBeRenegerated] =
+    useState(false);
 
   const numberOfDailyTasks = dailyTasks.filter(Boolean).length;
   const multipleDailyTasks = numberOfDailyTasks > 1;
   const allDailyTasksDone = dailyTasks.length === 0;
 
-  const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const getRandomElement = (arr: string[]) =>
+    arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
-  const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
+  const handleChange = (
+    event: React.FormEvent<HTMLInputElement>,
+    i: number
+  ) => {
     const currentTask = event.currentTarget.value;
     changeDailyTask(i, currentTask);
   };
@@ -68,7 +82,8 @@ export function DailyTasks() {
 
   useEffect(() => {
     setDailyTasksCanBeRenegerated(
-      dailyTasksLastDoneAt.length > 0 && isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)
+      dailyTasksLastDoneAt.length > 0 &&
+        isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -85,7 +100,10 @@ export function DailyTasks() {
     setShowTasksAreSaved(false);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    i: number
+  ) => {
     // event.metaKey is macOS command key
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
       event.preventDefault();
@@ -134,7 +152,8 @@ export function DailyTasks() {
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
           const isBeingDragged = snapshot.isDragging;
-          const anotherTaskIsBeingDragged = !isBeingDragged && someDragIsHappening;
+          const anotherTaskIsBeingDragged =
+            !isBeingDragged && someDragIsHappening;
 
           return (
             <li
@@ -157,11 +176,14 @@ export function DailyTasks() {
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
-                  isBeingDragged && "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                  isBeingDragged &&
+                  "border-b border-trueBlack/30 dark:border-trueWhite/30"
                 } ${!isEmptyTask && multipleDailyTasks && "group-hover:pr-2"} ${
                   isFirstTask && "rounded-t-2xl border-t-0"
                 } ${
-                  isLastTask ? "rounded-b-2xl" : "border-b border-trueBlack dark:border-trueWhite"
+                  isLastTask
+                    ? "rounded-b-2xl"
+                    : "border-b border-trueBlack dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
                 } bg-trueWhite py-4 px-5 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
@@ -170,8 +192,13 @@ export function DailyTasks() {
                 {...provided.dragHandleProps}
                 tabIndex={-1}
                 aria-label="Drag handle to reorder task"
-                className={`${!isLastTask && "border-b border-trueBlack dark:border-trueWhite"} ${
-                  isEmptyTask || !multipleDailyTasks || anotherTaskIsBeingDragged
+                className={`${
+                  !isLastTask &&
+                  "border-b border-trueBlack dark:border-trueWhite"
+                } ${
+                  isEmptyTask ||
+                  !multipleDailyTasks ||
+                  anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
@@ -185,7 +212,9 @@ export function DailyTasks() {
               </span>
               <button
                 onClick={() => handleDone(idx)}
-                className={`${isFirstTask && "rounded-tr-2xl"} ${isLastTask && "rounded-br-2xl"} ${
+                className={`${isFirstTask && "rounded-tr-2xl"} ${
+                  isLastTask && "rounded-br-2xl"
+                } ${
                   isEmptyTask || anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
@@ -207,18 +236,22 @@ export function DailyTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="sm:text-md mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-sm dark:bg-dailyOrange dark:text-trueWhite">
+        <p className="sm:text-md mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-xs dark:bg-dailyOrange dark:text-trueWhite">
           daily
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
-          {allDailyTasksDone ? "these tasks will be available again in" : "what do you want to do?"}
+          {allDailyTasksDone
+            ? "these tasks will be available again in"
+            : "what do you want to do?"}
         </p>
         {allDailyTasksDone && !dailyTasksCanBeRegenerated && <CountdownTimer />}
         {allDailyTasksDone && dailyTasksCanBeRegenerated && (
           <button
             className="mx-auto flex items-center gap-2"
             onClick={() => {
-              const tasksToRepopulate = dailyTasksLastDoneAt.map((item) => item.dailyTask);
+              const tasksToRepopulate = dailyTasksLastDoneAt.map(
+                (item) => item.dailyTask
+              );
               if (!tasksToRepopulate) return;
               setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
               setDailyTasksLastDoneAt([]);

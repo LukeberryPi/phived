@@ -13,17 +13,18 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
     "storedDailyTasks",
     Array<string>(5).fill("")
   );
-  const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] = useLocalStorage<DailyTasksLastDoneAt>(
-    "dailyTasksLastDoneAt",
-    []
-  );
+  const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] =
+    useLocalStorage<DailyTasksLastDoneAt>("dailyTasksLastDoneAt", []);
   const [dailyTasks, setDailyTasks] = useState(storedDailyTasks);
   const [message, setMessage] = useState<string>("");
-  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);
+  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(
+    undefined
+  );
 
   const memoizedTasks = useMemo(() => dailyTasks, [dailyTasks]);
 
-  const getRandomIncentive = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const getRandomIncentive = (arr: string[]) =>
+    arr[Math.floor(Math.random() * arr.length)];
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const incentive = useMemo(() => getRandomIncentive(incentives), [dailyTasks]);
@@ -58,7 +59,10 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
       const ongoingTasks = dailyTasks.filter((_, idx) => idx !== taskIndex);
       setDailyTasksLastDoneAt([
         ...dailyTasksLastDoneAt,
-        { dailyTask: dailyTasks[taskIndex], dateCompleted: new Date() },
+        {
+          dailyTask: dailyTasks[taskIndex],
+          dateCompleted: new Date(),
+        },
       ]);
       setDailyTasks([...ongoingTasks]);
       displayMessage(incentive);
@@ -74,7 +78,9 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   );
 
   const clearDailyTasks = useCallback(() => {
-    const isUserCertain = window.confirm("Are you sure you want to DELETE all your daily tasks?");
+    const isUserCertain = window.confirm(
+      "Are you sure you want to DELETE all your daily tasks?"
+    );
 
     if (!isUserCertain) {
       return;

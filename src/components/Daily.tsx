@@ -1,5 +1,12 @@
 import { HelmetProvider } from "react-helmet-async";
-import { Footer, Header, Message, DailyTasks, Head, ModeSelectorMobile } from "src/components";
+import {
+  Footer,
+  Header,
+  Message,
+  DailyTasks,
+  Head,
+  ModeSelectorMobile,
+} from "src/components";
 import { DailyTasksContextProvider } from "src/contexts";
 
 export function Daily() {

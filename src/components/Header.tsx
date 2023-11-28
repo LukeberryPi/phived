@@ -71,7 +71,10 @@ export function Header() {
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
               : "cursor-pointer sm:hover:bg-alertRed"
           } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
-          disabled={(!isDailyPage() && noGeneralTasks) || (isDailyPage() && noDailyTasks)}
+          disabled={
+            (!isDailyPage() && noGeneralTasks) ||
+            (isDailyPage() && noDailyTasks)
+          }
         >
           <Trash
             className={`fill-trueBlack dark:fill-trueWhite ${
@@ -96,7 +99,9 @@ export function Header() {
           className="group relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out lg:flex"
         >
           <span
-            className={`h-fit w-fit ${showHelpMenu ? "rotate-0" : "rotate-180"} transition-all`}
+            className={`h-fit w-fit ${
+              showHelpMenu ? "rotate-0" : "rotate-180"
+            } transition-all`}
           >
             <ArrowUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>

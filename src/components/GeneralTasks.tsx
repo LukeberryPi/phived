@@ -3,7 +3,12 @@ import { useEffect, useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useGeneralTasksContext } from "src/contexts";
 import { setTasksDefaultWidth } from "src/utils";
-import { DragDropContext, Droppable, Draggable, type DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DropResult,
+} from "react-beautiful-dnd";
 import { Close, DragVertical } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
@@ -12,22 +17,34 @@ import { useLocalStorage } from "src/hooks";
 const DEFAULT_WIDTH = setTasksDefaultWidth();
 
 export function GeneralTasks() {
-  const { message, generalTasks, changeGeneralTask, completeGeneralTask, setGeneralTasks } =
-    useGeneralTasksContext();
+  const {
+    message,
+    generalTasks,
+    changeGeneralTask,
+    completeGeneralTask,
+    setGeneralTasks,
+  } = useGeneralTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
     "tasksComponentWidth",
     DEFAULT_WIDTH
   );
-  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage("showTasksAreSaved", true);
+  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage(
+    "showTasksAreSaved",
+    true
+  );
 
   const numberOfTasks = generalTasks.filter(Boolean).length;
   const multipleTasks = numberOfTasks > 1;
 
-  const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const getRandomElement = (arr: string[]) =>
+    arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
-  const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
+  const handleChange = (
+    event: React.FormEvent<HTMLInputElement>,
+    i: number
+  ) => {
     const currentTask = event.currentTarget.value;
     changeGeneralTask(i, currentTask);
   };
@@ -52,7 +69,10 @@ export function GeneralTasks() {
     setShowTasksAreSaved(false);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    i: number
+  ) => {
     // event.metaKey is macOS command key
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
       event.preventDefault();
@@ -101,7 +121,8 @@ export function GeneralTasks() {
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
           const isBeingDragged = snapshot.isDragging;
-          const anotherTaskIsBeingDragged = !isBeingDragged && someDragIsHappening;
+          const anotherTaskIsBeingDragged =
+            !isBeingDragged && someDragIsHappening;
 
           return (
             <li
@@ -124,11 +145,14 @@ export function GeneralTasks() {
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
-                  isBeingDragged && "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                  isBeingDragged &&
+                  "border-b border-trueBlack/30 dark:border-trueWhite/30"
                 } ${!isEmptyTask && multipleTasks && "group-hover:pr-2"} ${
                   isFirstTask && "rounded-t-2xl border-t-0"
                 } ${
-                  isLastTask ? "rounded-b-2xl" : "border-b border-trueBlack dark:border-trueWhite"
+                  isLastTask
+                    ? "rounded-b-2xl"
+                    : "border-b border-trueBlack dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
                 } bg-trueWhite py-4 px-5 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
@@ -136,7 +160,10 @@ export function GeneralTasks() {
               <span
                 {...provided.dragHandleProps}
                 aria-label="Drag handle to reorder task"
-                className={`${!isLastTask && "border-b border-trueBlack dark:border-trueWhite"} ${
+                className={`${
+                  !isLastTask &&
+                  "border-b border-trueBlack dark:border-trueWhite"
+                } ${
                   isEmptyTask || !multipleTasks || anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
@@ -151,7 +178,9 @@ export function GeneralTasks() {
               </span>
               <button
                 onClick={() => handleDone(idx)}
-                className={`${isFirstTask && "rounded-tr-2xl"} ${isLastTask && "rounded-br-2xl"} ${
+                className={`${isFirstTask && "rounded-tr-2xl"} ${
+                  isLastTask && "rounded-br-2xl"
+                } ${
                   isEmptyTask || anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
@@ -173,7 +202,7 @@ export function GeneralTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="sm:text-md mx-auto w-fit rounded-lg bg-berryBlue px-2 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite">
+        <p className="sm:text-md mx-auto w-fit rounded-lg bg-berryBlue px-2 py-1 text-xs dark:bg-purpleRain dark:text-trueWhite">
           general
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
@@ -182,10 +211,15 @@ export function GeneralTasks() {
       </div>
       <ul
         onMouseUp={handleResize}
-        style={{ width: `${tasksComponentWidth}px` }}
+        style={{
+          width: `${tasksComponentWidth}px`,
+        }}
         className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
       >
-        <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
+        <DragDropContext
+          onDragEnd={handleDragEnd}
+          onDragStart={() => setSomeDragIsHappening(true)}
+        >
           <Droppable droppableId="tasksList">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>

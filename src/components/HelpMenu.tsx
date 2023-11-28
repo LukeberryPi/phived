@@ -20,8 +20,8 @@ export function HelpMenu({ closeHelpMenu }: Props) {
       </h1>
       <br />
       <h2 className="text-trueBlack dark:text-trueWhite">
-        <strong>list five things you wish to get done.</strong> to add more tasks, complete existing
-        ones!
+        <strong>list five things you wish to get done.</strong> to add more
+        tasks, complete existing ones!
       </h2>
       <br />
       <p className="text-trueBlack dark:text-trueWhite">
