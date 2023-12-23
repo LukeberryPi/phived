@@ -13,4 +13,6 @@ export type TaskContextType = {
   completeTask: (index: number) => void;
   clearTasks: () => void;
   changeTask: (taskIndex: number, newValue: Task) => void;
+  swapUpTask: (taskIndex: number) => void;
+
 };

@@ -21,7 +21,7 @@ function setDefaultWidth() {
 }
 
 export function Tasks() {
-  const { message, tasks, changeTask, completeTask, setTasks } = useTasksContext();
+  const { message, tasks, changeTask, completeTask, setTasks,swapUpTask } = useTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [taskComponentWidth, setTaskComponentWidth] = useLocalStorage(
     "taskComponentWidth",
@@ -55,6 +55,10 @@ export function Tasks() {
   const handleDone = (i: number) => {
     completeTask(i);
   };
+  const handleSwapUp = async (i: number) => {
+    swapUpTask(i);
+    document.querySelectorAll("input")[i - 1]?.focus()
+  };
 
   const hideTasksSaved = () => {
     setShowTasksAreSaved(false);
@@ -69,6 +73,10 @@ export function Tasks() {
     if (event.key === "Enter" && event.shiftKey) {
       event.preventDefault();
       return document.querySelectorAll("input")[i - 1]?.focus();
+    }
+    if (event.key === "Enter" && event.altKey) {
+      event.preventDefault();
+      return handleSwapUp(i);
     }
     if (event.key === "Enter" && !event.ctrlKey) {
       event.preventDefault();

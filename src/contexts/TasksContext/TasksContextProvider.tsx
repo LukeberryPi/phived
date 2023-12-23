@@ -40,7 +40,19 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
     },
     [tasks, setTasks]
   );
-
+  
+  const swapUpTask = useCallback(
+    (taskIndex: number) => {
+      if(taskIndex != 0){
+        const taskCopy = [...tasks];
+        taskCopy[taskIndex] = tasks[taskIndex-1];
+        taskCopy[taskIndex-1] = tasks[taskIndex];
+        setTasks(taskCopy);
+      }
+      return
+    },
+    [tasks, setTasks]
+  );
   const completeTask = useCallback(
     (index: number) => {
       if (!tasks[index]) return;
@@ -74,6 +86,7 @@ export const TasksContextProvider = ({ children }: PropsWithChildren) => {
         setTasks,
         completeTask,
         changeTask,
+        swapUpTask,
         clearTasks,
         displayMessage,
         message,
