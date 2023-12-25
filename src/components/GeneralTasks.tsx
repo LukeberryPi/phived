@@ -18,7 +18,7 @@ const DEFAULT_WIDTH = setTasksDefaultWidth();
 
 export function GeneralTasks() {
   const {
-    message,
+    generalMessage,
     generalTasks,
     changeGeneralTask,
     completeGeneralTask,
@@ -234,7 +234,8 @@ export function GeneralTasks() {
         onClick={hideTasksSaved}
         role="button"
         className={`${
-          (message || !multipleTasks || !showTasksAreSaved) && "invisible"
+          (generalMessage || !multipleTasks || !showTasksAreSaved) &&
+          "invisible"
         } group flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
       >
         <p

@@ -11,7 +11,6 @@ import {
 } from "react-beautiful-dnd";
 import { Close, CounterClockWise, DragVertical, Light, Open } from "src/icons";
 import { useLocalStorage } from "src/hooks";
-import { CountdownTimer } from "src/components";
 import { Link } from "react-router-dom";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
@@ -54,8 +53,6 @@ export function DailyTasks() {
     "showTasksAreSaved",
     true
   );
-  const [dailyTasksCanBeRegenerated, setDailyTasksCanBeRenegerated] =
-    useState(false);
 
   const numberOfDailyTasks = dailyTasks.filter(Boolean).length;
   const multipleDailyTasks = numberOfDailyTasks > 1;
@@ -80,14 +77,6 @@ export function DailyTasks() {
       setTasksComponentWidth(newWidth);
     }
   };
-
-  useEffect(() => {
-    setDailyTasksCanBeRenegerated(
-      dailyTasksLastDoneAt.length > 0 &&
-        isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     setTasksComponentWidth(tasksComponentWidth);
@@ -241,39 +230,8 @@ export function DailyTasks() {
           daily
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
-          {allDailyTasksDone
-            ? "these tasks will be available again in"
-            : "what do you want to do?"}
+          what do you want to do?
         </p>
-        {allDailyTasksDone && !dailyTasksCanBeRegenerated && (
-          <div className="flex items-center justify-center gap-4">
-            <CountdownTimer />
-            <Link
-              to="/"
-              className="flex items-center gap-2 rounded-xl px-3 py-1 text-trueBlack hover:bg-berryBlue dark:text-trueWhite hover:dark:bg-purpleRain"
-            >
-              go to general
-              <Open size={21} className="fill-trueBlack dark:fill-trueWhite" />
-            </Link>
-          </div>
-        )}
-        {allDailyTasksDone && dailyTasksCanBeRegenerated && (
-          <button
-            className="mx-auto flex items-center gap-2"
-            onClick={() => {
-              const tasksToRepopulate = dailyTasksLastDoneAt.map(
-                (item) => item.dailyTask
-              );
-              if (!tasksToRepopulate) return;
-              setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
-              setDailyTasksLastDoneAt([]);
-              setDailyTasksCanBeRenegerated(false);
-            }}
-          >
-            <CounterClockWise />
-            <p>regenerate tasks</p>
-          </button>
-        )}
       </div>
       {!allDailyTasksDone && (
         <ul
@@ -297,6 +255,25 @@ export function DailyTasks() {
             </Droppable>
           </DragDropContext>
         </ul>
+      )}
+      {dailyTasksLastDoneAt.length > 0 && (
+        <button
+          className="mx-auto flex items-center gap-2"
+          onClick={() => {
+            const tasksToRepopulate = dailyTasksLastDoneAt.map(
+              (item) => item.dailyTask
+            );
+            if (!tasksToRepopulate) return;
+            if (!isPosteriorDay(new Date())) {
+              undefined;
+            }
+            setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
+            setDailyTasksLastDoneAt([]);
+          }}
+        >
+          <CounterClockWise />
+          <p>regenerate tasks</p>
+        </button>
       )}
       <div
         className={`${

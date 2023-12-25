@@ -13,7 +13,7 @@ export const GeneralTasksContextProvider = ({
     Array<string>(5).fill("")
   );
   const [generalTasks, setGeneralTasks] = useState(storedGeneralTasks);
-  const [message, setMessage] = useState<string>("");
+  const [generalMessage, setGeneralMessage] = useState<string>("");
   const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(
     undefined
   );
@@ -24,17 +24,17 @@ export const GeneralTasksContextProvider = ({
     arr[Math.floor(Math.random() * arr.length)];
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const incentive = useMemo(
+  const generalIncentive = useMemo(
     () => getRandomIncentive(incentives),
     [generalTasks]
   );
 
-  const displayMessage = useCallback(
-    (message: string) => {
-      setMessage(message);
+  const displayGeneralMessage = useCallback(
+    (generalMessage: string) => {
+      setGeneralMessage(generalMessage);
       clearTimeout(timeoutId);
       const newTimeoutId = setTimeout(() => {
-        setMessage("");
+        setGeneralMessage("");
       }, 4000);
 
       setTimeoutId(newTimeoutId);
@@ -58,9 +58,9 @@ export const GeneralTasksContextProvider = ({
 
       const ongoingTasks = generalTasks.filter((_, idx) => idx !== taskIndex);
       setGeneralTasks([...ongoingTasks, ""]);
-      displayMessage(incentive);
+      displayGeneralMessage(generalIncentive);
     },
-    [displayMessage, incentive, generalTasks, setGeneralTasks]
+    [displayGeneralMessage, generalIncentive, generalTasks, setGeneralTasks]
   );
 
   const clearGeneralTasks = useCallback(() => {
@@ -73,8 +73,8 @@ export const GeneralTasksContextProvider = ({
     }
 
     setGeneralTasks(Array(5).fill(""));
-    displayMessage("tasks cleared!");
-  }, [displayMessage, setGeneralTasks]);
+    displayGeneralMessage("tasks cleared!");
+  }, [displayGeneralMessage, setGeneralTasks]);
 
   useEffect(() => {
     setStoredGeneralTasks(generalTasks);
@@ -86,11 +86,11 @@ export const GeneralTasksContextProvider = ({
         changeGeneralTask,
         clearGeneralTasks,
         completeGeneralTask,
-        displayMessage,
+        displayGeneralMessage,
         generalTasks: memoizedTasks,
-        message,
+        generalMessage,
         setGeneralTasks,
-        setMessage,
+        setGeneralMessage,
       }}
     >
       {children}
