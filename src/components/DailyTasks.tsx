@@ -286,7 +286,7 @@ export function DailyTasks() {
                 (item) => item.dailyTask
               );
               if (!tasksToRepopulate) return;
-              if (isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)) {
+              if (!isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)) {
                 setShowImpossibleToRegenerateTasks(true);
                 return;
               }
