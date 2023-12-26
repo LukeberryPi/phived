@@ -88,7 +88,7 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
 
     setDailyTasks(Array(5).fill(""));
     setDailyTasksLastDoneAt([]);
-    displayDailyMessage("tasks cleared!");
+    displayDailyMessage("daily tasks cleared!");
   }, [displayDailyMessage, setDailyTasks, setDailyTasksLastDoneAt]);
 
   useEffect(() => {
