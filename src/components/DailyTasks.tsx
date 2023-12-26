@@ -214,7 +214,7 @@ export function DailyTasks() {
                   isBeingDragged
                     ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } dark:bg-dailyPurple cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:text-trueWhite xs:px-6 sm:text-lg`}
+                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyPurple dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>
@@ -228,7 +228,7 @@ export function DailyTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="sm:text-md dark:bg-dailyPurple mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-xs dark:text-trueWhite">
+        <p className="sm:text-md mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-xs dark:bg-dailyPurple dark:text-trueWhite">
           daily
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
@@ -286,7 +286,7 @@ export function DailyTasks() {
                 (item) => item.dailyTask
               );
               if (!tasksToRepopulate) return;
-              if (!isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)) {
+              if (isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)) {
                 setShowImpossibleToRegenerateTasks(true);
                 return;
               }
