@@ -80,7 +80,7 @@ export function HelpMenu({ closeHelpMenu }: HelpMenuProps) {
             onClick={closeHelpMenu}
             className={`cursor-pointer rounded-r-md border border-trueBlack ${
               isDailyPage()
-                ? "dark:bg-dailyPurple bg-dailyGreen"
+                ? "bg-dailyGreen dark:bg-dailyPurple"
                 : "bg-berryBlue dark:bg-purpleRain"
             } py-1 px-2 dark:border-trueWhite`}
           >
