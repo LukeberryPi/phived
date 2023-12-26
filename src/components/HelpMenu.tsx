@@ -1,10 +1,11 @@
 import { Close } from "src/icons";
+import { isDailyPage } from "src/utils";
 
-type Props = {
+type HelpMenuProps = {
   closeHelpMenu?: () => void;
 };
 
-export function HelpMenu({ closeHelpMenu }: Props) {
+export function HelpMenu({ closeHelpMenu }: HelpMenuProps) {
   return (
     <main className="absolute right-7 top-full hidden max-w-xs flex-col rounded-2xl border border-trueBlack bg-trueWhite px-5 pt-4 pb-2 shadow-brutalist-dark dark:border-trueWhite dark:bg-softBlack dark:shadow-brutalist-light lg:flex">
       <button
@@ -77,7 +78,11 @@ export function HelpMenu({ closeHelpMenu }: Props) {
           will complete the current task, or just click{" "}
           <span
             onClick={closeHelpMenu}
-            className="cursor-pointer rounded-r-md border border-trueBlack bg-berryBlue py-1 px-2 dark:border-trueWhite dark:bg-dailyOrange"
+            className={`cursor-pointer rounded-r-md border border-trueBlack ${
+              isDailyPage()
+                ? "dark:bg-dailyPurple bg-dailyGreen"
+                : "bg-berryBlue dark:bg-purpleRain"
+            } py-1 px-2 dark:border-trueWhite`}
           >
             done?
           </span>

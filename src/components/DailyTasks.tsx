@@ -9,7 +9,7 @@ import {
   Draggable,
   type DropResult,
 } from "react-beautiful-dnd";
-import { Close, CounterClockWise, DragVertical, Light, Open } from "src/icons";
+import { Close, CounterClockWise, DragVertical, Light } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 import { Link } from "react-router-dom";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
@@ -36,7 +36,7 @@ function isPosteriorDay(date: Date) {
 
 export function DailyTasks() {
   const {
-    message,
+    dailyMessage,
     dailyTasks,
     changeDailyTask,
     completeDailyTask,
@@ -45,12 +45,14 @@ export function DailyTasks() {
     setDailyTasksLastDoneAt,
   } = useDailyTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
+  const [showImpossibleToRegenerateTasks, setShowImpossibleToRegenerateTasks] =
+    useState(false);
   const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
     "tasksComponentWidth",
     DEFAULT_WIDTH
   );
-  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage(
-    "showTasksAreSaved",
+  const [showTasksWontBeLost, setShowTasksWontBeLost] = useLocalStorage(
+    "showTasksWontBeLost",
     true
   );
 
@@ -87,7 +89,7 @@ export function DailyTasks() {
   };
 
   const hideTasksSaved = () => {
-    setShowTasksAreSaved(false);
+    setShowTasksWontBeLost(false);
   };
 
   const handleKeyDown = (
@@ -212,7 +214,7 @@ export function DailyTasks() {
                   isBeingDragged
                     ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyOrange dark:text-trueWhite xs:px-6 sm:text-lg`}
+                } dark:bg-dailyPurple cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>
@@ -226,7 +228,7 @@ export function DailyTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="sm:text-md mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-xs dark:bg-dailyOrange dark:text-trueWhite">
+        <p className="sm:text-md dark:bg-dailyPurple mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-xs dark:text-trueWhite">
           daily
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
@@ -256,32 +258,56 @@ export function DailyTasks() {
           </DragDropContext>
         </ul>
       )}
-      {dailyTasksLastDoneAt.length > 0 && (
-        <button
-          className="mx-auto flex items-center gap-2"
-          onClick={() => {
-            const tasksToRepopulate = dailyTasksLastDoneAt.map(
-              (item) => item.dailyTask
-            );
-            if (!tasksToRepopulate) return;
-            if (!isPosteriorDay(new Date())) {
-              undefined;
-            }
-            setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
-            setDailyTasksLastDoneAt([]);
-          }}
-        >
-          <CounterClockWise />
-          <p>regenerate tasks</p>
-        </button>
+      {!!showImpossibleToRegenerateTasks && (
+        <div className="group flex items-center gap-3 text-trueBlack dark:text-trueWhite">
+          <Light size={24} />
+          <p className="text-center text-xs xs:text-sm">
+            you can only regenerate daily
+            <br /> tasks tomorrow.{" "}
+            <Link to="/" className="underline underline-offset-4">
+              go to general
+            </Link>
+          </p>
+          <button
+            onClick={() => setShowImpossibleToRegenerateTasks(false)}
+            className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
+          >
+            <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />
+          </button>
+        </div>
       )}
+      {dailyTasksLastDoneAt.length > 0 &&
+        !showImpossibleToRegenerateTasks &&
+        !dailyMessage && (
+          <button
+            className="mx-auto flex items-center gap-2"
+            onClick={() => {
+              const tasksToRepopulate = dailyTasksLastDoneAt.map(
+                (item) => item.dailyTask
+              );
+              if (!tasksToRepopulate) return;
+              if (!isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)) {
+                setShowImpossibleToRegenerateTasks(true);
+                return;
+              }
+              setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
+              setDailyTasksLastDoneAt([]);
+            }}
+          >
+            <CounterClockWise className="text-trueBlack dark:text-trueWhite" />
+            <span className="text-trueBlack dark:text-trueWhite">{`regenerate ${
+              dailyTasksLastDoneAt.length
+            } daily task${dailyTasksLastDoneAt.length === 1 ? "" : "s"}`}</span>
+          </button>
+        )}
       <div
         className={`${
-          (message || !multipleDailyTasks || !showTasksAreSaved) && "invisible"
-        } group flex items-center gap-4 text-trueBlack dark:text-trueWhite`}
+          (dailyMessage || !multipleDailyTasks || !showTasksWontBeLost) &&
+          "invisible"
+        } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
       >
         <Light size={24} />
-        <p className="text-sm xs:text-base">
+        <p className="text-xs xs:text-sm">
           your tasks won&apos;t be lost <br />
           if you close the website
         </p>

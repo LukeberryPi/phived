@@ -49,7 +49,7 @@ export function ModeSelector() {
           >
             <div className="flex items-center gap-2">
               daily
-              <span className="h-2 w-2 rounded-full bg-dailyGreen dark:bg-dailyOrange" />
+              <span className="dark:bg-dailyPurple h-2 w-2 rounded-full bg-dailyGreen" />
             </div>
             {!isDailyPage() && (
               <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />

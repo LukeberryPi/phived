@@ -9,7 +9,7 @@ import {
   Draggable,
   type DropResult,
 } from "react-beautiful-dnd";
-import { Close, DragVertical } from "src/icons";
+import { Close, DragVertical, Light } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
@@ -29,13 +29,13 @@ export function GeneralTasks() {
     "tasksComponentWidth",
     DEFAULT_WIDTH
   );
-  const [showTasksAreSaved, setShowTasksAreSaved] = useLocalStorage(
-    "showTasksAreSaved",
+  const [showTasksWontBeLost, setShowTasksWontBeLost] = useLocalStorage(
+    "showTasksWontBeLost",
     true
   );
 
   const numberOfTasks = generalTasks.filter(Boolean).length;
-  const multipleTasks = numberOfTasks > 1;
+  const multipleGeneralTasks = numberOfTasks > 1;
 
   const getRandomElement = (arr: string[]) =>
     arr[Math.floor(Math.random() * arr.length)];
@@ -66,7 +66,7 @@ export function GeneralTasks() {
   };
 
   const hideTasksSaved = () => {
-    setShowTasksAreSaved(false);
+    setShowTasksWontBeLost(false);
   };
 
   const handleKeyDown = (
@@ -147,9 +147,9 @@ export function GeneralTasks() {
                 className={`peer w-full ${
                   isBeingDragged &&
                   "border-b border-trueBlack/30 dark:border-trueWhite/30"
-                } ${!isEmptyTask && multipleTasks && "group-hover:pr-2"} ${
-                  isFirstTask && "rounded-t-2xl border-t-0"
                 } ${
+                  !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2"
+                } ${isFirstTask && "rounded-t-2xl border-t-0"} ${
                   isLastTask
                     ? "rounded-b-2xl"
                     : "border-b border-trueBlack dark:border-trueWhite"
@@ -164,7 +164,9 @@ export function GeneralTasks() {
                   !isLastTask &&
                   "border-b border-trueBlack dark:border-trueWhite"
                 } ${
-                  isEmptyTask || !multipleTasks || anotherTaskIsBeingDragged
+                  isEmptyTask ||
+                  !multipleGeneralTasks ||
+                  anotherTaskIsBeingDragged
                     ? "hidden"
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
@@ -231,25 +233,21 @@ export function GeneralTasks() {
         </DragDropContext>
       </ul>
       <div
-        onClick={hideTasksSaved}
-        role="button"
         className={`${
-          (generalMessage || !multipleTasks || !showTasksAreSaved) &&
+          (generalMessage || !multipleGeneralTasks || !showTasksWontBeLost) &&
           "invisible"
-        } group flex cursor-pointer flex-col items-center gap-1 rounded-2xl bg-softWhite dark:bg-trueBlack`}
+        } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
       >
-        <p
-          className="text-sm text-trueBlack/50
-          dark:text-trueWhite/50 xs:text-base"
-        >
-          your tasks won&apos;t be lost if you close the website
+        <Light size={24} />
+        <p className="text-xs xs:text-sm">
+          your tasks won&apos;t be lost <br />
+          if you close the website
         </p>
         <button
-          className="flex items-center gap-1 rounded-md border border-trueBlack/30 py-0.5 pl-2 pr-1 text-sm text-trueBlack/50
-          dark:border-trueWhite/30 dark:text-trueWhite/50 xs:text-base sm:group-hover:bg-unavailableLight dark:sm:group-hover:bg-unavailableDark"
+          onClick={hideTasksSaved}
+          className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
         >
-          close this dialog
-          <Close className="rounded-md fill-trueBlack/50 dark:fill-trueWhite/50" />
+          <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />
         </button>
       </div>
     </section>

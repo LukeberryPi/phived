@@ -16,8 +16,8 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] =
     useLocalStorage<DailyTasksLastDoneAt>("dailyTasksLastDoneAt", []);
   const [dailyTasks, setDailyTasks] = useState(storedDailyTasks);
-  const [message, setMessage] = useState<string>("");
-  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(
+  const [dailyMessage, setDailyMessage] = useState<string>("");
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(
     undefined
   );
 
@@ -29,12 +29,12 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const incentive = useMemo(() => getRandomIncentive(incentives), [dailyTasks]);
 
-  const displayMessage = useCallback(
-    (message: string) => {
-      setMessage(message);
+  const displayDailyMessage = useCallback(
+    (dailyMessage: string) => {
+      setDailyMessage(dailyMessage);
       clearTimeout(timeoutId);
       const newTimeoutId = setTimeout(() => {
-        setMessage("");
+        setDailyMessage("");
       }, 4000);
 
       setTimeoutId(newTimeoutId);
@@ -65,10 +65,10 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
         },
       ]);
       setDailyTasks([...ongoingTasks]);
-      displayMessage(incentive);
+      displayDailyMessage(incentive);
     },
     [
-      displayMessage,
+      displayDailyMessage,
       incentive,
       dailyTasks,
       setDailyTasks,
@@ -88,8 +88,8 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
 
     setDailyTasks(Array(5).fill(""));
     setDailyTasksLastDoneAt([]);
-    displayMessage("tasks cleared!");
-  }, [displayMessage, setDailyTasks, setDailyTasksLastDoneAt]);
+    displayDailyMessage("tasks cleared!");
+  }, [displayDailyMessage, setDailyTasks, setDailyTasksLastDoneAt]);
 
   useEffect(() => {
     setStoredDailyTasks(dailyTasks);
@@ -103,11 +103,11 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
         completeDailyTask,
         dailyTasks: memoizedTasks,
         dailyTasksLastDoneAt,
-        displayMessage,
-        message,
+        displayDailyMessage,
+        dailyMessage,
         setDailyTasks,
         setDailyTasksLastDoneAt,
-        setMessage,
+        setDailyMessage,
       }}
     >
       {children}

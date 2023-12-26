@@ -17,11 +17,13 @@ export type DailyTaskContextType = {
   completeDailyTask: (taskIndex: number) => void;
   dailyTasks: DailyTasks;
   dailyTasksLastDoneAt: DailyTasksLastDoneAt;
-  displayMessage: (incentive: string) => void;
-  message: string;
+  displayDailyMessage: (incentive: string) => void;
+  dailyMessage: string;
   setDailyTasks: Dispatch<SetStateAction<DailyTaskContextType["dailyTasks"]>>;
   setDailyTasksLastDoneAt: Dispatch<
     SetStateAction<DailyTaskContextType["dailyTasksLastDoneAt"]>
   >;
-  setMessage: Dispatch<SetStateAction<DailyTaskContextType["message"]>>;
+  setDailyMessage: Dispatch<
+    SetStateAction<DailyTaskContextType["dailyMessage"]>
+  >;
 };
