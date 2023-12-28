@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUp } from "src/icons";
+import { ArrowRight, CaretUp } from "src/icons";
+import { isDailyPage } from "src/utils";
 
 export function ModeSelector() {
   const [showModes, setShowModes] = useState(false);
@@ -22,7 +23,7 @@ export function ModeSelector() {
               showModes ? "rotate-0" : "rotate-180"
             } transition-all`}
           >
-            <ArrowUp className="fill-trueBlack dark:fill-trueWhite" />
+            <CaretUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
         </button>
       </div>
@@ -37,6 +38,12 @@ export function ModeSelector() {
               general
               <span className="h-2 w-2 rounded-full bg-berryBlue dark:bg-purpleRain" />
             </div>
+            {isDailyPage() && (
+              <ArrowRight
+                className="fill-trueBlack dark:fill-trueWhite"
+                size={20}
+              />
+            )}
           </Link>
           <Link
             to="/daily"
@@ -47,6 +54,12 @@ export function ModeSelector() {
               daily
               <span className="h-2 w-2 rounded-full bg-dailyGreen dark:bg-dailyPurple" />
             </div>
+            {!isDailyPage() && (
+              <ArrowRight
+                className="fill-trueBlack dark:fill-trueWhite"
+                size={20}
+              />
+            )}
           </Link>
         </div>
       )}

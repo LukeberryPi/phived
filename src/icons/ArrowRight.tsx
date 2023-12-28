@@ -1,17 +1,17 @@
 import type { DefaultSvgProps } from "src/utils";
 
-export function ArrowUp({ className, size = 20 }: DefaultSvgProps) {
+export function ArrowRight({ className, size = 20 }: DefaultSvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Arrow Icon"
       width={size}
       height={size}
       viewBox="0 0 256 256"
     >
       <path
         className={className}
-        d="M213.66 165.66a8 8 0 0 1-11.32 0L128 91.31l-74.34 74.35a8 8 0 0 1-11.32-11.32l80-80a8 8 0 0 1 11.32 0l80 80a8 8 0 0 1 0 11.32Z"
+        fill="currentColor"
+        d="m221.66 133.66l-72 72a8 8 0 0 1-11.32-11.32L196.69 136H40a8 8 0 0 1 0-16h156.69l-58.35-58.34a8 8 0 0 1 11.32-11.32l72 72a8 8 0 0 1 0 11.32"
       />
     </svg>
   );

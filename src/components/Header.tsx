@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDailyTasksContext, useGeneralTasksContext } from "src/contexts";
 import { HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, ArrowUp, Sun } from "src/icons";
+import { Trash, Moon, CaretUp, Sun } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 export function Header() {
@@ -103,7 +103,7 @@ export function Header() {
               showHelpMenu ? "rotate-0" : "rotate-180"
             } transition-all`}
           >
-            <ArrowUp className="fill-trueBlack dark:fill-trueWhite" />
+            <CaretUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
           <p className="dark:text-trueWhite xs:text-lg">help</p>
         </button>
