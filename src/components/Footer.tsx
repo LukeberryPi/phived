@@ -1,8 +1,15 @@
 import { Github, Instagram, Twitter } from "src/icons";
+import { isDailyPage } from "src/utils";
 
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 hidden h-16 w-full items-center justify-center sm:flex sm:justify-between sm:px-6">
+    <footer
+      className={`${
+        isDailyPage()
+          ? "border-dailyGreen dark:border-dailyPurple"
+          : "border-berryBlue dark:border-purpleRain"
+      } fixed bottom-0 box-content hidden h-16 w-full items-center justify-center border-t-4 sm:flex sm:justify-between sm:px-6`}
+    >
       <div className="flex h-full items-center justify-between space-x-8">
         <a
           className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-trueBlack hover:ease-in-out dark:hover:bg-trueWhite"

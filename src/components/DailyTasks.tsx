@@ -228,7 +228,7 @@ export function DailyTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="sm:text-md mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-xs dark:bg-dailyPurple dark:text-trueWhite">
+        <p className="mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-sm dark:bg-dailyPurple dark:text-trueWhite sm:text-base">
           daily
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
