@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUp, Open } from "src/icons";
-import { isDailyPage } from "src/utils";
+import { ArrowUp } from "src/icons";
 
 export function ModeSelector() {
   const [showModes, setShowModes] = useState(false);
@@ -38,9 +37,6 @@ export function ModeSelector() {
               general
               <span className="h-2 w-2 rounded-full bg-berryBlue dark:bg-purpleRain" />
             </div>
-            {isDailyPage() && (
-              <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />
-            )}
           </Link>
           <Link
             to="/daily"
@@ -49,11 +45,8 @@ export function ModeSelector() {
           >
             <div className="flex items-center gap-2">
               daily
-              <span className="dark:bg-dailyPurple h-2 w-2 rounded-full bg-dailyGreen" />
+              <span className="h-2 w-2 rounded-full bg-dailyGreen dark:bg-dailyPurple" />
             </div>
-            {!isDailyPage() && (
-              <Open className="fill-trueBlack dark:fill-trueWhite" size={24} />
-            )}
           </Link>
         </div>
       )}
