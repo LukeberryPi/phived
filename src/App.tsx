@@ -8,7 +8,7 @@ export default function App() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/daily">
+        <Route exact path="/daily">
           <Daily />
         </Route>
       </Switch>
