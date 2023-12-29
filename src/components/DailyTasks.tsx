@@ -262,7 +262,7 @@ export function DailyTasks() {
         <div className="group flex items-center gap-3 text-trueBlack dark:text-trueWhite">
           <Light size={24} />
           <p className="text-center text-xs xs:text-sm">
-            you can only regenerate daily
+            you can only restore daily
             <br /> tasks tomorrow.{" "}
             <Link to="/" className="underline underline-offset-4">
               go to general
@@ -290,12 +290,12 @@ export function DailyTasks() {
                 setShowImpossibleToRegenerateTasks(true);
                 return;
               }
-              setDailyTasks([...dailyTasks, ...tasksToRepopulate]);
+              setDailyTasks([...tasksToRepopulate, ...dailyTasks]);
               setDailyTasksLastDoneAt([]);
             }}
           >
             <CounterClockWise className="text-trueBlack dark:text-trueWhite" />
-            <span className="text-trueBlack dark:text-trueWhite">{`regenerate ${
+            <span className="text-trueBlack dark:text-trueWhite">{`restore ${
               dailyTasksLastDoneAt.length
             } daily task${dailyTasksLastDoneAt.length === 1 ? "" : "s"}`}</span>
           </button>
