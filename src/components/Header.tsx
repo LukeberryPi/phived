@@ -35,13 +35,17 @@ export function Header() {
       <div className="hidden items-center gap-8 text-trueBlack sm:flex">
         <a
           href="/"
-          className="hidden cursor-pointer text-4xl font-bold text-trueBlack transition-transform active:scale-95 dark:text-trueWhite md:flex"
+          className={`hidden cursor-pointer text-4xl font-bold text-trueBlack underline decoration-4 underline-offset-4 ${
+            isDailyPage()
+              ? "decoration-dailyGreen dark:decoration-dailyPurple"
+              : "decoration-berryBlue dark:decoration-purpleRain"
+          } transition-transform active:scale-95 dark:text-trueWhite md:flex`}
         >
           phived
         </a>
         <ModeSelector />
       </div>
-      <nav className="flex h-full items-center justify-between space-x-4 tiny:space-x-10 sm:space-x-6">
+      <nav className="flex h-full items-center justify-between gap-4 tiny:gap-10 sm:gap-6">
         <button
           onClick={toggleDarkMode}
           role="switch"
@@ -96,12 +100,12 @@ export function Header() {
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className="group relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out lg:flex"
+          className="group relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out lg:flex"
         >
           <span
             className={`h-fit w-fit ${
               showHelpMenu ? "rotate-0" : "rotate-180"
-            } transition-all`}
+            }`}
           >
             <CaretUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>

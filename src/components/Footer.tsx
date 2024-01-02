@@ -8,9 +8,9 @@ export function Footer() {
         isDailyPage()
           ? "border-dailyGreen dark:border-dailyPurple"
           : "border-berryBlue dark:border-purpleRain"
-      } fixed bottom-0 box-content hidden h-16 w-full items-center justify-center border-t-4 sm:flex sm:justify-between sm:px-6`}
+      } fixed bottom-0 hidden h-16 w-full items-center justify-between border-t-4 px-6 sm:flex`}
     >
-      <div className="flex h-full items-center justify-between space-x-8">
+      <div className="flex h-full items-center justify-between gap-8">
         <a
           className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-trueBlack hover:ease-in-out dark:hover:bg-trueWhite"
           target="_blank"
@@ -49,9 +49,9 @@ export function Footer() {
         target="_blank"
         rel="noreferrer"
         href="https://twitter.com/LukeberryPi"
-        className="hidden rounded-2xl py-2 px-3 text-lg text-trueBlack decoration-trueBlack underline-offset-4 hover:underline dark:text-trueWhite dark:decoration-trueWhite md:block"
+        className="hidden text-lg text-trueBlack decoration-trueBlack underline-offset-4 hover:underline dark:text-trueWhite dark:decoration-trueWhite md:block"
       >
-        ©2023 LukeberryPi
+        ©2024 LukeberryPi
       </a>
     </footer>
   );

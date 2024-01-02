@@ -19,9 +19,7 @@ export function ModeSelector() {
         >
           <p className="text-trueBlack dark:text-trueWhite">switch tasks</p>
           <span
-            className={`h-fit w-fit ${
-              showModes ? "rotate-0" : "rotate-180"
-            } transition-all`}
+            className={`h-fit w-fit ${showModes ? "rotate-0" : "rotate-180"}`}
           >
             <CaretUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
