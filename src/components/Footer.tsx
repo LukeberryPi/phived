@@ -51,7 +51,7 @@ export function Footer() {
         href="https://twitter.com/LukeberryPi"
         className="hidden text-lg text-trueBlack decoration-trueBlack underline-offset-4 hover:underline dark:text-trueWhite dark:decoration-trueWhite md:block"
       >
-        ©2024 LukeberryPi
+        ©{String(new Date().getFullYear())} LukeberryPi
       </a>
     </footer>
   );
