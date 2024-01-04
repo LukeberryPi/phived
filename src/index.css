@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 input {
-  -webkit-appearance: none;
   /* we need this to have decent input borders on iOS, ignore warning */
+  -webkit-appearance: none;
   -webkit-border-radius: 0px;
 }
