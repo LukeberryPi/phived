@@ -121,10 +121,7 @@ export function DailyTasks() {
         actualTasks.splice(destinationIndex, 0, draggedTask);
 
         const filledTasks = actualTasks.filter((t) => t !== "");
-        const newTasksArray = Array(5).fill("");
-        newTasksArray.splice(0, filledTasks.length, ...filledTasks);
-
-        return newTasksArray;
+        return filledTasks;
       });
     }
 
