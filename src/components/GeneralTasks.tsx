@@ -137,7 +137,9 @@ export function GeneralTasks() {
                 autoFocus={isFirstTask}
                 autoComplete="off"
                 spellCheck="false"
-                placeholder={`${isFirstTask ? `${placeholder}?` : ""}`}
+                placeholder={`${
+                  isFirstTask && numberOfTasks === 0 ? `${placeholder}?` : ""
+                }`}
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
