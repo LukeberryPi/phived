@@ -34,8 +34,9 @@ export function GeneralTasks() {
     true
   );
 
-  const numberOfTasks = generalTasks.filter(Boolean).length;
-  const multipleGeneralTasks = numberOfTasks > 1;
+  const numberOfGeneralTasks = generalTasks.filter(Boolean).length;
+  const multipleGeneralTasks = numberOfGeneralTasks > 1;
+  const noGeneralTasks = numberOfGeneralTasks === 0;
 
   const getRandomElement = (arr: string[]) =>
     arr[Math.floor(Math.random() * arr.length)];
@@ -138,7 +139,7 @@ export function GeneralTasks() {
                 autoComplete="off"
                 spellCheck="false"
                 placeholder={`${
-                  isFirstTask && numberOfTasks === 0 ? `${placeholder}?` : ""
+                  isFirstTask && noGeneralTasks ? `${placeholder}?` : ""
                 }`}
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}

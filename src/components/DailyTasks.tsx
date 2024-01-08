@@ -58,7 +58,7 @@ export function DailyTasks() {
 
   const numberOfDailyTasks = dailyTasks.filter(Boolean).length;
   const multipleDailyTasks = numberOfDailyTasks > 1;
-  const allDailyTasksDone = dailyTasks.length === 0;
+  const noDailyTasks = dailyTasks.length === 0;
 
   const getRandomElement = (arr: string[]) =>
     arr[Math.floor(Math.random() * arr.length)];
@@ -160,7 +160,9 @@ export function DailyTasks() {
                 autoFocus={isFirstTask}
                 autoComplete="off"
                 spellCheck="false"
-                placeholder={`${isFirstTask ? `${placeholder}?` : ""}`}
+                placeholder={`${
+                  isFirstTask && noDailyTasks ? `${placeholder}?` : ""
+                }`}
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
@@ -231,7 +233,7 @@ export function DailyTasks() {
           what do you want to do?
         </p>
       </div>
-      {!allDailyTasksDone && (
+      {!noDailyTasks && (
         <ul
           onMouseUp={handleResize}
           style={{
