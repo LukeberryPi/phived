@@ -97,11 +97,7 @@ export function GeneralTasks() {
         const draggedTask = actualTasks.splice(result.source.index, 1)[0];
         actualTasks.splice(destinationIndex, 0, draggedTask);
 
-        const filledTasks = actualTasks.filter((t) => t !== "");
-        const newTasksArray = Array(5).fill("");
-        newTasksArray.splice(0, filledTasks.length, ...filledTasks);
-
-        return newTasksArray;
+        return actualTasks;
       });
     }
 
