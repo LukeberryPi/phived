@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* we need this to have decent input borders on iOS, ignore warnings */
+/* we need this to have decent input borders on iOS, ignore warnin */
 input {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
