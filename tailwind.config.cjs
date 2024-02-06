@@ -36,6 +36,6 @@ module.exports = {
       heading: ["DM Sans", "sans-serif"],
     },
   },
-  darkMode: "class",
+  darkMode: "media",
   plugins: [],
 };
