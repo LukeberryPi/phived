@@ -4,9 +4,7 @@ export function handleSetTheme(isDarkMode: boolean) {
     localStorage.setItem("theme", "dark");
     return;
   }
-  if (!isDarkMode) {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-    return;
-  }
+  document.documentElement.classList.remove("dark");
+  localStorage.setItem("theme", "light");
+  return;
 }
