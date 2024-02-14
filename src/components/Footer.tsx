@@ -19,18 +19,21 @@ export function Footer() {
         >
           <Github className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite dark:group-hover:fill-trueBlack" />
           <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite dark:group-hover:text-trueBlack sm:text-lg">
-            github
+            contribute on github!
           </p>
         </a>
       </div>
-      <a
-        target="_blank"
-        rel="noreferrer"
-        href="https://twitter.com/LukeberryPi"
-        className="hidden text-lg text-trueBlack decoration-trueBlack underline-offset-4 hover:underline dark:text-trueWhite dark:decoration-trueWhite md:block"
-      >
-        ©{String(new Date().getFullYear())} LukeberryPi
-      </a>
+      <span className="hidden text-lg text-trueBlack dark:text-trueWhite dark:decoration-trueWhite md:block">
+        made by{" "}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://twitter.com/LukeberryPi"
+          className=" underline decoration-trueBlack underline-offset-4"
+        >
+          LukeberryPi
+        </a>
+      </span>{" "}
     </footer>
   );
 }

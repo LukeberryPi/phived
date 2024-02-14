@@ -1,67 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="fixed h-full w-full" lang="en">
-
-<head>
-  <title>phived · the anti-procrastination to-do list</title>
-  <meta name="description" content="phived · the anti-procrastination to-do list" />
-  <meta keywords="productive, procrastination, task, list" />
-  <link rel="canonical" href="https://www.phived.com/" />
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon-default.ico" />
-  <link rel="apple-touch-icon" href="/icon-512x512.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta property="og:url" content="https://www.phived.com/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="phived" />
-  <meta property="og:description" content="phived · the anti-procrastination to-do list" />
-  <meta property="og:image:secure_url" content="https://www.phived.com/share-banner.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta property="twitter:domain" content="phived.com" />
-  <meta property="twitter:url" content="https://www.phived.com/" />
-  <meta name="twitter:title" content="phived · the anti-procrastination to-do list" />
-  <meta name="twitter:description" content="phived · the anti-procrastination to-do list" />
-  <meta name="twitter:image" content="https://www.phived.com/share-banner.png" />
-  <meta name="google-site-verification" content="R6_yqIps0bS9JxwYUtpbusnOBIb6KfY4Aiwx9TruGZs" />
-  <meta name="theme-color" content="#f1f2f3" />
-  <meta http-equiv="cache-control" content="no-cache" />
-  <meta http-equiv="expires" content="0" />
-  <meta http-equiv="pragma" content="no-cache" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <!-- the script below is a copy of utils/handleSetTheme.ts. since it
+  <head>
+    <title>phived, the anti-procrastination to-do list</title>
+    <meta
+      name="description"
+      content="phived · the anti-procrastination to-do list"
+    />
+    <meta keywords="productive, procrastination, task, list" />
+    <link rel="canonical" href="https://www.phived.com/" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon-default.ico" />
+    <link rel="apple-touch-icon" href="/icon-512x512.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:url" content="https://www.phived.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="phived" />
+    <meta
+      property="og:description"
+      content="phived · the anti-procrastination to-do list"
+    />
+    <meta
+      property="og:image:secure_url"
+      content="https://www.phived.com/share-banner.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="phived.com" />
+    <meta property="twitter:url" content="https://www.phived.com/" />
+    <meta
+      name="twitter:title"
+      content="phived · the anti-procrastination to-do list"
+    />
+    <meta
+      name="twitter:description"
+      content="phived · the anti-procrastination to-do list"
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.phived.com/share-banner.png"
+    />
+    <meta
+      name="google-site-verification"
+      content="R6_yqIps0bS9JxwYUtpbusnOBIb6KfY4Aiwx9TruGZs"
+    />
+    <meta name="theme-color" content="#f1f2f3" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- the script below is a copy of utils/handleSetTheme.ts. since it
     blocks the page render, it isn't imported for maximum performance. -->
-  <script>
-    const localStorageTheme = localStorage.getItem("theme")
-    const isBrowserDark = window && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    const isDarkMode = !!localStorageTheme ? localStorageTheme === 'dark' : isBrowserDark
+    <script>
+      const localStorageTheme = localStorage.getItem("theme");
+      const isBrowserDark =
+        window &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const isDarkMode = !!localStorageTheme
+        ? localStorageTheme === "dark"
+        : isBrowserDark;
 
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
+      if (isDarkMode) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+        return;
+      }
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
       return;
+    </script>
+  </head>
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-NC0FFZ2WB2"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
     }
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-    return;
+    gtag("js", new Date());
+
+    gtag("config", "G-NC0FFZ2WB2");
   </script>
-</head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NC0FFZ2WB2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag () {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
 
-  gtag("config", "G-NC0FFZ2WB2");
-</script>
-
-<body class="h-full w-full">
-  <div class="h-full w-full" id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
-
+  <body class="h-full w-full">
+    <div class="h-full w-full" id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
