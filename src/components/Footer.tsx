@@ -1,4 +1,4 @@
-import { Github, Instagram, Twitter } from "src/icons";
+import { Github } from "src/icons";
 import { isDailyPage } from "src/utils";
 
 export function Footer() {
@@ -20,28 +20,6 @@ export function Footer() {
           <Github className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite dark:group-hover:fill-trueBlack" />
           <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite dark:group-hover:text-trueBlack sm:text-lg">
             github
-          </p>
-        </a>
-        <a
-          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-twitterBlue hover:ease-in-out"
-          target="_blank"
-          href="https://twitter.com/phivedphived"
-          rel="noreferrer"
-        >
-          <Twitter className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite" />
-          <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite sm:text-lg">
-            twitter
-          </p>
-        </a>
-        <a
-          className="group flex select-none items-center gap-3 rounded-2xl from-instagramPink via-instagramOrange to-instagramPurple py-2 px-3 transition-all hover:bg-gradient-to-r hover:ease-in-out"
-          target="_blank"
-          href="https://www.instagram.com/phivedphived/"
-          rel="noreferrer"
-        >
-          <Instagram className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite" />
-          <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite sm:text-lg">
-            instagram
           </p>
         </a>
       </div>

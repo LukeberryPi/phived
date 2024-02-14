@@ -25,28 +25,6 @@ export function HelpMenu({ closeHelpMenu }: HelpMenuProps) {
         tasks, complete existing ones!
       </h2>
       <br />
-      <p className="text-trueBlack dark:text-trueWhite">
-        <strong>want to know more?</strong> access{" "}
-        <a
-          rel="noreferrer"
-          target="_blank"
-          href="https://twitter.com/phivedphived/status/1636734098252128257?s=20"
-          className="cursor-pointer underline decoration-softBlack underline-offset-2 dark:decoration-softWhite"
-        >
-          this post
-        </a>{" "}
-        or{" "}
-        <a
-          target="_blank"
-          href="https://twitter.com/LukeberryPi"
-          className="cursor-pointer underline decoration-softBlack underline-offset-2 dark:decoration-softWhite"
-          rel="noreferrer"
-        >
-          send me a message
-        </a>
-        .
-      </p>
-      <br />
       <hr className="mb-7 h-px w-full border-trueBlack dark:border-trueWhite" />
       <div className="space-y-3">
         <p className="text-trueBlack dark:text-trueWhite">
