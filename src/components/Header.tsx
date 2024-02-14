@@ -51,22 +51,21 @@ export function Header() {
           role="switch"
           className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
         >
-          {isDarkMode && (
+          {isDarkMode ?
             <>
               <Sun className="fill-trueWhite sm:group-hover:fill-trueBlack" />
               <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 light mode
               </p>
             </>
-          )}
-          {!isDarkMode && (
+            :
             <>
               <Moon className="fill-lightBlack sm:group-hover:fill-trueWhite" />
               <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 dark mode
               </p>
             </>
-          )}
+          }
         </button>
         <button
           onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}
