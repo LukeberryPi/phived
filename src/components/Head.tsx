@@ -12,12 +12,13 @@ export function Head() {
     ? `[${ongoingGeneralTasks.length}]`
     : "";
   const title =
-    `${titlePrefix} phived · the anti-procrastination to-do list`.trim();
+    `${titlePrefix} phived, the anti-procrastination to-do list`.trim();
 
   return (
     <Helmet>
       <title>{title}</title>
-      <link rel="icon" type="image/x-icon" href="/favicon-default.ico" />
+      <link rel="icon" href="/favicon-16.png" sizes="16x16" />
+      <link rel="icon" href="/favicon-32.png" sizes="32x32" />
     </Helmet>
   );
 }
