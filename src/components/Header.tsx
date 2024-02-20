@@ -52,21 +52,17 @@ export function Header() {
         <button
           onClick={toggleDarkMode}
           role="switch"
-          className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
+          className="flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:outline sm:hover:outline-trueBlack dark:sm:hover:outline-trueWhite"
         >
           {isDarkMode ? (
             <>
-              <Sun className="fill-trueWhite sm:group-hover:fill-trueBlack" />
-              <p className="text-base text-trueBlack dark:text-trueWhite sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
-                light mode
-              </p>
+              <Sun className="fill-trueWhite" />
+              <span>light mode</span>
             </>
           ) : (
             <>
-              <Moon className="fill-lightBlack sm:group-hover:fill-trueWhite" />
-              <p className="text-base text-trueBlack dark:text-trueWhite sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
-                dark mode
-              </p>
+              <Moon />
+              <span>dark mode</span>
             </>
           )}
         </button>
@@ -74,9 +70,9 @@ export function Header() {
           onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}
           className={`${
             noGeneralTasks && noDailyTasks
-              ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
-              : "cursor-pointer sm:hover:bg-alertRed"
-          } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ease-in-out`}
+              ? "cursor-not-allowed sm:hover:outline-unavailableLight dark:sm:hover:outline-unavailableDark"
+              : "cursor-pointer sm:hover:outline-alertRed"
+          } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-transform active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:outline`}
           disabled={
             (!isDailyPage() && noGeneralTasks) ||
             (isDailyPage() && noDailyTasks)
@@ -86,23 +82,23 @@ export function Header() {
             className={`fill-trueBlack dark:fill-trueWhite ${
               noGeneralTasks && noDailyTasks
                 ? "fill-trueBlack/30 dark:fill-trueWhite/30"
-                : "sm:group-hover:fill-trueWhite"
+                : "sm:group-hover:fill-alertRed"
             } `}
           />
-          <p
+          <span
             className={`${
               noGeneralTasks && noDailyTasks
                 ? "text-trueBlack/40 dark:text-trueWhite/30"
-                : "text-trueBlack dark:text-trueWhite sm:group-hover:text-trueWhite"
+                : "dark:text-trueWhite sm:group-hover:text-alertRed"
             } text-base`}
           >
             clear tasks
-          </p>
+          </span>
         </button>
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className="group relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 active:scale-95 sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out lg:flex"
+          className="relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 hover:outline hover:outline-trueBlack active:scale-95 sm:flex-row sm:gap-3 sm:px-3 lg:flex"
         >
           <span
             className={`h-fit w-fit ${

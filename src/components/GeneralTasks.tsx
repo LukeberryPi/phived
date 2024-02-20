@@ -211,7 +211,7 @@ export function GeneralTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="mx-auto w-fit rounded-lg bg-berryBlue px-2 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite sm:text-base">
+        <p className="mx-auto w-fit rounded-lg bg-berryBlue px-3 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite sm:text-base">
           general
         </p>
         <p className="text-xl text-trueBlack dark:text-trueWhite sm:text-2xl">
