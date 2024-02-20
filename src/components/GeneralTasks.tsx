@@ -156,10 +156,9 @@ export function GeneralTasks() {
                   "border-b border-trueBlack/30 dark:border-trueWhite/30"
                 } ${
                   !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2"
-                } ${isFirstTask && "rounded-t-2xl border-t-0"} ${
-                  isLastTask
-                    ? "rounded-b-2xl"
-                    : "border-b border-trueBlack dark:border-trueWhite"
+                } ${isFirstTask && "border-t-0"} ${
+                  !isLastTask &&
+                  "border-b border-trueBlack dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
                 } bg-trueWhite px-5 py-4 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
