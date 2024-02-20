@@ -52,19 +52,19 @@ export function Header() {
         <button
           onClick={toggleDarkMode}
           role="switch"
-          className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all active:scale-95 sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
+          className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
         >
           {isDarkMode ? (
             <>
               <Sun className="fill-trueWhite sm:group-hover:fill-trueBlack" />
-              <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
+              <p className="text-base text-trueBlack dark:text-trueWhite sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 light mode
               </p>
             </>
           ) : (
             <>
               <Moon className="fill-lightBlack sm:group-hover:fill-trueWhite" />
-              <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
+              <p className="text-base text-trueBlack dark:text-trueWhite sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 dark mode
               </p>
             </>
@@ -76,7 +76,7 @@ export function Header() {
             noGeneralTasks && noDailyTasks
               ? "cursor-not-allowed sm:hover:bg-unavailableLight dark:sm:hover:bg-unavailableDark"
               : "cursor-pointer sm:hover:bg-alertRed"
-          } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all active:scale-95 sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out`}
+          } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ease-in-out`}
           disabled={
             (!isDailyPage() && noGeneralTasks) ||
             (isDailyPage() && noDailyTasks)
@@ -94,7 +94,7 @@ export function Header() {
               noGeneralTasks && noDailyTasks
                 ? "text-trueBlack/40 dark:text-trueWhite/30"
                 : "text-trueBlack dark:text-trueWhite sm:group-hover:text-trueWhite"
-            } text-sm xs:text-lg`}
+            } text-base`}
           >
             clear tasks
           </p>
@@ -111,7 +111,7 @@ export function Header() {
           >
             <CaretUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
-          <p className="dark:text-trueWhite xs:text-lg">help</p>
+          <p className="dark:text-trueWhite xs:text-base">help</p>
         </button>
         {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
       </nav>

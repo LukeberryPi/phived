@@ -237,7 +237,7 @@ export function DailyTasks() {
         <p className="mx-auto w-fit rounded-lg bg-dailyGreen px-2 py-1 text-sm dark:bg-dailyPurple dark:text-trueWhite sm:text-base">
           daily
         </p>
-        <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
+        <p className="text-xl text-trueBlack dark:text-trueWhite sm:text-2xl">
           what do you want to do every day?
         </p>
       </div>

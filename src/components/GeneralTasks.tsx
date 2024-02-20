@@ -214,7 +214,7 @@ export function GeneralTasks() {
         <p className="mx-auto w-fit rounded-lg bg-berryBlue px-2 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite sm:text-base">
           general
         </p>
-        <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
+        <p className="text-xl text-trueBlack dark:text-trueWhite sm:text-2xl">
           what do you want to do?
         </p>
       </div>

@@ -12,28 +12,25 @@ export function Footer() {
     >
       <div className="flex h-full items-center justify-between gap-8">
         <a
-          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-trueBlack hover:ease-in-out active:scale-95 dark:hover:bg-trueWhite"
+          className="flex select-none items-center gap-3 rounded-2xl px-4 py-2 transition-transform hover:outline hover:outline-trueBlack active:scale-95 dark:hover:outline-trueWhite"
           target="_blank"
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
         >
-          <Github className="fill-trueBlack group-hover:fill-trueWhite dark:fill-trueWhite dark:group-hover:fill-trueBlack" />
-          <p className="text-trueBlack group-hover:text-trueWhite dark:text-trueWhite dark:group-hover:text-trueBlack sm:text-lg">
+          <Github className="fill-trueBlack dark:fill-trueWhite" />
+          <span className="text-trueBlack dark:text-trueWhite">
             contribute on github!
-          </p>
+          </span>
         </a>
       </div>
-      <span className="hidden text-lg text-trueBlack dark:text-trueWhite dark:decoration-trueWhite md:block">
-        made by{" "}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://twitter.com/LukeberryPi"
-          className=" underline decoration-trueBlack underline-offset-4"
-        >
-          lukeberrypi
-        </a>
-      </span>{" "}
+      <a
+        target="_blank"
+        rel="noreferrer"
+        href="https://twitter.com/LukeberryPi"
+        className="select-none rounded-2xl px-4 py-2 transition-transform hover:outline hover:outline-trueBlack active:scale-95 dark:text-trueWhite dark:hover:outline-trueWhite"
+      >
+        made by lukeberrypi
+      </a>
     </footer>
   );
 }
