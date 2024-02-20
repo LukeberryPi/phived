@@ -79,7 +79,7 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
 
   const clearDailyTasks = useCallback(() => {
     const isUserCertain = window.confirm(
-      "Are you sure you want to DELETE all your daily tasks? You will be unable to restore the tasks you have already done and will begin from a clean slate."
+      "Are you sure you want to DELETE all your daily tasks? You will be unable to restore your previous completed daily tasks."
     );
 
     if (!isUserCertain) {
