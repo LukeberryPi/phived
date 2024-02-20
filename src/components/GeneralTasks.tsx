@@ -180,10 +180,10 @@ export function GeneralTasks() {
                   isBeingDragged
                     ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } group flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
                 tabIndex={-1}
               >
-                <DragVertical className="fill-trueBlack dark:fill-trueWhite" />
+                <DragVertical className="fill-trueBlack transition-transform group-active:scale-90 dark:fill-trueWhite" />
               </span>
               <button
                 onClick={() => handleDone(idx)}
