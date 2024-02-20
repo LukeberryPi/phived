@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDailyTasksContext, useGeneralTasksContext } from "src/contexts";
 import { HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, CaretUp, Sun } from "src/icons";
+import { Trash, Moon, CaretUp, Sun, Compass } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 export function Header() {
@@ -46,6 +46,9 @@ export function Header() {
         <ModeSelector />
       </div>
       <nav className="flex h-full items-center justify-between gap-4 tiny:gap-10 sm:gap-6">
+        {/* <button>
+          <Compass size={24} className="text-trueBlack dark:text-trueWhite" />
+        </button> */}
         <button
           onClick={toggleDarkMode}
           role="switch"
@@ -99,7 +102,7 @@ export function Header() {
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className="group relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out lg:flex"
+          className="group relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 active:scale-95 sm:flex-row sm:gap-3 sm:px-3 sm:hover:ease-in-out lg:flex"
         >
           <span
             className={`h-fit w-fit ${
