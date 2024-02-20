@@ -12,7 +12,7 @@ export function Footer() {
     >
       <div className="flex h-full items-center justify-between gap-8">
         <a
-          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-trueBlack hover:ease-in-out dark:hover:bg-trueWhite"
+          className="group flex select-none items-center gap-3 rounded-2xl py-2 px-3 transition-all hover:bg-trueBlack hover:ease-in-out active:scale-95 dark:hover:bg-trueWhite"
           target="_blank"
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
