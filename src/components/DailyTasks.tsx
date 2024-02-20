@@ -222,7 +222,7 @@ export function DailyTasks() {
                     : "hidden"
                 } cursor-pointer items-center justify-center border-b border-l border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyPurple dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
-                <span className="transition-transform group-active:scale-95">
+                <span className="transition-transform group-active:scale-90">
                   done?
                 </span>
               </button>
