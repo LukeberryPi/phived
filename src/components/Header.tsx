@@ -31,7 +31,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed bottom-0 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
+    <header className="fixed bottom-4 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <div className="hidden items-center gap-8 text-trueBlack sm:flex">
         <a
           href="/"
@@ -51,21 +51,21 @@ export function Header() {
           role="switch"
           className="group flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 transition-all sm:flex-row sm:gap-3 sm:px-3 sm:hover:bg-trueBlack sm:hover:ease-in-out dark:sm:hover:bg-trueWhite"
         >
-          {isDarkMode ?
+          {isDarkMode ? (
             <>
               <Sun className="fill-trueWhite sm:group-hover:fill-trueBlack" />
               <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 light mode
               </p>
             </>
-            :
+          ) : (
             <>
               <Moon className="fill-lightBlack sm:group-hover:fill-trueWhite" />
               <p className="text-sm text-trueBlack dark:text-trueWhite xs:text-lg sm:group-hover:text-trueWhite dark:sm:group-hover:text-trueBlack">
                 dark mode
               </p>
             </>
-          }
+          )}
         </button>
         <button
           onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}

@@ -230,7 +230,7 @@ export function DailyTasks() {
           daily
         </p>
         <p className="text-lg text-trueBlack dark:text-trueWhite xs:text-xl sm:text-2xl">
-          what do you want to do?
+          what do you want to do every day?
         </p>
       </div>
       {!noDailyTasks && (

@@ -31,7 +31,7 @@ export function Footer() {
           href="https://twitter.com/LukeberryPi"
           className=" underline decoration-trueBlack underline-offset-4"
         >
-          LukeberryPi
+          lukeberrypi
         </a>
       </span>{" "}
     </footer>
