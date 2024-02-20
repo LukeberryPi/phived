@@ -17,6 +17,7 @@ export function Daily() {
     if (!(document.activeElement instanceof HTMLElement)) {
       return;
     }
+
     if (e.key === "Escape") {
       document.activeElement.blur();
     }

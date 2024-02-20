@@ -17,6 +17,7 @@ export function Home() {
     if (!(document.activeElement instanceof HTMLElement)) {
       return;
     }
+
     if (e.key === "Escape") {
       document.activeElement.blur();
     }
@@ -44,6 +45,7 @@ export function Home() {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
+
   return (
     <GeneralTasksContextProvider>
       <div
