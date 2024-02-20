@@ -199,7 +199,9 @@ export function GeneralTasks() {
                     : "hidden"
                 } cursor-pointer items-center justify-center border-b border-l border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
-                done?
+                <span className="transition-transform group-active:scale-95">
+                  done?
+                </span>
               </button>
             </li>
           );
