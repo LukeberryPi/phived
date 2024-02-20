@@ -104,17 +104,28 @@ export function DailyTasks() {
     event: React.KeyboardEvent<HTMLInputElement>,
     i: number
   ) => {
+    const firstTask = i === 0;
+    const lastTask = i === 4;
+
     // event.metaKey is macOS command key
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
       event.preventDefault();
       return handleDone(i);
     }
+
     if (event.key === "Enter" && event.shiftKey) {
       event.preventDefault();
+      if (firstTask) {
+        return document.querySelectorAll("input")[4]?.focus();
+      }
       return document.querySelectorAll("input")[i - 1]?.focus();
     }
+
     if (event.key === "Enter" && !event.ctrlKey) {
       event.preventDefault();
+      if (lastTask) {
+        return document.querySelectorAll("input")[0]?.focus();
+      }
       return document.querySelectorAll("input")[i + 1]?.focus();
     }
   };
