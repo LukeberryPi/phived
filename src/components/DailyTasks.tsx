@@ -51,8 +51,12 @@ export function DailyTasks() {
     "tasksComponentWidth",
     DEFAULT_WIDTH
   );
-  const [showTasksWontBeLost, setShowTasksWontBeLost] = useLocalStorage(
-    "showTasksWontBeLost",
+  const [showTasksWontBeLostAlert, setShowTasksWontBeLost] = useLocalStorage(
+    "showTasksWontBeLostAlert",
+    true
+  );
+  const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
+    "showPrivacyAlert",
     true
   );
 
@@ -88,7 +92,11 @@ export function DailyTasks() {
     completeDailyTask(i);
   };
 
-  const hideTasksSaved = () => {
+  // const dismissPrivacyAlert = () => {
+  //   setShowPrivacyAlert(false);
+  // };
+
+  const dismissTasksWontBeLostAlert = () => {
     setShowTasksWontBeLost(false);
   };
 
@@ -176,7 +184,7 @@ export function DailyTasks() {
                     : "border-b border-trueBlack dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
-                } bg-trueWhite py-4 px-5 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } bg-trueWhite px-5 py-4 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
               />
               <span
                 {...provided.dragHandleProps}
@@ -210,9 +218,9 @@ export function DailyTasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   isBeingDragged
-                    ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
+                    ? "border-b border-l border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyPurple dark:text-trueWhite xs:px-6 sm:text-lg`}
+                } cursor-pointer items-center justify-center border-b border-l border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyPurple dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>
@@ -300,7 +308,7 @@ export function DailyTasks() {
         )}
       <div
         className={`${
-          (dailyMessage || !multipleDailyTasks || !showTasksWontBeLost) &&
+          (dailyMessage || !multipleDailyTasks || !showTasksWontBeLostAlert) &&
           "invisible"
         } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
       >
@@ -310,7 +318,7 @@ export function DailyTasks() {
           if you close the website
         </p>
         <button
-          onClick={hideTasksSaved}
+          onClick={dismissTasksWontBeLostAlert}
           className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
         >
           <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />

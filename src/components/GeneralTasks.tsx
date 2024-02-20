@@ -9,7 +9,7 @@ import {
   Draggable,
   type DropResult,
 } from "react-beautiful-dnd";
-import { Close, DragVertical, Light, Lock } from "src/icons";
+import { Close, DragVertical, Light } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
@@ -29,8 +29,12 @@ export function GeneralTasks() {
     "tasksComponentWidth",
     DEFAULT_WIDTH
   );
-  const [showTasksWontBeLost, setShowTasksWontBeLost] = useLocalStorage(
-    "showTasksWontBeLost",
+  const [showTasksWontBeLostAlert, setShowTasksWontBeLost] = useLocalStorage(
+    "showTasksWontBeLostAlert",
+    true
+  );
+  const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
+    "showPrivacyAlert",
     true
   );
 
@@ -66,7 +70,11 @@ export function GeneralTasks() {
     completeGeneralTask(i);
   };
 
-  const hideTasksSaved = () => {
+  // const dismissPrivacyAlert = () => {
+  //   setShowPrivacyAlert(false);
+  // };
+
+  const dismissTasksWontBeLostAlert = () => {
     setShowTasksWontBeLost(false);
   };
 
@@ -233,17 +241,16 @@ export function GeneralTasks() {
       </ul>
       <div
         className={`${
-          (generalMessage || !multipleGeneralTasks || !showTasksWontBeLost) &&
+          (generalMessage ||
+            !multipleGeneralTasks ||
+            !showTasksWontBeLostAlert) &&
           "invisible"
         } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
       >
         <Light size={24} />
-        <p className="text-xs xs:text-sm">
-          your tasks won&apos;t be lost <br />
-          if you close the website
-        </p>
+        <p className="text-xs xs:text-sm">lalala privacy</p>
         <button
-          onClick={hideTasksSaved}
+          onClick={dismissTasksWontBeLostAlert}
           className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
         >
           <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />
