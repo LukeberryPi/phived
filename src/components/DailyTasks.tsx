@@ -55,10 +55,10 @@ export function DailyTasks() {
     "showTasksWontBeLostAlert",
     true
   );
-  const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
-    "showPrivacyAlert",
-    true
-  );
+  // const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
+  //   "showPrivacyAlert",
+  //   true
+  // );
 
   const numberOfDailyTasks = dailyTasks.filter(Boolean).length;
   const multipleDailyTasks = numberOfDailyTasks > 1;

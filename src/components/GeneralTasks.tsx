@@ -33,10 +33,10 @@ export function GeneralTasks() {
     "showTasksWontBeLostAlert",
     true
   );
-  const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
-    "showPrivacyAlert",
-    true
-  );
+  // const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
+  //   "showPrivacyAlert",
+  //   true
+  // );
 
   const numberOfGeneralTasks = generalTasks.filter(Boolean).length;
   const multipleGeneralTasks = numberOfGeneralTasks > 1;
