@@ -32,7 +32,7 @@ export function Header() {
 
   return (
     <header className="fixed bottom-6 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
-      <div className="hidden items-center gap-8 text-trueBlack sm:flex">
+      <div className="hidden items-center gap-6 text-trueBlack sm:flex">
         <a
           href="/"
           className={`hidden cursor-pointer text-4xl font-bold text-trueBlack underline decoration-4 underline-offset-4 ${
