@@ -9,7 +9,7 @@ import {
   Draggable,
   type DropResult,
 } from "react-beautiful-dnd";
-import { Close, DragVertical, Light } from "src/icons";
+import { Close, DragVertical, Light, Lock } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
@@ -154,7 +154,7 @@ export function GeneralTasks() {
                     : "border-b border-trueBlack dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
-                } bg-trueWhite py-4 px-5 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } bg-trueWhite px-5 py-4 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
               />
               <span
                 {...provided.dragHandleProps}
@@ -187,9 +187,9 @@ export function GeneralTasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   isBeingDragged
-                    ? "border-l border-b border-trueBlack/30 dark:border-trueWhite/30"
+                    ? "border-b border-l border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-l border-b border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
+                } cursor-pointer items-center justify-center border-b border-l border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
                 done?
               </button>

@@ -11,3 +11,4 @@ export { CounterClockWise } from "src/icons/CounterClockWise";
 export { Light } from "src/icons/Light";
 export { ArrowRight } from "src/icons/ArrowRight";
 export { Compass } from "src/icons/Compass";
+export { Lock } from "src/icons/Lock";
