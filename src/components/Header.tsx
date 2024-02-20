@@ -31,7 +31,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed bottom-4 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
+    <header className="fixed bottom-6 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
       <div className="hidden items-center gap-8 text-trueBlack sm:flex">
         <a
           href="/"
