@@ -260,7 +260,10 @@ export function GeneralTasks() {
         } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
       >
         <Light size={24} />
-        <p className="text-xs xs:text-sm">lalala privacy</p>
+        <p className="text-xs xs:text-sm">
+          your tasks won&apos;t be lost <br />
+          if you close the website
+        </p>
         <button
           onClick={dismissTasksWontBeLostAlert}
           className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
