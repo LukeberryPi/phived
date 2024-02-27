@@ -39,6 +39,8 @@ export function DailyTasks() {
     dailyMessage,
     dailyTasks,
     changeDailyTask,
+    moveTaskDown,
+    moveTaskUp,
     completeDailyTask,
     setDailyTasks,
     dailyTasksLastDoneAt,
@@ -107,6 +109,24 @@ export function DailyTasks() {
     const firstTask = i === 0;
     const lastTask = i === 4;
 
+    if (event.altKey && event.key === "ArrowUp") {
+      event.preventDefault();
+      if (firstTask) {
+        return;
+      }
+      moveTaskUp(i);
+      return document.querySelectorAll("input")[i - 1]?.focus();
+    }
+
+    if (event.altKey && event.key === "ArrowDown") {
+      event.preventDefault();
+      if (lastTask) {
+        return;
+      }
+      moveTaskDown(i);
+      return document.querySelectorAll("input")[i + 1]?.focus();
+    }
+
     // event.metaKey is macOS command key
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
       event.preventDefault();
@@ -124,7 +144,8 @@ export function DailyTasks() {
     if (event.key === "Enter" && !event.ctrlKey) {
       event.preventDefault();
       if (lastTask) {
-        return document.querySelectorAll("input")[0]?.focus();
+        document.querySelectorAll("input")[0]?.focus();
+        return;
       }
       return document.querySelectorAll("input")[i + 1]?.focus();
     }

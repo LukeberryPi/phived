@@ -9,6 +9,8 @@ export type GeneralTaskContextType = {
   clearGeneralTasks: () => void;
   completeGeneralTask: (taskIndex: number) => void;
   displayGeneralMessage: (incentive: string) => void;
+  moveTaskUp: (taskIndex: number) => void;
+  moveTaskDown: (taskIndex: number) => void;
   generalTasks: GeneralTasks;
   generalMessage: string;
   setGeneralTasks: Dispatch<

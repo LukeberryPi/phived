@@ -95,12 +95,39 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
     setStoredDailyTasks(dailyTasks);
   }, [dailyTasks, setStoredDailyTasks]);
 
+  const moveTaskUp = useCallback(
+    (taskIndex: number) => {
+      const copy = [...dailyTasks];
+
+      const taskBefore = copy[taskIndex - 1];
+      copy[taskIndex - 1] = copy[taskIndex];
+      copy[taskIndex] = taskBefore;
+
+      setDailyTasks(copy);
+    },
+    [dailyTasks, setDailyTasks]
+  );
+
+  const moveTaskDown = useCallback(
+    (taskIndex: number) => {
+      const copy = [...dailyTasks];
+
+      const taskAfter = copy[taskIndex + 1];
+      copy[taskIndex + 1] = copy[taskIndex];
+      copy[taskIndex] = taskAfter;
+
+      setDailyTasks(copy);
+    },
+    [dailyTasks, setDailyTasks]
+  );
   return (
     <DailyTasksContext.Provider
       value={{
         changeDailyTask,
         clearDailyTasks,
         completeDailyTask,
+        moveTaskUp,
+        moveTaskDown,
         dailyTasks: memoizedTasks,
         dailyTasksLastDoneAt,
         displayDailyMessage,
