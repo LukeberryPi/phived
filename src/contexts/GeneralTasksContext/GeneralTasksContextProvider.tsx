@@ -23,9 +23,9 @@ export const GeneralTasksContextProvider = ({
   const getRandomIncentive = (arr: string[]) =>
     arr[Math.floor(Math.random() * arr.length)];
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const generalIncentive = useMemo(
     () => getRandomIncentive(incentives),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [generalTasks]
   );
 
@@ -76,6 +76,30 @@ export const GeneralTasksContextProvider = ({
     displayGeneralMessage("tasks cleared!");
   }, [displayGeneralMessage, setGeneralTasks]);
 
+  const moveTaskUp = useCallback(
+    (taskIndex: number) => {
+      const copy = [...generalTasks];
+      const taskBefore = copy[taskIndex - 1];
+      copy[taskIndex - 1] = copy[taskIndex];
+      copy[taskIndex] = taskBefore;
+
+      setGeneralTasks(copy);
+    },
+    [generalTasks, setGeneralTasks]
+  );
+
+  const moveTaskDown = useCallback(
+    (taskIndex: number) => {
+      const copy = [...generalTasks];
+      const taskAfter = copy[taskIndex + 1];
+      copy[taskIndex + 1] = copy[taskIndex];
+      copy[taskIndex] = taskAfter;
+
+      setGeneralTasks(copy);
+    },
+    [generalTasks, setGeneralTasks]
+  );
+
   useEffect(() => {
     setStoredGeneralTasks(generalTasks);
   }, [generalTasks, setStoredGeneralTasks]);
@@ -86,6 +110,8 @@ export const GeneralTasksContextProvider = ({
         changeGeneralTask,
         clearGeneralTasks,
         completeGeneralTask,
+        moveTaskUp,
+        moveTaskDown,
         displayGeneralMessage,
         generalTasks: memoizedTasks,
         generalMessage,
