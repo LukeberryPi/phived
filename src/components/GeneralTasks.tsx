@@ -196,6 +196,7 @@ export function GeneralTasks() {
                 <DragVertical className="fill-trueBlack transition-transform group-active:scale-90 dark:fill-trueWhite" />
               </span>
               <button
+                aria-keyshortcuts="control+enter"
                 onClick={() => handleDone(idx)}
                 className={`${isFirstTask && "rounded-tr-2xl"} ${
                   isLastTask && "rounded-br-2xl"
