@@ -67,6 +67,10 @@ export function Header() {
           )}
         </button>
         <button
+          aria-disabled={
+            (!isDailyPage() && noGeneralTasks) ||
+            (isDailyPage() && noDailyTasks)
+          }
           onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}
           className={`${
             noGeneralTasks && noDailyTasks
