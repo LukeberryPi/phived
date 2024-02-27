@@ -113,8 +113,8 @@ export function GeneralTasks() {
 
     if (event.key === "Enter" && event.shiftKey) {
       event.preventDefault();
-      if (lastTask) {
-        return document.querySelectorAll("input")[0]?.focus();
+      if (firstTask) {
+        return document.querySelectorAll("input")[4]?.focus();
       }
       return document.querySelectorAll("input")[i - 1]?.focus();
     }
