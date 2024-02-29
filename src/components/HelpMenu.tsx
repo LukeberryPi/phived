@@ -57,7 +57,7 @@ export function HelpMenu({ closeHelpMenu }: HelpMenuProps) {
           will complete the current task, or just click{" "}
           <span
             onClick={closeHelpMenu}
-            className={`cursor-pointer rounded-r-md border border-trueBlack ${
+            className={`rounded-r-md border border-trueBlack ${
               isDailyPage()
                 ? "bg-dailyGreen dark:bg-dailyPurple"
                 : "bg-berryBlue dark:bg-purpleRain"

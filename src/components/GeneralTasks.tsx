@@ -211,12 +211,13 @@ export function GeneralTasks() {
                   isBeingDragged
                     ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } group flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } group/drag flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
                 tabIndex={-1}
               >
-                <DragVertical className="fill-trueBlack transition-transform group-active:scale-90 dark:fill-trueWhite" />
+                <DragVertical className="origin-center fill-trueBlack transition-transform group-active/drag:scale-90 dark:fill-trueWhite" />
               </span>
               <button
+                aria-label="complete task"
                 aria-keyshortcuts="control+enter"
                 onClick={() => handleDone(idx)}
                 className={`${isFirstTask && "rounded-tr-2xl"} ${
@@ -229,9 +230,9 @@ export function GeneralTasks() {
                   isBeingDragged
                     ? "border-b border-l border-trueBlack/30 dark:border-trueWhite/30"
                     : "hidden"
-                } cursor-pointer items-center justify-center border-b border-l border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
+                } group/done select-none items-center justify-center border-b border-l border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
-                <span className="transition-transform group-active:scale-95">
+                <span className="transition-transform group-active/done:scale-95">
                   done?
                 </span>
               </button>

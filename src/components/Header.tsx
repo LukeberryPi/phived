@@ -35,7 +35,7 @@ export function Header() {
       <div className="hidden items-center gap-6 text-trueBlack sm:flex">
         <a
           href="/"
-          className={`hidden cursor-pointer text-4xl font-bold text-trueBlack underline decoration-4 underline-offset-4 ${
+          className={`hidden text-4xl font-bold text-trueBlack underline decoration-4 underline-offset-4 ${
             isDailyPage()
               ? "decoration-dailyGreen dark:decoration-dailyPurple"
               : "decoration-berryBlue dark:decoration-purpleRain"
@@ -52,7 +52,7 @@ export function Header() {
         <button
           onClick={toggleDarkMode}
           role="switch"
-          className="flex cursor-pointer select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:outline sm:hover:outline-trueBlack dark:sm:hover:outline-trueWhite"
+          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:outline sm:hover:outline-trueBlack dark:sm:hover:outline-trueWhite"
         >
           {isDarkMode ? (
             <>
@@ -75,7 +75,7 @@ export function Header() {
           className={`${
             noGeneralTasks && noDailyTasks
               ? "cursor-not-allowed sm:hover:outline-unavailableLight dark:sm:hover:outline-unavailableDark"
-              : "cursor-pointer sm:hover:outline-alertRed"
+              : "sm:hover:outline-alertRed"
           } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-transform active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:outline`}
           disabled={
             (!isDailyPage() && noGeneralTasks) ||
@@ -102,7 +102,7 @@ export function Header() {
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className="relative hidden cursor-pointer select-none flex-col items-center rounded-2xl p-2 hover:outline hover:outline-trueBlack active:scale-95 sm:flex-row sm:gap-3 sm:px-3 lg:flex"
+          className="relative hidden select-none flex-col items-center rounded-2xl p-2 hover:outline hover:outline-trueBlack active:scale-95 sm:flex-row sm:gap-3 sm:px-3 lg:flex"
         >
           <span
             className={`h-fit w-fit ${
