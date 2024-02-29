@@ -12,7 +12,7 @@ export function Footer() {
     >
       <div className="flex h-full items-center justify-between gap-8">
         <a
-          className="flex select-none items-center gap-3 rounded-2xl px-4 py-2 transition-transform hover:outline hover:outline-trueBlack active:scale-95 dark:hover:outline-trueWhite"
+          className="flex select-none items-center gap-3 rounded-2xl px-4 py-2 transition-transform hover:ring-2 hover:ring-trueBlack active:scale-95 dark:hover:ring-trueWhite"
           target="_blank"
           href="https://github.com/LukeberryPi/phived"
           rel="noreferrer"
@@ -27,7 +27,7 @@ export function Footer() {
         target="_blank"
         rel="noreferrer"
         href="https://twitter.com/LukeberryPi"
-        className="select-none rounded-2xl px-4 py-2 transition-transform hover:outline hover:outline-trueBlack active:scale-95 dark:text-trueWhite dark:hover:outline-trueWhite"
+        className="select-none rounded-2xl px-4 py-2 transition-transform hover:ring-2 hover:ring-trueBlack active:scale-95 dark:text-trueWhite dark:hover:ring-trueWhite"
       >
         made by lukeberrypi
       </a>
