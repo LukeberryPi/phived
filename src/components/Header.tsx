@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react';
-import { useDailyTasksContext, useGeneralTasksContext } from 'src/contexts';
-import { HelpMenu, ModeSelector } from 'src/components';
-import { handleSetTheme, isDailyPage, isThemeSetToDark } from 'src/utils';
-import { Trash, Moon, CaretUp, Sun, Compass } from 'src/icons';
-import { useLocalStorage } from 'src/hooks';
+import { useEffect, useState } from 'react'
+import { useDailyTasksContext, useGeneralTasksContext } from 'src/contexts'
+import { HelpMenu, ModeSelector } from 'src/components'
+import { handleSetTheme, isDailyPage, isThemeSetToDark } from 'src/utils'
+import { Trash, Moon, CaretUp, Sun, Compass } from 'src/icons'
+import { useLocalStorage } from 'src/hooks'
 
 export function Header() {
-  const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
-  const { clearDailyTasks, dailyTasks } = useDailyTasksContext();
-  const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
-  const [showHelpMenu, setShowHelpMenu] = useLocalStorage('showHelpMenu', true);
+  const { clearGeneralTasks, generalTasks } = useGeneralTasksContext()
+  const { clearDailyTasks, dailyTasks } = useDailyTasksContext()
+  const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark())
+  const [showHelpMenu, setShowHelpMenu] = useLocalStorage('showHelpMenu', true)
 
-  const noGeneralTasks = generalTasks.filter(Boolean).length === 0;
-  const noDailyTasks = dailyTasks.filter(Boolean).length === 0;
+  const noGeneralTasks = generalTasks.filter(Boolean).length === 0
+  const noDailyTasks = dailyTasks.filter(Boolean).length === 0
 
   useEffect(() => {
-    handleSetTheme(isDarkMode);
-  }, [isDarkMode, noGeneralTasks]);
+    handleSetTheme(isDarkMode)
+  }, [isDarkMode, noGeneralTasks])
 
   const toggleDarkMode = () => {
-    setIsDarkMode((currentDarkMode) => !currentDarkMode);
-  };
+    setIsDarkMode((currentDarkMode) => !currentDarkMode)
+  }
 
   const openHelpMenu = () => {
-    setShowHelpMenu(true);
-  };
+    setShowHelpMenu(true)
+  }
 
   const closeHelpMenu = () => {
-    setShowHelpMenu(false);
-  };
+    setShowHelpMenu(false)
+  }
 
   return (
     <header className="fixed bottom-6 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
@@ -106,5 +106,5 @@ export function Header() {
         {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
       </nav>
     </header>
-  );
+  )
 }

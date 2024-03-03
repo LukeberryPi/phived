@@ -35,30 +35,30 @@
     <!-- the script below is a copy of utils/handleSetTheme.ts. since it
     blocks the page render, it isn't imported for maximum performance. -->
     <script>
-      const localStorageTheme = localStorage.getItem('theme');
+      const localStorageTheme = localStorage.getItem('theme')
       const isBrowserDark =
-        window && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const isDarkMode = !!localStorageTheme ? localStorageTheme === 'dark' : isBrowserDark;
+        window && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      const isDarkMode = !!localStorageTheme ? localStorageTheme === 'dark' : isBrowserDark
 
       if (isDarkMode) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        return;
+        document.documentElement.classList.add('dark')
+        localStorage.setItem('theme', 'dark')
+        return
       }
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      return;
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+      return
     </script>
   </head>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-NC0FFZ2WB2"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || []
     function gtag() {
-      dataLayer.push(arguments);
+      dataLayer.push(arguments)
     }
-    gtag('js', new Date());
+    gtag('js', new Date())
 
-    gtag('config', 'G-NC0FFZ2WB2');
+    gtag('config', 'G-NC0FFZ2WB2')
   </script>
 
   <body class="h-full w-full">

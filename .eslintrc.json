@@ -1,59 +1,16 @@
 {
   "env": {
+    "es6": true,
     "browser": true,
     "es2021": true
   },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react-hooks/recommended"
-  ],
-  "overrides": [],
-  "parser": "@typescript-eslint/parser",
+  "extends": [],
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "quotes": ["error", "single", { "avoidEscape": true }],
-    "arrow-parens": ["error", "always"],
-    "eqeqeq": ["error", "always"],
-    "arrow-body-style": ["error", "as-needed"],
-    "react/react-in-jsx-scope": "off",
-    "react/self-closing-comp": ["error", { "component": true, "html": true }],
-    "no-restricted-imports": [
-      "error",
-      {
-        "patterns": ["./", "../"]
-      }
-    ],
-    "@typescript-eslint/consistent-type-imports": [
-      "error",
-      {
-        "prefer": "type-imports"
-      }
-    ],
-    "@typescript-eslint/semi": ["error", "always"],
-    "@typescript-eslint/member-delimiter-style": [
-      "error",
-      {
-        "multiline": {
-          "delimiter": "semi",
-          "requireLast": true
-        },
-        "singleline": {
-          "delimiter": "semi",
-          "requireLast": false
-        },
-        "multilineDetection": "brackets"
-      }
-    ]
-  }
+    "prettier/prettier": "error"
+  },
+  "plugins": ["prettier"]
 }

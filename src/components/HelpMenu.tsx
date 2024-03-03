@@ -1,9 +1,9 @@
-import { Close } from 'src/icons';
-import { isDailyPage } from 'src/utils';
+import { Close } from 'src/icons'
+import { isDailyPage } from 'src/utils'
 
 type HelpMenuProps = {
-  closeHelpMenu?: () => void;
-};
+  closeHelpMenu?: () => void
+}
 
 export function HelpMenu({ closeHelpMenu }: HelpMenuProps) {
   return (
@@ -68,5 +68,5 @@ export function HelpMenu({ closeHelpMenu }: HelpMenuProps) {
         </p>
       </div>
     </main>
-  );
+  )
 }

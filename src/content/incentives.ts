@@ -13,4 +13,4 @@ export const incentives = [
   'that was fast!',
   'well done!',
   'well played!',
-];
+]

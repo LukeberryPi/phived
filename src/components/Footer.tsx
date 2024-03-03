@@ -1,5 +1,5 @@
-import { Github } from 'src/icons';
-import { isDailyPage } from 'src/utils';
+import { Github } from 'src/icons'
+import { isDailyPage } from 'src/utils'
 
 export function Footer() {
   return (
@@ -30,5 +30,5 @@ export function Footer() {
         made by lukeberrypi
       </a>
     </footer>
-  );
+  )
 }

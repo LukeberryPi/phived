@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'src/icons';
-import { isDailyPage } from 'src/utils';
+import { Link } from 'react-router-dom'
+import { ArrowRight } from 'src/icons'
+import { isDailyPage } from 'src/utils'
 
 export function ModeSelectorMobile() {
   return (
@@ -16,5 +16,5 @@ export function ModeSelectorMobile() {
       go to {isDailyPage() ? 'general' : 'daily'}
       <ArrowRight />
     </Link>
-  );
+  )
 }

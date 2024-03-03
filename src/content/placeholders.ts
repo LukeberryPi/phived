@@ -57,4 +57,4 @@ export const placeholders = [
   'walk for 20 minutes',
   'wash the dishes',
   'watch the office',
-];
+]

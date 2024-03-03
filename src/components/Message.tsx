@@ -1,8 +1,8 @@
-import { useDailyTasksContext, useGeneralTasksContext } from 'src/contexts';
+import { useDailyTasksContext, useGeneralTasksContext } from 'src/contexts'
 
 export function Message() {
-  const { generalMessage } = useGeneralTasksContext();
-  const { dailyMessage } = useDailyTasksContext();
+  const { generalMessage } = useGeneralTasksContext()
+  const { dailyMessage } = useDailyTasksContext()
 
   return (
     <span
@@ -12,5 +12,5 @@ export function Message() {
     >
       {generalMessage || dailyMessage}
     </span>
-  );
+  )
 }

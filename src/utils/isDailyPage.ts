@@ -1,3 +1,3 @@
 export function isDailyPage() {
-  return window.location.href.includes('/daily');
+  return window.location.href.includes('/daily')
 }
