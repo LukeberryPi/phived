@@ -1,4 +1,4 @@
-import { getViewportWidth } from "src/utils/getViewportWidth";
+import { getViewportWidth } from 'src/utils/getViewportWidth';
 
 export function setTasksDefaultWidth() {
   if (getViewportWidth() < 400) {

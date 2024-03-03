@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from 'react';
 
 export type GeneralTask = string;
 
@@ -13,10 +13,6 @@ export type GeneralTaskContextType = {
   moveTaskDown: (taskIndex: number) => void;
   generalTasks: GeneralTasks;
   generalMessage: string;
-  setGeneralTasks: Dispatch<
-    SetStateAction<GeneralTaskContextType["generalTasks"]>
-  >;
-  setGeneralMessage: Dispatch<
-    SetStateAction<GeneralTaskContextType["generalMessage"]>
-  >;
+  setGeneralTasks: Dispatch<SetStateAction<GeneralTaskContextType['generalTasks']>>;
+  setGeneralMessage: Dispatch<SetStateAction<GeneralTaskContextType['generalMessage']>>;
 };

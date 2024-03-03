@@ -1,13 +1,8 @@
-import type { DefaultSvgProps } from "src/utils";
+import type { DefaultSvgProps } from 'src/utils';
 
 export function ArrowRight({ className, size = 20 }: DefaultSvgProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 256 256"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 256 256">
       <path
         className={className}
         fill="currentColor"

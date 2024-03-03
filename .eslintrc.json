@@ -23,7 +23,7 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "quotes": ["error", "single", { "avoidEscape": true }],
-    "arrow-parens": ["error", ""],
+    "arrow-parens": ["error", "always"],
     "eqeqeq": ["error", "always"],
     "arrow-body-style": ["error", "as-needed"],
     "react/react-in-jsx-scope": "off",

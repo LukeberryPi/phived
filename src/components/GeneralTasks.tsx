@@ -1,16 +1,11 @@
-import type { MouseEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
-import { placeholders } from "src/content";
-import { useGeneralTasksContext } from "src/contexts";
-import { setTasksDefaultWidth } from "src/utils";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  type DropResult,
-} from "react-beautiful-dnd";
-import { Close, DragVertical, Light } from "src/icons";
-import { useLocalStorage } from "src/hooks";
+import type { MouseEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { placeholders } from 'src/content';
+import { useGeneralTasksContext } from 'src/contexts';
+import { setTasksDefaultWidth } from 'src/utils';
+import { DragDropContext, Droppable, Draggable, type DropResult } from 'react-beautiful-dnd';
+import { Close, DragVertical, Light } from 'src/icons';
+import { useLocalStorage } from 'src/hooks';
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
 
@@ -28,11 +23,11 @@ export function GeneralTasks() {
   } = useGeneralTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
-    "tasksComponentWidth",
+    'tasksComponentWidth',
     DEFAULT_WIDTH
   );
   const [showTasksWontBeLostAlert, setShowTasksWontBeLost] = useLocalStorage(
-    "showTasksWontBeLostAlert",
+    'showTasksWontBeLostAlert',
     true
   );
   // const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
@@ -44,14 +39,10 @@ export function GeneralTasks() {
   const multipleGeneralTasks = numberOfGeneralTasks > 1;
   const noGeneralTasks = numberOfGeneralTasks === 0;
 
-  const getRandomElement = (arr: string[]) =>
-    arr[Math.floor(Math.random() * arr.length)];
+  const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
-  const handleChange = (
-    event: React.FormEvent<HTMLInputElement>,
-    i: number
-  ) => {
+  const handleChange = (event: React.FormEvent<HTMLInputElement>, i: number) => {
     const currentTask = event.currentTarget.value;
     changeGeneralTask(i, currentTask);
   };
@@ -80,52 +71,49 @@ export function GeneralTasks() {
     setShowTasksWontBeLost(false);
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    i: number
-  ) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, i: number) => {
     const firstTask = i === 0;
     const lastTask = i === 4;
 
-    if (event.altKey && event.key === "ArrowUp") {
+    if (event.altKey && event.key === 'ArrowUp') {
       event.preventDefault();
       if (firstTask) {
         return;
       }
       moveTaskUp(i);
-      return document.querySelectorAll("input")[i - 1]?.focus();
+      return document.querySelectorAll('input')[i - 1]?.focus();
     }
 
-    if (event.altKey && event.key === "ArrowDown") {
+    if (event.altKey && event.key === 'ArrowDown') {
       event.preventDefault();
       if (lastTask) {
         return;
       }
       moveTaskDown(i);
-      return document.querySelectorAll("input")[i + 1]?.focus();
+      return document.querySelectorAll('input')[i + 1]?.focus();
     }
 
     // event.metaKey is macOS command key
-    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault();
       return handleDone(i);
     }
 
-    if (event.key === "Enter" && event.shiftKey) {
+    if (event.key === 'Enter' && event.shiftKey) {
       event.preventDefault();
       if (firstTask) {
-        return document.querySelectorAll("input")[4]?.focus();
+        return document.querySelectorAll('input')[4]?.focus();
       }
-      return document.querySelectorAll("input")[i - 1]?.focus();
+      return document.querySelectorAll('input')[i - 1]?.focus();
     }
 
-    if (event.key === "Enter" && !event.ctrlKey) {
+    if (event.key === 'Enter' && !event.ctrlKey) {
       event.preventDefault();
       if (lastTask) {
-        document.querySelectorAll("input")[0]?.focus();
+        document.querySelectorAll('input')[0]?.focus();
         return;
       }
-      return document.querySelectorAll("input")[i + 1]?.focus();
+      return document.querySelectorAll('input')[i + 1]?.focus();
     }
   };
 
@@ -152,14 +140,13 @@ export function GeneralTasks() {
   const generalTasksMap = generalTasks.map((task, idx) => {
     const isFirstTask = idx === 0;
     const isLastTask = idx === generalTasks.length - 1;
-    const isEmptyTask = task.trim() === "";
+    const isEmptyTask = task.trim() === '';
 
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
         {(provided, snapshot) => {
           const isBeingDragged = snapshot.isDragging;
-          const anotherTaskIsBeingDragged =
-            !isBeingDragged && someDragIsHappening;
+          const anotherTaskIsBeingDragged = !isBeingDragged && someDragIsHappening;
 
           return (
             <li
@@ -167,7 +154,7 @@ export function GeneralTasks() {
               key={idx}
               className={`group flex ${
                 isBeingDragged &&
-                "overflow-hidden rounded-2xl border-l border-t border-trueBlack/30 dark:border-trueWhite/30"
+                'overflow-hidden rounded-2xl border-l border-t border-trueBlack/30 dark:border-trueWhite/30'
               }`}
               ref={provided.innerRef}
             >
@@ -178,39 +165,30 @@ export function GeneralTasks() {
                 autoFocus={isFirstTask}
                 autoComplete="off"
                 spellCheck="false"
-                placeholder={`${
-                  isFirstTask && noGeneralTasks ? `${placeholder}?` : ""
-                }`}
+                placeholder={`${isFirstTask && noGeneralTasks ? `${placeholder}?` : ''}`}
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
-                  isBeingDragged &&
-                  "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                  isBeingDragged && 'border-b border-trueBlack/30 dark:border-trueWhite/30'
                 } ${
-                  !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2"
-                } ${isFirstTask && "border-t-0"} ${
-                  !isLastTask &&
-                  "border-b border-trueBlack dark:border-trueWhite"
+                  !isEmptyTask && multipleGeneralTasks && 'group-hover:pr-2'
+                } ${isFirstTask && 'border-t-0'} ${
+                  !isLastTask && 'border-b border-trueBlack dark:border-trueWhite'
                 } ${
-                  someDragIsHappening && "cursor-grabbing"
+                  someDragIsHappening && 'cursor-grabbing'
                 } bg-trueWhite px-5 py-4 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
               />
               <span
                 {...provided.dragHandleProps}
                 aria-label="Drag handle to reorder task"
-                className={`${
-                  !isLastTask &&
-                  "border-b border-trueBlack dark:border-trueWhite"
-                } ${
-                  isEmptyTask ||
-                  !multipleGeneralTasks ||
-                  anotherTaskIsBeingDragged
-                    ? "hidden"
-                    : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
+                className={`${!isLastTask && 'border-b border-trueBlack dark:border-trueWhite'} ${
+                  isEmptyTask || !multipleGeneralTasks || anotherTaskIsBeingDragged
+                    ? 'hidden'
+                    : 'max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex'
                 } ${
                   isBeingDragged
-                    ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
-                    : "hidden"
+                    ? 'border-b border-trueBlack/30 dark:border-trueWhite/30'
+                    : 'hidden'
                 } group/drag flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
                 tabIndex={-1}
               >
@@ -220,21 +198,17 @@ export function GeneralTasks() {
                 aria-label="complete task"
                 aria-keyshortcuts="control+enter"
                 onClick={() => handleDone(idx)}
-                className={`${isFirstTask && "rounded-tr-2xl"} ${
-                  isLastTask && "rounded-br-2xl"
-                } ${
+                className={`${isFirstTask && 'rounded-tr-2xl'} ${isLastTask && 'rounded-br-2xl'} ${
                   isEmptyTask || anotherTaskIsBeingDragged
-                    ? "hidden"
-                    : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
+                    ? 'hidden'
+                    : 'max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex'
                 } ${
                   isBeingDragged
-                    ? "border-b border-l border-trueBlack/30 dark:border-trueWhite/30"
-                    : "hidden"
+                    ? 'border-b border-l border-trueBlack/30 dark:border-trueWhite/30'
+                    : 'hidden'
                 } group/done select-none items-center justify-center border-b border-l border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
-                <span className="transition-transform group-active/done:scale-95">
-                  done?
-                </span>
+                <span className="transition-transform group-active/done:scale-95">done?</span>
               </button>
             </li>
           );
@@ -260,10 +234,7 @@ export function GeneralTasks() {
         }}
         className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
       >
-        <DragDropContext
-          onDragEnd={handleDragEnd}
-          onDragStart={() => setSomeDragIsHappening(true)}
-        >
+        <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setSomeDragIsHappening(true)}>
           <Droppable droppableId="tasksList">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -276,10 +247,7 @@ export function GeneralTasks() {
       </ul>
       <div
         className={`${
-          (generalMessage ||
-            !multipleGeneralTasks ||
-            !showTasksWontBeLostAlert) &&
-          "invisible"
+          (generalMessage || !multipleGeneralTasks || !showTasksWontBeLostAlert) && 'invisible'
         } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
       >
         <Light size={24} />

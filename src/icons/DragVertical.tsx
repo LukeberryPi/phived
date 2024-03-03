@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils";
+import type { DefaultSvgProps } from 'src/utils';
 
 export function DragVertical({ className, size = 26 }: DefaultSvgProps) {
   return (

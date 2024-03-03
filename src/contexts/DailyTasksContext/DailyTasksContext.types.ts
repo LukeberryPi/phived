@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from 'react';
 
 export type DailyTask = string;
 
@@ -21,11 +21,7 @@ export type DailyTaskContextType = {
   moveTaskUp: (taskIndex: number) => void;
   moveTaskDown: (taskIndex: number) => void;
   dailyMessage: string;
-  setDailyTasks: Dispatch<SetStateAction<DailyTaskContextType["dailyTasks"]>>;
-  setDailyTasksLastDoneAt: Dispatch<
-    SetStateAction<DailyTaskContextType["dailyTasksLastDoneAt"]>
-  >;
-  setDailyMessage: Dispatch<
-    SetStateAction<DailyTaskContextType["dailyMessage"]>
-  >;
+  setDailyTasks: Dispatch<SetStateAction<DailyTaskContextType['dailyTasks']>>;
+  setDailyTasksLastDoneAt: Dispatch<SetStateAction<DailyTaskContextType['dailyTasksLastDoneAt']>>;
+  setDailyMessage: Dispatch<SetStateAction<DailyTaskContextType['dailyMessage']>>;
 };

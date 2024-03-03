@@ -1,27 +1,22 @@
-import type { PropsWithChildren } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { incentives } from "src/content";
-import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
-import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
-import { useLocalStorage } from "src/hooks/useLocalStorage";
+import type { PropsWithChildren } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { incentives } from 'src/content';
+import { GeneralTasksContext } from 'src/contexts/GeneralTasksContext/GeneralTasksContext';
+import type { GeneralTask } from 'src/contexts/GeneralTasksContext/GeneralTasksContext.types';
+import { useLocalStorage } from 'src/hooks/useLocalStorage';
 
-export const GeneralTasksContextProvider = ({
-  children,
-}: PropsWithChildren) => {
+export const GeneralTasksContextProvider = ({ children }: PropsWithChildren) => {
   const [storedGeneralTasks, setStoredGeneralTasks] = useLocalStorage(
-    "storedGeneralTasks",
-    Array<string>(5).fill("")
+    'storedGeneralTasks',
+    Array<string>(5).fill('')
   );
   const [generalTasks, setGeneralTasks] = useState(storedGeneralTasks);
-  const [generalMessage, setGeneralMessage] = useState<string>("");
-  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(
-    undefined
-  );
+  const [generalMessage, setGeneralMessage] = useState<string>('');
+  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(undefined);
 
   const memoizedTasks = useMemo(() => generalTasks, [generalTasks]);
 
-  const getRandomIncentive = (arr: string[]) =>
-    arr[Math.floor(Math.random() * arr.length)];
+  const getRandomIncentive = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
 
   const generalIncentive = useMemo(
     () => getRandomIncentive(incentives),
@@ -34,7 +29,7 @@ export const GeneralTasksContextProvider = ({
       setGeneralMessage(generalMessage);
       clearTimeout(timeoutId);
       const newTimeoutId = setTimeout(() => {
-        setGeneralMessage("");
+        setGeneralMessage('');
       }, 4000);
 
       setTimeoutId(newTimeoutId);
@@ -57,23 +52,21 @@ export const GeneralTasksContextProvider = ({
       if (!generalTasks[taskIndex]) return;
 
       const ongoingTasks = generalTasks.filter((_, idx) => idx !== taskIndex);
-      setGeneralTasks([...ongoingTasks, ""]);
+      setGeneralTasks([...ongoingTasks, '']);
       displayGeneralMessage(generalIncentive);
     },
     [displayGeneralMessage, generalIncentive, generalTasks, setGeneralTasks]
   );
 
   const clearGeneralTasks = useCallback(() => {
-    const isUserCertain = window.confirm(
-      "Are you sure you want to DELETE all your tasks?"
-    );
+    const isUserCertain = window.confirm('Are you sure you want to DELETE all your tasks?');
 
     if (!isUserCertain) {
       return;
     }
 
-    setGeneralTasks(Array(5).fill(""));
-    displayGeneralMessage("tasks cleared!");
+    setGeneralTasks(Array(5).fill(''));
+    displayGeneralMessage('tasks cleared!');
   }, [displayGeneralMessage, setGeneralTasks]);
 
   const moveTaskUp = useCallback(

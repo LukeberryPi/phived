@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils";
+import type { DefaultSvgProps } from 'src/utils';
 
 export function Trash({ className, size = 24 }: DefaultSvgProps) {
   return (

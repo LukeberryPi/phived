@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils";
+import type { DefaultSvgProps } from 'src/utils';
 
 export function Lock({ className, size = 20 }: DefaultSvgProps) {
   return (

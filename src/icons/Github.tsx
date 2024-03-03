@@ -1,4 +1,4 @@
-import type { DefaultSvgProps } from "src/utils";
+import type { DefaultSvgProps } from 'src/utils';
 
 export function Github({ className, size = 24 }: DefaultSvgProps) {
   return (
