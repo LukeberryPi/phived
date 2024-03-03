@@ -1,49 +1,56 @@
-import { useEffect, useRef } from 'react'
-import { HelmetProvider } from 'react-helmet-async'
-import { Footer, Header, Message, GeneralTasks, Head, ModeSelectorMobile } from 'src/components'
-import { GeneralTasksContextProvider } from 'src/contexts'
+import { useEffect, useRef } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import {
+  Footer,
+  Header,
+  Message,
+  GeneralTasks,
+  Head,
+  ModeSelectorMobile,
+} from "src/components";
+import { GeneralTasksContextProvider } from "src/contexts";
 
 export function Home() {
-  const pressedKeys = useRef('')
+  const pressedKeys = useRef("");
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!(document.activeElement instanceof HTMLElement)) {
-      return
+      return;
     }
 
-    if (e.key === 'Escape') {
-      document.activeElement.blur()
+    if (e.key === "Escape") {
+      document.activeElement.blur();
     }
-  }
+  };
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      const inputIsFocused = document.activeElement instanceof HTMLInputElement
+      const inputIsFocused = document.activeElement instanceof HTMLInputElement;
 
-      if (event.key !== 'g' || inputIsFocused) {
-        return
+      if (event.key !== "g" || inputIsFocused) {
+        return;
       }
 
-      pressedKeys.current += 'g'
+      pressedKeys.current += "g";
 
-      if (pressedKeys.current === 'gg') {
-        window.location.href = '/daily'
-        pressedKeys.current = ''
+      if (pressedKeys.current === "gg") {
+        window.location.href = "/daily";
+        pressedKeys.current = "";
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyPress)
+    window.addEventListener("keydown", handleKeyPress);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPress)
-    }
-  }, [])
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   return (
     <GeneralTasksContextProvider>
       <div
         onKeyDown={handleKeyDown}
-        className="mx-10 flex h-full w-full flex-col items-center justify-center bg-softWhite dark:bg-trueBlack"
+        className="flex h-full w-full flex-col items-center justify-center bg-softWhite dark:bg-trueBlack"
       >
         <HelmetProvider>
           <Head />
@@ -55,5 +62,5 @@ export function Home() {
         <Footer />
       </div>
     </GeneralTasksContextProvider>
-  )
+  );
 }

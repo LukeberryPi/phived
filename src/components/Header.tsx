@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react'
-import { useDailyTasksContext, useGeneralTasksContext } from 'src/contexts'
-import { HelpMenu, ModeSelector } from 'src/components'
-import { handleSetTheme, isDailyPage, isThemeSetToDark } from 'src/utils'
-import { Trash, Moon, CaretUp, Sun, Compass } from 'src/icons'
-import { useLocalStorage } from 'src/hooks'
+import { useEffect, useState } from "react";
+import { useDailyTasksContext, useGeneralTasksContext } from "src/contexts";
+import { HelpMenu, ModeSelector } from "src/components";
+import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
+import { Trash, Moon, CaretUp, Sun, Compass } from "src/icons";
+import { useLocalStorage } from "src/hooks";
 
 export function Header() {
-  const { clearGeneralTasks, generalTasks } = useGeneralTasksContext()
-  const { clearDailyTasks, dailyTasks } = useDailyTasksContext()
-  const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark())
-  const [showHelpMenu, setShowHelpMenu] = useLocalStorage('showHelpMenu', true)
+  const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
+  const { clearDailyTasks, dailyTasks } = useDailyTasksContext();
+  const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
+  const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
 
-  const noGeneralTasks = generalTasks.filter(Boolean).length === 0
-  const noDailyTasks = dailyTasks.filter(Boolean).length === 0
+  const noGeneralTasks = generalTasks.filter(Boolean).length === 0;
+  const noDailyTasks = dailyTasks.filter(Boolean).length === 0;
 
   useEffect(() => {
-    handleSetTheme(isDarkMode)
-  }, [isDarkMode, noGeneralTasks])
+    handleSetTheme(isDarkMode);
+  }, [isDarkMode, noGeneralTasks]);
 
   const toggleDarkMode = () => {
-    setIsDarkMode((currentDarkMode) => !currentDarkMode)
-  }
+    setIsDarkMode((currentDarkMode) => !currentDarkMode);
+  };
 
   const openHelpMenu = () => {
-    setShowHelpMenu(true)
-  }
+    setShowHelpMenu(true);
+  };
 
   const closeHelpMenu = () => {
-    setShowHelpMenu(false)
-  }
+    setShowHelpMenu(false);
+  };
 
   return (
     <header className="fixed bottom-6 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
@@ -37,8 +37,8 @@ export function Header() {
           href="/"
           className={`hidden text-4xl font-bold text-trueBlack underline underline-offset-4 ${
             isDailyPage()
-              ? 'decoration-dailyGreen dark:decoration-dailyPurple'
-              : 'decoration-berryBlue dark:decoration-purpleRain'
+              ? "decoration-dailyGreen dark:decoration-dailyPurple"
+              : "decoration-berryBlue dark:decoration-purpleRain"
           } transition-transform active:scale-95 dark:text-trueWhite md:flex`}
         >
           phived
@@ -67,27 +67,33 @@ export function Header() {
           )}
         </button>
         <button
-          aria-disabled={(!isDailyPage() && noGeneralTasks) || (isDailyPage() && noDailyTasks)}
+          aria-disabled={
+            (!isDailyPage() && noGeneralTasks) ||
+            (isDailyPage() && noDailyTasks)
+          }
           onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}
           className={`${
             noGeneralTasks && noDailyTasks
-              ? 'cursor-not-allowed sm:hover:ring-unavailableLight dark:sm:hover:ring-unavailableDark'
-              : 'sm:hover:ring-alertRed'
+              ? "cursor-not-allowed sm:hover:ring-unavailableLight dark:sm:hover:ring-unavailableDark"
+              : "sm:hover:ring-alertRed"
           } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-transform active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ring-2`}
-          disabled={(!isDailyPage() && noGeneralTasks) || (isDailyPage() && noDailyTasks)}
+          disabled={
+            (!isDailyPage() && noGeneralTasks) ||
+            (isDailyPage() && noDailyTasks)
+          }
         >
           <Trash
             className={`fill-trueBlack dark:fill-trueWhite ${
               noGeneralTasks && noDailyTasks
-                ? 'fill-trueBlack/30 dark:fill-trueWhite/30'
-                : 'sm:group-hover:fill-alertRed'
+                ? "fill-trueBlack/30 dark:fill-trueWhite/30"
+                : "sm:group-hover:fill-alertRed"
             } `}
           />
           <span
             className={`${
               noGeneralTasks && noDailyTasks
-                ? 'text-trueBlack/40 dark:text-trueWhite/30'
-                : 'dark:text-trueWhite sm:group-hover:text-alertRed'
+                ? "text-trueBlack/40 dark:text-trueWhite/30"
+                : "dark:text-trueWhite sm:group-hover:text-alertRed"
             } text-base`}
           >
             clear tasks
@@ -98,7 +104,11 @@ export function Header() {
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
           className="relative hidden select-none flex-col items-center rounded-2xl p-2 hover:ring-2 hover:ring-trueBlack active:scale-95 sm:flex-row sm:gap-3 sm:px-3 lg:flex"
         >
-          <span className={`h-fit w-fit ${showHelpMenu ? 'rotate-0' : 'rotate-180'}`}>
+          <span
+            className={`h-fit w-fit ${
+              showHelpMenu ? "rotate-0" : "rotate-180"
+            }`}
+          >
             <CaretUp className="fill-trueBlack dark:fill-trueWhite" />
           </span>
           <p className="dark:text-trueWhite xs:text-base">help</p>
@@ -106,5 +116,5 @@ export function Header() {
         {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
       </nav>
     </header>
-  )
+  );
 }

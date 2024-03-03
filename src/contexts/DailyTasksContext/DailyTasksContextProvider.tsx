@@ -1,70 +1,71 @@
-import type { PropsWithChildren } from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { incentives } from 'src/content'
-import { DailyTasksContext } from 'src/contexts/DailyTasksContext/DailyTasksContext'
+import type { PropsWithChildren } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { incentives } from "src/content";
+import { DailyTasksContext } from "src/contexts/DailyTasksContext/DailyTasksContext";
 import type {
   DailyTask,
   DailyTasksLastDoneAt,
-} from 'src/contexts/DailyTasksContext/DailyTasksContext.types'
-import { useLocalStorage } from 'src/hooks/useLocalStorage'
+} from "src/contexts/DailyTasksContext/DailyTasksContext.types";
+import { useLocalStorage } from "src/hooks/useLocalStorage";
 
 export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   const [storedDailyTasks, setStoredDailyTasks] = useLocalStorage(
-    'storedDailyTasks',
-    Array<string>(5).fill('')
-  )
-  const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] = useLocalStorage<DailyTasksLastDoneAt>(
-    'dailyTasksLastDoneAt',
-    []
-  )
-  const [dailyTasks, setDailyTasks] = useState(storedDailyTasks)
-  const [dailyMessage, setDailyMessage] = useState<string>('')
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined)
+    "storedDailyTasks",
+    Array<string>(5).fill("")
+  );
+  const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] =
+    useLocalStorage<DailyTasksLastDoneAt>("dailyTasksLastDoneAt", []);
+  const [dailyTasks, setDailyTasks] = useState(storedDailyTasks);
+  const [dailyMessage, setDailyMessage] = useState<string>("");
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(
+    undefined
+  );
 
-  const memoizedTasks = useMemo(() => dailyTasks, [dailyTasks])
+  const memoizedTasks = useMemo(() => dailyTasks, [dailyTasks]);
 
-  const getRandomIncentive = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)]
+  const getRandomIncentive = (arr: string[]) =>
+    arr[Math.floor(Math.random() * arr.length)];
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const incentive = useMemo(() => getRandomIncentive(incentives), [dailyTasks])
+  const incentive = useMemo(() => getRandomIncentive(incentives), [dailyTasks]);
 
   const displayDailyMessage = useCallback(
     (dailyMessage: string) => {
-      setDailyMessage(dailyMessage)
-      clearTimeout(timeoutId)
+      setDailyMessage(dailyMessage);
+      clearTimeout(timeoutId);
       const newTimeoutId = setTimeout(() => {
-        setDailyMessage('')
-      }, 4000)
+        setDailyMessage("");
+      }, 4000);
 
-      setTimeoutId(newTimeoutId)
+      setTimeoutId(newTimeoutId);
     },
     [timeoutId]
-  )
+  );
 
   const changeDailyTask = useCallback(
     (taskIndex: number, newValue: DailyTask) => {
-      const dailyTaskCopy = [...dailyTasks]
-      dailyTaskCopy[taskIndex] = newValue
+      const dailyTaskCopy = [...dailyTasks];
+      dailyTaskCopy[taskIndex] = newValue;
 
-      setDailyTasks(dailyTaskCopy)
+      setDailyTasks(dailyTaskCopy);
     },
     [dailyTasks, setDailyTasks]
-  )
+  );
 
   const completeDailyTask = useCallback(
     (taskIndex: number) => {
-      if (!dailyTasks[taskIndex]) return
+      if (!dailyTasks[taskIndex]) return;
 
-      const ongoingTasks = dailyTasks.filter((_, idx) => idx !== taskIndex)
+      const ongoingTasks = dailyTasks.filter((_, idx) => idx !== taskIndex);
       setDailyTasksLastDoneAt([
         ...dailyTasksLastDoneAt,
         {
           dailyTask: dailyTasks[taskIndex],
           dateCompleted: new Date(),
         },
-      ])
-      setDailyTasks([...ongoingTasks])
-      displayDailyMessage(incentive)
+      ]);
+      setDailyTasks([...ongoingTasks]);
+      displayDailyMessage(incentive);
     },
     [
       displayDailyMessage,
@@ -74,51 +75,51 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
       dailyTasksLastDoneAt,
       setDailyTasksLastDoneAt,
     ]
-  )
+  );
 
   const clearDailyTasks = useCallback(() => {
     const isUserCertain = window.confirm(
-      'Are you sure you want to DELETE all your daily tasks? You will be unable to restore your previous completed daily tasks.'
-    )
+      "Are you sure you want to DELETE all your daily tasks? You will be unable to restore your previous completed daily tasks."
+    );
 
     if (!isUserCertain) {
-      return
+      return;
     }
 
-    setDailyTasks(Array(5).fill(''))
-    setDailyTasksLastDoneAt([])
-    displayDailyMessage('daily tasks cleared!')
-  }, [displayDailyMessage, setDailyTasks, setDailyTasksLastDoneAt])
+    setDailyTasks(Array(5).fill(""));
+    setDailyTasksLastDoneAt([]);
+    displayDailyMessage("daily tasks cleared!");
+  }, [displayDailyMessage, setDailyTasks, setDailyTasksLastDoneAt]);
 
   useEffect(() => {
-    setStoredDailyTasks(dailyTasks)
-  }, [dailyTasks, setStoredDailyTasks])
+    setStoredDailyTasks(dailyTasks);
+  }, [dailyTasks, setStoredDailyTasks]);
 
   const moveTaskUp = useCallback(
     (taskIndex: number) => {
-      const copy = [...dailyTasks]
+      const copy = [...dailyTasks];
 
-      const taskBefore = copy[taskIndex - 1]
-      copy[taskIndex - 1] = copy[taskIndex]
-      copy[taskIndex] = taskBefore
+      const taskBefore = copy[taskIndex - 1];
+      copy[taskIndex - 1] = copy[taskIndex];
+      copy[taskIndex] = taskBefore;
 
-      setDailyTasks(copy)
+      setDailyTasks(copy);
     },
     [dailyTasks, setDailyTasks]
-  )
+  );
 
   const moveTaskDown = useCallback(
     (taskIndex: number) => {
-      const copy = [...dailyTasks]
+      const copy = [...dailyTasks];
 
-      const taskAfter = copy[taskIndex + 1]
-      copy[taskIndex + 1] = copy[taskIndex]
-      copy[taskIndex] = taskAfter
+      const taskAfter = copy[taskIndex + 1];
+      copy[taskIndex + 1] = copy[taskIndex];
+      copy[taskIndex] = taskAfter;
 
-      setDailyTasks(copy)
+      setDailyTasks(copy);
     },
     [dailyTasks, setDailyTasks]
-  )
+  );
   return (
     <DailyTasksContext.Provider
       value={{
@@ -138,5 +139,5 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
     >
       {children}
     </DailyTasksContext.Provider>
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
 export type DefaultSvgProps = {
-  className?: string
-  size?: number
-}
+  className?: string;
+  size?: number;
+};
