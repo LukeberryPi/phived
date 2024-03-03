@@ -23,13 +23,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "endOfLine": "auto"
-      }
-    ],
-    "linebreak-style": 0,
+    "prettier/prettier": ["error"],
     "quotes": ["error", "double"],
     "arrow-parens": ["error", "always"],
     "eqeqeq": ["error", "always"],
