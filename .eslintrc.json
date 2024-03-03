@@ -31,8 +31,6 @@
     ],
     "linebreak-style": 0,
     "quotes": ["error", "double"],
-    "semi": "warn",
-    "eol-last": ["warn", "always"],
     "arrow-parens": ["error", "always"],
     "eqeqeq": ["error", "always"],
     "arrow-body-style": ["error", "as-needed"],
