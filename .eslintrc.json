@@ -24,6 +24,7 @@
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
     "prettier/prettier": ["error"],
+    "linebreak-style": 0,
     "quotes": ["error", "double"],
     "arrow-parens": ["error", "always"],
     "eqeqeq": ["error", "always"],
