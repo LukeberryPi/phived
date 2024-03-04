@@ -2,7 +2,7 @@ import type { MouseEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { placeholders } from "src/content";
 import { useGeneralTasksContext } from "src/contexts";
-import { setTasksDefaultWidth } from "src/utils";
+import { isMobile, setTasksDefaultWidth } from "src/utils";
 import {
   DragDropContext,
   Droppable,
@@ -175,7 +175,7 @@ export function GeneralTasks() {
                 value={task}
                 onChange={(event) => handleChange(event, idx)}
                 autoCapitalize="false"
-                autoFocus={isFirstTask}
+                autoFocus={isFirstTask && !isMobile()}
                 autoComplete="off"
                 spellCheck="false"
                 placeholder={`${
