@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDailyTasksContext, useGeneralTasksContext } from "src/contexts";
 import { HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, CaretUp, Sun, Compass } from "src/icons";
+import { Trash, Moon, CaretUp, Sun, Compass, Swap } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 
 export function Header() {
@@ -65,6 +65,14 @@ export function Header() {
               <span>dark mode</span>
             </>
           )}
+        </button>
+        <button
+          onClick={toggleDarkMode}
+          role="switch"
+          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:hidden"
+        >
+          <Swap size={24} />
+          <span>{isDailyPage() ? "go to general" : "go to daily"}</span>
         </button>
         <button
           aria-disabled={
