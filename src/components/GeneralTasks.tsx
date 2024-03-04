@@ -35,6 +35,7 @@ export function GeneralTasks() {
     "showTasksWontBeLostAlert",
     true
   );
+
   // const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
   //   "showPrivacyAlert",
   //   true
