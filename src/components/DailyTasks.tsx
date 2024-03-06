@@ -195,7 +195,7 @@ export function DailyTasks() {
             >
               <input
                 value={task}
-                placeholder="hi jeff"
+                placeholder="hi jeff + package.json changed"
                 onChange={(event) => handleChange(event, idx)}
                 autoCapitalize="false"
                 autoFocus={isFirstTask && !isMobile()}
