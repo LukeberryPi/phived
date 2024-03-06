@@ -195,14 +195,15 @@ export function DailyTasks() {
             >
               <input
                 value={task}
+                placeholder="hi jeff"
                 onChange={(event) => handleChange(event, idx)}
                 autoCapitalize="false"
                 autoFocus={isFirstTask && !isMobile()}
                 autoComplete="off"
                 spellCheck="false"
-                placeholder={`${
-                  isFirstTask && noDailyTasks ? `${placeholder}?` : ""
-                }`}
+                // placeholder={`${
+                //   isFirstTask && noDailyTasks ? `${placeholder}?` : ""
+                // }`}
                 aria-label={`Task ${idx + 1}`}
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
