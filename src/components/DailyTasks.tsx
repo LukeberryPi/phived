@@ -133,7 +133,11 @@ export function DailyTasks() {
       return handleDone(i);
     }
 
-    if (event.key === "Enter" && event.shiftKey) {
+    // move up either with Shift + Enter or ArrowUp
+    if (
+      (event.key === "ArrowUp" && !event.altKey) ||
+      (event.key === "Enter" && event.shiftKey && !event.ctrlKey)
+    ) {
       event.preventDefault();
       if (firstTask) {
         return document.querySelectorAll("input")[4]?.focus();
@@ -141,7 +145,11 @@ export function DailyTasks() {
       return document.querySelectorAll("input")[i - 1]?.focus();
     }
 
-    if (event.key === "Enter" && !event.ctrlKey) {
+    // move down either with Enter or ArrowDown
+    if (
+      (event.key === "ArrowDown" && !event.altKey) ||
+      (event.key === "Enter" && !event.ctrlKey)
+    ) {
       event.preventDefault();
       if (lastTask) {
         document.querySelectorAll("input")[0]?.focus();
