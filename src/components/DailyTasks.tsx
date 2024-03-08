@@ -107,7 +107,7 @@ export function DailyTasks() {
     i: number
   ) => {
     const firstTask = i === 0;
-    const lastTask = i === 4;
+    const lastTask = i === dailyTasks.length - 1;
 
     if (event.altKey && event.key === "ArrowUp") {
       event.preventDefault();
@@ -140,7 +140,9 @@ export function DailyTasks() {
     ) {
       event.preventDefault();
       if (firstTask) {
-        return document.querySelectorAll("input")[4]?.focus();
+        return document
+          .querySelectorAll("input")
+          [dailyTasks.length - 1]?.focus();
       }
       return document.querySelectorAll("input")[i - 1]?.focus();
     }
