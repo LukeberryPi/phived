@@ -9,7 +9,7 @@ import {
   Draggable,
   type DropResult,
 } from "react-beautiful-dnd";
-import { Close, DragVertical, Light } from "src/icons";
+import { Close, DragVertical, Light, Open } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 // you must remove Strict Mode for react-beautiful-dnd to work locally
 // https://github.com/atlassian/react-beautiful-dnd/issues/2350
@@ -169,13 +169,34 @@ export function GeneralTasks() {
           const anotherTaskIsBeingDragged =
             !isBeingDragged && someDragIsHappening;
 
+          const urlRegex =
+            /\b(?:https?:\/\/)?(?:www\.)?([a-z0-9.-]+)\.([a-z]{2,})(?:\/\S*)?\b/i;
+          const urlMatch = task.match(urlRegex);
+          const taskHasLink = urlMatch !== null;
+          const taskLink = taskHasLink ? urlMatch[0] : "";
+
+          const appendProtocol = (url: string) => {
+            if (!url) {
+              return;
+            }
+
+            const protocols = ["https://", "http://"];
+            const startsWithProtocol = protocols.some((p) => url.startsWith(p));
+
+            if (!startsWithProtocol) {
+              return "https://" + url;
+            }
+
+            return url;
+          };
+
           return (
             <li
               {...provided.draggableProps}
               key={idx}
-              className={`group flex ${
+              className={`group relative flex ${
                 isBeingDragged &&
-                "border-trueBlack/30 dark:border-trueWhite/30 overflow-hidden rounded-2xl border-l border-t"
+                "border-trueBlack/30 dark:border-trueWhite/30 rounded-2xl border-l border-t"
               }`}
               ref={provided.innerRef}
             >
@@ -196,13 +217,26 @@ export function GeneralTasks() {
                   "border-trueBlack/30 dark:border-trueWhite/30 border-b"
                 } ${
                   !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2"
-                } ${isFirstTask && "border-t-0"} ${
+                } ${isFirstTask && "rounded-t-2xl border-t-0"} ${
+                  isLastTask && "rounded-b-2xl border-b-0"
+                } ${
                   !isLastTask &&
                   "border-trueBlack dark:border-trueWhite border-b"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
                 } bg-trueWhite text-trueBlack dark:bg-softBlack dark:text-trueWhite px-5 py-4 focus:outline-none sm:text-lg`}
               />
+              <a
+                href={appendProtocol(taskLink)}
+                target="_blank"
+                className={`size-14 absolute -left-14 flex flex-col items-center justify-center text-sm text-transparent transition-transform active:scale-95 ${
+                  taskHasLink
+                    ? "hover:text-trueBlack peer-hover:text-trueBlack"
+                    : ""
+                }`}
+              >
+                <Open size={24} className="fill-trueBlack" />
+              </a>
               <span
                 {...provided.dragHandleProps}
                 aria-label="Drag handle to reorder task"
@@ -266,7 +300,7 @@ export function GeneralTasks() {
         style={{
           width: `${tasksComponentWidth}px`,
         }}
-        className="border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 w-[300px] resize-x overflow-hidden rounded-2xl border"
+        className="border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96 w-[300px] resize-x rounded-2xl border"
       >
         <DragDropContext
           onDragEnd={handleDragEnd}
