@@ -170,7 +170,7 @@ export function GeneralTasks() {
             !isBeingDragged && someDragIsHappening;
 
           const urlRegex =
-            /\b(?:https?:\/\/)?(?:www\.)?([a-z0-9.-]+)\.([a-z]{2,})(?:\/\S*)?\b/i;
+            /\b(?:https?:\/\/)?(?:www\.)?([a-z0-9.-]+)\.([a-z0-9]{2,})(?:\/\S*)?\b/i;
           const urlMatch = task.match(urlRegex);
           const taskHasLink = urlMatch !== null;
           const taskLink = taskHasLink ? urlMatch[0] : "";
