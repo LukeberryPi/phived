@@ -1,6 +1,5 @@
 import type { MouseEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
-import { placeholders } from "src/content";
+import { useEffect, useState } from "react";
 import { useDailyTasksContext } from "src/contexts";
 import { isMobile, setTasksDefaultWidth } from "src/utils";
 import {
@@ -68,7 +67,6 @@ export function DailyTasks() {
 
   const getRandomElement = (arr: string[]) =>
     arr[Math.floor(Math.random() * arr.length)];
-  const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
   const handleChange = (
     event: React.FormEvent<HTMLInputElement>,

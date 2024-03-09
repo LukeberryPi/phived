@@ -1,4 +1,5 @@
 export { DragVertical } from "src/icons/DragVertical";
+export { Coffee } from "src/icons/Coffee";
 export { Open } from "src/icons/Open";
 export { Switch } from "src/icons/Switch";
 export { Moon } from "src/icons/Moon";
