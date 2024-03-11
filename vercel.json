@@ -1,23 +1,8 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "headers": [
+  "rewrites": [
     {
-      "source": "/",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store"
-        }
-      ]
-    },
-    {
-      "source": "/daily",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store"
-        }
-      ]
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
