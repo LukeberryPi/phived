@@ -231,11 +231,11 @@ export function GeneralTasks() {
                 target="_blank"
                 className={`size-14 absolute -left-14 flex flex-col items-center justify-center text-sm text-transparent transition-transform active:scale-95 ${
                   taskHasLink
-                    ? "hover:text-trueBlack peer-hover:text-trueBlack"
+                    ? "hover:text-trueBlack peer-hover:text-trueBlack dark:hover:text-red-500 dark:peer-hover:text-red-500"
                     : ""
                 }`}
               >
-                <Open size={24} className="fill-trueBlack" />
+                <Open size={24} />
               </a>
               <span
                 {...provided.dragHandleProps}
