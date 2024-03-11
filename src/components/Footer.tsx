@@ -28,7 +28,7 @@ export function Footer() {
           target="_blank"
           className="ring-trueBlack flex items-center gap-3 rounded-2xl px-4 py-2 transition-transform hover:ring-2 active:scale-95"
         >
-          <Coffee size={24} className="fill-trueBlack dark:fill-trueWhite" />
+          <Coffee size={24} className="text-trueBlack dark:text-trueWhite" />
           <span className="dark:text-trueWhite xs:text-base">
             buy me a coffee!
           </span>
