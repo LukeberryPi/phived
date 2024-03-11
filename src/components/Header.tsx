@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useDailyTasksContext, useGeneralTasksContext } from "src/contexts";
 import { HelpMenu, ModeSelector } from "src/components";
 import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
-import { Trash, Moon, CaretUp, Sun, Compass, Swap } from "src/icons";
+import { Trash, Moon, CaretUp, Sun, Compass, Switch } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 import { Link } from "react-router-dom";
+import { Coffee } from "src/icons/Coffee";
 
 export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
@@ -33,27 +34,27 @@ export function Header() {
 
   return (
     <header className="fixed bottom-6 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
-      <div className="hidden items-center gap-6 text-trueBlack sm:flex">
+      <div className="text-trueBlack hidden items-center gap-6 sm:flex">
         <a
           href="/"
-          className={`hidden text-4xl font-bold text-trueBlack underline underline-offset-4 ${
+          className={`text-trueBlack hidden text-4xl font-bold underline underline-offset-4 ${
             isDailyPage()
               ? "decoration-dailyGreen dark:decoration-dailyPurple"
               : "decoration-berryBlue dark:decoration-purpleRain"
-          } transition-transform active:scale-95 dark:text-trueWhite md:flex`}
+          } dark:text-trueWhite transition-transform active:scale-95 md:flex`}
         >
           phived
         </a>
         <ModeSelector />
       </div>
-      <nav className="flex h-full items-center justify-between gap-4 tiny:gap-10 sm:gap-6">
+      <nav className="tiny:gap-10 flex h-full items-center justify-between gap-4 sm:gap-6">
         {/* <button>
           <Compass size={24} className="text-trueBlack dark:text-trueWhite" />
         </button> */}
         <button
           onClick={toggleDarkMode}
           role="switch"
-          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ring-2 sm:hover:ring-trueBlack dark:sm:hover:ring-trueWhite"
+          className="text-trueBlack dark:text-trueWhite sm:hover:ring-trueBlack dark:sm:hover:ring-trueWhite flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base transition-transform active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ring-2"
         >
           {isDarkMode ? (
             <>
@@ -75,7 +76,7 @@ export function Header() {
           onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}
           className={`${
             noGeneralTasks && noDailyTasks
-              ? "cursor-not-allowed sm:hover:ring-unavailableLight dark:sm:hover:ring-unavailableDark"
+              ? "sm:hover:ring-unavailableLight dark:sm:hover:ring-unavailableDark cursor-not-allowed"
               : "sm:hover:ring-alertRed"
           } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-transform active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ring-2`}
           disabled={
@@ -103,19 +104,19 @@ export function Header() {
         <Link
           to={isDailyPage() ? "/" : "/daily"}
           aria-label={isDailyPage() ? "go to general" : "go to daily"}
-          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:hidden"
+          className="text-trueBlack dark:text-trueWhite flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base transition-transform active:scale-95 sm:hidden"
         >
-          <Swap size={24} />
+          <Switch />
           {isDailyPage() ? (
             <span>
-              <span className="underline decoration-berryBlue decoration-2 underline-offset-2">
+              <span className="decoration-berryBlue underline decoration-2 underline-offset-2">
                 general
               </span>{" "}
               tasks
             </span>
           ) : (
             <span>
-              <span className="underline decoration-dailyGreen decoration-2 underline-offset-2 dark:decoration-dailyPurple">
+              <span className="decoration-dailyGreen dark:decoration-dailyPurple underline decoration-2 underline-offset-2">
                 daily
               </span>{" "}
               tasks
@@ -125,7 +126,7 @@ export function Header() {
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className="relative hidden select-none flex-col items-center rounded-2xl p-2 hover:ring-2 hover:ring-trueBlack active:scale-95 sm:flex-row sm:gap-3 sm:px-3 lg:flex"
+          className="hover:ring-trueBlack relative hidden select-none flex-col items-center rounded-2xl p-2 hover:ring-2 active:scale-95 sm:flex-row sm:gap-3 sm:px-3 lg:flex"
         >
           <span
             className={`h-fit w-fit ${

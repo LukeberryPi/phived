@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="fixed h-full w-full" lang="en">
   <head>
     <title>phived, the anti-procrastination to-do list</title>
@@ -68,11 +68,10 @@
       if (isDarkMode) {
         document.documentElement.classList.add("dark");
         localStorage.setItem("theme", "dark");
-        return;
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
       }
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      return;
     </script>
   </head>
   <script
