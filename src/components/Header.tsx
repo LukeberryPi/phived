@@ -5,6 +5,7 @@ import { handleSetTheme, isDailyPage, isThemeSetToDark } from "src/utils";
 import { Trash, Moon, CaretUp, Sun, Compass, Switch } from "src/icons";
 import { useLocalStorage } from "src/hooks";
 import { Link } from "react-router-dom";
+import { Coffee } from "src/icons/Coffee";
 
 export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
