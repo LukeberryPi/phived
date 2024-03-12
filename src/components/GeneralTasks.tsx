@@ -228,6 +228,7 @@ export function GeneralTasks() {
               />
               <a
                 href={appendProtocol(taskLink)}
+                rel="noreferrer"
                 target="_blank"
                 className={`absolute -left-14 flex size-14 flex-col items-center justify-center text-sm text-transparent transition-transform active:scale-95 ${
                   taskHasLink

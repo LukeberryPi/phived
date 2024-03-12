@@ -25,6 +25,7 @@ export function Footer() {
         </a>
         <a
           href="https://www.buymeacoffee.com/lukeberrypi"
+          rel="noreferrer"
           target="_blank"
           className="flex items-center gap-3 rounded-2xl px-4 py-2 ring-trueBlack transition-transform hover:ring-2 active:scale-95 dark:ring-trueWhite"
         >
