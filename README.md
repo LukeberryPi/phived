@@ -1,5 +1,9 @@
 # [https://www.phived.com/](https://www.phived.com/)
 
+## this project is free
+
+that's why i rely on donations to keep it going. if phived has helped you in any way, support me and [buy me a coffee!](https://www.buymeacoffee.com/lukeberrypi).
+
 ---
 
 ## motivation
