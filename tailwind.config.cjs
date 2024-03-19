@@ -14,17 +14,10 @@ module.exports = {
         ["brutalist-light"]: "2px 2px #fdfdff",
       },
       colors: {
-        alertRed: "#E35454",
-        berryBlue: "#79CBE3",
-        dailyGreen: "#64E9CF",
-        dailyPurple: "#B854E2",
-        softBlack: "#101018",
-        trueBlack: "#080811",
-        softWhite: "#FCFCFD",
-        trueWhite: "#FDFDFF",
-        purpleRain: "#642D80",
-        unavailableLight: "#E8E8ED",
-        unavailableDark: "#202028",
+        dailyPurple: "#A855F7", // purple-500 not enough contrast with white
+        softWhite: "#f8fafc", // slate50
+        trueWhite: "#fff", // slate50
+        purpleRain: "#581C87", // purple-900 not enough contrast with black
       },
     },
     fontFamily: {

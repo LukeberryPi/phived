@@ -43,7 +43,7 @@ export function Daily() {
     <DailyTasksContextProvider>
       <div
         onKeyDown={handleKeyDown}
-        className="flex h-full w-full flex-col items-center justify-center bg-softWhite dark:bg-trueBlack"
+        className="flex h-full w-full flex-col items-center justify-center bg-softWhite dark:bg-black"
       >
         <HelmetProvider>
           <Head />

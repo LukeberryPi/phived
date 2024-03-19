@@ -196,7 +196,7 @@ export function GeneralTasks() {
               key={idx}
               className={`group relative flex ${
                 isBeingDragged &&
-                "rounded-2xl border-l border-t border-trueBlack/30 dark:border-trueWhite/30"
+                "rounded-2xl border-l border-t border-black/30 dark:border-trueWhite/30"
               }`}
               ref={provided.innerRef}
             >
@@ -214,17 +214,16 @@ export function GeneralTasks() {
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
                   isBeingDragged &&
-                  "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                  "border-b border-black/30 dark:border-trueWhite/30"
                 } ${
                   !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2"
                 } ${isFirstTask && "rounded-t-2xl border-t-0"} ${
                   isLastTask && "rounded-b-2xl border-b-0"
                 } ${
-                  !isLastTask &&
-                  "border-b border-trueBlack dark:border-trueWhite"
+                  !isLastTask && "border-b border-black dark:border-trueWhite"
                 } ${
                   someDragIsHappening && "cursor-grabbing"
-                } bg-trueWhite px-5 py-4 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } bg-trueWhite px-5 py-4 text-black focus:outline-none dark:bg-zinc-950 dark:text-trueWhite sm:text-lg`}
               />
               <a
                 href={appendProtocol(taskLink)}
@@ -232,7 +231,7 @@ export function GeneralTasks() {
                 target="_blank"
                 className={`absolute -left-14 flex size-14 flex-col items-center justify-center text-sm text-transparent transition-transform active:scale-95 ${
                   taskHasLink
-                    ? "hover:text-trueBlack peer-hover:text-trueBlack dark:hover:text-trueWhite dark:peer-hover:text-trueWhite"
+                    ? "hover:text-black peer-hover:text-black dark:hover:text-trueWhite dark:peer-hover:text-trueWhite"
                     : ""
                 }`}
               >
@@ -242,8 +241,7 @@ export function GeneralTasks() {
                 {...provided.dragHandleProps}
                 aria-label="Drag handle to reorder task"
                 className={`${
-                  !isLastTask &&
-                  "border-b border-trueBlack dark:border-trueWhite"
+                  !isLastTask && "border-b border-black dark:border-trueWhite"
                 } ${
                   isEmptyTask ||
                   !multipleGeneralTasks ||
@@ -252,12 +250,12 @@ export function GeneralTasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   isBeingDragged
-                    ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                    ? "border-b border-black/30 dark:border-trueWhite/30"
                     : "hidden"
-                } group/drag flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } group/drag flex items-center justify-center bg-trueWhite pr-2 text-black placeholder:select-none hover:cursor-grab dark:bg-zinc-950 dark:text-trueWhite sm:text-lg`}
                 tabIndex={-1}
               >
-                <DragVertical className="origin-center fill-trueBlack transition-transform group-active/drag:scale-90 dark:fill-trueWhite" />
+                <DragVertical className="origin-center fill-black transition-transform group-active/drag:scale-90 dark:fill-trueWhite" />
               </span>
               <button
                 aria-label="complete task"
@@ -271,9 +269,9 @@ export function GeneralTasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   isBeingDragged
-                    ? "border-b border-l border-trueBlack/30 dark:border-trueWhite/30"
+                    ? "border-b border-l border-black/30 dark:border-trueWhite/30"
                     : "hidden"
-                } group/done select-none items-center justify-center border-b border-l border-trueBlack bg-berryBlue px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
+                } group/done select-none items-center justify-center border-b border-l border-black bg-sky-300 px-4 dark:border-trueWhite dark:bg-purpleRain dark:text-trueWhite xs:px-6 sm:text-lg`}
               >
                 <span className="transition-transform group-active/done:scale-95">
                   done?
@@ -289,10 +287,10 @@ export function GeneralTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="mx-auto w-fit rounded-lg bg-berryBlue px-3 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite sm:text-base">
+        <p className="mx-auto w-fit rounded-lg bg-sky-300 px-3 py-1 text-sm dark:bg-purpleRain dark:text-trueWhite sm:text-base">
           general
         </p>
-        <p className="text-xl text-trueBlack dark:text-trueWhite sm:text-2xl">
+        <p className="text-xl text-black dark:text-trueWhite sm:text-2xl">
           what do you want to do?
         </p>
       </div>
@@ -301,7 +299,7 @@ export function GeneralTasks() {
         style={{
           width: `${tasksComponentWidth}px`,
         }}
-        className="w-[300px] resize-x rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+        className="w-[300px] resize-x rounded-2xl border border-black shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
       >
         <DragDropContext
           onDragEnd={handleDragEnd}
@@ -323,7 +321,7 @@ export function GeneralTasks() {
             !multipleGeneralTasks ||
             !showTasksWontBeLostAlert) &&
           "invisible"
-        } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
+        } group flex items-center gap-3 text-black dark:text-trueWhite`}
       >
         <Light size={24} />
         <p className="text-xs xs:text-sm">
@@ -332,9 +330,9 @@ export function GeneralTasks() {
         </p>
         <button
           onClick={dismissTasksWontBeLostAlert}
-          className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
+          className="rounded-md p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800"
         >
-          <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />
+          <Close size={24} className="fill-black dark:fill-trueWhite" />
         </button>
       </div>
     </section>
