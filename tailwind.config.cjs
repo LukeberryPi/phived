@@ -14,10 +14,8 @@ module.exports = {
         ["brutalist-light"]: "2px 2px #fdfdff",
       },
       colors: {
-        dailyPurple: "#A855F7", // purple-500 not enough contrast with white
-        softWhite: "#f8fafc", // slate50
-        trueWhite: "#fff", // slate50
-        purpleRain: "#581C87", // purple-900 not enough contrast with black
+        // dailyPurple: "#30785A", // unknown color?
+        softWhite: "#f9fafb", // slate50
       },
     },
     fontFamily: {
