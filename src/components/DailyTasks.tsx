@@ -199,7 +199,7 @@ export function DailyTasks() {
               key={idx}
               className={`group flex ${
                 isBeingDragged &&
-                "overflow-hidden rounded-2xl border-l border-t border-trueBlack/30 dark:border-trueWhite/30"
+                "overflow-hidden rounded-2xl border-l border-t border-black/30 dark:border-white/30"
               }`}
               ref={provided.innerRef}
             >
@@ -214,23 +214,19 @@ export function DailyTasks() {
                 onKeyDown={(event) => handleKeyDown(event, idx)}
                 className={`peer w-full ${
                   isBeingDragged &&
-                  "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                  "border-b border-black/30 dark:border-white/30"
                 } ${!isEmptyTask && multipleDailyTasks && "group-hover:pr-2"} ${
                   isFirstTask && "border-t-0"
-                } ${
-                  !isLastTask &&
-                  "border-b border-trueBlack dark:border-trueWhite"
-                } ${
+                } ${!isLastTask && "border-b border-black dark:border-white"} ${
                   someDragIsHappening && "cursor-grabbing"
-                } bg-trueWhite px-5 py-4 text-trueBlack focus:outline-none dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } bg-white px-5 py-4 text-black focus:outline-none dark:bg-zinc-950 dark:text-white sm:text-lg`}
               />
               <span
                 {...provided.dragHandleProps}
                 tabIndex={-1}
                 aria-label="Drag handle to reorder task"
                 className={`${
-                  !isLastTask &&
-                  "border-b border-trueBlack dark:border-trueWhite"
+                  !isLastTask && "border-b border-black dark:border-white"
                 } ${
                   isEmptyTask ||
                   !multipleDailyTasks ||
@@ -239,12 +235,12 @@ export function DailyTasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   isBeingDragged
-                    ? "border-b border-trueBlack/30 dark:border-trueWhite/30"
+                    ? "border-b border-black/30 dark:border-white/30"
                     : "hidden"
-                } group/drag flex items-center justify-center bg-trueWhite pr-2 text-trueBlack placeholder:select-none
-                hover:cursor-grab dark:bg-softBlack dark:text-trueWhite sm:text-lg`}
+                } group/drag flex items-center justify-center bg-white pr-2 text-black placeholder:select-none
+                hover:cursor-grab dark:bg-zinc-950 dark:text-white sm:text-lg`}
               >
-                <DragVertical className="origin-center fill-trueBlack transition-transform group-active/drag:scale-90 dark:fill-trueWhite" />
+                <DragVertical className="origin-center fill-black transition-transform group-active/drag:scale-90 dark:fill-white" />
               </span>
               <button
                 aria-label="complete daily task"
@@ -258,9 +254,9 @@ export function DailyTasks() {
                     : "max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex"
                 } ${
                   isBeingDragged
-                    ? "border-b border-l border-trueBlack/30 dark:border-trueWhite/30"
+                    ? "border-b border-l border-black/30 dark:border-white/30"
                     : "hidden"
-                } group/done select-none items-center justify-center border-b border-l border-trueBlack bg-dailyGreen px-4 dark:border-trueWhite dark:bg-dailyPurple dark:text-trueWhite xs:px-6 sm:text-lg`}
+                } group/done select-none items-center justify-center border-b border-l border-black bg-teal-300 px-4 dark:border-white dark:bg-emerald-800 dark:text-white xs:px-6 sm:text-lg`}
               >
                 <span className="transition-transform group-active/done:scale-95">
                   done?
@@ -276,10 +272,10 @@ export function DailyTasks() {
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2 text-center">
-        <p className="mx-auto w-fit rounded-lg bg-dailyGreen px-3 py-1 text-sm dark:bg-dailyPurple dark:text-trueWhite sm:text-base">
+        <p className="mx-auto w-fit rounded-lg bg-teal-300 px-3 py-1 text-sm dark:bg-emerald-800 dark:text-white sm:text-base">
           daily
         </p>
-        <p className="text-xl text-trueBlack dark:text-trueWhite sm:text-2xl">
+        <p className="text-xl text-black dark:text-white sm:text-2xl">
           what do you want to do every day?
         </p>
       </div>
@@ -289,7 +285,7 @@ export function DailyTasks() {
           style={{
             width: `${tasksComponentWidth}px`,
           }}
-          className="w-[300px] resize-x overflow-hidden rounded-2xl border border-trueBlack shadow-brutalist-dark dark:border-trueWhite dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+          className="w-[300px] resize-x overflow-hidden rounded-2xl border border-black shadow-brutalist-dark dark:border-white dark:shadow-brutalist-light tiny:w-80 xs:w-96"
         >
           <DragDropContext
             onDragEnd={handleDragEnd}
@@ -307,7 +303,7 @@ export function DailyTasks() {
         </ul>
       )}
       {!!showImpossibleToRegenerateTasks && (
-        <div className="group flex items-center gap-3 text-trueBlack dark:text-trueWhite">
+        <div className="group flex items-center gap-3 text-black dark:text-white">
           <Light size={24} />
           <p className="text-center text-xs xs:text-sm">
             you can only restore daily
@@ -318,9 +314,9 @@ export function DailyTasks() {
           </p>
           <button
             onClick={() => setShowImpossibleToRegenerateTasks(false)}
-            className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
+            className="rounded-md p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800"
           >
-            <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />
+            <Close size={24} className="fill-black dark:fill-white" />
           </button>
         </div>
       )}
@@ -342,8 +338,8 @@ export function DailyTasks() {
               setDailyTasksLastDoneAt([]);
             }}
           >
-            <CounterClockWise className="text-trueBlack dark:text-trueWhite" />
-            <span className="text-trueBlack dark:text-trueWhite">{`restore ${
+            <CounterClockWise className="text-black dark:text-white" />
+            <span className="text-black dark:text-white">{`restore ${
               dailyTasksLastDoneAt.length
             } daily task${dailyTasksLastDoneAt.length === 1 ? "" : "s"}`}</span>
           </button>
@@ -352,7 +348,7 @@ export function DailyTasks() {
         className={`${
           (dailyMessage || !multipleDailyTasks || !showTasksWontBeLostAlert) &&
           "invisible"
-        } group flex items-center gap-3 text-trueBlack dark:text-trueWhite`}
+        } group flex items-center gap-3 text-black dark:text-white`}
       >
         <Light size={24} />
         <p className="text-xs xs:text-sm">
@@ -361,9 +357,9 @@ export function DailyTasks() {
         </p>
         <button
           onClick={dismissTasksWontBeLostAlert}
-          className="rounded-md p-1 hover:bg-unavailableLight dark:hover:bg-unavailableDark"
+          className="rounded-md p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800"
         >
-          <Close size={24} className="fill-trueBlack dark:fill-trueWhite" />
+          <Close size={24} className="fill-black dark:fill-white" />
         </button>
       </div>
     </section>

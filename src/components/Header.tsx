@@ -33,14 +33,14 @@ export function Header() {
 
   return (
     <header className="fixed bottom-6 flex h-16 w-full items-center justify-center sm:top-0 sm:justify-between sm:px-6">
-      <div className="hidden items-center gap-6 text-trueBlack sm:flex">
+      <div className="hidden items-center gap-6 text-black sm:flex">
         <a
           href="/"
-          className={`hidden text-4xl font-bold text-trueBlack underline underline-offset-4 ${
+          className={`hidden text-4xl font-bold text-black underline underline-offset-4 ${
             isDailyPage()
-              ? "decoration-dailyGreen dark:decoration-dailyPurple"
-              : "decoration-berryBlue dark:decoration-purpleRain"
-          } transition-transform active:scale-95 dark:text-trueWhite md:flex`}
+              ? "decoration-teal-300 dark:decoration-emerald-800"
+              : "decoration-sky-300 dark:decoration-cyan-800"
+          } transition-transform active:scale-95 dark:text-white md:flex`}
         >
           phived
         </a>
@@ -48,16 +48,16 @@ export function Header() {
       </div>
       <nav className="flex h-full items-center justify-between gap-4 tiny:gap-10 sm:gap-6">
         {/* <button>
-          <Compass size={24} className="text-trueBlack dark:text-trueWhite" />
+          <Compass size={24} className="text-black dark:text-white" />
         </button> */}
         <button
           onClick={toggleDarkMode}
           role="switch"
-          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ring-2 sm:hover:ring-trueBlack dark:sm:hover:ring-trueWhite"
+          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-black transition-transform active:scale-95 dark:text-white sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ring-2 sm:hover:ring-black dark:sm:hover:ring-white"
         >
           {isDarkMode ? (
             <>
-              <Sun className="fill-trueWhite" />
+              <Sun className="fill-white" />
               <span>light mode</span>
             </>
           ) : (
@@ -75,8 +75,8 @@ export function Header() {
           onClick={isDailyPage() ? clearDailyTasks : clearGeneralTasks}
           className={`${
             noGeneralTasks && noDailyTasks
-              ? "cursor-not-allowed sm:hover:ring-unavailableLight dark:sm:hover:ring-unavailableDark"
-              : "sm:hover:ring-alertRed"
+              ? "cursor-not-allowed sm:hover:ring-zinc-200 dark:sm:hover:ring-zinc-800"
+              : "sm:hover:ring-red-400"
           } group flex select-none flex-col items-center gap-1 rounded-2xl p-2 transition-transform active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2 sm:hover:ring-2`}
           disabled={
             (!isDailyPage() && noGeneralTasks) ||
@@ -84,17 +84,17 @@ export function Header() {
           }
         >
           <Trash
-            className={`fill-trueBlack dark:fill-trueWhite ${
+            className={`fill-black dark:fill-white ${
               noGeneralTasks && noDailyTasks
-                ? "fill-trueBlack/30 dark:fill-trueWhite/30"
-                : "sm:group-hover:fill-alertRed"
+                ? "fill-black/30 dark:fill-white/30"
+                : "sm:group-hover:fill-red-400"
             } `}
           />
           <span
             className={`${
               noGeneralTasks && noDailyTasks
-                ? "text-trueBlack/40 dark:text-trueWhite/30"
-                : "dark:text-trueWhite sm:group-hover:text-alertRed"
+                ? "text-black/40 dark:text-white/30"
+                : "dark:text-white sm:group-hover:text-red-400"
             } text-base`}
           >
             clear tasks
@@ -103,19 +103,19 @@ export function Header() {
         <Link
           to={isDailyPage() ? "/" : "/daily"}
           aria-label={isDailyPage() ? "go to general" : "go to daily"}
-          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-trueBlack transition-transform active:scale-95 dark:text-trueWhite sm:hidden"
+          className="flex select-none flex-col items-center gap-1 rounded-2xl p-2 text-base text-black transition-transform active:scale-95 dark:text-white sm:hidden"
         >
           <Switch />
           {isDailyPage() ? (
             <span>
-              <span className="underline decoration-berryBlue decoration-2 underline-offset-2">
+              <span className="underline decoration-sky-300 decoration-2 underline-offset-2">
                 general
               </span>{" "}
               tasks
             </span>
           ) : (
             <span>
-              <span className="underline decoration-dailyGreen decoration-2 underline-offset-2 dark:decoration-dailyPurple">
+              <span className="underline decoration-teal-300 decoration-2 underline-offset-2 dark:decoration-emerald-800">
                 daily
               </span>{" "}
               tasks
@@ -125,16 +125,16 @@ export function Header() {
         <button
           aria-expanded={showHelpMenu}
           onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className="relative hidden select-none flex-col items-center rounded-2xl p-2 hover:ring-2 hover:ring-trueBlack active:scale-95 dark:hover:ring-trueWhite sm:flex-row sm:gap-3 sm:px-3 lg:flex"
+          className="relative hidden select-none flex-col items-center rounded-2xl p-2 hover:ring-2 hover:ring-black active:scale-95 dark:hover:ring-white sm:flex-row sm:gap-3 sm:px-3 lg:flex"
         >
           <span
             className={`h-fit w-fit ${
               showHelpMenu ? "rotate-0" : "rotate-180"
             }`}
           >
-            <CaretUp className="fill-trueBlack dark:fill-trueWhite" />
+            <CaretUp className="fill-black dark:fill-white" />
           </span>
-          <p className="dark:text-trueWhite xs:text-base">help</p>
+          <p className="dark:text-white xs:text-base">help</p>
         </button>
         {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
       </nav>
