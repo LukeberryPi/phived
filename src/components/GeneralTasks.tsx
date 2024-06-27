@@ -297,7 +297,7 @@ export function GeneralTasks() {
         style={{
           width: `${tasksComponentWidth}px`,
         }}
-        className="w-[300px] resize-x rounded-2xl border border-black shadow-brutalist-dark dark:border-white dark:shadow-brutalist-light tiny:w-80 xs:w-96"
+        className="w-[300px] resize-x overflow-hidden rounded-2xl border border-black shadow-brutalist-dark dark:border-white dark:shadow-brutalist-light tiny:w-80 xs:w-96"
       >
         <DragDropContext
           onDragEnd={handleDragEnd}
