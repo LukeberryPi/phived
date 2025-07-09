@@ -23,15 +23,6 @@ export function Footer() {
             contribute on github!
           </span>
         </a>
-        <a
-          href="https://www.buymeacoffee.com/lukeberrypi"
-          rel="noreferrer"
-          target="_blank"
-          className="flex items-center gap-3 rounded-2xl px-4 py-2 ring-black transition-transform hover:ring-2 active:scale-95 dark:ring-white"
-        >
-          <Coffee size={24} className="text-black dark:text-white" />
-          <span className="dark:text-white xs:text-base">buy me a coffee!</span>
-        </a>
       </div>
       <a
         target="_blank"
