@@ -1,5 +1,4 @@
 import { Github } from "src/icons";
-import { Coffee } from "src/icons/Coffee";
 import { isDailyPage } from "src/utils";
 
 export function Footer() {
