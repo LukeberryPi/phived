@@ -14,18 +14,10 @@ export function Header() {
 
   useEffect(() => {
     handleSetTheme(isDarkMode);
-  }, [isDarkMode, noGeneralTasks]);
+  }, [isDarkMode]);
 
   const toggleDarkMode = () => {
-    setIsDarkMode((currentDarkMode) => !currentDarkMode);
-  };
-
-  const openHelpMenu = () => {
-    setShowHelpMenu(true);
-  };
-
-  const closeHelpMenu = () => {
-    setShowHelpMenu(false);
+    setIsDarkMode((current) => !current);
   };
 
   return (
@@ -107,7 +99,7 @@ export function Header() {
         </button>
         <button
           aria-expanded={showHelpMenu}
-          onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
+          onClick={() => setShowHelpMenu((open) => !open)}
           className={cn(
             "relative hidden select-none flex-col items-center rounded-2xl p-2",
             "hover:ring-2 hover:ring-black active:scale-95",
@@ -124,7 +116,9 @@ export function Header() {
           </span>
           <p className="dark:text-white xs:text-base">help</p>
         </button>
-        {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
+        {showHelpMenu && (
+          <HelpMenu closeHelpMenu={() => setShowHelpMenu(false)} />
+        )}
       </nav>
     </header>
   );

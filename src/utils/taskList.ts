@@ -2,8 +2,8 @@ import type { GeneralTasks } from "src/contexts/GeneralTasksContext/GeneralTasks
 
 export const MAX_ACTIVE_TASKS = 5;
 
-export function countActiveTasks(tasks: GeneralTasks) {
-  return tasks.filter((task) => task.trim() !== "").length;
+export function createEmptyTasks(): GeneralTasks {
+  return Array<string>(MAX_ACTIVE_TASKS).fill("");
 }
 
 export function findFirstEmptyTaskIndex(tasks: GeneralTasks) {
@@ -11,5 +11,5 @@ export function findFirstEmptyTaskIndex(tasks: GeneralTasks) {
 }
 
 export function canAddAnotherTask(tasks: GeneralTasks) {
-  return countActiveTasks(tasks) < MAX_ACTIVE_TASKS;
+  return tasks.some((task) => task.trim() === "");
 }

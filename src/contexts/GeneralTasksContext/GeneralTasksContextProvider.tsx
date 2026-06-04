@@ -1,40 +1,31 @@
 import type { PropsWithChildren } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback } from "react";
+import { toast } from "sonner";
 import { incentives } from "src/content";
 import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
-import { useLocalStorage, useTransientMessage } from "src/hooks";
+import { useLocalStorage } from "src/hooks";
 import type { TaskHistory } from "src/types/taskHistory";
 import { getRandomElement } from "src/utils";
-import { createTaskHistoryEntry } from "src/utils/createTaskHistoryEntry";
-import { canAddAnotherTask, findFirstEmptyTaskIndex } from "src/utils/taskList";
+import {
+  canAddAnotherTask,
+  createEmptyTasks,
+  findFirstEmptyTaskIndex,
+  MAX_ACTIVE_TASKS,
+} from "src/utils/taskList";
 
-const EMPTY_TASKS = Array<string>(5).fill("");
-const TASK_LIST_FULL_MESSAGE =
-  "can't restore — you already have 5 tasks! complete one first.";
+const TASK_LIST_FULL_MESSAGE = `can't restore — you already have ${MAX_ACTIVE_TASKS} tasks! complete one first.`;
 
 export const GeneralTasksContextProvider = ({
   children,
 }: PropsWithChildren) => {
-  const [storedGeneralTasks, setStoredGeneralTasks] = useLocalStorage(
+  const [generalTasks, setGeneralTasks] = useLocalStorage(
     "storedGeneralTasks",
-    EMPTY_TASKS
+    createEmptyTasks()
   );
   const [taskHistory, setTaskHistory] = useLocalStorage<TaskHistory>(
     "taskHistory",
     []
-  );
-  const [generalTasks, setGeneralTasks] = useState(storedGeneralTasks);
-  const {
-    message: generalMessage,
-    setMessage: setGeneralMessage,
-    displayMessage: displayGeneralMessage,
-  } = useTransientMessage();
-
-  const generalIncentive = useMemo(
-    () => getRandomElement(incentives),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- new incentive when tasks change
-    [generalTasks]
   );
 
   const changeGeneralTask = useCallback(
@@ -45,27 +36,37 @@ export const GeneralTasksContextProvider = ({
         return copy;
       });
     },
-    []
+    [setGeneralTasks]
   );
 
   const completeGeneralTask = useCallback(
     (taskIndex: number) => {
-      const completedText = generalTasks[taskIndex]?.trim();
+      let completedText = "";
+
+      setGeneralTasks((tasks) => {
+        completedText = tasks[taskIndex]?.trim() ?? "";
+        if (!completedText) {
+          return tasks;
+        }
+
+        return [...tasks.filter((_, idx) => idx !== taskIndex), ""];
+      });
 
       if (!completedText) {
         return;
       }
 
       setTaskHistory((history) => [
-        createTaskHistoryEntry(completedText),
+        {
+          id: crypto.randomUUID(),
+          text: completedText,
+          completedAt: new Date().toISOString(),
+        },
         ...history,
       ]);
-
-      const ongoingTasks = generalTasks.filter((_, idx) => idx !== taskIndex);
-      setGeneralTasks([...ongoingTasks, ""]);
-      displayGeneralMessage(generalIncentive);
+      toast(getRandomElement(incentives));
     },
-    [displayGeneralMessage, generalIncentive, generalTasks, setTaskHistory]
+    [setGeneralTasks, setTaskHistory]
   );
 
   const restoreTaskFromHistory = useCallback(
@@ -76,29 +77,30 @@ export const GeneralTasksContextProvider = ({
         return;
       }
 
-      if (!canAddAnotherTask(generalTasks)) {
-        displayGeneralMessage(TASK_LIST_FULL_MESSAGE);
-        return;
-      }
-
-      const emptyIndex = findFirstEmptyTaskIndex(generalTasks);
-
-      if (emptyIndex === -1) {
-        displayGeneralMessage(TASK_LIST_FULL_MESSAGE);
-        return;
-      }
+      let restored = false;
 
       setGeneralTasks((tasks) => {
+        if (!canAddAnotherTask(tasks)) {
+          toast.error(TASK_LIST_FULL_MESSAGE);
+          return tasks;
+        }
+
+        restored = true;
         const copy = [...tasks];
-        copy[emptyIndex] = entry.text;
+        copy[findFirstEmptyTaskIndex(tasks)] = entry.text;
         return copy;
       });
+
+      if (!restored) {
+        return;
+      }
+
       setTaskHistory((history) =>
         history.filter((item) => item.id !== entryId)
       );
-      displayGeneralMessage("task restored!");
+      toast("task restored!");
     },
-    [displayGeneralMessage, generalTasks, setTaskHistory, taskHistory]
+    [setGeneralTasks, setTaskHistory, taskHistory]
   );
 
   const clearGeneralTasks = useCallback(() => {
@@ -110,33 +112,35 @@ export const GeneralTasksContextProvider = ({
       return;
     }
 
-    setGeneralTasks(Array(5).fill(""));
-    displayGeneralMessage("tasks cleared!");
-  }, [displayGeneralMessage]);
+    setGeneralTasks(createEmptyTasks());
+    toast("tasks cleared!");
+  }, [setGeneralTasks]);
 
-  const moveTaskUp = useCallback((taskIndex: number) => {
-    setGeneralTasks((tasks) => {
-      const copy = [...tasks];
-      const taskBefore = copy[taskIndex - 1];
-      copy[taskIndex - 1] = copy[taskIndex];
-      copy[taskIndex] = taskBefore;
-      return copy;
-    });
-  }, []);
+  const moveTaskUp = useCallback(
+    (taskIndex: number) => {
+      setGeneralTasks((tasks) => {
+        const copy = [...tasks];
+        const taskBefore = copy[taskIndex - 1];
+        copy[taskIndex - 1] = copy[taskIndex];
+        copy[taskIndex] = taskBefore;
+        return copy;
+      });
+    },
+    [setGeneralTasks]
+  );
 
-  const moveTaskDown = useCallback((taskIndex: number) => {
-    setGeneralTasks((tasks) => {
-      const copy = [...tasks];
-      const taskAfter = copy[taskIndex + 1];
-      copy[taskIndex + 1] = copy[taskIndex];
-      copy[taskIndex] = taskAfter;
-      return copy;
-    });
-  }, []);
-
-  useEffect(() => {
-    setStoredGeneralTasks(generalTasks);
-  }, [generalTasks, setStoredGeneralTasks]);
+  const moveTaskDown = useCallback(
+    (taskIndex: number) => {
+      setGeneralTasks((tasks) => {
+        const copy = [...tasks];
+        const taskAfter = copy[taskIndex + 1];
+        copy[taskIndex + 1] = copy[taskIndex];
+        copy[taskIndex] = taskAfter;
+        return copy;
+      });
+    },
+    [setGeneralTasks]
+  );
 
   return (
     <GeneralTasksContext.Provider
@@ -147,12 +151,9 @@ export const GeneralTasksContextProvider = ({
         moveTaskUp,
         moveTaskDown,
         restoreTaskFromHistory,
-        displayGeneralMessage,
         generalTasks,
-        generalMessage,
         taskHistory,
         setGeneralTasks,
-        setGeneralMessage,
       }}
     >
       {children}
