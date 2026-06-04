@@ -20,10 +20,11 @@ import {
   extractTaskLink,
   getRandomElement,
   isMobile,
+  MAX_ACTIVE_TASKS,
   reorderListFromDragResult,
 } from "src/utils";
 
-const TASK_COUNT = 5;
+const TASK_COUNT = MAX_ACTIVE_TASKS;
 
 export function GeneralTasks() {
   const {

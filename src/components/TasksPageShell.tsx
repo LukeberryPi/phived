@@ -1,6 +1,12 @@
 import type { KeyboardEvent, PropsWithChildren } from "react";
 import { HelmetProvider } from "react-helmet-async";
-import { Footer, Header, Message, Head } from "src/components";
+import {
+  Footer,
+  Header,
+  Message,
+  Head,
+  TaskHistoryDrawer,
+} from "src/components";
 import { cn } from "src/utils";
 
 type TasksPageShellProps = PropsWithChildren;
@@ -31,6 +37,7 @@ export function TasksPageShell({ children }: TasksPageShellProps) {
       {children}
       <Message />
       <Footer />
+      <TaskHistoryDrawer />
     </div>
   );
 }

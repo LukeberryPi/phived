@@ -5,3 +5,4 @@ export { Head } from "src/components/Head";
 export { Message } from "src/components/Message";
 export { HelpMenu } from "src/components/HelpMenu";
 export { TasksPageShell } from "src/components/TasksPageShell";
+export { TaskHistoryDrawer } from "src/components/TaskHistoryDrawer";

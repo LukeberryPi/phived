@@ -4,9 +4,14 @@ import { incentives } from "src/content";
 import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
 import { useLocalStorage, useTransientMessage } from "src/hooks";
+import type { TaskHistory } from "src/types/taskHistory";
 import { getRandomElement } from "src/utils";
+import { createTaskHistoryEntry } from "src/utils/createTaskHistoryEntry";
+import { canAddAnotherTask, findFirstEmptyTaskIndex } from "src/utils/taskList";
 
 const EMPTY_TASKS = Array<string>(5).fill("");
+const TASK_LIST_FULL_MESSAGE =
+  "can't restore — you already have 5 tasks! complete one first.";
 
 export const GeneralTasksContextProvider = ({
   children,
@@ -14,6 +19,10 @@ export const GeneralTasksContextProvider = ({
   const [storedGeneralTasks, setStoredGeneralTasks] = useLocalStorage(
     "storedGeneralTasks",
     EMPTY_TASKS
+  );
+  const [taskHistory, setTaskHistory] = useLocalStorage<TaskHistory>(
+    "taskHistory",
+    []
   );
   const [generalTasks, setGeneralTasks] = useState(storedGeneralTasks);
   const {
@@ -41,15 +50,52 @@ export const GeneralTasksContextProvider = ({
 
   const completeGeneralTask = useCallback(
     (taskIndex: number) => {
-      if (!generalTasks[taskIndex]) {
+      const completedText = generalTasks[taskIndex]?.trim();
+
+      if (!completedText) {
         return;
       }
+
+      setTaskHistory((history) => [
+        createTaskHistoryEntry(completedText),
+        ...history,
+      ]);
 
       const ongoingTasks = generalTasks.filter((_, idx) => idx !== taskIndex);
       setGeneralTasks([...ongoingTasks, ""]);
       displayGeneralMessage(generalIncentive);
     },
-    [displayGeneralMessage, generalIncentive, generalTasks]
+    [displayGeneralMessage, generalIncentive, generalTasks, setTaskHistory]
+  );
+
+  const restoreTaskFromHistory = useCallback(
+    (entryId: string) => {
+      const entry = taskHistory.find((item) => item.id === entryId);
+
+      if (!entry) {
+        return;
+      }
+
+      if (!canAddAnotherTask(generalTasks)) {
+        displayGeneralMessage(TASK_LIST_FULL_MESSAGE);
+        return;
+      }
+
+      const emptyIndex = findFirstEmptyTaskIndex(generalTasks);
+
+      if (emptyIndex === -1) {
+        displayGeneralMessage(TASK_LIST_FULL_MESSAGE);
+        return;
+      }
+
+      setGeneralTasks((tasks) => {
+        const copy = [...tasks];
+        copy[emptyIndex] = entry.text;
+        return copy;
+      });
+      displayGeneralMessage("task restored!");
+    },
+    [displayGeneralMessage, generalTasks, taskHistory]
   );
 
   const clearGeneralTasks = useCallback(() => {
@@ -97,9 +143,11 @@ export const GeneralTasksContextProvider = ({
         completeGeneralTask,
         moveTaskUp,
         moveTaskDown,
+        restoreTaskFromHistory,
         displayGeneralMessage,
         generalTasks,
         generalMessage,
+        taskHistory,
         setGeneralTasks,
         setGeneralMessage,
       }}
