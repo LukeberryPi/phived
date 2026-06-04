@@ -14,7 +14,6 @@ module.exports = {
         ["brutalist-light"]: "2px 2px #fdfdff",
       },
       colors: {
-        // dailyPurple: "#30785A", // unknown color?
         softWhite: "#f9fafb", // slate50
       },
     },
