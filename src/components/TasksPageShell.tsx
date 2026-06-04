@@ -1,20 +1,11 @@
 import type { KeyboardEvent, PropsWithChildren } from "react";
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { Footer, Header, Message, Head } from "src/components";
+import { cn } from "src/utils";
 
-type TasksPageShellProps = PropsWithChildren<{
-  navigateToOnDoubleG: string;
-}>;
+type TasksPageShellProps = PropsWithChildren;
 
-export function TasksPageShell({
-  children,
-  navigateToOnDoubleG,
-}: TasksPageShellProps) {
-  const navigate = useNavigate();
-  const pressedKeys = useRef("");
-
+export function TasksPageShell({ children }: TasksPageShellProps) {
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!(document.activeElement instanceof HTMLElement)) {
       return;
@@ -25,33 +16,13 @@ export function TasksPageShell({
     }
   };
 
-  useEffect(() => {
-    const handleKeyPress = (event: globalThis.KeyboardEvent) => {
-      const inputIsFocused = document.activeElement instanceof HTMLInputElement;
-
-      if (event.key !== "g" || inputIsFocused) {
-        return;
-      }
-
-      pressedKeys.current += "g";
-
-      if (pressedKeys.current === "gg") {
-        navigate(navigateToOnDoubleG);
-        pressedKeys.current = "";
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [navigate, navigateToOnDoubleG]);
-
   return (
     <div
       onKeyDown={handleKeyDown}
-      className="flex h-full w-full flex-col items-center justify-center bg-gray-50 dark:bg-black"
+      className={cn(
+        "flex h-full w-full flex-col items-center justify-center",
+        "bg-gray-50 dark:bg-black"
+      )}
     >
       <HelmetProvider>
         <Head />

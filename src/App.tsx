@@ -1,13 +1,12 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Daily, Home } from "src/components";
+import { GeneralTasks, TasksPageShell } from "src/components";
+import { GeneralTasksContextProvider } from "src/contexts";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/daily" element={<Daily />} />
-      </Routes>
-    </BrowserRouter>
+    <GeneralTasksContextProvider>
+      <TasksPageShell>
+        <GeneralTasks />
+      </TasksPageShell>
+    </GeneralTasksContextProvider>
   );
 }

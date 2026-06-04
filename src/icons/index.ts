@@ -1,6 +1,5 @@
 export { DragVertical } from "src/icons/DragVertical";
 export { Open } from "src/icons/Open";
-export { Switch } from "src/icons/Switch";
 export { Moon } from "src/icons/Moon";
 export { Sun } from "src/icons/Sun";
 export { Trash } from "src/icons/Trash";
@@ -9,9 +8,7 @@ export { Github } from "src/icons/Github";
 export { Close } from "src/icons/Close";
 export { Check } from "src/icons/Check";
 export { Clock } from "src/icons/Clock";
-export { CounterClockWise } from "src/icons/CounterClockWise";
 export { Light } from "src/icons/Light";
-export { ArrowRight } from "src/icons/ArrowRight";
 export { Compass } from "src/icons/Compass";
 export { Lock } from "src/icons/Lock";
 export { Coffee } from "src/icons/Coffee";
