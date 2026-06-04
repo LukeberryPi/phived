@@ -93,9 +93,12 @@ export const GeneralTasksContextProvider = ({
         copy[emptyIndex] = entry.text;
         return copy;
       });
+      setTaskHistory((history) =>
+        history.filter((item) => item.id !== entryId)
+      );
       displayGeneralMessage("task restored!");
     },
-    [displayGeneralMessage, generalTasks, taskHistory]
+    [displayGeneralMessage, generalTasks, setTaskHistory, taskHistory]
   );
 
   const clearGeneralTasks = useCallback(() => {

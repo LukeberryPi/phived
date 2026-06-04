@@ -65,7 +65,7 @@ export function TaskHistoryDrawer() {
               completed tasks
             </p>
             <p className="text-xs text-black/60 dark:text-white/60">
-              restore puts a task back in your list
+              restore moves a task back to your list
             </p>
           </div>
 
