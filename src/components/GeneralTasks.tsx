@@ -1,20 +1,28 @@
-import type { MouseEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
-import { placeholders } from "src/content";
-import { useGeneralTasksContext } from "src/contexts";
-import { isMobile, setTasksDefaultWidth } from "src/utils";
+import type { FormEvent } from "react";
+import { useMemo, useState } from "react";
 import {
   DragDropContext,
-  Droppable,
   Draggable,
+  Droppable,
   type DropResult,
-} from "react-beautiful-dnd";
+} from "@hello-pangea/dnd";
+import { placeholders } from "src/content";
+import { useGeneralTasksContext } from "src/contexts";
+import {
+  useLocalStorage,
+  useTaskKeyboardNavigation,
+  useTasksComponentWidth,
+} from "src/hooks";
 import { Close, DragVertical, Light, Open } from "src/icons";
-import { useLocalStorage } from "src/hooks";
-// you must remove Strict Mode for react-beautiful-dnd to work locally
-// https://github.com/atlassian/react-beautiful-dnd/issues/2350
+import {
+  appendProtocolToUrl,
+  extractTaskLink,
+  getRandomElement,
+  isMobile,
+  reorderListFromDragResult,
+} from "src/utils";
 
-const DEFAULT_WIDTH = setTasksDefaultWidth();
+const TASK_COUNT = 5;
 
 export function GeneralTasks() {
   const {
@@ -27,127 +35,33 @@ export function GeneralTasks() {
     moveTaskDown,
   } = useGeneralTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
-  const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
-    "tasksComponentWidth",
-    DEFAULT_WIDTH
-  );
+  const { tasksComponentWidth, handleResize } = useTasksComponentWidth();
   const [showTasksWontBeLostAlert, setShowTasksWontBeLost] = useLocalStorage(
     "showTasksWontBeLostAlert",
     true
   );
-  // const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
-  //   "showPrivacyAlert",
-  //   true
-  // );
 
   const numberOfGeneralTasks = generalTasks.filter(Boolean).length;
   const multipleGeneralTasks = numberOfGeneralTasks > 1;
   const noGeneralTasks = numberOfGeneralTasks === 0;
-
-  const getRandomElement = (arr: string[]) =>
-    arr[Math.floor(Math.random() * arr.length)];
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
-  const handleChange = (
-    event: React.FormEvent<HTMLInputElement>,
-    i: number
-  ) => {
-    const currentTask = event.currentTarget.value;
-    changeGeneralTask(i, currentTask);
-  };
+  const handleKeyDown = useTaskKeyboardNavigation({
+    taskCount: TASK_COUNT,
+    onDone: completeGeneralTask,
+    moveTaskUp,
+    moveTaskDown,
+  });
 
-  const handleResize = (e: MouseEvent<HTMLUListElement>) => {
-    const newWidth = e.currentTarget.offsetWidth;
-
-    if (newWidth !== tasksComponentWidth) {
-      setTasksComponentWidth(newWidth);
-    }
-  };
-
-  useEffect(() => {
-    setTasksComponentWidth(tasksComponentWidth);
-  }, [setTasksComponentWidth, tasksComponentWidth]);
-
-  const handleDone = (i: number) => {
-    completeGeneralTask(i);
-  };
-
-  // const dismissPrivacyAlert = () => {
-  //   setShowPrivacyAlert(false);
-  // };
-
-  const dismissTasksWontBeLostAlert = () => {
-    setShowTasksWontBeLost(false);
-  };
-
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    i: number
-  ) => {
-    const firstTask = i === 0;
-    const lastTask = i === 4;
-
-    if (event.altKey && event.key === "ArrowUp") {
-      event.preventDefault();
-      if (firstTask) {
-        return;
-      }
-      moveTaskUp(i);
-      return document.querySelectorAll("input")[i - 1]?.focus();
-    }
-
-    if (event.altKey && event.key === "ArrowDown") {
-      event.preventDefault();
-      if (lastTask) {
-        return;
-      }
-      moveTaskDown(i);
-      return document.querySelectorAll("input")[i + 1]?.focus();
-    }
-
-    // event.metaKey is macOS command key
-    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
-      event.preventDefault();
-      return handleDone(i);
-    }
-
-    // move up either with Shift + Enter or ArrowUp
-    if (
-      (event.key === "ArrowUp" && !event.altKey) ||
-      (event.key === "Enter" && event.shiftKey && !event.ctrlKey)
-    ) {
-      event.preventDefault();
-      if (firstTask) {
-        return document.querySelectorAll("input")[4]?.focus();
-      }
-      return document.querySelectorAll("input")[i - 1]?.focus();
-    }
-
-    // move down either with Enter or ArrowDown
-    if (
-      (event.key === "ArrowDown" && !event.altKey) ||
-      (event.key === "Enter" && !event.ctrlKey)
-    ) {
-      event.preventDefault();
-      if (lastTask) {
-        document.querySelectorAll("input")[0]?.focus();
-        return;
-      }
-      return document.querySelectorAll("input")[i + 1]?.focus();
-    }
+  const handleChange = (event: FormEvent<HTMLInputElement>, index: number) => {
+    changeGeneralTask(index, event.currentTarget.value);
   };
 
   const handleDragEnd = (result: DropResult) => {
-    const destinationIndex = result.destination?.index;
+    const reordered = reorderListFromDragResult(generalTasks, result);
 
-    if (destinationIndex || destinationIndex === 0) {
-      setGeneralTasks((prev: string[]) => {
-        const actualTasks = [...prev];
-        const draggedTask = actualTasks.splice(result.source.index, 1)[0];
-        actualTasks.splice(destinationIndex, 0, draggedTask);
-
-        return actualTasks;
-      });
+    if (reordered) {
+      setGeneralTasks(reordered);
     }
 
     if (document.activeElement instanceof HTMLElement) {
@@ -161,6 +75,7 @@ export function GeneralTasks() {
     const isFirstTask = idx === 0;
     const isLastTask = idx === generalTasks.length - 1;
     const isEmptyTask = task.trim() === "";
+    const taskLink = extractTaskLink(task);
 
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
@@ -168,27 +83,6 @@ export function GeneralTasks() {
           const isBeingDragged = snapshot.isDragging;
           const anotherTaskIsBeingDragged =
             !isBeingDragged && someDragIsHappening;
-
-          const urlRegex =
-            /\b(?:https?:\/\/)?(?:www\.)?([a-z0-9.-]+)\.([a-z0-9]{2,})(?:\/\S*)?\b/i;
-          const urlMatch = task.match(urlRegex);
-          const taskHasLink = urlMatch !== null;
-          const taskLink = taskHasLink ? urlMatch[0] : "";
-
-          const appendProtocol = (url: string) => {
-            if (!url) {
-              return;
-            }
-
-            const protocols = ["https://", "http://"];
-            const startsWithProtocol = protocols.some((p) => url.startsWith(p));
-
-            if (!startsWithProtocol) {
-              return "https://" + url;
-            }
-
-            return url;
-          };
 
           return (
             <li
@@ -224,11 +118,11 @@ export function GeneralTasks() {
                 } bg-white px-5 py-4 text-black focus:outline-none dark:bg-zinc-950 dark:text-white sm:text-lg`}
               />
               <a
-                href={appendProtocol(taskLink)}
+                href={appendProtocolToUrl(taskLink ?? "")}
                 rel="noreferrer"
                 target="_blank"
                 className={`absolute -left-14 flex size-14 flex-col items-center justify-center text-sm text-transparent transition-transform active:scale-95 ${
-                  taskHasLink
+                  taskLink
                     ? "hover:text-black peer-hover:text-black dark:hover:text-white dark:peer-hover:text-white"
                     : ""
                 }`}
@@ -258,7 +152,7 @@ export function GeneralTasks() {
               <button
                 aria-label="complete task"
                 aria-keyshortcuts="control+enter"
-                onClick={() => handleDone(idx)}
+                onClick={() => completeGeneralTask(idx)}
                 className={`${isFirstTask && "rounded-tr-2xl"} ${
                   isLastTask && "rounded-br-2xl"
                 } ${
@@ -327,7 +221,7 @@ export function GeneralTasks() {
           if you close the website
         </p>
         <button
-          onClick={dismissTasksWontBeLostAlert}
+          onClick={() => setShowTasksWontBeLost(false)}
           className="rounded-md p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800"
         >
           <Close size={24} className="fill-black dark:fill-white" />

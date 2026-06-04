@@ -1,38 +1,24 @@
-import type { MouseEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
-import { placeholders } from "src/content";
-import { useDailyTasksContext } from "src/contexts";
-import { isMobile, setTasksDefaultWidth } from "src/utils";
+import type { FormEvent } from "react";
+import { useState } from "react";
 import {
   DragDropContext,
-  Droppable,
   Draggable,
+  Droppable,
   type DropResult,
-} from "react-beautiful-dnd";
-import { Close, CounterClockWise, DragVertical, Light } from "src/icons";
-import { useLocalStorage } from "src/hooks";
+} from "@hello-pangea/dnd";
 import { Link } from "react-router-dom";
-// you must remove Strict Mode for react-beautiful-dnd to work locally
-// https://github.com/atlassian/react-beautiful-dnd/issues/2350
-
-const DEFAULT_WIDTH = setTasksDefaultWidth();
-
-function isPosteriorDay(date: Date) {
-  const now = new Date();
-  const target = new Date(date);
-
-  const sameDayDifferentMonth =
-    now.getDay() === target.getDay() && now.getMonth() !== target.getMonth();
-  const sameDayDifferentYear =
-    now.getDay() === target.getDay() &&
-    now.getFullYear() !== target.getFullYear();
-
-  if (sameDayDifferentMonth || sameDayDifferentYear) {
-    return true;
-  }
-
-  return now.getDay() !== target.getDay();
-}
+import { useDailyTasksContext } from "src/contexts";
+import {
+  useLocalStorage,
+  useTaskKeyboardNavigation,
+  useTasksComponentWidth,
+} from "src/hooks";
+import { Close, CounterClockWise, DragVertical, Light } from "src/icons";
+import {
+  isMobile,
+  isPosteriorCalendarDay,
+  reorderListFromDragResult,
+} from "src/utils";
 
 export function DailyTasks() {
   const {
@@ -49,129 +35,32 @@ export function DailyTasks() {
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
   const [showImpossibleToRegenerateTasks, setShowImpossibleToRegenerateTasks] =
     useState(false);
-  const [tasksComponentWidth, setTasksComponentWidth] = useLocalStorage(
-    "tasksComponentWidth",
-    DEFAULT_WIDTH
-  );
+  const { tasksComponentWidth, handleResize } = useTasksComponentWidth();
   const [showTasksWontBeLostAlert, setShowTasksWontBeLost] = useLocalStorage(
     "showTasksWontBeLostAlert",
     true
   );
-  // const [showPrivacyAlert, setShowPrivacyAlert] = useLocalStorage(
-  //   "showPrivacyAlert",
-  //   true
-  // );
 
   const numberOfDailyTasks = dailyTasks.filter(Boolean).length;
   const multipleDailyTasks = numberOfDailyTasks > 1;
   const noDailyTasks = dailyTasks.length === 0;
 
-  const getRandomElement = (arr: string[]) =>
-    arr[Math.floor(Math.random() * arr.length)];
-  const placeholder = useMemo(() => getRandomElement(placeholders), []);
+  const handleKeyDown = useTaskKeyboardNavigation({
+    taskCount: dailyTasks.length,
+    onDone: completeDailyTask,
+    moveTaskUp,
+    moveTaskDown,
+  });
 
-  const handleChange = (
-    event: React.FormEvent<HTMLInputElement>,
-    i: number
-  ) => {
-    const currentTask = event.currentTarget.value;
-    changeDailyTask(i, currentTask);
-  };
-
-  const handleResize = (e: MouseEvent<HTMLUListElement>) => {
-    const newWidth = e.currentTarget.offsetWidth;
-
-    if (newWidth !== tasksComponentWidth) {
-      setTasksComponentWidth(newWidth);
-    }
-  };
-
-  useEffect(() => {
-    setTasksComponentWidth(tasksComponentWidth);
-  }, [setTasksComponentWidth, tasksComponentWidth]);
-
-  const handleDone = (i: number) => {
-    completeDailyTask(i);
-  };
-
-  // const dismissPrivacyAlert = () => {
-  //   setShowPrivacyAlert(false);
-  // };
-
-  const dismissTasksWontBeLostAlert = () => {
-    setShowTasksWontBeLost(false);
-  };
-
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    i: number
-  ) => {
-    const firstTask = i === 0;
-    const lastTask = i === dailyTasks.length - 1;
-
-    if (event.altKey && event.key === "ArrowUp") {
-      event.preventDefault();
-      if (firstTask) {
-        return;
-      }
-      moveTaskUp(i);
-      return document.querySelectorAll("input")[i - 1]?.focus();
-    }
-
-    if (event.altKey && event.key === "ArrowDown") {
-      event.preventDefault();
-      if (lastTask) {
-        return;
-      }
-      moveTaskDown(i);
-      return document.querySelectorAll("input")[i + 1]?.focus();
-    }
-
-    // event.metaKey is macOS command key
-    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
-      event.preventDefault();
-      return handleDone(i);
-    }
-
-    // move up either with Shift + Enter or ArrowUp
-    if (
-      (event.key === "ArrowUp" && !event.altKey) ||
-      (event.key === "Enter" && event.shiftKey && !event.ctrlKey)
-    ) {
-      event.preventDefault();
-      if (firstTask) {
-        return document
-          .querySelectorAll("input")
-          [dailyTasks.length - 1]?.focus();
-      }
-      return document.querySelectorAll("input")[i - 1]?.focus();
-    }
-
-    // move down either with Enter or ArrowDown
-    if (
-      (event.key === "ArrowDown" && !event.altKey) ||
-      (event.key === "Enter" && !event.ctrlKey)
-    ) {
-      event.preventDefault();
-      if (lastTask) {
-        document.querySelectorAll("input")[0]?.focus();
-        return;
-      }
-      return document.querySelectorAll("input")[i + 1]?.focus();
-    }
+  const handleChange = (event: FormEvent<HTMLInputElement>, index: number) => {
+    changeDailyTask(index, event.currentTarget.value);
   };
 
   const handleDragEnd = (result: DropResult) => {
-    const destinationIndex = result.destination?.index;
+    const reordered = reorderListFromDragResult(dailyTasks, result);
 
-    if (destinationIndex || destinationIndex === 0) {
-      setDailyTasks((prev: string[]) => {
-        const actualTasks = [...prev];
-        const draggedTask = actualTasks.splice(result.source.index, 1)[0];
-        actualTasks.splice(destinationIndex, 0, draggedTask);
-
-        return actualTasks;
-      });
+    if (reordered) {
+      setDailyTasks(reordered);
     }
 
     if (document.activeElement instanceof HTMLElement) {
@@ -237,15 +126,14 @@ export function DailyTasks() {
                   isBeingDragged
                     ? "border-b border-black/30 dark:border-white/30"
                     : "hidden"
-                } group/drag flex items-center justify-center bg-white pr-2 text-black placeholder:select-none
-                hover:cursor-grab dark:bg-zinc-950 dark:text-white sm:text-lg`}
+                } group/drag flex items-center justify-center bg-white pr-2 text-black placeholder:select-none hover:cursor-grab dark:bg-zinc-950 dark:text-white sm:text-lg`}
               >
                 <DragVertical className="origin-center fill-black transition-transform group-active/drag:scale-90 dark:fill-white" />
               </span>
               <button
                 aria-label="complete daily task"
                 aria-keyshortcuts="control+enter"
-                onClick={() => handleDone(idx)}
+                onClick={() => completeDailyTask(idx)}
                 className={`${isFirstTask && "rounded-tr-2xl"} ${
                   isLastTask && "rounded-br-2xl"
                 } ${
@@ -302,7 +190,7 @@ export function DailyTasks() {
           </DragDropContext>
         </ul>
       )}
-      {!!showImpossibleToRegenerateTasks && (
+      {showImpossibleToRegenerateTasks && (
         <div className="group flex items-center gap-3 text-black dark:text-white">
           <Light size={24} />
           <p className="text-center text-xs xs:text-sm">
@@ -329,8 +217,9 @@ export function DailyTasks() {
               const tasksToRepopulate = dailyTasksLastDoneAt.map(
                 (item) => item.dailyTask
               );
-              if (!tasksToRepopulate) return;
-              if (!isPosteriorDay(dailyTasksLastDoneAt[0].dateCompleted)) {
+              if (
+                !isPosteriorCalendarDay(dailyTasksLastDoneAt[0].dateCompleted)
+              ) {
                 setShowImpossibleToRegenerateTasks(true);
                 return;
               }
@@ -356,7 +245,7 @@ export function DailyTasks() {
           if you close the website
         </p>
         <button
-          onClick={dismissTasksWontBeLostAlert}
+          onClick={() => setShowTasksWontBeLost(false)}
           className="rounded-md p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800"
         >
           <Close size={24} className="fill-black dark:fill-white" />

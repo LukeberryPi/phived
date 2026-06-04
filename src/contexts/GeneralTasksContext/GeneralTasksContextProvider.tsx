@@ -3,64 +3,53 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { incentives } from "src/content";
 import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
-import { useLocalStorage } from "src/hooks/useLocalStorage";
+import { useLocalStorage, useTransientMessage } from "src/hooks";
+import { getRandomElement } from "src/utils";
+
+const EMPTY_TASKS = Array<string>(5).fill("");
 
 export const GeneralTasksContextProvider = ({
   children,
 }: PropsWithChildren) => {
   const [storedGeneralTasks, setStoredGeneralTasks] = useLocalStorage(
     "storedGeneralTasks",
-    Array<string>(5).fill("")
+    EMPTY_TASKS
   );
   const [generalTasks, setGeneralTasks] = useState(storedGeneralTasks);
-  const [generalMessage, setGeneralMessage] = useState<string>("");
-  const [timeoutId, setTimeoutId] = useState<undefined | NodeJS.Timeout>(
-    undefined
-  );
-
-  const memoizedTasks = useMemo(() => generalTasks, [generalTasks]);
-
-  const getRandomIncentive = (arr: string[]) =>
-    arr[Math.floor(Math.random() * arr.length)];
+  const {
+    message: generalMessage,
+    setMessage: setGeneralMessage,
+    displayMessage: displayGeneralMessage,
+  } = useTransientMessage();
 
   const generalIncentive = useMemo(
-    () => getRandomIncentive(incentives),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    () => getRandomElement(incentives),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- new incentive when tasks change
     [generalTasks]
-  );
-
-  const displayGeneralMessage = useCallback(
-    (generalMessage: string) => {
-      setGeneralMessage(generalMessage);
-      clearTimeout(timeoutId);
-      const newTimeoutId = setTimeout(() => {
-        setGeneralMessage("");
-      }, 4000);
-
-      setTimeoutId(newTimeoutId);
-    },
-    [timeoutId]
   );
 
   const changeGeneralTask = useCallback(
     (taskIndex: number, newValue: GeneralTask) => {
-      const generalTaskCopy = [...generalTasks];
-      generalTaskCopy[taskIndex] = newValue;
-
-      setGeneralTasks(generalTaskCopy);
+      setGeneralTasks((tasks) => {
+        const copy = [...tasks];
+        copy[taskIndex] = newValue;
+        return copy;
+      });
     },
-    [generalTasks, setGeneralTasks]
+    []
   );
 
   const completeGeneralTask = useCallback(
     (taskIndex: number) => {
-      if (!generalTasks[taskIndex]) return;
+      if (!generalTasks[taskIndex]) {
+        return;
+      }
 
       const ongoingTasks = generalTasks.filter((_, idx) => idx !== taskIndex);
       setGeneralTasks([...ongoingTasks, ""]);
       displayGeneralMessage(generalIncentive);
     },
-    [displayGeneralMessage, generalIncentive, generalTasks, setGeneralTasks]
+    [displayGeneralMessage, generalIncentive, generalTasks]
   );
 
   const clearGeneralTasks = useCallback(() => {
@@ -74,31 +63,27 @@ export const GeneralTasksContextProvider = ({
 
     setGeneralTasks(Array(5).fill(""));
     displayGeneralMessage("tasks cleared!");
-  }, [displayGeneralMessage, setGeneralTasks]);
+  }, [displayGeneralMessage]);
 
-  const moveTaskUp = useCallback(
-    (taskIndex: number) => {
-      const copy = [...generalTasks];
+  const moveTaskUp = useCallback((taskIndex: number) => {
+    setGeneralTasks((tasks) => {
+      const copy = [...tasks];
       const taskBefore = copy[taskIndex - 1];
       copy[taskIndex - 1] = copy[taskIndex];
       copy[taskIndex] = taskBefore;
+      return copy;
+    });
+  }, []);
 
-      setGeneralTasks(copy);
-    },
-    [generalTasks, setGeneralTasks]
-  );
-
-  const moveTaskDown = useCallback(
-    (taskIndex: number) => {
-      const copy = [...generalTasks];
+  const moveTaskDown = useCallback((taskIndex: number) => {
+    setGeneralTasks((tasks) => {
+      const copy = [...tasks];
       const taskAfter = copy[taskIndex + 1];
       copy[taskIndex + 1] = copy[taskIndex];
       copy[taskIndex] = taskAfter;
-
-      setGeneralTasks(copy);
-    },
-    [generalTasks, setGeneralTasks]
-  );
+      return copy;
+    });
+  }, []);
 
   useEffect(() => {
     setStoredGeneralTasks(generalTasks);
@@ -113,7 +98,7 @@ export const GeneralTasksContextProvider = ({
         moveTaskUp,
         moveTaskDown,
         displayGeneralMessage,
-        generalTasks: memoizedTasks,
+        generalTasks,
         generalMessage,
         setGeneralTasks,
         setGeneralMessage,

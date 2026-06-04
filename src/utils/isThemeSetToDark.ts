@@ -4,5 +4,5 @@ export function isThemeSetToDark() {
     window &&
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return !!localStorageTheme ? localStorageTheme === "dark" : isBrowserDark;
+  return localStorageTheme ? localStorageTheme === "dark" : isBrowserDark;
 }

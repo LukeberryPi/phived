@@ -6,75 +6,59 @@ import type {
   DailyTask,
   DailyTasksLastDoneAt,
 } from "src/contexts/DailyTasksContext/DailyTasksContext.types";
-import { useLocalStorage } from "src/hooks/useLocalStorage";
+import { useLocalStorage, useTransientMessage } from "src/hooks";
+import { getRandomElement } from "src/utils";
+
+const EMPTY_TASKS = Array<string>(5).fill("");
 
 export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
   const [storedDailyTasks, setStoredDailyTasks] = useLocalStorage(
     "storedDailyTasks",
-    Array<string>(5).fill("")
+    EMPTY_TASKS
   );
   const [dailyTasksLastDoneAt, setDailyTasksLastDoneAt] =
     useLocalStorage<DailyTasksLastDoneAt>("dailyTasksLastDoneAt", []);
   const [dailyTasks, setDailyTasks] = useState(storedDailyTasks);
-  const [dailyMessage, setDailyMessage] = useState<string>("");
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(
-    undefined
-  );
+  const {
+    message: dailyMessage,
+    setMessage: setDailyMessage,
+    displayMessage: displayDailyMessage,
+  } = useTransientMessage();
 
-  const memoizedTasks = useMemo(() => dailyTasks, [dailyTasks]);
-
-  const getRandomIncentive = (arr: string[]) =>
-    arr[Math.floor(Math.random() * arr.length)];
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const incentive = useMemo(() => getRandomIncentive(incentives), [dailyTasks]);
-
-  const displayDailyMessage = useCallback(
-    (dailyMessage: string) => {
-      setDailyMessage(dailyMessage);
-      clearTimeout(timeoutId);
-      const newTimeoutId = setTimeout(() => {
-        setDailyMessage("");
-      }, 4000);
-
-      setTimeoutId(newTimeoutId);
-    },
-    [timeoutId]
+  const incentive = useMemo(
+    () => getRandomElement(incentives),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- new incentive when tasks change
+    [dailyTasks]
   );
 
   const changeDailyTask = useCallback(
     (taskIndex: number, newValue: DailyTask) => {
-      const dailyTaskCopy = [...dailyTasks];
-      dailyTaskCopy[taskIndex] = newValue;
-
-      setDailyTasks(dailyTaskCopy);
+      setDailyTasks((tasks) => {
+        const copy = [...tasks];
+        copy[taskIndex] = newValue;
+        return copy;
+      });
     },
-    [dailyTasks, setDailyTasks]
+    []
   );
 
   const completeDailyTask = useCallback(
     (taskIndex: number) => {
-      if (!dailyTasks[taskIndex]) return;
+      if (!dailyTasks[taskIndex]) {
+        return;
+      }
 
-      const ongoingTasks = dailyTasks.filter((_, idx) => idx !== taskIndex);
-      setDailyTasksLastDoneAt([
-        ...dailyTasksLastDoneAt,
+      setDailyTasksLastDoneAt((completed) => [
+        ...completed,
         {
           dailyTask: dailyTasks[taskIndex],
           dateCompleted: new Date(),
         },
       ]);
-      setDailyTasks([...ongoingTasks]);
+      setDailyTasks(dailyTasks.filter((_, idx) => idx !== taskIndex));
       displayDailyMessage(incentive);
     },
-    [
-      displayDailyMessage,
-      incentive,
-      dailyTasks,
-      setDailyTasks,
-      dailyTasksLastDoneAt,
-      setDailyTasksLastDoneAt,
-    ]
+    [dailyTasks, displayDailyMessage, incentive, setDailyTasksLastDoneAt]
   );
 
   const clearDailyTasks = useCallback(() => {
@@ -89,37 +73,32 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
     setDailyTasks(Array(5).fill(""));
     setDailyTasksLastDoneAt([]);
     displayDailyMessage("daily tasks cleared!");
-  }, [displayDailyMessage, setDailyTasks, setDailyTasksLastDoneAt]);
+  }, [displayDailyMessage, setDailyTasksLastDoneAt]);
 
   useEffect(() => {
     setStoredDailyTasks(dailyTasks);
   }, [dailyTasks, setStoredDailyTasks]);
 
-  const moveTaskUp = useCallback(
-    (taskIndex: number) => {
-      const copy = [...dailyTasks];
-
+  const moveTaskUp = useCallback((taskIndex: number) => {
+    setDailyTasks((tasks) => {
+      const copy = [...tasks];
       const taskBefore = copy[taskIndex - 1];
       copy[taskIndex - 1] = copy[taskIndex];
       copy[taskIndex] = taskBefore;
+      return copy;
+    });
+  }, []);
 
-      setDailyTasks(copy);
-    },
-    [dailyTasks, setDailyTasks]
-  );
-
-  const moveTaskDown = useCallback(
-    (taskIndex: number) => {
-      const copy = [...dailyTasks];
-
+  const moveTaskDown = useCallback((taskIndex: number) => {
+    setDailyTasks((tasks) => {
+      const copy = [...tasks];
       const taskAfter = copy[taskIndex + 1];
       copy[taskIndex + 1] = copy[taskIndex];
       copy[taskIndex] = taskAfter;
+      return copy;
+    });
+  }, []);
 
-      setDailyTasks(copy);
-    },
-    [dailyTasks, setDailyTasks]
-  );
   return (
     <DailyTasksContext.Provider
       value={{
@@ -128,7 +107,7 @@ export const DailyTasksContextProvider = ({ children }: PropsWithChildren) => {
         completeDailyTask,
         moveTaskUp,
         moveTaskDown,
-        dailyTasks: memoizedTasks,
+        dailyTasks,
         dailyTasksLastDoneAt,
         displayDailyMessage,
         dailyMessage,

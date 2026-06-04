@@ -1,58 +1,13 @@
-import { useEffect, useRef } from "react";
-import { HelmetProvider } from "react-helmet-async";
-import { Footer, Header, Message, DailyTasks, Head } from "src/components";
+import { DailyTasks } from "src/components";
+import { TasksPageShell } from "src/components/TasksPageShell";
 import { DailyTasksContextProvider } from "src/contexts";
 
 export function Daily() {
-  const pressedKeys = useRef("");
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!(document.activeElement instanceof HTMLElement)) {
-      return;
-    }
-
-    if (e.key === "Escape") {
-      document.activeElement.blur();
-    }
-  };
-
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const inputIsFocused = document.activeElement instanceof HTMLInputElement;
-
-      if (event.key !== "g" || inputIsFocused) {
-        return;
-      }
-
-      pressedKeys.current += "g";
-
-      if (pressedKeys.current === "gg") {
-        window.location.href = "/";
-        pressedKeys.current = "";
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, []);
-
   return (
     <DailyTasksContextProvider>
-      <div
-        onKeyDown={handleKeyDown}
-        className="flex h-full w-full flex-col items-center justify-center bg-gray-50 dark:bg-black"
-      >
-        <HelmetProvider>
-          <Head />
-        </HelmetProvider>
-        <Header />
+      <TasksPageShell navigateToOnDoubleG="/">
         <DailyTasks />
-        <Message />
-        <Footer />
-      </div>
+      </TasksPageShell>
     </DailyTasksContextProvider>
   );
 }
