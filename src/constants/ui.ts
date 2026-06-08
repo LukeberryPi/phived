@@ -32,8 +32,6 @@ export const DRAWER_WIDTH = "w-[min(100vw-2rem,22rem)]";
 
 export const TASK_PANEL_WIDTH = "w-[300px] tiny:w-80 xs:w-96";
 
-export const TOAST_WIDTH = "w-[400px] max-w-[calc(100vw-2rem)]";
-
 export const DRAWER_SURFACE = "bg-white dark:bg-surface";
 
 export const DRAWER_TEXT = "text-black dark:text-ink";

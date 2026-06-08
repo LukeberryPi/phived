@@ -1,10 +1,9 @@
+import type { CSSProperties } from "react";
 import { Toaster as Sonner } from "sonner";
-import { TOAST_WIDTH } from "src/constants/ui";
 import { cn } from "src/utils";
 
 const toastClassName = cn(
-  "toast-panel flex justify-center px-5 py-3.5",
-  TOAST_WIDTH,
+  "toast-panel flex w-full justify-center px-5 py-3.5",
   "text-base font-light text-black dark:text-ink"
 );
 
@@ -18,6 +17,7 @@ export function Toaster() {
       visibleToasts={3}
       offset={{ bottom: 88 }}
       mobileOffset={{ bottom: 112 }}
+      style={{ "--width": "400px" } as CSSProperties}
       icons={{
         success: null,
         info: null,
