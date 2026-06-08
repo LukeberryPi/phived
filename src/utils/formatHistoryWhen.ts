@@ -27,5 +27,5 @@ export function formatHistoryWhen(isoDate: string) {
     return "a few days ago";
   }
 
-  return "long ago";
+  return "over a week ago";
 }
