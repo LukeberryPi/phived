@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .task-panel {
+    @apply rounded-2xl border border-black bg-white shadow-brutalist-dark dark:border-white dark:bg-zinc-950 dark:shadow-brutalist-light;
+  }
+
+  .toast-panel {
+    @apply rounded-2xl border border-black bg-white shadow-none dark:border-white dark:bg-zinc-950 dark:shadow-none;
+  }
+
+  .drawer-shell {
+    interpolate-size: allow-keywords;
+  }
+}
+
+[data-sonner-toaster] {
+  font-family: inherit;
+}
+
+[data-sonner-toast] {
+  box-shadow: none;
+  transition:
+    transform 250ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-sonner-toast] {
+    transition: opacity 0ms;
+  }
+}
+
 /* we need this to have decent input borders on iOS, ignore warnings */
 input {
   -webkit-appearance: none;

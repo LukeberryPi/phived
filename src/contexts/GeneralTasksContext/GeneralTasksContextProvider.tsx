@@ -1,31 +1,37 @@
 import type { PropsWithChildren } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback } from "react";
+import { toast } from "sonner";
 import { incentives } from "src/content";
 import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
-import { useLocalStorage, useTransientMessage } from "src/hooks";
-import { getRandomElement } from "src/utils";
+import { useLocalStorage, useMutateTaskStore } from "src/hooks";
+import type { TaskHistory } from "src/types/taskHistory";
+import { confirmDeletion, getRandomElement } from "src/utils";
+import {
+  canAddAnotherTask,
+  createEmptyTasks,
+  findFirstEmptyTaskIndex,
+  MAX_ACTIVE_TASKS,
+} from "src/utils/taskList";
 
-const EMPTY_TASKS = Array<string>(5).fill("");
+const TASK_LIST_FULL_MESSAGE = `can't restore — you already have ${MAX_ACTIVE_TASKS} tasks! complete one first.`;
 
 export const GeneralTasksContextProvider = ({
   children,
 }: PropsWithChildren) => {
-  const [storedGeneralTasks, setStoredGeneralTasks] = useLocalStorage(
+  const [generalTasks, setGeneralTasks] = useLocalStorage(
     "storedGeneralTasks",
-    EMPTY_TASKS
+    createEmptyTasks()
   );
-  const [generalTasks, setGeneralTasks] = useState(storedGeneralTasks);
-  const {
-    message: generalMessage,
-    setMessage: setGeneralMessage,
-    displayMessage: displayGeneralMessage,
-  } = useTransientMessage();
-
-  const generalIncentive = useMemo(
-    () => getRandomElement(incentives),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- new incentive when tasks change
-    [generalTasks]
+  const [taskHistory, setTaskHistory] = useLocalStorage<TaskHistory>(
+    "taskHistory",
+    []
+  );
+  const mutateTaskStore = useMutateTaskStore(
+    generalTasks,
+    taskHistory,
+    setGeneralTasks,
+    setTaskHistory
   );
 
   const changeGeneralTask = useCallback(
@@ -36,72 +42,131 @@ export const GeneralTasksContextProvider = ({
         return copy;
       });
     },
-    []
+    [setGeneralTasks]
   );
 
   const completeGeneralTask = useCallback(
     (taskIndex: number) => {
-      if (!generalTasks[taskIndex]) {
+      const result = mutateTaskStore(({ tasks, history }) => {
+        const completedText = tasks[taskIndex]?.trim() ?? "";
+
+        if (!completedText) {
+          return { ok: false, reason: "unchanged" };
+        }
+
+        return {
+          ok: true,
+          tasks: [...tasks.filter((_, idx) => idx !== taskIndex), ""],
+          history: [
+            {
+              id: crypto.randomUUID(),
+              text: completedText,
+              completedAt: new Date().toISOString(),
+            },
+            ...history,
+          ],
+        };
+      });
+
+      if (result.ok) {
+        toast(getRandomElement(incentives));
+      }
+    },
+    [mutateTaskStore]
+  );
+
+  const restoreTaskFromHistory = useCallback(
+    (entryId: string) => {
+      const result = mutateTaskStore(({ tasks, history }) => {
+        const entry = history.find((item) => item.id === entryId);
+
+        if (!entry) {
+          return { ok: false, reason: "not_found" };
+        }
+
+        if (!canAddAnotherTask(tasks)) {
+          return { ok: false, reason: "full" };
+        }
+
+        const copy = [...tasks];
+        copy[findFirstEmptyTaskIndex(tasks)] = entry.text;
+
+        return {
+          ok: true,
+          tasks: copy,
+          history: history.filter((item) => item.id !== entryId),
+        };
+      });
+
+      if (!result.ok && result.reason === "full") {
+        toast.error(TASK_LIST_FULL_MESSAGE);
         return;
       }
 
-      const ongoingTasks = generalTasks.filter((_, idx) => idx !== taskIndex);
-      setGeneralTasks([...ongoingTasks, ""]);
-      displayGeneralMessage(generalIncentive);
+      if (result.ok) {
+        toast("task restored!");
+      }
     },
-    [displayGeneralMessage, generalIncentive, generalTasks]
+    [mutateTaskStore]
   );
 
   const clearGeneralTasks = useCallback(() => {
-    const isUserCertain = window.confirm(
-      "Are you sure you want to DELETE all your tasks?"
-    );
-
-    if (!isUserCertain) {
+    if (!confirmDeletion("all your tasks", "tasks")) {
       return;
     }
 
-    setGeneralTasks(Array(5).fill(""));
-    displayGeneralMessage("tasks cleared!");
-  }, [displayGeneralMessage]);
+    setGeneralTasks(createEmptyTasks());
+    toast("tasks cleared!");
+  }, [setGeneralTasks]);
 
-  const moveTaskUp = useCallback((taskIndex: number) => {
-    setGeneralTasks((tasks) => {
-      const copy = [...tasks];
-      const taskBefore = copy[taskIndex - 1];
-      copy[taskIndex - 1] = copy[taskIndex];
-      copy[taskIndex] = taskBefore;
-      return copy;
-    });
-  }, []);
+  const clearTaskHistory = useCallback(() => {
+    if (!confirmDeletion("all your task history", "history")) {
+      return;
+    }
 
-  const moveTaskDown = useCallback((taskIndex: number) => {
-    setGeneralTasks((tasks) => {
-      const copy = [...tasks];
-      const taskAfter = copy[taskIndex + 1];
-      copy[taskIndex + 1] = copy[taskIndex];
-      copy[taskIndex] = taskAfter;
-      return copy;
-    });
-  }, []);
+    setTaskHistory([]);
+    toast("history cleared!");
+  }, [setTaskHistory]);
 
-  useEffect(() => {
-    setStoredGeneralTasks(generalTasks);
-  }, [generalTasks, setStoredGeneralTasks]);
+  const moveTaskUp = useCallback(
+    (taskIndex: number) => {
+      setGeneralTasks((tasks) => {
+        const copy = [...tasks];
+        const taskBefore = copy[taskIndex - 1];
+        copy[taskIndex - 1] = copy[taskIndex];
+        copy[taskIndex] = taskBefore;
+        return copy;
+      });
+    },
+    [setGeneralTasks]
+  );
+
+  const moveTaskDown = useCallback(
+    (taskIndex: number) => {
+      setGeneralTasks((tasks) => {
+        const copy = [...tasks];
+        const taskAfter = copy[taskIndex + 1];
+        copy[taskIndex + 1] = copy[taskIndex];
+        copy[taskIndex] = taskAfter;
+        return copy;
+      });
+    },
+    [setGeneralTasks]
+  );
 
   return (
     <GeneralTasksContext.Provider
       value={{
         changeGeneralTask,
         clearGeneralTasks,
+        clearTaskHistory,
         completeGeneralTask,
         moveTaskUp,
         moveTaskDown,
-        displayGeneralMessage,
+        restoreTaskFromHistory,
         generalTasks,
-        generalMessage,
+        taskHistory,
         setGeneralTasks,
-        setGeneralMessage,
       }}
     >
       {children}

@@ -1,8 +1,9 @@
 import { createContext, useContext } from "react";
 import type { GeneralTaskContextType } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
+import { createEmptyTasks } from "src/utils/taskList";
 
 export const initialState = {
-  generalTasks: Array<string>(5).fill(""),
+  generalTasks: createEmptyTasks(),
 } as GeneralTaskContextType;
 
 export const GeneralTasksContext = createContext(initialState);

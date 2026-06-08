@@ -1,63 +1,40 @@
-import { useEffect, useState } from "react";
-import { HelpMenu } from "src/components";
-import { useGeneralTasksContext } from "src/contexts";
-import { useLocalStorage } from "src/hooks";
-import { Trash, Moon, CaretUp, Sun } from "src/icons";
-import { cn, handleSetTheme, isThemeSetToDark } from "src/utils";
+import { useGeneralTasksContext, useDarkMode } from "src/contexts";
+import { pressFeedbackClassName } from "src/constants/motion";
+import { Trash, Moon, Sun } from "src/icons";
+import { cn, countFilledTasks } from "src/utils";
 
 export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
-  const [isDarkMode, setIsDarkMode] = useState(isThemeSetToDark());
-  const [showHelpMenu, setShowHelpMenu] = useLocalStorage("showHelpMenu", true);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-  const noGeneralTasks = generalTasks.filter(Boolean).length === 0;
-
-  useEffect(() => {
-    handleSetTheme(isDarkMode);
-  }, [isDarkMode, noGeneralTasks]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode((currentDarkMode) => !currentDarkMode);
-  };
-
-  const openHelpMenu = () => {
-    setShowHelpMenu(true);
-  };
-
-  const closeHelpMenu = () => {
-    setShowHelpMenu(false);
-  };
+  const noGeneralTasks = countFilledTasks(generalTasks) === 0;
 
   return (
     <header
       className={cn(
-        "fixed bottom-6 flex h-16 w-full items-center justify-center",
-        "sm:top-0 sm:justify-between sm:px-6"
+        "fixed top-0 hidden h-16 w-full items-center justify-between px-6",
+        "sm:flex"
       )}
     >
       <a
         href="/"
         className={cn(
           "hidden text-4xl font-bold text-black underline underline-offset-4",
-          "decoration-sky-300 transition-transform active:scale-95",
-          "dark:text-white dark:decoration-cyan-800 md:flex"
+          "decoration-sky-300 dark:text-white dark:decoration-cyan-800 md:flex",
+          pressFeedbackClassName
         )}
       >
         phived
       </a>
-      <nav
-        className={cn(
-          "flex h-full items-center justify-between gap-4",
-          "tiny:gap-10 sm:gap-6"
-        )}
-      >
+      <nav className="flex h-full items-center justify-between gap-6">
         <button
           onClick={toggleDarkMode}
           role="switch"
+          aria-checked={isDarkMode}
           className={cn(
-            "flex select-none flex-col items-center gap-1 rounded-2xl p-2",
-            "text-base text-black transition-transform active:scale-95",
-            "dark:text-white sm:flex-row sm:gap-3 sm:px-4 sm:py-2",
+            "flex select-none items-center gap-3 rounded-2xl px-4 py-2",
+            "text-base text-black dark:text-white",
+            pressFeedbackClassName,
             "sm:hover:ring-2 sm:hover:ring-black dark:sm:hover:ring-white"
           )}
         >
@@ -78,8 +55,8 @@ export function Header() {
           onClick={clearGeneralTasks}
           disabled={noGeneralTasks}
           className={cn(
-            "group flex select-none flex-col items-center gap-1 rounded-2xl p-2",
-            "transition-transform active:scale-95 sm:flex-row sm:gap-3 sm:px-4 sm:py-2",
+            "group flex select-none items-center gap-3 rounded-2xl px-4 py-2",
+            pressFeedbackClassName,
             "sm:hover:ring-2",
             noGeneralTasks
               ? "cursor-not-allowed sm:hover:ring-zinc-200 dark:sm:hover:ring-zinc-800"
@@ -105,26 +82,6 @@ export function Header() {
             clear tasks
           </span>
         </button>
-        <button
-          aria-expanded={showHelpMenu}
-          onClick={showHelpMenu ? closeHelpMenu : openHelpMenu}
-          className={cn(
-            "relative hidden select-none flex-col items-center rounded-2xl p-2",
-            "hover:ring-2 hover:ring-black active:scale-95",
-            "dark:hover:ring-white sm:flex-row sm:gap-3 sm:px-3 lg:flex"
-          )}
-        >
-          <span
-            className={cn(
-              "h-fit w-fit",
-              showHelpMenu ? "rotate-0" : "rotate-180"
-            )}
-          >
-            <CaretUp className="fill-black dark:fill-white" />
-          </span>
-          <p className="dark:text-white xs:text-base">help</p>
-        </button>
-        {showHelpMenu && <HelpMenu closeHelpMenu={closeHelpMenu} />}
       </nav>
     </header>
   );

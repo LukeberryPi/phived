@@ -1,0 +1,31 @@
+function startOfCalendarDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+export function formatHistoryWhen(isoDate: string) {
+  const date = new Date(isoDate);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  const today = startOfCalendarDay(new Date());
+  const completedDay = startOfCalendarDay(date);
+  const daysAgo = Math.floor(
+    (today.getTime() - completedDay.getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  if (daysAgo === 0) {
+    return "earlier today";
+  }
+
+  if (daysAgo === 1) {
+    return "yesterday";
+  }
+
+  if (daysAgo < 7) {
+    return "a few days ago";
+  }
+
+  return "long ago";
+}

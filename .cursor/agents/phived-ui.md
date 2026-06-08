@@ -10,7 +10,8 @@ When invoked:
 2. Use `cn()` from `src/utils/cn` for all conditional Tailwind `className` values
 3. Keep the app single-page — no daily mode, no task routing
 4. Preserve brutalist design tokens (sky/cyan accents, `shadow-brutalist-*`)
-5. Run `npm run lint` and `npm run build` before finishing
+5. Task history lives in `taskHistory` localStorage; restore respects the 5-task cap via context helpers
+6. Run `npm run lint` and `npm run build` before finishing
 
 Constraints:
 - Import paths use `src/` aliases, not relative `./` or `../`

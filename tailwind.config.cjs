@@ -13,6 +13,9 @@ module.exports = {
         ["brutalist-dark"]: "3px 3px #080811",
         ["brutalist-light"]: "2px 2px #fdfdff",
       },
+      transitionTimingFunction: {
+        "out-strong": "cubic-bezier(0.23, 1, 0.32, 1)",
+      },
       colors: {
         softWhite: "#f9fafb", // slate50
       },
