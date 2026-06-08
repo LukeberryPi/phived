@@ -12,6 +12,7 @@ export type GeneralTaskContextType = {
   moveTaskUp: (taskIndex: number) => void;
   moveTaskDown: (taskIndex: number) => void;
   restoreTaskFromHistory: (entryId: string) => void;
+  clearTaskHistory: () => void;
   generalTasks: GeneralTasks;
   taskHistory: TaskHistory;
   setGeneralTasks: Dispatch<

@@ -4,9 +4,9 @@ import { toast } from "sonner";
 import { incentives } from "src/content";
 import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
-import { useLocalStorage } from "src/hooks";
+import { useLocalStorage, useMutateTaskStore } from "src/hooks";
 import type { TaskHistory } from "src/types/taskHistory";
-import { getRandomElement } from "src/utils";
+import { confirmDeletion, getRandomElement } from "src/utils";
 import {
   canAddAnotherTask,
   createEmptyTasks,
@@ -27,6 +27,12 @@ export const GeneralTasksContextProvider = ({
     "taskHistory",
     []
   );
+  const mutateTaskStore = useMutateTaskStore(
+    generalTasks,
+    taskHistory,
+    setGeneralTasks,
+    setTaskHistory
+  );
 
   const changeGeneralTask = useCallback(
     (taskIndex: number, newValue: GeneralTask) => {
@@ -41,80 +47,86 @@ export const GeneralTasksContextProvider = ({
 
   const completeGeneralTask = useCallback(
     (taskIndex: number) => {
-      let completedText = "";
+      const result = mutateTaskStore(({ tasks, history }) => {
+        const completedText = tasks[taskIndex]?.trim() ?? "";
 
-      setGeneralTasks((tasks) => {
-        completedText = tasks[taskIndex]?.trim() ?? "";
         if (!completedText) {
-          return tasks;
+          return { ok: false, reason: "unchanged" };
         }
 
-        return [...tasks.filter((_, idx) => idx !== taskIndex), ""];
+        return {
+          ok: true,
+          tasks: [...tasks.filter((_, idx) => idx !== taskIndex), ""],
+          history: [
+            {
+              id: crypto.randomUUID(),
+              text: completedText,
+              completedAt: new Date().toISOString(),
+            },
+            ...history,
+          ],
+        };
       });
 
-      if (!completedText) {
-        return;
+      if (result.ok) {
+        toast(getRandomElement(incentives));
       }
-
-      setTaskHistory((history) => [
-        {
-          id: crypto.randomUUID(),
-          text: completedText,
-          completedAt: new Date().toISOString(),
-        },
-        ...history,
-      ]);
-      toast(getRandomElement(incentives));
     },
-    [setGeneralTasks, setTaskHistory]
+    [mutateTaskStore]
   );
 
   const restoreTaskFromHistory = useCallback(
     (entryId: string) => {
-      const entry = taskHistory.find((item) => item.id === entryId);
+      const result = mutateTaskStore(({ tasks, history }) => {
+        const entry = history.find((item) => item.id === entryId);
 
-      if (!entry) {
-        return;
-      }
-
-      let restored = false;
-
-      setGeneralTasks((tasks) => {
-        if (!canAddAnotherTask(tasks)) {
-          toast.error(TASK_LIST_FULL_MESSAGE);
-          return tasks;
+        if (!entry) {
+          return { ok: false, reason: "not_found" };
         }
 
-        restored = true;
+        if (!canAddAnotherTask(tasks)) {
+          return { ok: false, reason: "full" };
+        }
+
         const copy = [...tasks];
         copy[findFirstEmptyTaskIndex(tasks)] = entry.text;
-        return copy;
+
+        return {
+          ok: true,
+          tasks: copy,
+          history: history.filter((item) => item.id !== entryId),
+        };
       });
 
-      if (!restored) {
+      if (!result.ok && result.reason === "full") {
+        toast.error(TASK_LIST_FULL_MESSAGE);
         return;
       }
 
-      setTaskHistory((history) =>
-        history.filter((item) => item.id !== entryId)
-      );
-      toast("task restored!");
+      if (result.ok) {
+        toast("task restored!");
+      }
     },
-    [setGeneralTasks, setTaskHistory, taskHistory]
+    [mutateTaskStore]
   );
 
   const clearGeneralTasks = useCallback(() => {
-    const isUserCertain = window.confirm(
-      "Are you sure you want to DELETE all your tasks?"
-    );
-
-    if (!isUserCertain) {
+    if (!confirmDeletion("all your tasks", "tasks")) {
       return;
     }
 
     setGeneralTasks(createEmptyTasks());
     toast("tasks cleared!");
   }, [setGeneralTasks]);
+
+  const clearTaskHistory = useCallback(() => {
+    if (!confirmDeletion("all your task history", "history")) {
+      return;
+    }
+
+    setTaskHistory([]);
+    toast("history cleared!");
+  }, [setTaskHistory]);
 
   const moveTaskUp = useCallback(
     (taskIndex: number) => {
@@ -147,6 +159,7 @@ export const GeneralTasksContextProvider = ({
       value={{
         changeGeneralTask,
         clearGeneralTasks,
+        clearTaskHistory,
         completeGeneralTask,
         moveTaskUp,
         moveTaskDown,

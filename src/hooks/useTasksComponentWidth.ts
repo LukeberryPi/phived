@@ -1,11 +1,33 @@
 import type { PointerEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { DESKTOP_MEDIA_QUERY } from "src/constants/ui";
 import { useLocalStorage } from "src/hooks/useLocalStorage";
 import { setTasksDefaultWidth } from "src/utils";
 
 const RESIZE_HANDLE_SIZE = 16;
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia(DESKTOP_MEDIA_QUERY).matches
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsDesktop(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  return isDesktop;
+}
+
 export function useTasksComponentWidth() {
+  const isDesktop = useIsDesktop();
   const [storedWidth, setStoredWidth] = useLocalStorage(
     "tasksComponentWidth",
     setTasksDefaultWidth()
@@ -15,14 +37,18 @@ export function useTasksComponentWidth() {
   const tasksListRef = useRef<HTMLUListElement>(null);
   const isResizingRef = useRef(false);
 
-  useEffect(() => {
-    if (!isResizingRef.current) {
-      setWidth(storedWidth);
-    }
-  }, [storedWidth]);
+  isResizingRef.current = isResizing;
 
   useEffect(() => {
-    if (!isResizing) {
+    if (!isDesktop || isResizingRef.current) {
+      return;
+    }
+
+    setWidth(storedWidth);
+  }, [isDesktop, storedWidth]);
+
+  useEffect(() => {
+    if (!isDesktop || !isResizing) {
       return;
     }
 
@@ -40,15 +66,18 @@ export function useTasksComponentWidth() {
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [isResizing]);
+  }, [isDesktop, isResizing]);
 
   useEffect(() => {
+    if (!isDesktop) {
+      return;
+    }
+
     const handlePointerUp = () => {
       if (!isResizingRef.current) {
         return;
       }
 
-      isResizingRef.current = false;
       setIsResizing(false);
 
       const element = tasksListRef.current;
@@ -70,10 +99,14 @@ export function useTasksComponentWidth() {
     return () => {
       document.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [setStoredWidth]);
+  }, [isDesktop, setStoredWidth]);
 
   const handlePointerDown = useCallback(
     (event: PointerEvent<HTMLUListElement>) => {
+      if (!isDesktop) {
+        return;
+      }
+
       const element = event.currentTarget;
       const rect = element.getBoundingClientRect();
       const isOnResizeHandle =
@@ -84,11 +117,15 @@ export function useTasksComponentWidth() {
         return;
       }
 
-      isResizingRef.current = true;
       setIsResizing(true);
     },
-    []
+    [isDesktop]
   );
 
-  return { tasksListRef, width, handlePointerDown };
+  return {
+    tasksListRef,
+    width: isDesktop ? width : undefined,
+    isResizable: isDesktop,
+    handlePointerDown,
+  };
 }

@@ -6,13 +6,16 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
+import { HOVER_REVEAL, ROW_DIVIDER, TASK_PANEL_WIDTH } from "src/constants/ui";
+import {
+  dragLiftClassName,
+  dragScaleDownClassName,
+  dragScaleUpClassName,
+  pressFeedbackClassName,
+} from "src/constants/motion";
 import { placeholders } from "src/content";
 import { useGeneralTasksContext } from "src/contexts";
-import {
-  useTaskKeyboardNavigation,
-  useTasksComponentWidth,
-  useTasksWontBeLostToast,
-} from "src/hooks";
+import { useTaskKeyboardNavigation, useTasksComponentWidth } from "src/hooks";
 import { DragVertical, Open } from "src/icons";
 import {
   appendProtocolToUrl,
@@ -22,10 +25,9 @@ import {
   isMobile,
   MAX_ACTIVE_TASKS,
   reorderListFromDragResult,
+  getDraggableDropStyle,
+  countFilledTasks,
 } from "src/utils";
-
-const HOVER_REVEAL =
-  "hidden max-lg:active:flex max-lg:peer-focus:flex lg:group-hover:flex";
 
 export function GeneralTasks() {
   const {
@@ -37,16 +39,16 @@ export function GeneralTasks() {
     moveTaskDown,
   } = useGeneralTasksContext();
   const [someDragIsHappening, setSomeDragIsHappening] = useState(false);
-  const { tasksListRef, width, handlePointerDown } = useTasksComponentWidth();
+  const { tasksListRef, width, isResizable, handlePointerDown } =
+    useTasksComponentWidth();
 
-  const numberOfGeneralTasks = generalTasks.filter(Boolean).length;
+  const numberOfGeneralTasks = countFilledTasks(generalTasks);
   const multipleGeneralTasks = numberOfGeneralTasks > 1;
   const noGeneralTasks = numberOfGeneralTasks === 0;
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
-  useTasksWontBeLostToast(multipleGeneralTasks);
-
   const handleKeyDown = useTaskKeyboardNavigation({
+    taskListRef: tasksListRef,
     taskCount: MAX_ACTIVE_TASKS,
     onDone: completeGeneralTask,
     moveTaskUp,
@@ -89,19 +91,18 @@ export function GeneralTasks() {
             <li
               {...provided.draggableProps}
               ref={provided.innerRef}
-              className={cn("group relative", isDragActive && "z-50")}
+              style={getDraggableDropStyle(
+                provided.draggableProps.style,
+                snapshot
+              )}
+              className={cn("relative", isDragActive && "z-50")}
             >
               <div
                 className={cn(
-                  "relative flex w-full origin-center",
-                  "transition-[transform,box-shadow] duration-200 ease-out-strong",
-                  "motion-reduce:transition-none",
-                  isDragging &&
-                    cn(
-                      "scale-110 overflow-hidden rounded-2xl border border-black/30",
-                      "shadow-brutalist-dark dark:border-white/30",
-                      "motion-reduce:scale-100 dark:shadow-brutalist-light"
-                    )
+                  "group relative flex w-full origin-center",
+                  isDragging && cn(dragLiftClassName, dragScaleUpClassName),
+                  isDropAnimating &&
+                    cn(dragLiftClassName, dragScaleDownClassName)
                 )}
               >
                 <input
@@ -126,8 +127,7 @@ export function GeneralTasks() {
                       : cn(
                           isFirstTask && "rounded-t-2xl border-t-0",
                           isLastTask && "rounded-b-2xl border-b-0",
-                          !isLastTask &&
-                            "border-b border-black dark:border-white"
+                          !isLastTask && ROW_DIVIDER
                         )
                   )}
                 />
@@ -137,9 +137,10 @@ export function GeneralTasks() {
                   target="_blank"
                   className={cn(
                     "absolute -left-14 flex size-14 flex-col items-center justify-center",
-                    "text-sm text-transparent transition-transform active:scale-95",
+                    "text-sm text-transparent",
+                    pressFeedbackClassName,
                     taskLink &&
-                      "hover:text-black peer-hover:text-black dark:hover:text-white dark:peer-hover:text-white"
+                      "[@media(hover:hover)_and_(pointer:fine)]:hover:text-black [@media(hover:hover)_and_(pointer:fine)]:peer-hover:text-black dark:[@media(hover:hover)_and_(pointer:fine)]:hover:text-white dark:[@media(hover:hover)_and_(pointer:fine)]:peer-hover:text-white"
                   )}
                 >
                   <Open size={24} />
@@ -152,9 +153,7 @@ export function GeneralTasks() {
                     "group/drag flex items-center justify-center bg-white pr-2",
                     "text-black placeholder:select-none hover:cursor-grab",
                     "dark:bg-zinc-950 dark:text-white sm:text-lg",
-                    !isLastTask &&
-                      !isDragActive &&
-                      "border-b border-black dark:border-white",
+                    !isLastTask && !isDragActive && ROW_DIVIDER,
                     isEmptyTask ||
                       !multipleGeneralTasks ||
                       anotherTaskIsBeingDragged ||
@@ -163,16 +162,17 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  <DragVertical className="origin-center fill-black transition-transform group-active/drag:scale-90 dark:fill-white" />
+                  <DragVertical className="origin-center fill-black dark:fill-white" />
                 </span>
                 <button
                   aria-label="complete task"
                   aria-keyshortcuts="control+enter"
                   onClick={() => completeGeneralTask(idx)}
                   className={cn(
-                    "group/done select-none items-center justify-center",
+                    "select-none items-center justify-center",
                     "border-b border-l border-black bg-sky-300 px-4",
                     "dark:border-white dark:bg-cyan-800 dark:text-white xs:px-6 sm:text-lg",
+                    pressFeedbackClassName,
                     !isDragActive && isFirstTask && "rounded-tr-2xl",
                     !isDragActive && isLastTask && "rounded-br-2xl",
                     isEmptyTask || anotherTaskIsBeingDragged || isDragActive
@@ -180,9 +180,7 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  <span className="transition-transform group-active/done:scale-95">
-                    done?
-                  </span>
+                  done
                 </button>
               </div>
             </li>
@@ -199,11 +197,11 @@ export function GeneralTasks() {
       </p>
       <ul
         ref={tasksListRef}
-        onPointerDown={handlePointerDown}
-        style={{ width: `${width}px` }}
+        onPointerDown={isResizable ? handlePointerDown : undefined}
+        style={isResizable ? { width: `${width}px` } : undefined}
         className={cn(
-          "min-w-[300px] resize-x overflow-hidden rounded-2xl border border-black",
-          "shadow-brutalist-dark dark:border-white dark:shadow-brutalist-light"
+          "task-panel overflow-hidden",
+          isResizable ? "min-w-[300px] resize-x" : TASK_PANEL_WIDTH
         )}
       >
         <DragDropContext

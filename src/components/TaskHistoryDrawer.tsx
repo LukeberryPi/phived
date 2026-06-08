@@ -1,124 +1,161 @@
-import { useState } from "react";
+import { FloatingDrawer } from "src/components/FloatingDrawer";
+import {
+  DRAWER_COUNT_BADGE,
+  DRAWER_HEADER_GRID,
+  DRAWER_MUTED_TEXT,
+  DRAWER_SURFACE,
+  DRAWER_TEXT,
+  ROW_DIVIDER,
+  SIDE_ACTION_BORDER,
+} from "src/constants/ui";
+import { pressFeedbackClassName } from "src/constants/motion";
 import { useGeneralTasksContext } from "src/contexts";
 import { Clock } from "src/icons";
-import { cn, formatHistoryDate } from "src/utils";
+import { cn, formatHistoryWhen } from "src/utils";
 
-const drawerWidth = "w-[min(100vw-2rem,20rem)]";
+const sideActionColumnClassName = "flex min-h-12 items-stretch";
 
-export function TaskHistoryDrawer() {
+const sideActionButtonClassName = cn(
+  "flex h-full w-full items-center justify-center whitespace-nowrap text-sm font-medium",
+  SIDE_ACTION_BORDER
+);
+
+const historyClearButtonClassName = cn(
+  sideActionButtonClassName,
+  pressFeedbackClassName,
+  DRAWER_SURFACE,
+  "bg-clip-padding",
+  DRAWER_TEXT,
+  "disabled:cursor-not-allowed disabled:text-black/40 dark:disabled:text-white/30",
+  "enabled:sm:hover:bg-red-50 enabled:sm:hover:text-red-500 dark:enabled:sm:hover:bg-red-950 dark:enabled:sm:hover:text-red-400"
+);
+
+const restoreButtonClassName = cn(
+  sideActionButtonClassName,
+  pressFeedbackClassName,
+  "select-none bg-emerald-400 text-black dark:bg-purple-700 dark:text-white",
+  "flex [@media(hover:hover)_and_(pointer:fine)]:lg:hidden",
+  "[@media(hover:hover)_and_(pointer:fine)]:lg:group-hover:flex"
+);
+
+type HistoryClearButtonProps = {
+  disabled: boolean;
+  onClick: () => void;
+};
+
+export function HistoryClearButton({
+  disabled,
+  onClick,
+}: HistoryClearButtonProps) {
+  return (
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className={historyClearButtonClassName}
+    >
+      clear
+    </button>
+  );
+}
+
+export function HistoryPanel() {
   const { taskHistory, restoreTaskFromHistory } = useGeneralTasksContext();
-  const [isOpen, setIsOpen] = useState(false);
   const historyCount = taskHistory.length;
 
   return (
-    <aside
-      className={cn(
-        "fixed z-40",
-        "bottom-24 right-4 tiny:bottom-28 tiny:right-6 sm:bottom-24 sm:right-8"
-      )}
-      aria-label="Task history"
-    >
-      <div
-        className={cn(
-          "flex flex-col",
-          isOpen && cn(drawerWidth, "phived-surface overflow-hidden")
-        )}
-      >
-        <button
-          type="button"
-          aria-expanded={isOpen}
-          aria-controls="task-history-panel"
-          onClick={() => setIsOpen((open) => !open)}
+    <ul>
+      {historyCount === 0 ? (
+        <li
           className={cn(
-            "flex items-center gap-2 px-4 py-3",
-            "text-sm font-medium text-black transition-transform active:scale-95 dark:text-white",
-            !isOpen &&
-              cn(
-                drawerWidth,
-                "phived-surface sm:hover:ring-2 sm:hover:ring-sky-300 dark:sm:hover:ring-cyan-800"
-              ),
-            isOpen &&
-              "w-full border-b border-black dark:border-white sm:hover:bg-zinc-50 dark:sm:hover:bg-zinc-900"
+            "flex min-h-12 items-center px-4 text-sm",
+            DRAWER_MUTED_TEXT
           )}
         >
-          <Clock size={20} className="shrink-0" />
-          <span>history</span>
+          nothing here yet — complete a task first.
+        </li>
+      ) : (
+        taskHistory.map((entry, index) => {
+          const isLastEntry = index === historyCount - 1;
+
+          return (
+            <li
+              key={entry.id}
+              className={cn(
+                DRAWER_HEADER_GRID,
+                "group",
+                !isLastEntry && ROW_DIVIDER
+              )}
+            >
+              <div
+                className={cn(
+                  "flex min-w-0 items-center gap-x-3 px-4",
+                  "outline-none"
+                )}
+              >
+                <span
+                  className={cn(
+                    "min-w-0 truncate text-sm font-medium",
+                    DRAWER_TEXT
+                  )}
+                  title={entry.text}
+                >
+                  {entry.text}
+                </span>
+                <span
+                  className={cn(
+                    "shrink-0 whitespace-nowrap text-xs",
+                    DRAWER_MUTED_TEXT
+                  )}
+                >
+                  {formatHistoryWhen(entry.completedAt)}
+                </span>
+              </div>
+
+              <div className={sideActionColumnClassName}>
+                <button
+                  onClick={() => restoreTaskFromHistory(entry.id)}
+                  className={restoreButtonClassName}
+                >
+                  restore
+                </button>
+              </div>
+            </li>
+          );
+        })
+      )}
+    </ul>
+  );
+}
+
+export function TaskHistoryDrawer() {
+  const { taskHistory, clearTaskHistory } = useGeneralTasksContext();
+  const historyCount = taskHistory.length;
+
+  return (
+    <FloatingDrawer
+      side="right"
+      storageKey="showTaskHistoryDrawer"
+      ariaLabel="Task history"
+      panelId="task-history-panel"
+      renderToggle={(isOpen) => (
+        <>
+          <Clock size={20} className={cn("shrink-0", DRAWER_TEXT)} />
+          <span className="whitespace-nowrap">
+            {isOpen ? "hide history" : "show history"}
+          </span>
           {historyCount > 0 && (
-            <span
-              className={cn(
-                "min-w-6 rounded-md border border-black px-1.5 py-0.5 text-xs",
-                "bg-sky-300 dark:border-white dark:bg-cyan-800 dark:text-white"
-              )}
-            >
-              {historyCount}
-            </span>
+            <span className={DRAWER_COUNT_BADGE}>{historyCount}</span>
           )}
-        </button>
-
-        {isOpen && (
-          <div
-            id="task-history-panel"
-            role="region"
-            className="flex max-h-[min(20rem,50vh)] flex-col"
-          >
-            <div className="border-b border-black px-4 py-3 dark:border-white">
-              <p className="text-sm font-medium">completed tasks</p>
-              <p className="text-xs text-black/60 dark:text-white/60">
-                restore moves a task back to your list
-              </p>
-            </div>
-
-            <ul
-              className={cn(
-                "flex flex-1 flex-col overflow-y-auto",
-                historyCount === 0 && "min-h-[7rem]"
-              )}
-            >
-              {historyCount === 0 ? (
-                <li className="flex flex-1 items-center justify-center px-4 py-8 text-center text-sm text-black/50 dark:text-white/50">
-                  nothing here yet.
-                  <br />
-                  complete a task to build history.
-                </li>
-              ) : (
-                taskHistory.map((entry, index) => (
-                  <li
-                    key={entry.id}
-                    className={cn(
-                      "flex items-start gap-3 px-4 py-3",
-                      index !== historyCount - 1 &&
-                        "border-b border-black/15 dark:border-white/15"
-                    )}
-                  >
-                    <div className="min-w-0 flex-1">
-                      <p
-                        className="truncate text-sm font-medium"
-                        title={entry.text}
-                      >
-                        {entry.text}
-                      </p>
-                      <p className="text-xs text-black/50 dark:text-white/50">
-                        {formatHistoryDate(entry.completedAt)}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => restoreTaskFromHistory(entry.id)}
-                      className={cn(
-                        "shrink-0 rounded-lg border border-black px-3 py-1.5 text-xs font-medium",
-                        "bg-sky-300 transition-transform active:scale-95 dark:border-white dark:bg-cyan-800",
-                        "sm:hover:ring-2 sm:hover:ring-black dark:sm:hover:ring-white"
-                      )}
-                    >
-                      restore
-                    </button>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-        )}
-      </div>
-    </aside>
+        </>
+      )}
+      headerTrailing={
+        <HistoryClearButton
+          disabled={historyCount === 0}
+          onClick={clearTaskHistory}
+        />
+      }
+    >
+      {() => <HistoryPanel />}
+    </FloatingDrawer>
   );
 }

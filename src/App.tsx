@@ -1,13 +1,15 @@
 import { GeneralTasks, TasksPageShell, Toaster } from "src/components";
-import { GeneralTasksContextProvider } from "src/contexts";
+import { GeneralTasksContextProvider, ThemeProvider } from "src/contexts";
 
 export default function App() {
   return (
-    <GeneralTasksContextProvider>
-      <TasksPageShell>
-        <GeneralTasks />
-      </TasksPageShell>
-      <Toaster />
-    </GeneralTasksContextProvider>
+    <ThemeProvider>
+      <GeneralTasksContextProvider>
+        <TasksPageShell>
+          <GeneralTasks />
+        </TasksPageShell>
+        <Toaster />
+      </GeneralTasksContextProvider>
+    </ThemeProvider>
   );
 }

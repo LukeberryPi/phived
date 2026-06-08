@@ -1,8 +1,10 @@
 import { Toaster as Sonner } from "sonner";
+import { TOAST_WIDTH } from "src/constants/ui";
 import { cn } from "src/utils";
 
 const toastClassName = cn(
-  "phived-surface flex w-full justify-center px-5 py-3.5",
+  "toast-panel flex justify-center px-5 py-3.5",
+  TOAST_WIDTH,
   "text-base font-medium text-black dark:text-white"
 );
 
@@ -10,6 +12,7 @@ export function Toaster() {
   return (
     <Sonner
       position="top-center"
+      expand={false}
       duration={4000}
       closeButton={false}
       visibleToasts={3}

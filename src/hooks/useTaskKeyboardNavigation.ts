@@ -1,23 +1,26 @@
-import type { KeyboardEvent } from "react";
+import type { KeyboardEvent, RefObject } from "react";
 
 type UseTaskKeyboardNavigationOptions = {
+  taskListRef: RefObject<HTMLElement | null>;
   taskCount: number;
   onDone: (index: number) => void;
   moveTaskUp: (index: number) => void;
   moveTaskDown: (index: number) => void;
 };
 
-function focusTaskInput(index: number) {
-  document.querySelectorAll("input")[index]?.focus();
+function focusTaskInput(taskList: HTMLElement | null, index: number) {
+  taskList?.querySelectorAll("input")[index]?.focus();
 }
 
 export function useTaskKeyboardNavigation({
+  taskListRef,
   taskCount,
   onDone,
   moveTaskUp,
   moveTaskDown,
 }: UseTaskKeyboardNavigationOptions) {
   return (event: KeyboardEvent<HTMLInputElement>, index: number) => {
+    const taskList = taskListRef.current;
     const isFirstTask = index === 0;
     const isLastTask = index === taskCount - 1;
 
@@ -27,7 +30,7 @@ export function useTaskKeyboardNavigation({
         return;
       }
       moveTaskUp(index);
-      return focusTaskInput(index - 1);
+      return focusTaskInput(taskList, index - 1);
     }
 
     if (event.altKey && event.key === "ArrowDown") {
@@ -36,7 +39,7 @@ export function useTaskKeyboardNavigation({
         return;
       }
       moveTaskDown(index);
-      return focusTaskInput(index + 1);
+      return focusTaskInput(taskList, index + 1);
     }
 
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
@@ -50,9 +53,9 @@ export function useTaskKeyboardNavigation({
     ) {
       event.preventDefault();
       if (isFirstTask) {
-        return focusTaskInput(taskCount - 1);
+        return focusTaskInput(taskList, taskCount - 1);
       }
-      return focusTaskInput(index - 1);
+      return focusTaskInput(taskList, index - 1);
     }
 
     if (
@@ -61,10 +64,10 @@ export function useTaskKeyboardNavigation({
     ) {
       event.preventDefault();
       if (isLastTask) {
-        focusTaskInput(0);
+        focusTaskInput(taskList, 0);
         return;
       }
-      return focusTaskInput(index + 1);
+      return focusTaskInput(taskList, index + 1);
     }
   };
 }

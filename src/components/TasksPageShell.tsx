@@ -1,11 +1,15 @@
 import type { KeyboardEvent, PropsWithChildren } from "react";
 import { HelmetProvider } from "react-helmet-async";
-import { Footer, Header, Head, TaskHistoryDrawer } from "src/components";
+import {
+  Header,
+  Head,
+  HelpDrawer,
+  MobileActionBar,
+  TaskHistoryDrawer,
+} from "src/components";
 import { cn } from "src/utils";
 
-type TasksPageShellProps = PropsWithChildren;
-
-export function TasksPageShell({ children }: TasksPageShellProps) {
+export function TasksPageShell({ children }: PropsWithChildren) {
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!(document.activeElement instanceof HTMLElement)) {
       return;
@@ -29,8 +33,9 @@ export function TasksPageShell({ children }: TasksPageShellProps) {
       </HelmetProvider>
       <Header />
       {children}
-      <Footer />
+      <HelpDrawer />
       <TaskHistoryDrawer />
+      <MobileActionBar />
     </div>
   );
 }
