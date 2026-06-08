@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { FloatingDrawer } from "src/components/FloatingDrawer";
 import {
   DRAWER_COUNT_BADGE,
@@ -8,10 +9,12 @@ import {
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
 } from "src/constants/ui";
-import { pressFeedbackClassName } from "src/constants/motion";
+import { pressFeedbackGroupChildClassName } from "src/constants/motion";
 import { useGeneralTasksContext } from "src/contexts";
-import { Clock } from "src/icons";
+import { Clock, Trash } from "src/icons";
 import { cn, formatHistoryWhen } from "src/utils";
+
+const NO_HISTORY_TO_CLEAR_MESSAGE = "no task history to clear.";
 
 const sideActionColumnClassName = "flex min-h-12 items-stretch";
 
@@ -22,17 +25,13 @@ const sideActionButtonClassName = cn(
 
 const historyClearButtonClassName = cn(
   sideActionButtonClassName,
-  pressFeedbackClassName,
   DRAWER_SURFACE,
   "bg-clip-padding",
-  DRAWER_TEXT,
-  "disabled:cursor-not-allowed disabled:text-black/40 dark:disabled:text-white/30",
-  "enabled:sm:hover:bg-red-50 enabled:sm:hover:text-red-500 dark:enabled:sm:hover:bg-red-950 dark:enabled:sm:hover:text-red-400"
+  DRAWER_TEXT
 );
 
 const restoreButtonClassName = cn(
   sideActionButtonClassName,
-  pressFeedbackClassName,
   "select-none bg-emerald-400 text-black dark:bg-purple-700 dark:text-white",
   "flex [@media(hover:hover)_and_(pointer:fine)]:lg:hidden",
   "[@media(hover:hover)_and_(pointer:fine)]:lg:group-hover:flex"
@@ -41,19 +40,53 @@ const restoreButtonClassName = cn(
 type HistoryClearButtonProps = {
   disabled: boolean;
   onClick: () => void;
+  dividerSide?: "left" | "right";
 };
 
 export function HistoryClearButton({
   disabled,
   onClick,
+  dividerSide = "left",
 }: HistoryClearButtonProps) {
+  const handleClick = () => {
+    if (disabled) {
+      toast(NO_HISTORY_TO_CLEAR_MESSAGE);
+      return;
+    }
+
+    onClick();
+  };
+
   return (
     <button
-      disabled={disabled}
-      onClick={onClick}
-      className={historyClearButtonClassName}
+      aria-disabled={disabled}
+      aria-label={
+        disabled
+          ? "Clear history unavailable: no task history to clear"
+          : "clear history"
+      }
+      onClick={handleClick}
+      className={cn(
+        "group",
+        historyClearButtonClassName,
+        dividerSide === "right" &&
+          "border-l-0 border-r border-black dark:border-white",
+        disabled
+          ? "cursor-not-allowed text-black/40 dark:text-white/30"
+          : "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
+      )}
     >
-      clear
+      <span
+        aria-hidden="true"
+        className={cn(!disabled && pressFeedbackGroupChildClassName)}
+      >
+        <Trash
+          size={20}
+          className={cn(
+            disabled ? "fill-black/30 dark:fill-white/30" : "fill-current"
+          )}
+        />
+      </span>
     </button>
   );
 }
@@ -114,9 +147,11 @@ export function HistoryPanel() {
               <div className={sideActionColumnClassName}>
                 <button
                   onClick={() => restoreTaskFromHistory(entry.id)}
-                  className={restoreButtonClassName}
+                  className={cn("group", restoreButtonClassName)}
                 >
-                  restore
+                  <span className={pressFeedbackGroupChildClassName}>
+                    restore
+                  </span>
                 </button>
               </div>
             </li>
@@ -152,8 +187,10 @@ export function TaskHistoryDrawer() {
         <HistoryClearButton
           disabled={historyCount === 0}
           onClick={clearTaskHistory}
+          dividerSide="right"
         />
       }
+      compactHeaderTrailing
     >
       {() => <HistoryPanel />}
     </FloatingDrawer>

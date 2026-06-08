@@ -8,7 +8,10 @@ export { getDraggableDropStyle } from "src/utils/getDraggableDropStyle";
 export { formatHistoryWhen } from "src/utils/formatHistoryWhen";
 export { handleSetTheme } from "src/utils/handleSetTheme";
 export { isMobile } from "src/utils/isMobile";
-export { isThemeSetToDark } from "src/utils/isThemeSetToDark";
+export {
+  getStoredThemePreference,
+  isThemeSetToDark,
+} from "src/utils/isThemeSetToDark";
 export { getViewportWidth } from "src/utils/getViewportWidth";
 export { reorderListFromDragResult } from "src/utils/reorderListFromDragResult";
 export {
