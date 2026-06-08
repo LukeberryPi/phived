@@ -11,26 +11,28 @@ export function HelpPanel({ onHideHelp }: HelpPanelProps) {
   return (
     <div className="space-y-3 px-5 pb-4 pt-4">
       <h1>
-        welcome to the phived.com, the
-        <br />
-        <strong>anti-procrastination to-do list!</strong>
+        Welcome to <strong>phived, the anti-procrastination to-do list.</strong>
       </h1>
       <h2>
-        <strong>list five things you wish to get done.</strong> to add more
-        tasks, complete existing ones!
+        Stay focused on what matters. You can only have up to five tasks at a time.
       </h2>
+      <p>
+        To add a new task, you first have to{" "}
+        <strong>finish one you&apos;re already working on.</strong>
+        </p>  
+      <p>
+        No logins. No ads. No distractions.
+      </p>
+      <p><a className="underline decoration-2 text-blue-500" href="https://www.phived.com" target="_blank" rel="noopener noreferrer">Open Source</a> and free. Forever.</p>
       <hr className="my-4 h-px w-full border-black dark:border-white" />
       <p>
-        <kbd className={KBD_CLASS}>enter</kbd> navigates to the next task,
+        <kbd className={KBD_CLASS}>enter</kbd> navigates to the next task.
       </p>
-      <p className="leading-7">
-        <kbd className={KBD_CLASS}>shift</kbd> +{" "}
-        <kbd className={KBD_CLASS}>enter</kbd> navigates to the previous task,
+      <p>
+        <kbd className={KBD_CLASS}>shift</kbd> + <kbd className={KBD_CLASS}>enter</kbd> navigates to the previous task.
       </p>
-      <p className="leading-7">
-        <kbd className={KBD_CLASS}>ctrl</kbd> +{" "}
-        <kbd className={KBD_CLASS}>enter</kbd> will complete the current task,
-        or just click{" "}
+      <p>
+        <kbd className={KBD_CLASS}>ctrl</kbd> + <kbd className={KBD_CLASS}>enter</kbd> will complete the current task, or just click{" "}
         <span
           onClick={onHideHelp}
           className={cn(
