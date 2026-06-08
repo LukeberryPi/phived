@@ -17,11 +17,11 @@ export function HelpPanel({ onClose }: HelpPanelProps) {
         onClick={onClose}
         className={cn(
           "absolute right-3 flex size-8 shrink-0 items-center justify-center rounded-full",
-          "sm:hover:bg-zinc-100 dark:sm:hover:bg-zinc-900",
+          "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
           pressFeedbackClassName
         )}
       >
-        <Close size={18} className="fill-black dark:fill-white" />
+        <Close size={18} className="fill-black dark:fill-ink" />
       </button>
       <h1 className="pr-9">
         Welcome to <strong>phived, the anti-procrastination to-do list.</strong>

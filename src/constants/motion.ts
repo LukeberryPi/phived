@@ -10,7 +10,7 @@ export const pressFeedbackGroupChildClassName =
   "transition-transform duration-150 ease-out-strong motion-reduce:transform-none group-active:scale-95";
 
 export const dragLiftClassName =
-  "overflow-hidden rounded-2xl border border-black/30 shadow-brutalist-dark dark:border-white/30 dark:shadow-brutalist-light motion-reduce:scale-100";
+  "overflow-hidden rounded-2xl border border-black/30 shadow-brutalist-dark dark:border-edge motion-reduce:scale-100";
 
 export const dragScaleUpClassName = "scale-105";
 

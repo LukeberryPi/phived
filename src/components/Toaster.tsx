@@ -5,19 +5,19 @@ import { cn } from "src/utils";
 const toastClassName = cn(
   "toast-panel flex justify-center px-5 py-3.5",
   TOAST_WIDTH,
-  "text-base font-light text-black dark:text-white"
+  "text-base font-light text-black dark:text-ink"
 );
 
 export function Toaster() {
   return (
     <Sonner
-      position="top-center"
+      position="bottom-center"
       expand={false}
       duration={4000}
       closeButton={false}
       visibleToasts={3}
-      offset={{ top: 16, bottom: 88 }}
-      mobileOffset={{ top: 16, bottom: 112 }}
+      offset={{ bottom: 88 }}
+      mobileOffset={{ bottom: 112 }}
       icons={{
         success: null,
         info: null,

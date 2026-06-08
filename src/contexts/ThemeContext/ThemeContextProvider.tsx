@@ -63,9 +63,7 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     setThemePreference((current) => {
       const currentIndex = themePreferenceCycle.indexOf(current);
       const next =
-        themePreferenceCycle[
-          (currentIndex + 1) % themePreferenceCycle.length
-        ];
+        themePreferenceCycle[(currentIndex + 1) % themePreferenceCycle.length];
       toast(themeToastMessages[next]);
       return next;
     });

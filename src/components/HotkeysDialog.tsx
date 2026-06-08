@@ -81,14 +81,14 @@ function Keys({ combos }: { combos: Combo[] }) {
       {combos.map((combo, comboIdx) => (
         <span key={comboIdx} className="flex items-center gap-1.5">
           {comboIdx > 0 && (
-            <span className="text-sm text-black/50 dark:text-white/50">or</span>
+            <span className="text-sm text-black/50 dark:text-inkMuted">or</span>
           )}
           {combo.map((key, keyIdx) => (
             <span key={keyIdx} className="flex items-center gap-1.5">
               {keyIdx > 0 && (
                 <span
                   aria-hidden="true"
-                  className="text-sm text-black/50 dark:text-white/50"
+                  className="text-sm text-black/50 dark:text-inkMuted"
                 >
                   +
                 </span>
@@ -173,13 +173,13 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        "task-panel m-auto w-full max-w-3xl p-0 text-black dark:text-white",
+        "task-panel m-auto w-full max-w-3xl p-0 text-black dark:text-ink",
         "max-h-[85vh] overflow-hidden",
         "backdrop:bg-black/50"
       )}
     >
       <div className="flex max-h-[85vh] flex-col">
-        <header className="flex items-center justify-between gap-3 border-b border-black px-5 py-4 dark:border-white">
+        <header className="flex items-center justify-between gap-3 border-b border-black px-5 py-4 dark:border-hairline">
           <h2 id="hotkeys-dialog-title" className="text-xl font-medium">
             keyboard shortcuts
           </h2>
@@ -190,11 +190,11 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
             onClick={onClose}
             className={cn(
               "flex size-8 shrink-0 items-center justify-center rounded-full",
-              "sm:hover:bg-zinc-100 dark:sm:hover:bg-zinc-900",
+              "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
               pressFeedbackClassName
             )}
           >
-            <Close size={18} className="fill-black dark:fill-white" />
+            <Close size={18} className="fill-black dark:fill-ink" />
           </button>
         </header>
 

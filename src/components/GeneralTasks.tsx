@@ -116,7 +116,7 @@ export function GeneralTasks() {
                   onKeyDown={(event) => handleKeyDown(event, idx)}
                   className={cn(
                     "peer w-full bg-white px-5 py-4 text-black focus:outline-none",
-                    "dark:bg-zinc-950 dark:text-white sm:text-lg",
+                    "dark:bg-surface dark:text-ink sm:text-lg",
                     !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2",
                     someDragIsHappening && "cursor-grabbing",
                     isDragActive
@@ -135,7 +135,7 @@ export function GeneralTasks() {
                   className={cn(
                     "group/drag flex items-center justify-center bg-white pr-2",
                     "text-black placeholder:select-none hover:cursor-grab",
-                    "dark:bg-zinc-950 dark:text-white sm:text-lg",
+                    "dark:bg-surface dark:text-ink sm:text-lg",
                     !isLastTask && !isDragActive && ROW_DIVIDER,
                     isEmptyTask ||
                       !multipleGeneralTasks ||
@@ -145,7 +145,7 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  <DragVertical className="origin-center fill-black dark:fill-white" />
+                  <DragVertical className="origin-center fill-black dark:fill-ink" />
                 </span>
                 <button
                   aria-label="complete task"
@@ -155,7 +155,7 @@ export function GeneralTasks() {
                     "group",
                     "select-none items-center justify-center",
                     "border-b border-l border-black bg-sky-300 px-4",
-                    "dark:border-white dark:bg-cyan-800 dark:text-white xs:px-6 sm:text-lg",
+                    "dark:border-edge dark:bg-cyan-800 dark:text-ink xs:px-6 sm:text-lg",
                     !isDragActive && isFirstTask && "rounded-tr-2xl",
                     !isDragActive && isLastTask && "rounded-br-2xl",
                     isEmptyTask || anotherTaskIsBeingDragged || isDragActive
@@ -175,7 +175,7 @@ export function GeneralTasks() {
 
   return (
     <section className="flex flex-col items-center gap-4">
-      <p className="text-xl text-black dark:text-white sm:text-2xl">
+      <p className="text-xl text-black dark:text-ink sm:text-2xl">
         what do you want to do?
       </p>
       <ul
@@ -183,7 +183,7 @@ export function GeneralTasks() {
         onPointerDown={isResizable ? handlePointerDown : undefined}
         style={isResizable ? { width: `${width}px` } : undefined}
         className={cn(
-          "task-panel overflow-hidden shadow-brutalist-dark dark:shadow-brutalist-light",
+          "task-panel overflow-hidden shadow-brutalist-dark dark:shadow-none",
           isResizable ? "min-w-[300px] resize-x" : TASK_PANEL_WIDTH
         )}
       >

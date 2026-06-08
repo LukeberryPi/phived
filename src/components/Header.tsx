@@ -13,7 +13,7 @@ import { cn, countFilledTasks } from "src/utils";
 const NO_TASKS_TO_CLEAR_MESSAGE = "no tasks to clear.";
 const logoClassName = cn(
   "font-normal text-black underline decoration-2 underline-offset-4",
-  "decoration-sky-300 dark:text-white dark:decoration-cyan-800",
+  "decoration-sky-300 dark:text-ink dark:decoration-cyan-800",
   pressFeedbackClassName
 );
 const headerActionClassName =
@@ -27,7 +27,7 @@ export function Header() {
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
   const noGeneralTasks = countFilledTasks(generalTasks) === 0;
-  const themeIconClassName = "fill-black dark:fill-white";
+  const themeIconClassName = "fill-black dark:fill-ink";
   const handleClearTasks = () => {
     if (noGeneralTasks) {
       toast(NO_TASKS_TO_CLEAR_MESSAGE);
@@ -55,7 +55,7 @@ export function Header() {
           "sm:flex"
         )}
       >
-        <a href="/" className={cn(logoClassName, "hidden text-4xl md:flex")}>
+        <a href="/" className={cn(logoClassName, "hidden text-4xl sm:flex")}>
           phived
         </a>
         <nav className="flex h-full items-center justify-between gap-4">
@@ -65,7 +65,7 @@ export function Header() {
             className={cn(
               "group",
               headerActionClassName,
-              "text-black dark:text-white",
+              "text-black dark:text-ink",
               DRAWER_HEADER_HOVER
             )}
           >
@@ -104,7 +104,7 @@ export function Header() {
             className={cn(
               "group",
               headerActionClassName,
-              "text-black dark:text-white",
+              "text-black dark:text-ink",
               noGeneralTasks ? "cursor-not-allowed" : clearTasksHoverClassName
             )}
           >
@@ -112,15 +112,15 @@ export function Header() {
               className={cn(
                 "flex items-center gap-2",
                 !noGeneralTasks && pressFeedbackGroupChildClassName,
-                noGeneralTasks && "text-black/40 dark:text-white/30"
+                noGeneralTasks && "text-black/40 dark:text-inkMuted"
               )}
             >
               <Trash
                 size={20}
                 className={cn(
-                  "fill-black dark:fill-white",
+                  "fill-black dark:fill-ink",
                   noGeneralTasks
-                    ? "fill-black/30 dark:fill-white/30"
+                    ? "fill-black/30 dark:fill-inkMuted"
                     : "sm:group-hover:fill-red-600 dark:sm:group-hover:fill-red-500"
                 )}
               />
@@ -135,7 +135,7 @@ export function Header() {
             className={cn(
               "group",
               headerActionClassName,
-              "text-black dark:text-white",
+              "text-black dark:text-ink",
               DRAWER_HEADER_HOVER
             )}
           >
@@ -145,7 +145,7 @@ export function Header() {
                 pressFeedbackGroupChildClassName
               )}
             >
-              <Keyboard size={20} className="fill-black dark:fill-white" />
+              <Keyboard size={20} className="fill-black dark:fill-ink" />
               show hotkeys
             </span>
           </button>

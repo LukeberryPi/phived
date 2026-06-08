@@ -32,7 +32,7 @@ const historyClearButtonClassName = cn(
 
 const restoreButtonClassName = cn(
   sideActionButtonClassName,
-  "select-none bg-emerald-400 text-black dark:bg-cyan-800 dark:text-white",
+  "select-none bg-emerald-400 text-black dark:bg-cyan-800 dark:text-ink",
   "flex [@media(hover:hover)_and_(pointer:fine)]:lg:hidden",
   "[@media(hover:hover)_and_(pointer:fine)]:lg:group-hover:flex"
 );
@@ -70,9 +70,9 @@ export function HistoryClearButton({
         "group",
         historyClearButtonClassName,
         dividerSide === "right" &&
-          "border-l-0 border-r border-black dark:border-white",
+          "border-l-0 border-r border-black dark:border-hairline",
         disabled
-          ? "cursor-not-allowed text-black/40 dark:text-white/30"
+          ? "cursor-not-allowed text-black/40 dark:text-inkMuted"
           : "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
       )}
     >
@@ -83,7 +83,7 @@ export function HistoryClearButton({
         <Trash
           size={20}
           className={cn(
-            disabled ? "fill-black/30 dark:fill-white/30" : "fill-current"
+            disabled ? "fill-black/30 dark:fill-inkMuted" : "fill-current"
           )}
         />
       </span>

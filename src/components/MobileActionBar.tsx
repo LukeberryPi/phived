@@ -92,7 +92,7 @@ export function MobileActionBar() {
   const noGeneralTasks = countFilledTasks(generalTasks) === 0;
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const themeIconClassName = "fill-black dark:fill-white";
+  const themeIconClassName = "fill-black dark:fill-ink";
 
   const closeHelp = () => setHelpOpen(false);
   const handleClearTasks = () => {
@@ -182,8 +182,8 @@ export function MobileActionBar() {
                 size={20}
                 className={cn(
                   noGeneralTasks
-                    ? "fill-black/30 dark:fill-white/30"
-                    : "fill-black dark:fill-white"
+                    ? "fill-black/30 dark:fill-inkMuted"
+                    : "fill-black dark:fill-ink"
                 )}
               />
             }

@@ -18,6 +18,15 @@ module.exports = {
       },
       colors: {
         softWhite: "#f9fafb", // slate50
+        // Cool, blue-tinted dark-mode palette (applied only behind dark:)
+        canvas: "#0a0c10",
+        surface: "#14171d",
+        surfaceHover: "#1b1f27",
+        surfaceActive: "#21262f",
+        hairline: "#262b34",
+        edge: "#363d49",
+        ink: "#e2e5ea",
+        inkMuted: "#8b919d",
       },
     },
     fontFamily: {
