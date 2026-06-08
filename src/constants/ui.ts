@@ -50,7 +50,7 @@ export const DRAWER_HEADER_BUTTON = cn(
 );
 
 export const DRAWER_BODY = cn(
-  "max-h-[min(40rem,100vh)] overflow-y-auto",
+  "custom-scrollbar max-h-[min(40rem,100vh)] overflow-y-auto",
   DRAWER_SURFACE,
   DRAWER_TEXT
 );

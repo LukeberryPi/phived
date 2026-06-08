@@ -198,7 +198,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
           </button>
         </header>
 
-        <div className="grid gap-x-20 gap-y-8 overflow-y-auto px-5 py-5 sm:grid-cols-2">
+        <div className="custom-scrollbar grid gap-x-20 gap-y-8 overflow-y-auto px-5 py-5 sm:grid-cols-2">
           {sections.map((section, sectionIdx) => {
             const headingId = `hotkeys-section-${sectionIdx}`;
 
