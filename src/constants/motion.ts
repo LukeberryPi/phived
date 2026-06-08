@@ -3,11 +3,11 @@
 export const DROP_SNAP_DELAY_MS = 150;
 
 export const pressFeedbackClassName =
-  "transition-transform duration-150 ease-out-strong motion-reduce:transform-none active:scale-[0.97]";
+  "transition-transform duration-150 ease-out-strong motion-reduce:transform-none active:scale-95";
 
 /** Scale inner content when any part of a parent `group` button is pressed. */
 export const pressFeedbackGroupChildClassName =
-  "transition-transform duration-150 ease-out-strong motion-reduce:transform-none group-active:scale-[0.97]";
+  "transition-transform duration-150 ease-out-strong motion-reduce:transform-none group-active:scale-95";
 
 export const dragLiftClassName =
   "overflow-hidden rounded-2xl border border-black/30 shadow-brutalist-dark dark:border-white/30 dark:shadow-brutalist-light motion-reduce:scale-100";

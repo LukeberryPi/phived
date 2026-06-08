@@ -12,6 +12,7 @@ import {
   dragScaleDownClassName,
   dragScaleUpClassName,
   pressFeedbackClassName,
+  pressFeedbackGroupChildClassName,
 } from "src/constants/motion";
 import { placeholders } from "src/content";
 import { useGeneralTasksContext } from "src/contexts";
@@ -169,10 +170,10 @@ export function GeneralTasks() {
                   aria-keyshortcuts="control+enter"
                   onClick={() => completeGeneralTask(idx)}
                   className={cn(
+                    "group",
                     "select-none items-center justify-center",
                     "border-b border-l border-black bg-sky-300 px-4",
                     "dark:border-white dark:bg-cyan-800 dark:text-white xs:px-6 sm:text-lg",
-                    pressFeedbackClassName,
                     !isDragActive && isFirstTask && "rounded-tr-2xl",
                     !isDragActive && isLastTask && "rounded-br-2xl",
                     isEmptyTask || anotherTaskIsBeingDragged || isDragActive
@@ -180,7 +181,7 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  done
+                  <span className={pressFeedbackGroupChildClassName}>done</span>
                 </button>
               </div>
             </li>

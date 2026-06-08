@@ -4,7 +4,10 @@ import {
   DRAWER_COLLAPSED_BUTTON,
   DRAWER_HEADER_BUTTON,
   DRAWER_HEADER_GRID,
+  DRAWER_HEADER_GRID_REVERSED,
   DRAWER_HEADER_HOVER,
+  DRAWER_ICON_HEADER_GRID,
+  DRAWER_ICON_HEADER_GRID_REVERSED,
   DRAWER_SURFACE,
   DRAWER_WIDTH,
   DRAWER_TOGGLE_DIVIDER,
@@ -31,6 +34,7 @@ type FloatingDrawerProps = {
   panelId: string;
   renderToggle: (isOpen: boolean) => ReactNode;
   headerTrailing?: ReactNode;
+  compactHeaderTrailing?: boolean;
   children: (actions: { close: () => void }) => ReactNode;
 };
 
@@ -42,6 +46,7 @@ export function FloatingDrawer({
   panelId,
   renderToggle,
   headerTrailing,
+  compactHeaderTrailing,
   children,
 }: FloatingDrawerProps) {
   const [isOpen, setIsOpen] = useLocalStorage(storageKey, defaultOpen);
@@ -49,6 +54,8 @@ export function FloatingDrawer({
   const toggle = () => setIsOpen((open) => !open);
 
   const panelContent = children({ close });
+  const shouldShowHeaderAction = isOpen && headerTrailing;
+  const headerActionBeforeToggle = shouldShowHeaderAction && side === "right";
 
   const toggleButtonClassName = cn(
     DRAWER_HEADER_HOVER,
@@ -57,6 +64,7 @@ export function FloatingDrawer({
         ? DRAWER_HEADER_BUTTON
         : cn(DRAWER_HEADER_BUTTON, "w-full")
       : cn(DRAWER_COLLAPSED_BUTTON, "inline-flex"),
+    headerActionBeforeToggle && "justify-end",
     isOpen && !headerTrailing && DRAWER_TOGGLE_DIVIDER
   );
 
@@ -69,7 +77,7 @@ export function FloatingDrawer({
     >
       <span
         className={cn(
-          "flex w-full items-center gap-2",
+          "flex items-center gap-2",
           pressFeedbackGroupChildClassName
         )}
       >
@@ -89,16 +97,31 @@ export function FloatingDrawer({
           drawerWidthTransitionClassName
         )}
       >
-        {isOpen && headerTrailing ? (
+        {shouldShowHeaderAction ? (
           <div
             className={cn(
-              DRAWER_HEADER_GRID,
+              headerActionBeforeToggle
+                ? compactHeaderTrailing
+                  ? DRAWER_ICON_HEADER_GRID_REVERSED
+                  : DRAWER_HEADER_GRID_REVERSED
+                : compactHeaderTrailing
+                  ? DRAWER_ICON_HEADER_GRID
+                  : DRAWER_HEADER_GRID,
               DRAWER_SURFACE,
               DRAWER_TOGGLE_DIVIDER
             )}
           >
-            {toggleButton}
-            {headerTrailing}
+            {headerActionBeforeToggle ? (
+              <>
+                {headerTrailing}
+                {toggleButton}
+              </>
+            ) : (
+              <>
+                {toggleButton}
+                {headerTrailing}
+              </>
+            )}
           </div>
         ) : (
           toggleButton
