@@ -32,7 +32,7 @@ const historyClearButtonClassName = cn(
 
 const restoreButtonClassName = cn(
   sideActionButtonClassName,
-  "select-none bg-emerald-400 text-black dark:bg-purple-700 dark:text-white",
+  "select-none bg-emerald-400 text-black dark:bg-cyan-800 dark:text-white",
   "flex [@media(hover:hover)_and_(pointer:fine)]:lg:hidden",
   "[@media(hover:hover)_and_(pointer:fine)]:lg:group-hover:flex"
 );

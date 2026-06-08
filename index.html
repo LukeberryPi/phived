@@ -54,19 +54,16 @@
     <script>
       const localStorageTheme = localStorage.getItem("theme");
       const isBrowserDark =
-        window &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const isDarkMode = !!localStorageTheme
-        ? localStorageTheme === "dark"
-        : isBrowserDark;
+        window?.matchMedia?.("(prefers-color-scheme: dark)")?.matches ??
+        false;
+      const isDarkMode =
+        localStorageTheme === "dark" ||
+        (localStorageTheme !== "light" && isBrowserDark);
 
       if (isDarkMode) {
         document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
       } else {
         document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
       }
     </script>
   </head>

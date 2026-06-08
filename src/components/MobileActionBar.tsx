@@ -198,7 +198,7 @@ export function MobileActionBar() {
             aria-label="Help"
             className={cn(DRAWER_BODY, "w-full")}
           >
-            <HelpPanel onHideHelp={closeHelp} />
+            <HelpPanel onClose={closeHelp} />
           </div>
         )}
 

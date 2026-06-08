@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 import type { ThemePreference } from "src/utils/handleSetTheme";
 import { getStoredThemePreference, handleSetTheme } from "src/utils";
 
@@ -19,6 +20,12 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const systemDarkModeQuery = "(prefers-color-scheme: dark)";
 const themePreferenceCycle: ThemePreference[] = ["system", "dark", "light"];
+
+const themeToastMessages: Record<ThemePreference, string> = {
+  system: 'set to "follow your OS preference"',
+  dark: 'set to "always dark mode"',
+  light: 'set to "always light mode"',
+};
 
 function getSystemPrefersDark() {
   return window.matchMedia(systemDarkModeQuery).matches;
@@ -55,9 +62,12 @@ export function ThemeProvider({ children }: PropsWithChildren) {
   const toggleDarkMode = useCallback(() => {
     setThemePreference((current) => {
       const currentIndex = themePreferenceCycle.indexOf(current);
-      return themePreferenceCycle[
-        (currentIndex + 1) % themePreferenceCycle.length
-      ];
+      const next =
+        themePreferenceCycle[
+          (currentIndex + 1) % themePreferenceCycle.length
+        ];
+      toast(themeToastMessages[next]);
+      return next;
     });
   }, []);
 

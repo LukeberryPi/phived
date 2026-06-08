@@ -4,7 +4,7 @@
 
 @layer components {
   .task-panel {
-    @apply rounded-2xl border border-black bg-white shadow-brutalist-dark dark:border-white dark:bg-zinc-950 dark:shadow-brutalist-light;
+    @apply rounded-2xl border border-black bg-white dark:border-white dark:bg-zinc-950;
   }
 
   .toast-panel {

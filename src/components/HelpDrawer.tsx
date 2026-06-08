@@ -1,50 +1,50 @@
 import { FloatingDrawer } from "src/components/FloatingDrawer";
 import { pressFeedbackClassName } from "src/constants/motion";
-import { DRAWER_TEXT, KBD_CLASS } from "src/constants/ui";
-import { Question } from "src/icons";
+import { DRAWER_TEXT } from "src/constants/ui";
+import { Close, Question } from "src/icons";
 import { cn } from "src/utils";
 
 type HelpPanelProps = {
-  onHideHelp: () => void;
+  onClose: () => void;
 };
 
-export function HelpPanel({ onHideHelp }: HelpPanelProps) {
+export function HelpPanel({ onClose }: HelpPanelProps) {
   return (
-    <div className="space-y-3 px-5 pb-4 pt-4">
-      <h1>
+    <div className="relative space-y-3 px-5 pb-4">
+      <button
+        type="button"
+        aria-label="Close help"
+        onClick={onClose}
+        className={cn(
+          "absolute right-3 flex size-8 shrink-0 items-center justify-center rounded-full",
+          "sm:hover:bg-zinc-100 dark:sm:hover:bg-zinc-900",
+          pressFeedbackClassName
+        )}
+      >
+        <Close size={18} className="fill-black dark:fill-white" />
+      </button>
+      <h1 className="pr-9">
         Welcome to <strong>phived, the anti-procrastination to-do list.</strong>
       </h1>
       <h2>
-        Stay focused on what matters. You can only have up to five tasks at a time.
+        Stay focused on what matters. You can only have up to five tasks at a
+        time.
       </h2>
       <p>
         To add a new task, you first have to{" "}
         <strong>finish one you&apos;re already working on.</strong>
-        </p>  
-      <p>
-        No logins. No ads. No distractions.
       </p>
-      <p><a className="underline decoration-2 text-blue-500" href="https://www.phived.com" target="_blank" rel="noopener noreferrer">Open Source</a> and free. Forever.</p>
-      <hr className="my-4 h-px w-full border-black dark:border-white" />
+      <p>No logins. No ads. No distractions.</p>
       <p>
-        <kbd className={KBD_CLASS}>enter</kbd> navigates to the next task.
-      </p>
-      <p>
-        <kbd className={KBD_CLASS}>shift</kbd> + <kbd className={KBD_CLASS}>enter</kbd> navigates to the previous task.
-      </p>
-      <p>
-        <kbd className={KBD_CLASS}>ctrl</kbd> + <kbd className={KBD_CLASS}>enter</kbd> will complete the current task, or just click{" "}
-        <button
-          type="button"
-          onClick={onHideHelp}
-          className={cn(
-            "rounded-r-md border border-black px-2 py-1",
-            "bg-sky-300 text-black dark:border-white dark:bg-cyan-800 dark:text-white",
-            pressFeedbackClassName
-          )}
+        <a
+          className="text-blue-500 underline decoration-2"
+          href="https://www.phived.com"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          done
-        </button>
+          Open Source
+        </a>{" "}
+        and free. Forever.
       </p>
     </div>
   );
@@ -66,7 +66,7 @@ export function HelpDrawer() {
         </>
       )}
     >
-      {({ close }) => <HelpPanel onHideHelp={close} />}
+      {({ close }) => <HelpPanel onClose={close} />}
     </FloatingDrawer>
   );
 }

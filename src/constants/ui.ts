@@ -60,13 +60,13 @@ export const DRAWER_HEADER_HOVER =
   "sm:hover:bg-zinc-100 dark:sm:hover:bg-zinc-900";
 
 export const KBD_CLASS = cn(
-  "rounded border border-black bg-white px-2 py-1 font-sans",
+  "rounded border border-black/50 bg-white px-2 py-1 font-sans",
   DRAWER_TEXT,
-  "dark:border-white dark:bg-zinc-900"
+  "dark:border-white/50 dark:bg-zinc-900"
 );
 
 export const DRAWER_COUNT_BADGE = cn(
   "inline-flex size-6 shrink-0 items-center justify-center rounded-full",
   "border border-black bg-emerald-400 text-xs tabular-nums text-black",
-  "dark:border-white dark:bg-purple-700 dark:text-white"
+  "dark:border-white dark:bg-cyan-800 dark:text-white"
 );

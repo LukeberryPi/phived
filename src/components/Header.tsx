@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { toast } from "sonner";
+import { HotkeysDialog } from "src/components/HotkeysDialog";
 import { useGeneralTasksContext, useDarkMode } from "src/contexts";
 import {
   pressFeedbackClassName,
   pressFeedbackGroupChildClassName,
 } from "src/constants/motion";
 import { DRAWER_HEADER_HOVER } from "src/constants/ui";
-import { Computer, Trash, Moon, Sun } from "src/icons";
+import { Computer, Keyboard, Trash, Moon, Sun } from "src/icons";
 import { cn, countFilledTasks } from "src/utils";
 
 const NO_TASKS_TO_CLEAR_MESSAGE = "no tasks to clear.";
@@ -22,6 +24,7 @@ const clearTasksHoverClassName =
 export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
+  const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
   const noGeneralTasks = countFilledTasks(generalTasks) === 0;
   const themeIconClassName = "fill-black dark:fill-white";
@@ -55,7 +58,7 @@ export function Header() {
         <a href="/" className={cn(logoClassName, "hidden text-4xl md:flex")}>
           phived
         </a>
-        <nav className="flex h-full items-center justify-between gap-6">
+        <nav className="flex h-full items-center justify-between gap-4">
           <button
             onClick={toggleDarkMode}
             aria-label={`Theme: ${themePreference}`}
@@ -74,17 +77,17 @@ export function Header() {
             >
               {themePreference === "system" ? (
                 <>
-                  <Computer className={themeIconClassName} />
+                  <Computer size={20} className={themeIconClassName} />
                   system
                 </>
               ) : themePreference === "dark" ? (
                 <>
-                  <Moon className={themeIconClassName} />
+                  <Moon size={20} className={themeIconClassName} />
                   dark
                 </>
               ) : (
                 <>
-                  <Sun className={themeIconClassName} />
+                  <Sun size={20} className={themeIconClassName} />
                   light
                 </>
               )}
@@ -113,6 +116,7 @@ export function Header() {
               )}
             >
               <Trash
+                size={20}
                 className={cn(
                   "fill-black dark:fill-white",
                   noGeneralTasks
@@ -123,8 +127,31 @@ export function Header() {
               clear tasks
             </span>
           </button>
+          <button
+            aria-haspopup="dialog"
+            aria-expanded={hotkeysOpen}
+            aria-label="show hotkeys"
+            onClick={() => setHotkeysOpen(true)}
+            className={cn(
+              "group",
+              headerActionClassName,
+              "text-black dark:text-white",
+              DRAWER_HEADER_HOVER
+            )}
+          >
+            <span
+              className={cn(
+                "flex items-center gap-2",
+                pressFeedbackGroupChildClassName
+              )}
+            >
+              <Keyboard size={20} className="fill-black dark:fill-white" />
+              show hotkeys
+            </span>
+          </button>
         </nav>
       </header>
+      <HotkeysDialog open={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
     </>
   );
 }

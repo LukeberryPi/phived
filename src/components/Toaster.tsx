@@ -5,7 +5,7 @@ import { cn } from "src/utils";
 const toastClassName = cn(
   "toast-panel flex justify-center px-5 py-3.5",
   TOAST_WIDTH,
-  "text-base font-medium text-black dark:text-white"
+  "text-base font-light text-black dark:text-white"
 );
 
 export function Toaster() {

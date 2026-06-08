@@ -11,17 +11,14 @@ import {
   dragLiftClassName,
   dragScaleDownClassName,
   dragScaleUpClassName,
-  pressFeedbackClassName,
   pressFeedbackGroupChildClassName,
 } from "src/constants/motion";
 import { placeholders } from "src/content";
 import { useGeneralTasksContext } from "src/contexts";
 import { useTaskKeyboardNavigation, useTasksComponentWidth } from "src/hooks";
-import { DragVertical, Open } from "src/icons";
+import { DragVertical } from "src/icons";
 import {
-  appendProtocolToUrl,
   cn,
-  extractTaskLink,
   getRandomElement,
   isMobile,
   MAX_ACTIVE_TASKS,
@@ -78,7 +75,6 @@ export function GeneralTasks() {
     const isFirstTask = idx === 0;
     const isLastTask = idx === generalTasks.length - 1;
     const isEmptyTask = task.trim() === "";
-    const taskLink = extractTaskLink(task);
 
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
@@ -132,20 +128,6 @@ export function GeneralTasks() {
                         )
                   )}
                 />
-                <a
-                  href={appendProtocolToUrl(taskLink ?? "")}
-                  rel="noreferrer"
-                  target="_blank"
-                  className={cn(
-                    "absolute -left-14 flex size-14 flex-col items-center justify-center",
-                    "text-sm text-transparent",
-                    pressFeedbackClassName,
-                    taskLink &&
-                      "[@media(hover:hover)_and_(pointer:fine)]:hover:text-black [@media(hover:hover)_and_(pointer:fine)]:peer-hover:text-black dark:[@media(hover:hover)_and_(pointer:fine)]:hover:text-white dark:[@media(hover:hover)_and_(pointer:fine)]:peer-hover:text-white"
-                  )}
-                >
-                  <Open size={24} />
-                </a>
                 <span
                   {...provided.dragHandleProps}
                   aria-label="Drag handle to reorder task"
@@ -201,7 +183,7 @@ export function GeneralTasks() {
         onPointerDown={isResizable ? handlePointerDown : undefined}
         style={isResizable ? { width: `${width}px` } : undefined}
         className={cn(
-          "task-panel overflow-hidden",
+          "task-panel overflow-hidden shadow-brutalist-dark dark:shadow-brutalist-light",
           isResizable ? "min-w-[300px] resize-x" : TASK_PANEL_WIDTH
         )}
       >
