@@ -5,3 +5,4 @@ export { Sun } from "src/icons/Sun";
 export { Trash } from "src/icons/Trash";
 export { Question } from "src/icons/Question";
 export { Clock } from "src/icons/Clock";
+export { Computer } from "src/icons/Computer";

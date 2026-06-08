@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { HelpPanel } from "src/components/HelpDrawer";
 import {
   HistoryClearButton,
@@ -18,25 +19,29 @@ import {
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
 } from "src/constants/ui";
-import { pressFeedbackClassName } from "src/constants/motion";
+import { pressFeedbackGroupChildClassName } from "src/constants/motion";
 import { useGeneralTasksContext, useDarkMode } from "src/contexts";
-import { Clock, Moon, Question, Sun, Trash } from "src/icons";
+import { Clock, Computer, Moon, Question, Sun, Trash } from "src/icons";
 import { cn, countFilledTasks } from "src/utils";
 
+const NO_TASKS_TO_CLEAR_MESSAGE = "no tasks to clear.";
+
 const barActionClassName = cn(
-  "flex flex-1 flex-col items-center gap-1 px-2 py-3 text-sm font-medium",
-  "xs:flex-row xs:justify-center xs:gap-2 xs:px-4",
+  "flex flex-1 items-center justify-center px-2 py-3 text-sm font-medium",
+  "xs:px-4",
   DRAWER_TEXT,
-  SIDE_ACTION_BORDER,
-  pressFeedbackClassName,
-  DRAWER_HEADER_HOVER
+  SIDE_ACTION_BORDER
 );
+
+const barActionContentClassName =
+  "flex flex-col items-center gap-1 xs:flex-row xs:justify-center xs:gap-2 [&>*:first-child]:shrink-0";
 
 type BarActionProps = {
   icon: ReactNode;
   label: ReactNode;
   active?: boolean;
   className?: string;
+  unavailable?: boolean;
 } & React.ComponentPropsWithoutRef<"button">;
 
 function BarAction({
@@ -44,19 +49,29 @@ function BarAction({
   label,
   active,
   className,
+  unavailable,
   ...props
 }: BarActionProps) {
   return (
     <button
       className={cn(
+        "group",
         barActionClassName,
+        !unavailable && DRAWER_HEADER_HOVER,
         active && DRAWER_HEADER_ACTIVE,
         className
       )}
       {...props}
     >
-      <span className="shrink-0">{icon}</span>
-      <span className="flex items-center gap-2">{label}</span>
+      <span
+        className={cn(
+          barActionContentClassName,
+          !unavailable && pressFeedbackGroupChildClassName
+        )}
+      >
+        {icon}
+        {label}
+      </span>
     </button>
   );
 }
@@ -72,13 +87,22 @@ function HistoryToggleIcon({ historyCount }: { historyCount: number }) {
 export function MobileActionBar() {
   const { generalTasks, taskHistory, clearGeneralTasks, clearTaskHistory } =
     useGeneralTasksContext();
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { themePreference, toggleDarkMode } = useDarkMode();
   const historyCount = taskHistory.length;
   const noGeneralTasks = countFilledTasks(generalTasks) === 0;
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const themeIconClassName = "fill-black dark:fill-white";
 
   const closeHelp = () => setHelpOpen(false);
+  const handleClearTasks = () => {
+    if (noGeneralTasks) {
+      toast(NO_TASKS_TO_CLEAR_MESSAGE);
+      return;
+    }
+
+    clearGeneralTasks();
+  };
 
   const toggleHelp = () => {
     setHelpOpen((open) => !open);
@@ -126,22 +150,28 @@ export function MobileActionBar() {
           />
 
           <BarAction
-            role="switch"
-            aria-checked={isDarkMode}
+            aria-label={`Theme: ${themePreference}`}
             onClick={toggleDarkMode}
             icon={
-              isDarkMode ? (
-                <Sun size={20} className="fill-white" />
+              themePreference === "system" ? (
+                <Computer size={20} className={themeIconClassName} />
+              ) : themePreference === "dark" ? (
+                <Moon size={20} className={themeIconClassName} />
               ) : (
-                <Moon size={20} className={DRAWER_TEXT} />
+                <Sun size={20} className={themeIconClassName} />
               )
             }
-            label={isDarkMode ? "light" : "dark"}
+            label={themePreference}
           />
           <BarAction
             aria-disabled={noGeneralTasks}
-            disabled={noGeneralTasks}
-            onClick={clearGeneralTasks}
+            aria-label={
+              noGeneralTasks
+                ? "Clear tasks unavailable: no tasks to clear"
+                : "clear tasks"
+            }
+            onClick={handleClearTasks}
+            unavailable={noGeneralTasks}
             className={
               noGeneralTasks
                 ? cn("cursor-not-allowed", DRAWER_MUTED_TEXT)

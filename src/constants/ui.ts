@@ -10,6 +10,15 @@ export const DRAWER_TOGGLE_DIVIDER = "border-t border-black dark:border-white";
 export const DRAWER_HEADER_GRID =
   "grid min-h-12 grid-cols-[minmax(0,1fr)_5rem] items-stretch";
 
+export const DRAWER_HEADER_GRID_REVERSED =
+  "grid min-h-12 grid-cols-[5rem_minmax(0,1fr)] items-stretch";
+
+export const DRAWER_ICON_HEADER_GRID =
+  "grid min-h-12 grid-cols-[minmax(0,1fr)_3rem] items-stretch";
+
+export const DRAWER_ICON_HEADER_GRID_REVERSED =
+  "grid min-h-12 grid-cols-[3rem_minmax(0,1fr)] items-stretch";
+
 export const DRAWER_HEADER_ACTIVE = "bg-zinc-100 dark:bg-zinc-900";
 
 export const SIDE_ACTION_BORDER = "border-l border-black dark:border-white";
@@ -48,7 +57,7 @@ export const DRAWER_BODY = cn(
 );
 
 export const DRAWER_HEADER_HOVER =
-  "sm:hover:bg-zinc-50 dark:sm:hover:bg-zinc-900";
+  "sm:hover:bg-zinc-100 dark:sm:hover:bg-zinc-900";
 
 export const KBD_CLASS = cn(
   "rounded border border-black bg-white px-2 py-1 font-sans",

@@ -1,4 +1,5 @@
 import { FloatingDrawer } from "src/components/FloatingDrawer";
+import { pressFeedbackClassName } from "src/constants/motion";
 import { DRAWER_TEXT, KBD_CLASS } from "src/constants/ui";
 import { Question } from "src/icons";
 import { cn } from "src/utils";
@@ -33,15 +34,17 @@ export function HelpPanel({ onHideHelp }: HelpPanelProps) {
       </p>
       <p>
         <kbd className={KBD_CLASS}>ctrl</kbd> + <kbd className={KBD_CLASS}>enter</kbd> will complete the current task, or just click{" "}
-        <span
+        <button
+          type="button"
           onClick={onHideHelp}
           className={cn(
-            "cursor-pointer rounded-r-md border border-black px-2 py-1",
-            "bg-sky-300 text-black dark:border-white dark:bg-cyan-800 dark:text-white"
+            "rounded-r-md border border-black px-2 py-1",
+            "bg-sky-300 text-black dark:border-white dark:bg-cyan-800 dark:text-white",
+            pressFeedbackClassName
           )}
         >
           done
-        </span>
+        </button>
       </p>
     </div>
   );
