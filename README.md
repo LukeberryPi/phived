@@ -10,6 +10,11 @@ just you and your next few steps.
 
 ---
 
+## repository
+
+- `apps/web` — Vite, React, and TypeScript web app
+- `apps/macos-app` — native SwiftUI macOS app
+
 ## accessing locally
 
 you need these:
@@ -27,17 +32,36 @@ now, access the repo:
 
 `cd phived`
 
-finally, you should install dependencies:
+finally, install web dependencies from the repository root:
 
 `npm install`
 
-and build the website:
+run the website:
 
 `npm run dev`
 
 this url should be running phived:
 
 [http://localhost:5173/](http://localhost:5173/)
+
+Build both apps:
+
+`npm run build`
+
+Build and open the native app:
+
+`npm run dev:macos`
+
+The packaged app is written to `apps/macos-app/dist/Phived.app`.
+
+Run checks:
+
+- `npm run lint`
+- `npm run test:macos`
+
+With a full Xcode installation selected, run the XCTest suite with:
+
+`npm run test:macos:xctest`
 
 ---
 

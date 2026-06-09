@@ -25,7 +25,7 @@ export function TasksPageShell({ children }: PropsWithChildren) {
       onKeyDown={handleKeyDown}
       className={cn(
         "flex h-full w-full flex-col items-center justify-center",
-        "bg-gray-50 dark:bg-canvas"
+        "dark:bg-canvas bg-gray-50"
       )}
     >
       <HelmetProvider>

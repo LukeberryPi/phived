@@ -113,7 +113,7 @@ export function DeletionConfirmDialog({
       className={cn(
         APP_DIALOG,
         "task-panel m-auto w-[min(calc(100vw-2rem),28rem)] p-0",
-        "text-black dark:text-ink"
+        "dark:text-ink text-black"
       )}
     >
       {copy && (
@@ -132,7 +132,7 @@ export function DeletionConfirmDialog({
               onClick={onCancel}
               className={cn(DIALOG_CLOSE_BUTTON, pressFeedbackClassName)}
             >
-              <Close size={18} className="fill-black dark:fill-ink" />
+              <Close size={18} className="dark:fill-ink fill-black" />
             </button>
           </header>
 
@@ -145,13 +145,13 @@ export function DeletionConfirmDialog({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 border-t border-line dark:border-hairline">
+          <div className="border-line dark:border-hairline grid grid-cols-2 border-t">
             <button
               type="button"
               onClick={onCancel}
               className={cn(
-                "border-r border-line px-4 py-4 text-sm font-medium dark:border-hairline",
-                "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
+                "border-line dark:border-hairline border-r px-4 py-4 text-sm font-medium",
+                "dark:sm:hover:bg-surfaceHover sm:hover:bg-zinc-100",
                 pressFeedbackClassName
               )}
             >

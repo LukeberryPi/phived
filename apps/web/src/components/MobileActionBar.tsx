@@ -185,7 +185,7 @@ export function MobileActionBar() {
                 className={cn(
                   noGeneralTasks
                     ? "fill-muted dark:fill-inkMuted"
-                    : "fill-black dark:fill-ink"
+                    : "dark:fill-ink fill-black"
                 )}
               />
             }

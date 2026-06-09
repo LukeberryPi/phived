@@ -68,7 +68,7 @@ export function Header() {
             className={cn(
               pressFeedbackGroupClassName("theme"),
               headerActionClassName,
-              "text-black dark:text-ink",
+              "dark:text-ink text-black",
               DRAWER_HEADER_HOVER
             )}
           >
@@ -107,7 +107,7 @@ export function Header() {
             className={cn(
               pressFeedbackGroupClassName("clear-tasks"),
               headerActionClassName,
-              "text-black dark:text-ink",
+              "dark:text-ink text-black",
               noGeneralTasks ? "cursor-not-allowed" : clearTasksHoverClassName
             )}
           >
@@ -122,9 +122,9 @@ export function Header() {
               <Trash
                 size={20}
                 className={cn(
-                  "fill-black dark:fill-ink",
+                  "dark:fill-ink fill-black",
                   noGeneralTasks
-                    ? "fill-black/30 dark:fill-inkMuted"
+                    ? "dark:fill-inkMuted fill-black/30"
                     : "sm:group-hover/clear-tasks:fill-red-600 dark:sm:group-hover/clear-tasks:fill-red-500"
                 )}
               />
@@ -139,7 +139,7 @@ export function Header() {
             className={cn(
               pressFeedbackGroupClassName("hotkeys"),
               headerActionClassName,
-              "text-black dark:text-ink",
+              "dark:text-ink text-black",
               DRAWER_HEADER_HOVER
             )}
           >
@@ -149,7 +149,7 @@ export function Header() {
                 pressFeedbackGroupChildClassName("hotkeys")
               )}
             >
-              <Keyboard size={20} className="fill-black dark:fill-ink" />
+              <Keyboard size={20} className="dark:fill-ink fill-black" />
               show hotkeys
             </span>
           </button>

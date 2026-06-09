@@ -56,7 +56,7 @@ export function HistoryClearButton({
         pressFeedbackGroupClassName("clear-history"),
         historyClearButtonClassName,
         dividerSide === "right" &&
-          "border-l-0 border-r border-line dark:border-hairline",
+          "border-line dark:border-hairline border-l-0 border-r",
         "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
       )}
     >

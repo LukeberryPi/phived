@@ -153,7 +153,7 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  <DragVertical className="origin-center fill-black dark:fill-ink" />
+                  <DragVertical className="dark:fill-ink origin-center fill-black" />
                 </span>
                 <button
                   aria-label="complete task"
@@ -162,7 +162,7 @@ export function GeneralTasks() {
                   className={cn(
                     pressFeedbackGroupClassName("done"),
                     "select-none items-center justify-center",
-                    "border-b border-l border-line px-4 dark:border-edge",
+                    "border-line dark:border-edge border-b border-l px-4",
                     ACTION_ACCENT_SURFACE,
                     "xs:px-6 sm:text-lg",
                     !isDragActive && isFirstTask && "rounded-tr-2xl",
@@ -186,7 +186,7 @@ export function GeneralTasks() {
 
   return (
     <section className="flex flex-col items-center gap-4">
-      <p className="text-xl text-black dark:text-ink sm:text-2xl">
+      <p className="dark:text-ink text-xl text-black sm:text-2xl">
         what do you want to do?
       </p>
       <ul
@@ -194,7 +194,7 @@ export function GeneralTasks() {
         onPointerDown={isResizable ? handlePointerDown : undefined}
         style={isResizable ? { width: `${width}px` } : undefined}
         className={cn(
-          "task-panel overflow-hidden shadow-brutalist-dark dark:shadow-none",
+          "task-panel shadow-brutalist-dark overflow-hidden dark:shadow-none",
           isResizable ? "min-w-[300px] resize-x" : TASK_PANEL_WIDTH
         )}
       >
