@@ -1,6 +1,11 @@
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { KBD_CLASS } from "src/constants/ui";
+import {
+  APP_DIALOG,
+  DIALOG_CLOSE_BUTTON,
+  DIALOG_HEADER,
+  KBD_CLASS,
+} from "src/constants/ui";
 import { pressFeedbackClassName } from "src/constants/motion";
 import { Close } from "src/icons";
 import { cn } from "src/utils";
@@ -81,14 +86,14 @@ function Keys({ combos }: { combos: Combo[] }) {
       {combos.map((combo, comboIdx) => (
         <span key={comboIdx} className="flex items-center gap-1.5">
           {comboIdx > 0 && (
-            <span className="text-sm text-black/50 dark:text-inkMuted">or</span>
+            <span className="text-sm text-muted dark:text-inkMuted">or</span>
           )}
           {combo.map((key, keyIdx) => (
             <span key={keyIdx} className="flex items-center gap-1.5">
               {keyIdx > 0 && (
                 <span
                   aria-hidden="true"
-                  className="text-sm text-black/50 dark:text-inkMuted"
+                  className="text-sm text-muted dark:text-inkMuted"
                 >
                   +
                 </span>
@@ -173,13 +178,13 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
+        APP_DIALOG,
         "task-panel m-auto w-full max-w-3xl p-0 text-black dark:text-ink",
-        "max-h-[85vh] overflow-hidden",
-        "backdrop:bg-black/50"
+        "max-h-[85vh] overflow-hidden"
       )}
     >
       <div className="flex max-h-[85vh] flex-col">
-        <header className="flex items-center justify-between gap-3 border-b border-black px-5 py-4 dark:border-hairline">
+        <header className={DIALOG_HEADER}>
           <h2 id="hotkeys-dialog-title" className="text-xl font-medium">
             keyboard shortcuts
           </h2>
@@ -188,11 +193,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
             type="button"
             aria-label="Close keyboard shortcuts"
             onClick={onClose}
-            className={cn(
-              "flex size-8 shrink-0 items-center justify-center rounded-full",
-              "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
-              pressFeedbackClassName
-            )}
+            className={cn(DIALOG_CLOSE_BUTTON, pressFeedbackClassName)}
           >
             <Close size={18} className="fill-black dark:fill-ink" />
           </button>

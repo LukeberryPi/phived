@@ -9,13 +9,3 @@ export function getStoredThemePreference(): ThemePreference {
 
   return "system";
 }
-
-export function isThemeSetToDark() {
-  const themePreference = getStoredThemePreference();
-
-  if (themePreference !== "system") {
-    return themePreference === "dark";
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}

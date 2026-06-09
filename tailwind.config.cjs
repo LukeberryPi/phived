@@ -18,6 +18,9 @@ module.exports = {
       },
       colors: {
         softWhite: "#f9fafb", // slate50
+        // Light-mode neutrals — quiet the interior while the black frame stays bold
+        muted: "#71717a", // zinc-500 — secondary text/icons
+        line: "#a1a1aa", // zinc-400 — quiet internal borders/dividers
         // Cool, blue-tinted dark-mode palette (applied only behind dark:)
         canvas: "#0a0c10",
         surface: "#14171d",

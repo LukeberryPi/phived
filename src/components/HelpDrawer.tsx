@@ -10,7 +10,7 @@ type HelpPanelProps = {
 
 export function HelpPanel({ onClose }: HelpPanelProps) {
   return (
-    <div className="relative space-y-3 px-5 pb-4">
+    <div className="relative space-y-3 px-5 pb-4 text-sm">
       <button
         type="button"
         aria-label="Close help"
@@ -34,11 +34,11 @@ export function HelpPanel({ onClose }: HelpPanelProps) {
         To add a new task, you first have to{" "}
         <strong>finish one you&apos;re already working on.</strong>
       </p>
-      <p>No logins. No ads. No distractions.</p>
+      <p>No login. No ads. No distractions.</p>
       <p>
         <a
-          className="text-blue-500 underline decoration-2"
-          href="https://www.phived.com"
+          className="text-blue-600 underline decoration-2 dark:text-blue-500"
+          href="https://www.github.com/lukeberrypi/phived"
           target="_blank"
           rel="noopener noreferrer"
         >

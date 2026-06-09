@@ -15,6 +15,7 @@ import {
 import {
   drawerWidthTransitionClassName,
   pressFeedbackGroupChildClassName,
+  pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { useLocalStorage } from "src/hooks";
 import { cn } from "src/utils";
@@ -73,12 +74,15 @@ export function FloatingDrawer({
       aria-expanded={isOpen}
       aria-controls={panelId}
       onClick={toggle}
-      className={cn("group", toggleButtonClassName)}
+      className={cn(
+        pressFeedbackGroupClassName("drawer-toggle"),
+        toggleButtonClassName
+      )}
     >
       <span
         className={cn(
           "flex items-center gap-2",
-          pressFeedbackGroupChildClassName
+          pressFeedbackGroupChildClassName("drawer-toggle")
         )}
       >
         {renderToggle(isOpen)}

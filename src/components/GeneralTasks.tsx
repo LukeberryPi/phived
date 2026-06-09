@@ -6,12 +6,18 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
-import { HOVER_REVEAL, ROW_DIVIDER, TASK_PANEL_WIDTH } from "src/constants/ui";
+import {
+  ACTION_ACCENT_SURFACE,
+  HOVER_REVEAL,
+  ROW_DIVIDER,
+  TASK_PANEL_WIDTH,
+} from "src/constants/ui";
 import {
   dragLiftClassName,
   dragScaleDownClassName,
   dragScaleUpClassName,
   pressFeedbackGroupChildClassName,
+  pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { placeholders } from "src/content";
 import { useGeneralTasksContext } from "src/contexts";
@@ -96,7 +102,7 @@ export function GeneralTasks() {
             >
               <div
                 className={cn(
-                  "group relative flex w-full origin-center",
+                  "group/row relative flex w-full origin-center",
                   isDragging && cn(dragLiftClassName, dragScaleUpClassName),
                   isDropAnimating &&
                     cn(dragLiftClassName, dragScaleDownClassName)
@@ -117,7 +123,9 @@ export function GeneralTasks() {
                   className={cn(
                     "peer w-full bg-white px-5 py-4 text-black focus:outline-none",
                     "dark:bg-surface dark:text-ink sm:text-lg",
-                    !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2",
+                    !isEmptyTask &&
+                      multipleGeneralTasks &&
+                      "group-hover/row:pr-2",
                     someDragIsHappening && "cursor-grabbing",
                     isDragActive
                       ? "rounded-2xl border-0"
@@ -152,10 +160,11 @@ export function GeneralTasks() {
                   aria-keyshortcuts="control+enter"
                   onClick={() => completeGeneralTask(idx)}
                   className={cn(
-                    "group",
+                    pressFeedbackGroupClassName("done"),
                     "select-none items-center justify-center",
-                    "border-b border-l border-black bg-sky-300 px-4",
-                    "dark:border-edge dark:bg-cyan-800 dark:text-ink xs:px-6 sm:text-lg",
+                    "border-b border-l border-line px-4 dark:border-edge",
+                    ACTION_ACCENT_SURFACE,
+                    "xs:px-6 sm:text-lg",
                     !isDragActive && isFirstTask && "rounded-tr-2xl",
                     !isDragActive && isLastTask && "rounded-br-2xl",
                     isEmptyTask || anotherTaskIsBeingDragged || isDragActive
@@ -163,7 +172,9 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  <span className={pressFeedbackGroupChildClassName}>done</span>
+                  <span className={pressFeedbackGroupChildClassName("done")}>
+                    done
+                  </span>
                 </button>
               </div>
             </li>
