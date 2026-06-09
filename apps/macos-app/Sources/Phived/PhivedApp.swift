@@ -113,15 +113,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
 struct AppRootView: View {
     @EnvironmentObject private var store: TaskStore
+    @Environment(\.colorScheme) private var systemScheme
 
     var body: some View {
         ContentView()
-            .preferredColorScheme(colorScheme)
+            .environment(\.palette, .current(resolvedScheme))
+            .preferredColorScheme(preferredColorScheme)
     }
 
-    private var colorScheme: ColorScheme? {
+    private var preferredColorScheme: ColorScheme? {
         switch store.theme {
         case .system: nil
+        case .dark: .dark
+        case .light: .light
+        }
+    }
+
+    private var resolvedScheme: ColorScheme {
+        switch store.theme {
+        case .system: systemScheme
         case .dark: .dark
         case .light: .light
         }

@@ -14,15 +14,26 @@ enum ThemePreference: String, Codable, CaseIterable {
         let values = Self.allCases
         return values[(values.firstIndex(of: self)! + 1) % values.count]
     }
+
+    var toastCopy: String {
+        switch self {
+        case .system: "set to \"follow your OS preference\""
+        case .dark: "set to \"always dark mode\""
+        case .light: "set to \"always light mode\""
+        }
+    }
 }
 
 @MainActor
 final class TaskStore: ObservableObject {
     static let taskCount = 5
+    static let minPanelWidth: Double = 300
+    static let maxPanelWidth: Double = 720
+    static let defaultPanelWidth: Double = 400
 
-    @Published var tasks: [String] { didSet { save() } }
-    @Published var history: [HistoryEntry] { didSet { save() } }
-    @Published var theme: ThemePreference { didSet { save() } }
+    @Published var tasks: [String] { didSet { persistTasks() } }
+    @Published var history: [HistoryEntry] { didSet { persistHistory() } }
+    @Published var theme: ThemePreference { didSet { persist(theme.rawValue, key: Keys.theme) } }
     @Published var helpOpen: Bool { didSet { persist(helpOpen, key: Keys.help) } }
     @Published var historyOpen: Bool { didSet { persist(historyOpen, key: Keys.historyOpen) } }
     @Published var taskPanelWidth: Double { didSet { persist(taskPanelWidth, key: Keys.panelWidth) } }
@@ -33,9 +44,8 @@ final class TaskStore: ObservableObject {
     private let defaults: UserDefaults
     private var persistenceEnabled = false
 
-    enum Confirmation: String, Identifiable {
+    enum Confirmation {
         case tasks, history
-        var id: String { rawValue }
     }
 
     struct ToastMessage: Identifiable, Equatable {
@@ -61,38 +71,13 @@ final class TaskStore: ObservableObject {
         theme = ThemePreference(rawValue: defaults.string(forKey: Keys.theme) ?? "") ?? .system
         helpOpen = defaults.object(forKey: Keys.help) as? Bool ?? true
         historyOpen = defaults.object(forKey: Keys.historyOpen) as? Bool ?? true
-        taskPanelWidth = defaults.object(forKey: Keys.panelWidth) as? Double ?? 400
+        taskPanelWidth = defaults.object(forKey: Keys.panelWidth) as? Double ?? Self.defaultPanelWidth
         placeholder = AppContent.placeholders.randomElement()!
 
-        let snapshotState = ProcessInfo.processInfo.environment["PHIVED_SNAPSHOT_STATE"]
-        if snapshotState != nil {
-            tasks = Self.emptyTasks()
-            history = []
-            theme = .system
-            helpOpen = true
-            historyOpen = true
-            taskPanelWidth = 400
-        }
-
-        switch snapshotState {
-        case "populated":
-            tasks = ["ship the native app", "compare every pixel", "", "", ""]
-            history = [
-                HistoryEntry(id: UUID(), text: "build the monorepo", completedAt: Date()),
-                HistoryEntry(id: UUID(), text: "move the web app", completedAt: Calendar.current.date(byAdding: .day, value: -1, to: Date())!)
-            ]
-        case "dialog":
-            tasks = ["ship the native app", "", "", "", ""]
-            confirmation = .tasks
-        case "light":
-            theme = .light
-        default:
-            break
-        }
-        persistenceEnabled = snapshotState == nil
+        persistenceEnabled = !seedSnapshotStateIfRequested()
     }
 
-    var filledTaskCount: Int { tasks.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }.count }
+    var filledTaskCount: Int { tasks.filter { !$0.isBlank }.count }
 
     func complete(_ index: Int) {
         guard tasks.indices.contains(index) else { return }
@@ -105,7 +90,7 @@ final class TaskStore: ObservableObject {
     }
 
     func restore(_ entry: HistoryEntry) {
-        guard let slot = tasks.firstIndex(where: { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) else {
+        guard let slot = tasks.firstIndex(where: { $0.isBlank }) else {
             showToast("can't restore — you already have 5 tasks! complete one first.", error: true)
             return
         }
@@ -139,12 +124,7 @@ final class TaskStore: ObservableObject {
 
     func cycleTheme() {
         theme = theme.next
-        let copy: [ThemePreference: String] = [
-            .system: "set to \"follow your OS preference\"",
-            .dark: "set to \"always dark mode\"",
-            .light: "set to \"always light mode\""
-        ]
-        showToast(copy[theme]!)
+        showToast(theme.toastCopy)
     }
 
     func showToast(_ text: String, error: Bool = false) {
@@ -161,11 +141,14 @@ final class TaskStore: ObservableObject {
 
     static func emptyTasks() -> [String] { Array(repeating: "", count: taskCount) }
 
-    private func save() {
+    private func persistTasks() {
         guard persistenceEnabled else { return }
         defaults.set(try? JSONEncoder().encode(tasks), forKey: Keys.tasks)
+    }
+
+    private func persistHistory() {
+        guard persistenceEnabled else { return }
         defaults.set(try? JSONEncoder().encode(history), forKey: Keys.history)
-        defaults.set(theme.rawValue, forKey: Keys.theme)
     }
 
     private func persist(_ value: Any, key: String) {
