@@ -6,22 +6,25 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
-import { HOVER_REVEAL, ROW_DIVIDER, TASK_PANEL_WIDTH } from "src/constants/ui";
+import {
+  ACTION_ACCENT_SURFACE,
+  HOVER_REVEAL,
+  ROW_DIVIDER,
+  TASK_PANEL_WIDTH,
+} from "src/constants/ui";
 import {
   dragLiftClassName,
   dragScaleDownClassName,
   dragScaleUpClassName,
-  pressFeedbackClassName,
   pressFeedbackGroupChildClassName,
+  pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { placeholders } from "src/content";
 import { useGeneralTasksContext } from "src/contexts";
 import { useTaskKeyboardNavigation, useTasksComponentWidth } from "src/hooks";
-import { DragVertical, Open } from "src/icons";
+import { DragVertical } from "src/icons";
 import {
-  appendProtocolToUrl,
   cn,
-  extractTaskLink,
   getRandomElement,
   isMobile,
   MAX_ACTIVE_TASKS,
@@ -78,7 +81,6 @@ export function GeneralTasks() {
     const isFirstTask = idx === 0;
     const isLastTask = idx === generalTasks.length - 1;
     const isEmptyTask = task.trim() === "";
-    const taskLink = extractTaskLink(task);
 
     return (
       <Draggable draggableId={idx.toString()} index={idx} key={idx}>
@@ -100,7 +102,7 @@ export function GeneralTasks() {
             >
               <div
                 className={cn(
-                  "group relative flex w-full origin-center",
+                  "group/row relative flex w-full origin-center",
                   isDragging && cn(dragLiftClassName, dragScaleUpClassName),
                   isDropAnimating &&
                     cn(dragLiftClassName, dragScaleDownClassName)
@@ -120,8 +122,10 @@ export function GeneralTasks() {
                   onKeyDown={(event) => handleKeyDown(event, idx)}
                   className={cn(
                     "peer w-full bg-white px-5 py-4 text-black focus:outline-none",
-                    "dark:bg-zinc-950 dark:text-white sm:text-lg",
-                    !isEmptyTask && multipleGeneralTasks && "group-hover:pr-2",
+                    "dark:bg-surface dark:text-ink sm:text-lg",
+                    !isEmptyTask &&
+                      multipleGeneralTasks &&
+                      "group-hover/row:pr-2",
                     someDragIsHappening && "cursor-grabbing",
                     isDragActive
                       ? "rounded-2xl border-0"
@@ -132,20 +136,6 @@ export function GeneralTasks() {
                         )
                   )}
                 />
-                <a
-                  href={appendProtocolToUrl(taskLink ?? "")}
-                  rel="noreferrer"
-                  target="_blank"
-                  className={cn(
-                    "absolute -left-14 flex size-14 flex-col items-center justify-center",
-                    "text-sm text-transparent",
-                    pressFeedbackClassName,
-                    taskLink &&
-                      "[@media(hover:hover)_and_(pointer:fine)]:hover:text-black [@media(hover:hover)_and_(pointer:fine)]:peer-hover:text-black dark:[@media(hover:hover)_and_(pointer:fine)]:hover:text-white dark:[@media(hover:hover)_and_(pointer:fine)]:peer-hover:text-white"
-                  )}
-                >
-                  <Open size={24} />
-                </a>
                 <span
                   {...provided.dragHandleProps}
                   aria-label="Drag handle to reorder task"
@@ -153,7 +143,7 @@ export function GeneralTasks() {
                   className={cn(
                     "group/drag flex items-center justify-center bg-white pr-2",
                     "text-black placeholder:select-none hover:cursor-grab",
-                    "dark:bg-zinc-950 dark:text-white sm:text-lg",
+                    "dark:bg-surface dark:text-ink sm:text-lg",
                     !isLastTask && !isDragActive && ROW_DIVIDER,
                     isEmptyTask ||
                       !multipleGeneralTasks ||
@@ -163,17 +153,18 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  <DragVertical className="origin-center fill-black dark:fill-white" />
+                  <DragVertical className="origin-center fill-black dark:fill-ink" />
                 </span>
                 <button
                   aria-label="complete task"
                   aria-keyshortcuts="control+enter"
                   onClick={() => completeGeneralTask(idx)}
                   className={cn(
-                    "group",
+                    pressFeedbackGroupClassName("done"),
                     "select-none items-center justify-center",
-                    "border-b border-l border-black bg-sky-300 px-4",
-                    "dark:border-white dark:bg-cyan-800 dark:text-white xs:px-6 sm:text-lg",
+                    "border-b border-l border-line px-4 dark:border-edge",
+                    ACTION_ACCENT_SURFACE,
+                    "xs:px-6 sm:text-lg",
                     !isDragActive && isFirstTask && "rounded-tr-2xl",
                     !isDragActive && isLastTask && "rounded-br-2xl",
                     isEmptyTask || anotherTaskIsBeingDragged || isDragActive
@@ -181,7 +172,9 @@ export function GeneralTasks() {
                       : HOVER_REVEAL
                   )}
                 >
-                  <span className={pressFeedbackGroupChildClassName}>done</span>
+                  <span className={pressFeedbackGroupChildClassName("done")}>
+                    done
+                  </span>
                 </button>
               </div>
             </li>
@@ -193,7 +186,7 @@ export function GeneralTasks() {
 
   return (
     <section className="flex flex-col items-center gap-4">
-      <p className="text-xl text-black dark:text-white sm:text-2xl">
+      <p className="text-xl text-black dark:text-ink sm:text-2xl">
         what do you want to do?
       </p>
       <ul
@@ -201,7 +194,7 @@ export function GeneralTasks() {
         onPointerDown={isResizable ? handlePointerDown : undefined}
         style={isResizable ? { width: `${width}px` } : undefined}
         className={cn(
-          "task-panel overflow-hidden",
+          "task-panel overflow-hidden shadow-brutalist-dark dark:shadow-none",
           isResizable ? "min-w-[300px] resize-x" : TASK_PANEL_WIDTH
         )}
       >

@@ -1,17 +1,22 @@
+import { useState } from "react";
 import { toast } from "sonner";
+import { HotkeysDialog } from "src/components/HotkeysDialog";
 import { useGeneralTasksContext, useDarkMode } from "src/contexts";
 import {
   pressFeedbackClassName,
   pressFeedbackGroupChildClassName,
+  pressFeedbackGroupClassName,
 } from "src/constants/motion";
-import { DRAWER_HEADER_HOVER } from "src/constants/ui";
-import { Computer, Trash, Moon, Sun } from "src/icons";
+import {
+  DRAWER_HEADER_HOVER,
+  NO_TASKS_TO_CLEAR_MESSAGE,
+} from "src/constants/ui";
+import { Computer, Keyboard, Trash, Moon, Sun } from "src/icons";
 import { cn, countFilledTasks } from "src/utils";
 
-const NO_TASKS_TO_CLEAR_MESSAGE = "no tasks to clear.";
 const logoClassName = cn(
-  "font-normal text-black underline decoration-2 underline-offset-4",
-  "decoration-sky-300 dark:text-white dark:decoration-cyan-800",
+  "font-normal text-black underline decoration-3 underline-offset-4",
+  "decoration-sky-300 dark:text-ink dark:decoration-cyan-800",
   pressFeedbackClassName
 );
 const headerActionClassName =
@@ -22,9 +27,10 @@ const clearTasksHoverClassName =
 export function Header() {
   const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
+  const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
   const noGeneralTasks = countFilledTasks(generalTasks) === 0;
-  const themeIconClassName = "fill-black dark:fill-white";
+  const themeIconClassName = "fill-black dark:fill-ink";
   const handleClearTasks = () => {
     if (noGeneralTasks) {
       toast(NO_TASKS_TO_CLEAR_MESSAGE);
@@ -52,39 +58,39 @@ export function Header() {
           "sm:flex"
         )}
       >
-        <a href="/" className={cn(logoClassName, "hidden text-4xl md:flex")}>
+        <a href="/" className={cn(logoClassName, "hidden text-4xl sm:flex")}>
           phived
         </a>
-        <nav className="flex h-full items-center justify-between gap-6">
+        <nav className="flex h-full items-center justify-between gap-4">
           <button
             onClick={toggleDarkMode}
             aria-label={`Theme: ${themePreference}`}
             className={cn(
-              "group",
+              pressFeedbackGroupClassName("theme"),
               headerActionClassName,
-              "text-black dark:text-white",
+              "text-black dark:text-ink",
               DRAWER_HEADER_HOVER
             )}
           >
             <span
               className={cn(
                 "flex items-center gap-2",
-                pressFeedbackGroupChildClassName
+                pressFeedbackGroupChildClassName("theme")
               )}
             >
               {themePreference === "system" ? (
                 <>
-                  <Computer className={themeIconClassName} />
+                  <Computer size={20} className={themeIconClassName} />
                   system
                 </>
               ) : themePreference === "dark" ? (
                 <>
-                  <Moon className={themeIconClassName} />
+                  <Moon size={20} className={themeIconClassName} />
                   dark
                 </>
               ) : (
                 <>
-                  <Sun className={themeIconClassName} />
+                  <Sun size={20} className={themeIconClassName} />
                   light
                 </>
               )}
@@ -99,32 +105,57 @@ export function Header() {
             }
             onClick={handleClearTasks}
             className={cn(
-              "group",
+              pressFeedbackGroupClassName("clear-tasks"),
               headerActionClassName,
-              "text-black dark:text-white",
+              "text-black dark:text-ink",
               noGeneralTasks ? "cursor-not-allowed" : clearTasksHoverClassName
             )}
           >
             <span
               className={cn(
                 "flex items-center gap-2",
-                !noGeneralTasks && pressFeedbackGroupChildClassName,
-                noGeneralTasks && "text-black/40 dark:text-white/30"
+                !noGeneralTasks &&
+                  pressFeedbackGroupChildClassName("clear-tasks"),
+                noGeneralTasks && "text-muted dark:text-inkMuted"
               )}
             >
               <Trash
+                size={20}
                 className={cn(
-                  "fill-black dark:fill-white",
+                  "fill-black dark:fill-ink",
                   noGeneralTasks
-                    ? "fill-black/30 dark:fill-white/30"
-                    : "sm:group-hover:fill-red-600 dark:sm:group-hover:fill-red-500"
+                    ? "fill-black/30 dark:fill-inkMuted"
+                    : "sm:group-hover/clear-tasks:fill-red-600 dark:sm:group-hover/clear-tasks:fill-red-500"
                 )}
               />
               clear tasks
             </span>
           </button>
+          <button
+            aria-haspopup="dialog"
+            aria-expanded={hotkeysOpen}
+            aria-label="show hotkeys"
+            onClick={() => setHotkeysOpen(true)}
+            className={cn(
+              pressFeedbackGroupClassName("hotkeys"),
+              headerActionClassName,
+              "text-black dark:text-ink",
+              DRAWER_HEADER_HOVER
+            )}
+          >
+            <span
+              className={cn(
+                "flex items-center gap-2",
+                pressFeedbackGroupChildClassName("hotkeys")
+              )}
+            >
+              <Keyboard size={20} className="fill-black dark:fill-ink" />
+              show hotkeys
+            </span>
+          </button>
         </nav>
       </header>
+      <HotkeysDialog open={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
     </>
   );
 }

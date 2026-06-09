@@ -1,19 +1,18 @@
-import { DESKTOP_BREAKPOINT } from "src/constants/ui";
-import { getViewportWidth } from "src/utils/getViewportWidth";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_PANEL_HORIZONTAL_INSET_PX,
+} from "src/constants/ui";
 
-export const DESKTOP_TASK_LIST_WIDTH = 400;
+const DESKTOP_TASK_LIST_WIDTH = 400;
 
 export function setTasksDefaultWidth() {
-  const viewportWidth = getViewportWidth();
+  const viewportWidth = window.innerWidth;
 
   if (viewportWidth < DESKTOP_BREAKPOINT) {
-    if (viewportWidth < 400) {
-      return 300;
-    }
-    if (viewportWidth < 500) {
-      return 320;
-    }
-    return 384;
+    return Math.min(
+      DESKTOP_TASK_LIST_WIDTH,
+      viewportWidth - MOBILE_PANEL_HORIZONTAL_INSET_PX
+    );
   }
 
   return DESKTOP_TASK_LIST_WIDTH;

@@ -16,15 +16,17 @@ import {
   DRAWER_SURFACE,
   DRAWER_TEXT,
   DRAWER_TOGGLE_DIVIDER,
+  NO_TASKS_TO_CLEAR_MESSAGE,
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
 } from "src/constants/ui";
-import { pressFeedbackGroupChildClassName } from "src/constants/motion";
+import {
+  pressFeedbackGroupChildClassName,
+  pressFeedbackGroupClassName,
+} from "src/constants/motion";
 import { useGeneralTasksContext, useDarkMode } from "src/contexts";
 import { Clock, Computer, Moon, Question, Sun, Trash } from "src/icons";
 import { cn, countFilledTasks } from "src/utils";
-
-const NO_TASKS_TO_CLEAR_MESSAGE = "no tasks to clear.";
 
 const barActionClassName = cn(
   "flex flex-1 items-center justify-center px-2 py-3 text-sm font-medium",
@@ -55,7 +57,7 @@ function BarAction({
   return (
     <button
       className={cn(
-        "group",
+        pressFeedbackGroupClassName("bar-action"),
         barActionClassName,
         !unavailable && DRAWER_HEADER_HOVER,
         active && DRAWER_HEADER_ACTIVE,
@@ -66,7 +68,7 @@ function BarAction({
       <span
         className={cn(
           barActionContentClassName,
-          !unavailable && pressFeedbackGroupChildClassName
+          !unavailable && pressFeedbackGroupChildClassName("bar-action")
         )}
       >
         {icon}
@@ -92,7 +94,7 @@ export function MobileActionBar() {
   const noGeneralTasks = countFilledTasks(generalTasks) === 0;
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const themeIconClassName = "fill-black dark:fill-white";
+  const themeIconClassName = "fill-black dark:fill-ink";
 
   const closeHelp = () => setHelpOpen(false);
   const handleClearTasks = () => {
@@ -182,8 +184,8 @@ export function MobileActionBar() {
                 size={20}
                 className={cn(
                   noGeneralTasks
-                    ? "fill-black/30 dark:fill-white/30"
-                    : "fill-black dark:fill-white"
+                    ? "fill-muted dark:fill-inkMuted"
+                    : "fill-black dark:fill-ink"
                 )}
               />
             }
@@ -198,7 +200,7 @@ export function MobileActionBar() {
             aria-label="Help"
             className={cn(DRAWER_BODY, "w-full")}
           >
-            <HelpPanel onHideHelp={closeHelp} />
+            <HelpPanel onClose={closeHelp} />
           </div>
         )}
 
@@ -209,11 +211,26 @@ export function MobileActionBar() {
             aria-label="Task history"
             className={cn(DRAWER_BODY, "w-full")}
           >
-            <div
-              className={cn(DRAWER_HEADER_GRID, DRAWER_SURFACE, ROW_DIVIDER)}
-            >
+            {historyCount > 0 ? (
+              <div
+                className={cn(DRAWER_HEADER_GRID, DRAWER_SURFACE, ROW_DIVIDER)}
+              >
+                <div
+                  className={cn(
+                    "flex min-h-12 items-center gap-2 px-4 text-sm font-medium",
+                    DRAWER_TEXT
+                  )}
+                >
+                  <HistoryToggleIcon historyCount={historyCount} />
+                  <span>history</span>
+                </div>
+                <HistoryClearButton onClick={clearTaskHistory} />
+              </div>
+            ) : (
               <div
                 className={cn(
+                  DRAWER_SURFACE,
+                  ROW_DIVIDER,
                   "flex min-h-12 items-center gap-2 px-4 text-sm font-medium",
                   DRAWER_TEXT
                 )}
@@ -221,11 +238,7 @@ export function MobileActionBar() {
                 <HistoryToggleIcon historyCount={historyCount} />
                 <span>history</span>
               </div>
-              <HistoryClearButton
-                disabled={historyCount === 0}
-                onClick={clearTaskHistory}
-              />
-            </div>
+            )}
             <HistoryPanel />
           </div>
         )}

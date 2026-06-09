@@ -1,6 +1,6 @@
-import { toast } from "sonner";
 import { FloatingDrawer } from "src/components/FloatingDrawer";
 import {
+  ACTION_ACCENT_SURFACE,
   DRAWER_COUNT_BADGE,
   DRAWER_HEADER_GRID,
   DRAWER_MUTED_TEXT,
@@ -9,12 +9,13 @@ import {
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
 } from "src/constants/ui";
-import { pressFeedbackGroupChildClassName } from "src/constants/motion";
+import {
+  pressFeedbackGroupChildClassName,
+  pressFeedbackGroupClassName,
+} from "src/constants/motion";
 import { useGeneralTasksContext } from "src/contexts";
 import { Clock, Trash } from "src/icons";
 import { cn, formatHistoryWhen } from "src/utils";
-
-const NO_HISTORY_TO_CLEAR_MESSAGE = "no task history to clear.";
 
 const sideActionColumnClassName = "flex min-h-12 items-stretch";
 
@@ -32,60 +33,38 @@ const historyClearButtonClassName = cn(
 
 const restoreButtonClassName = cn(
   sideActionButtonClassName,
-  "select-none bg-emerald-400 text-black dark:bg-purple-700 dark:text-white",
+  "select-none",
+  ACTION_ACCENT_SURFACE,
   "flex [@media(hover:hover)_and_(pointer:fine)]:lg:hidden",
-  "[@media(hover:hover)_and_(pointer:fine)]:lg:group-hover:flex"
+  "[@media(hover:hover)_and_(pointer:fine)]:lg:group-hover/row:flex"
 );
 
 type HistoryClearButtonProps = {
-  disabled: boolean;
   onClick: () => void;
   dividerSide?: "left" | "right";
 };
 
 export function HistoryClearButton({
-  disabled,
   onClick,
   dividerSide = "left",
 }: HistoryClearButtonProps) {
-  const handleClick = () => {
-    if (disabled) {
-      toast(NO_HISTORY_TO_CLEAR_MESSAGE);
-      return;
-    }
-
-    onClick();
-  };
-
   return (
     <button
-      aria-disabled={disabled}
-      aria-label={
-        disabled
-          ? "Clear history unavailable: no task history to clear"
-          : "clear history"
-      }
-      onClick={handleClick}
+      aria-label="clear history"
+      onClick={onClick}
       className={cn(
-        "group",
+        pressFeedbackGroupClassName("clear-history"),
         historyClearButtonClassName,
         dividerSide === "right" &&
-          "border-l-0 border-r border-black dark:border-white",
-        disabled
-          ? "cursor-not-allowed text-black/40 dark:text-white/30"
-          : "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
+          "border-l-0 border-r border-line dark:border-hairline",
+        "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
       )}
     >
       <span
         aria-hidden="true"
-        className={cn(!disabled && pressFeedbackGroupChildClassName)}
+        className={pressFeedbackGroupChildClassName("clear-history")}
       >
-        <Trash
-          size={20}
-          className={cn(
-            disabled ? "fill-black/30 dark:fill-white/30" : "fill-current"
-          )}
-        />
+        <Trash size={20} className="fill-current" />
       </span>
     </button>
   );
@@ -115,7 +94,7 @@ export function HistoryPanel() {
               key={entry.id}
               className={cn(
                 DRAWER_HEADER_GRID,
-                "group",
+                "group/row",
                 !isLastEntry && ROW_DIVIDER
               )}
             >
@@ -147,9 +126,12 @@ export function HistoryPanel() {
               <div className={sideActionColumnClassName}>
                 <button
                   onClick={() => restoreTaskFromHistory(entry.id)}
-                  className={cn("group", restoreButtonClassName)}
+                  className={cn(
+                    pressFeedbackGroupClassName("restore"),
+                    restoreButtonClassName
+                  )}
                 >
-                  <span className={pressFeedbackGroupChildClassName}>
+                  <span className={pressFeedbackGroupChildClassName("restore")}>
                     restore
                   </span>
                 </button>
@@ -184,11 +166,9 @@ export function TaskHistoryDrawer() {
         </>
       )}
       headerTrailing={
-        <HistoryClearButton
-          disabled={historyCount === 0}
-          onClick={clearTaskHistory}
-          dividerSide="right"
-        />
+        historyCount > 0 ? (
+          <HistoryClearButton onClick={clearTaskHistory} dividerSide="right" />
+        ) : undefined
       }
       compactHeaderTrailing
     >

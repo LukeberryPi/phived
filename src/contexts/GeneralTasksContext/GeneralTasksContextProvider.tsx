@@ -1,12 +1,14 @@
 import type { PropsWithChildren } from "react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import type { DeletionConfirmTarget } from "src/components/DeletionConfirmDialog";
+import { DeletionConfirmDialog } from "src/components/DeletionConfirmDialog";
 import { toast } from "sonner";
 import { incentives } from "src/content";
 import { GeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
 import type { GeneralTask } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
 import { useLocalStorage, useMutateTaskStore } from "src/hooks";
 import type { TaskHistory } from "src/types/taskHistory";
-import { confirmDeletion, getRandomElement } from "src/utils";
+import { getRandomElement } from "src/utils";
 import {
   canAddAnotherTask,
   createEmptyTasks,
@@ -19,6 +21,8 @@ const TASK_LIST_FULL_MESSAGE = `can't restore — you already have ${MAX_ACTIVE_
 export const GeneralTasksContextProvider = ({
   children,
 }: PropsWithChildren) => {
+  const [deletionConfirmTarget, setDeletionConfirmTarget] =
+    useState<DeletionConfirmTarget | null>(null);
   const [generalTasks, setGeneralTasks] = useLocalStorage(
     "storedGeneralTasks",
     createEmptyTasks()
@@ -110,23 +114,31 @@ export const GeneralTasksContextProvider = ({
     [mutateTaskStore]
   );
 
-  const clearGeneralTasks = useCallback(() => {
-    if (!confirmDeletion("all your tasks", "tasks")) {
-      return;
+  const cancelDeletionConfirmation = useCallback(() => {
+    setDeletionConfirmTarget(null);
+  }, []);
+
+  const confirmDeletion = useCallback(() => {
+    if (deletionConfirmTarget === "tasks") {
+      setGeneralTasks(createEmptyTasks());
+      toast("tasks cleared!");
     }
 
-    setGeneralTasks(createEmptyTasks());
-    toast("tasks cleared!");
-  }, [setGeneralTasks]);
+    if (deletionConfirmTarget === "history") {
+      setTaskHistory([]);
+      toast("history cleared!");
+    }
+
+    setDeletionConfirmTarget(null);
+  }, [deletionConfirmTarget, setGeneralTasks, setTaskHistory]);
+
+  const clearGeneralTasks = useCallback(() => {
+    setDeletionConfirmTarget("tasks");
+  }, []);
 
   const clearTaskHistory = useCallback(() => {
-    if (!confirmDeletion("all your task history", "history")) {
-      return;
-    }
-
-    setTaskHistory([]);
-    toast("history cleared!");
-  }, [setTaskHistory]);
+    setDeletionConfirmTarget("history");
+  }, []);
 
   const moveTaskUp = useCallback(
     (taskIndex: number) => {
@@ -170,6 +182,11 @@ export const GeneralTasksContextProvider = ({
       }}
     >
       {children}
+      <DeletionConfirmDialog
+        target={deletionConfirmTarget}
+        onCancel={cancelDeletionConfirmation}
+        onConfirm={confirmDeletion}
+      />
     </GeneralTasksContext.Provider>
   );
 };
