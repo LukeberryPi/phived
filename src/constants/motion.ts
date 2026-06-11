@@ -2,8 +2,6 @@
 
 import { cn } from "src/utils/cn";
 
-export const DROP_SNAP_DELAY_MS = 150;
-
 export const pressFeedbackClassName =
   "transition-transform duration-150 ease-out-strong motion-reduce:transform-none active:scale-95";
 
@@ -48,12 +46,9 @@ export function pressFeedbackGroupChildClassName(name: PressFeedbackGroupName) {
 }
 
 export const dragLiftClassName =
-  "overflow-hidden rounded-2xl border border-black/30 shadow-brutalist-dark dark:border-edge motion-reduce:scale-100";
+  "overflow-hidden rounded-2xl border border-black/30 shadow-none dark:border-edge motion-reduce:scale-100";
 
 export const dragScaleUpClassName = "scale-105";
-
-export const dragScaleDownClassName =
-  "scale-100 transition-transform duration-150 ease-out-strong motion-reduce:transition-none";
 
 export const drawerWidthTransitionClassName =
   "transition-[width] duration-150 ease-out-strong motion-reduce:transition-none";

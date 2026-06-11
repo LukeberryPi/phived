@@ -23,16 +23,13 @@ export function TasksPageShell({ children }: PropsWithChildren) {
   return (
     <div
       onKeyDown={handleKeyDown}
-      className={cn(
-        "flex h-full w-full flex-col items-center justify-center",
-        "bg-gray-50 dark:bg-canvas"
-      )}
+      className={cn("h-full w-full", "bg-gray-50 dark:bg-canvas")}
     >
       <HelmetProvider>
         <Head />
       </HelmetProvider>
-      <Header />
       {children}
+      <Header />
       <HelpDrawer />
       <TaskHistoryDrawer />
       <MobileActionBar />

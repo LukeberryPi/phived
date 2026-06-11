@@ -3,7 +3,7 @@ import { cn } from "src/utils/cn";
 export const HOVER_REVEAL =
   "hidden max-lg:active:flex max-lg:peer-focus:flex [@media(hover:hover)_and_(pointer:fine)]:group-hover/row:flex";
 
-export const NO_TASKS_TO_CLEAR_MESSAGE = "no tasks to clear.";
+export const NO_TASKS_TO_CLEAR_MESSAGE = "nothing to clear.";
 
 export const ROW_DIVIDER = "border-b border-line dark:border-hairline";
 
@@ -32,10 +32,14 @@ export const DESKTOP_MEDIA_QUERY = `(min-width: ${DESKTOP_BREAKPOINT}px)`;
 
 export const DRAWER_WIDTH = "w-[min(100vw-2rem,22rem)]";
 
-/** Matches MobileActionBar `left-4 right-4` horizontal inset. */
-export const MOBILE_PANEL_HORIZONTAL_INSET_PX = 32;
+/** Shared z-index for header, drawers, canvas controls, and mobile bar. */
+export const FLOATING_CHROME_Z = "z-50";
 
-export const TASK_PANEL_WIDTH = "w-[min(400px,calc(100vw-2rem))]";
+/** Canvas pan/zoom surface sits below floating chrome. */
+export const CANVAS_LAYER_Z = "z-0";
+
+/** Above drawers so center-bottom controls stay clickable. */
+export const CANVAS_CONTROLS_Z = "z-[60]";
 
 export const DRAWER_SURFACE = "bg-white dark:bg-surface";
 
@@ -90,3 +94,12 @@ export const DRAWER_COUNT_BADGE = cn(
   ACTION_ACCENT_SURFACE,
   "dark:border-edge"
 );
+
+/** Clear/delete trash buttons — red tint on hover in light and dark mode. */
+export const DESTRUCTIVE_ACTION_HOVER = cn(
+  "sm:hover:bg-red-100 sm:hover:text-red-600",
+  "dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
+);
+
+/** Pair with DESTRUCTIVE_ACTION_HOVER so the icon inherits hover color. */
+export const DESTRUCTIVE_TRASH_ICON = "text-current";

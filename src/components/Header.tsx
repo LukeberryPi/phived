@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { HotkeysDialog } from "src/components/HotkeysDialog";
-import { useGeneralTasksContext, useDarkMode } from "src/contexts";
+import { useCanvasTasksContext, useDarkMode } from "src/contexts";
 import {
   pressFeedbackClassName,
   pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import {
+  DESTRUCTIVE_ACTION_HOVER,
+  DESTRUCTIVE_TRASH_ICON,
   DRAWER_HEADER_HOVER,
+  FLOATING_CHROME_Z,
   NO_TASKS_TO_CLEAR_MESSAGE,
 } from "src/constants/ui";
 import { Computer, Keyboard, Trash, Moon, Sun } from "src/icons";
@@ -21,23 +24,23 @@ const logoClassName = cn(
 );
 const headerActionClassName =
   "flex min-h-12 select-none items-center gap-2 rounded-2xl px-4 text-sm font-normal";
-const clearTasksHoverClassName =
-  "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500";
 
 export function Header() {
-  const { clearGeneralTasks, generalTasks } = useGeneralTasksContext();
+  const { clearCanvas, lists } = useCanvasTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
-  const noGeneralTasks = countFilledTasks(generalTasks) === 0;
+  const nothingToClear =
+    lists.length <= 1 &&
+    lists.every((list) => countFilledTasks(list.tasks) === 0);
   const themeIconClassName = "fill-black dark:fill-ink";
-  const handleClearTasks = () => {
-    if (noGeneralTasks) {
+  const handleClearCanvas = () => {
+    if (nothingToClear) {
       toast(NO_TASKS_TO_CLEAR_MESSAGE);
       return;
     }
 
-    clearGeneralTasks();
+    clearCanvas();
   };
 
   return (
@@ -46,7 +49,8 @@ export function Header() {
         href="/"
         className={cn(
           logoClassName,
-          "fixed left-1/2 top-4 z-40 -translate-x-1/2 text-3xl sm:hidden"
+          FLOATING_CHROME_Z,
+          "pointer-events-auto fixed left-1/2 top-4 -translate-x-1/2 text-3xl sm:hidden"
         )}
       >
         phived
@@ -54,14 +58,21 @@ export function Header() {
 
       <header
         className={cn(
-          "fixed top-0 hidden h-16 w-full items-center justify-between px-6",
+          FLOATING_CHROME_Z,
+          "pointer-events-none fixed top-0 hidden h-16 w-full items-center justify-between px-6",
           "sm:flex"
         )}
       >
-        <a href="/" className={cn(logoClassName, "hidden text-4xl sm:flex")}>
+        <a
+          href="/"
+          className={cn(
+            logoClassName,
+            "pointer-events-auto hidden text-4xl sm:flex"
+          )}
+        >
           phived
         </a>
-        <nav className="flex h-full items-center justify-between gap-4">
+        <nav className="pointer-events-auto flex h-full items-center justify-between gap-4">
           <button
             onClick={toggleDarkMode}
             aria-label={`Theme: ${themePreference}`}
@@ -97,38 +108,30 @@ export function Header() {
             </span>
           </button>
           <button
-            aria-disabled={noGeneralTasks}
+            aria-disabled={nothingToClear}
             aria-label={
-              noGeneralTasks
-                ? "Clear tasks unavailable: no tasks to clear"
-                : "clear tasks"
+              nothingToClear
+                ? "Clear canvas unavailable: nothing to clear"
+                : "clear canvas"
             }
-            onClick={handleClearTasks}
+            onClick={handleClearCanvas}
             className={cn(
               pressFeedbackGroupClassName("clear-tasks"),
               headerActionClassName,
               "text-black dark:text-ink",
-              noGeneralTasks ? "cursor-not-allowed" : clearTasksHoverClassName
+              nothingToClear ? "cursor-not-allowed" : DESTRUCTIVE_ACTION_HOVER
             )}
           >
             <span
               className={cn(
                 "flex items-center gap-2",
-                !noGeneralTasks &&
+                !nothingToClear &&
                   pressFeedbackGroupChildClassName("clear-tasks"),
-                noGeneralTasks && "text-muted dark:text-inkMuted"
+                nothingToClear && "text-muted dark:text-inkMuted"
               )}
             >
-              <Trash
-                size={20}
-                className={cn(
-                  "fill-black dark:fill-ink",
-                  noGeneralTasks
-                    ? "fill-black/30 dark:fill-inkMuted"
-                    : "sm:group-hover/clear-tasks:fill-red-600 dark:sm:group-hover/clear-tasks:fill-red-500"
-                )}
-              />
-              clear tasks
+              <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />
+              clear canvas
             </span>
           </button>
           <button

@@ -1,4 +1,4 @@
 export { useLocalStorage } from "src/hooks/useLocalStorage";
-export { useMutateTaskStore } from "src/hooks/useMutateTaskStore";
+export { useCanvasViewport } from "src/hooks/useCanvasViewport";
+export { useRowDragReorder } from "src/hooks/useRowDragReorder";
 export { useTaskKeyboardNavigation } from "src/hooks/useTaskKeyboardNavigation";
-export { useTasksComponentWidth } from "src/hooks/useTasksComponentWidth";

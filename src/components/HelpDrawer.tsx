@@ -27,12 +27,19 @@ export function HelpPanel({ onClose }: HelpPanelProps) {
         Welcome to <strong>phived, the anti-procrastination to-do list.</strong>
       </h1>
       <h2>
-        Stay focused on what matters. You can only have up to five tasks at a
-        time.
+        Your tasks live on a canvas now. Spawn as many lists as you need and
+        give each one a tag, like <strong>work</strong> or{" "}
+        <strong>personal</strong>.
       </h2>
       <p>
-        To add a new task, you first have to{" "}
-        <strong>finish one you&apos;re already working on.</strong>
+        <strong>Double-click</strong> anywhere on the canvas (or press{" "}
+        <strong>new list</strong>) to spawn a list. Drag a list by its header to
+        move it around.
+      </p>
+      <p>
+        <strong>Scroll to pan</strong> and <strong>ctrl/⌘ + scroll</strong> (or
+        pinch) to zoom. Lists grow as you type, and finished tasks move to
+        history when you press <strong>done</strong>.
       </p>
       <p>No login. No ads. No distractions.</p>
       <p>

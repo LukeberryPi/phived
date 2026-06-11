@@ -72,6 +72,32 @@ function buildSections(isMac: boolean): ShortcutSection[] {
         { label: "move task down", combos: [[altModifier, ARROW_DOWN]] },
       ],
     },
+    {
+      title: "canvas",
+      shortcuts: [
+        {
+          label: "pan canvas",
+          combos: [
+            [{ display: "scroll" }],
+            [{ display: "drag", label: "drag the background" }],
+          ],
+        },
+        {
+          label: "zoom canvas",
+          combos: [[completeModifier, { display: "scroll" }]],
+        },
+        {
+          label: "new list",
+          combos: [
+            [{ display: "double-click", label: "double-click the background" }],
+          ],
+        },
+        {
+          label: "move list",
+          combos: [[{ display: "drag header", label: "drag the list header" }]],
+        },
+      ],
+    },
   ];
 }
 

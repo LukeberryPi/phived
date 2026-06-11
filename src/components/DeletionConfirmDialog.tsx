@@ -11,7 +11,10 @@ import {
 import { Close } from "src/icons";
 import { cn } from "src/utils";
 
-export type DeletionConfirmTarget = "tasks" | "history";
+export type DeletionConfirmTarget =
+  | { kind: "canvas" }
+  | { kind: "history" }
+  | { kind: "list"; listId: string };
 
 type DialogCopy = {
   title: string;
@@ -20,13 +23,20 @@ type DialogCopy = {
   cancelLabel: string;
 };
 
-const dialogCopyByTarget: Record<DeletionConfirmTarget, DialogCopy> = {
-  tasks: {
-    title: "delete every task?",
+const dialogCopyByKind: Record<DeletionConfirmTarget["kind"], DialogCopy> = {
+  canvas: {
+    title: "clear the whole canvas?",
     description:
-      "This clears all tasks immediately. They will not move to history.",
-    confirmLabel: "delete tasks",
-    cancelLabel: "keep tasks",
+      "This deletes every list and every task immediately. They will not move to history.",
+    confirmLabel: "clear canvas",
+    cancelLabel: "keep everything",
+  },
+  list: {
+    title: "delete this list?",
+    description:
+      "This deletes the list and its tasks immediately. They will not move to history.",
+    confirmLabel: "delete list",
+    cancelLabel: "keep list",
   },
   history: {
     title: "clear task history?",
@@ -49,7 +59,7 @@ export function DeletionConfirmDialog({
   onConfirm,
 }: DeletionConfirmDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const copy = target ? dialogCopyByTarget[target] : null;
+  const copy = target ? dialogCopyByKind[target.kind] : null;
 
   useEffect(() => {
     const dialog = dialogRef.current;

@@ -1,17 +1,16 @@
 import { Helmet } from "react-helmet-async";
-import { useGeneralTasksContext } from "src/contexts";
+import { useCanvasTasksContext } from "src/contexts";
+import { countFilledTasks } from "src/utils";
 
 export function Head() {
-  const { generalTasks } = useGeneralTasksContext();
+  const { lists } = useCanvasTasksContext();
 
-  // assures tasks filled with spaces are not accounted for on the tab's title
-  const ongoingGeneralTasks = generalTasks.filter(
-    (generalTask) => generalTask.trim() !== ""
+  const ongoingTaskCount = lists.reduce(
+    (total, list) => total + countFilledTasks(list.tasks),
+    0
   );
 
-  const titlePrefix = ongoingGeneralTasks.length
-    ? `[${ongoingGeneralTasks.length}]`
-    : "";
+  const titlePrefix = ongoingTaskCount ? `[${ongoingTaskCount}]` : "";
   const title =
     `${titlePrefix} phived, the anti-procrastination to-do list`.trim();
 

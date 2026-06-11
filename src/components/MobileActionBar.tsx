@@ -7,6 +7,8 @@ import {
   HistoryPanel,
 } from "src/components/TaskHistoryDrawer";
 import {
+  DESTRUCTIVE_ACTION_HOVER,
+  DESTRUCTIVE_TRASH_ICON,
   DRAWER_BODY,
   DRAWER_COUNT_BADGE,
   DRAWER_HEADER_ACTIVE,
@@ -16,6 +18,7 @@ import {
   DRAWER_SURFACE,
   DRAWER_TEXT,
   DRAWER_TOGGLE_DIVIDER,
+  FLOATING_CHROME_Z,
   NO_TASKS_TO_CLEAR_MESSAGE,
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
@@ -24,7 +27,7 @@ import {
   pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
-import { useGeneralTasksContext, useDarkMode } from "src/contexts";
+import { useCanvasTasksContext, useDarkMode } from "src/contexts";
 import { Clock, Computer, Moon, Question, Sun, Trash } from "src/icons";
 import { cn, countFilledTasks } from "src/utils";
 
@@ -87,23 +90,25 @@ function HistoryToggleIcon({ historyCount }: { historyCount: number }) {
 }
 
 export function MobileActionBar() {
-  const { generalTasks, taskHistory, clearGeneralTasks, clearTaskHistory } =
-    useGeneralTasksContext();
+  const { lists, taskHistory, clearCanvas, clearTaskHistory } =
+    useCanvasTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
   const historyCount = taskHistory.length;
-  const noGeneralTasks = countFilledTasks(generalTasks) === 0;
+  const nothingToClear =
+    lists.length <= 1 &&
+    lists.every((list) => countFilledTasks(list.tasks) === 0);
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const themeIconClassName = "fill-black dark:fill-ink";
 
   const closeHelp = () => setHelpOpen(false);
-  const handleClearTasks = () => {
-    if (noGeneralTasks) {
+  const handleClearCanvas = () => {
+    if (nothingToClear) {
       toast(NO_TASKS_TO_CLEAR_MESSAGE);
       return;
     }
 
-    clearGeneralTasks();
+    clearCanvas();
   };
 
   const toggleHelp = () => {
@@ -120,7 +125,10 @@ export function MobileActionBar() {
 
   return (
     <div
-      className="fixed bottom-6 left-4 right-4 z-40 sm:hidden"
+      className={cn(
+        FLOATING_CHROME_Z,
+        "pointer-events-auto fixed bottom-6 left-4 right-4 sm:hidden"
+      )}
       aria-label="Actions"
     >
       <div className="task-panel flex flex-col-reverse overflow-hidden">
@@ -166,29 +174,20 @@ export function MobileActionBar() {
             label={themePreference}
           />
           <BarAction
-            aria-disabled={noGeneralTasks}
+            aria-disabled={nothingToClear}
             aria-label={
-              noGeneralTasks
-                ? "Clear tasks unavailable: no tasks to clear"
-                : "clear tasks"
+              nothingToClear
+                ? "Clear canvas unavailable: nothing to clear"
+                : "clear canvas"
             }
-            onClick={handleClearTasks}
-            unavailable={noGeneralTasks}
+            onClick={handleClearCanvas}
+            unavailable={nothingToClear}
             className={
-              noGeneralTasks
+              nothingToClear
                 ? cn("cursor-not-allowed", DRAWER_MUTED_TEXT)
-                : undefined
+                : DESTRUCTIVE_ACTION_HOVER
             }
-            icon={
-              <Trash
-                size={20}
-                className={cn(
-                  noGeneralTasks
-                    ? "fill-muted dark:fill-inkMuted"
-                    : "fill-black dark:fill-ink"
-                )}
-              />
-            }
+            icon={<Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />}
             label="clear"
           />
         </div>

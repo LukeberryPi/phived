@@ -1,0 +1,126 @@
+import type { TaskList, TaskLists, Viewport } from "src/types/canvas";
+import { createEmptyTasks, withTrailingEmptyRow } from "src/utils/taskList";
+
+/**
+ * Finite canvas, sized so ~15 lists of 10 tasks each sit comfortably
+ * (a list is ~340px wide and ~620px tall at zoom 1).
+ */
+export const CANVAS_WIDTH = 6000;
+export const CANVAS_HEIGHT = 4000;
+
+export const LIST_WIDTH = 340;
+/** Margin kept between a list and the canvas edge. */
+const LIST_EDGE_MARGIN = 16;
+/** Nominal height reserved when clamping a list near the bottom edge. */
+const LIST_MIN_VISIBLE_HEIGHT = 360;
+
+export const MIN_ZOOM = 0.15;
+export const MAX_ZOOM = 2;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+export function clampZoom(zoom: number) {
+  return clamp(zoom, MIN_ZOOM, MAX_ZOOM);
+}
+
+export function clampListPosition(x: number, y: number) {
+  return {
+    x: clamp(x, LIST_EDGE_MARGIN, CANVAS_WIDTH - LIST_WIDTH - LIST_EDGE_MARGIN),
+    y: clamp(
+      y,
+      LIST_EDGE_MARGIN,
+      CANVAS_HEIGHT - LIST_MIN_VISIBLE_HEIGHT - LIST_EDGE_MARGIN
+    ),
+  };
+}
+
+/**
+ * Keeps the canvas covering the screen when zoomed in, and centers the
+ * canvas on the axis where it is smaller than the screen.
+ */
+export function clampViewport(
+  viewport: Viewport,
+  viewWidth: number,
+  viewHeight: number
+): Viewport {
+  const zoom = clampZoom(viewport.zoom);
+  const scaledWidth = CANVAS_WIDTH * zoom;
+  const scaledHeight = CANVAS_HEIGHT * zoom;
+
+  return {
+    zoom,
+    x:
+      scaledWidth <= viewWidth
+        ? (viewWidth - scaledWidth) / 2
+        : clamp(viewport.x, viewWidth - scaledWidth, 0),
+    y:
+      scaledHeight <= viewHeight
+        ? (viewHeight - scaledHeight) / 2
+        : clamp(viewport.y, viewHeight - scaledHeight, 0),
+  };
+}
+
+export function createCenteredViewport(
+  viewWidth: number,
+  viewHeight: number
+): Viewport {
+  return clampViewport(
+    {
+      x: viewWidth / 2 - CANVAS_WIDTH / 2,
+      y: viewHeight / 2 - CANVAS_HEIGHT / 2,
+      zoom: 1,
+    },
+    viewWidth,
+    viewHeight
+  );
+}
+
+export function createTaskList(
+  x: number,
+  y: number,
+  tag = "",
+  tasks: string[] = createEmptyTasks()
+): TaskList {
+  return {
+    id: crypto.randomUUID(),
+    tag,
+    ...clampListPosition(x, y),
+    tasks,
+  };
+}
+
+export function createCanvasCenterList(tasks?: string[]): TaskList {
+  return createTaskList(
+    CANVAS_WIDTH / 2 - LIST_WIDTH / 2,
+    CANVAS_HEIGHT / 2 - 280,
+    "",
+    tasks
+  );
+}
+
+const LEGACY_TASKS_STORAGE_KEY = "storedGeneralTasks";
+
+/**
+ * First-run lists: migrates the pre-canvas single five-task list when
+ * present, otherwise starts with one empty list at the canvas center.
+ */
+export function buildInitialLists(): TaskLists {
+  try {
+    const item = window.localStorage.getItem(LEGACY_TASKS_STORAGE_KEY);
+    const legacyTasks: unknown = item ? JSON.parse(item) : null;
+
+    if (
+      Array.isArray(legacyTasks) &&
+      legacyTasks.every((task) => typeof task === "string") &&
+      legacyTasks.some((task) => task.trim() !== "")
+    ) {
+      return [createCanvasCenterList(withTrailingEmptyRow(legacyTasks))];
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+
+  return [createCanvasCenterList()];
+}
