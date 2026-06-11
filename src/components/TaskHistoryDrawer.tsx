@@ -17,7 +17,7 @@ import {
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { useCanvasTasksContext } from "src/contexts";
-import { Clock, Close, Trash } from "src/icons";
+import { CaretDown, Clock, Trash } from "src/icons";
 import { cn, formatHistoryWhen } from "src/utils";
 
 const sideActionColumnClassName = "flex min-h-12 items-stretch";
@@ -122,7 +122,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
               pressFeedbackClassName
             )}
           >
-            <Close size={18} className="fill-black dark:fill-ink" />
+            <CaretDown size={18} className="fill-black dark:fill-ink" />
           </button>
         </div>
       )}

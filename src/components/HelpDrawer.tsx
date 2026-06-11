@@ -1,7 +1,7 @@
 import { FloatingDrawer } from "src/components/FloatingDrawer";
 import { pressFeedbackClassName } from "src/constants/motion";
 import { DRAWER_TEXT } from "src/constants/ui";
-import { Close, Question } from "src/icons";
+import { CaretDown, Question } from "src/icons";
 import { cn } from "src/utils";
 
 type HelpPanelProps = {
@@ -21,7 +21,7 @@ export function HelpPanel({ onClose }: HelpPanelProps) {
           pressFeedbackClassName
         )}
       >
-        <Close size={18} className="fill-black dark:fill-ink" />
+        <CaretDown size={18} className="fill-black dark:fill-ink" />
       </button>
       <h1 className="pr-9">
         Welcome to <strong>phived, the anti-procrastination to-do list.</strong>

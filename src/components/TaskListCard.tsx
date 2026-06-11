@@ -57,7 +57,6 @@ export const TaskListCard = memo(function TaskListCard({
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
   const numberOfTasks = countFilledTasks(list.tasks);
-  const multipleTasks = numberOfTasks > 1;
   const noTasks = numberOfTasks === 0;
 
   const { draggingIndex, handleDragHandlePointerDown } = useRowDragReorder({
@@ -160,7 +159,7 @@ export const TaskListCard = memo(function TaskListCard({
             className={cn(
               "peer w-full bg-white px-4 py-3 text-black focus:outline-none",
               "dark:bg-surface dark:text-ink",
-              !isEmptyTask && multipleTasks && "group-hover/row:pr-2",
+              !isEmptyTask && "group-hover/row:pr-2",
               someRowIsDragging && "cursor-grabbing",
               !isLastTask && !isDraggingRow && ROW_DIVIDER,
               isDraggingRow && "rounded-2xl"
@@ -171,12 +170,13 @@ export const TaskListCard = memo(function TaskListCard({
             tabIndex={-1}
             onPointerDown={(event) => handleDragHandlePointerDown(event, idx)}
             className={cn(
-              "flex touch-none items-center justify-center bg-white pr-2",
+              "flex touch-none items-center justify-center bg-white",
+              isDraggingRow ? "pr-3" : "pr-2",
               "text-black placeholder:select-none",
               "dark:bg-surface dark:text-ink",
               isDraggingRow ? "cursor-grabbing" : "hover:cursor-grab",
               !isLastTask && !isDraggingRow && ROW_DIVIDER,
-              isEmptyTask || !multipleTasks || anotherRowIsDragging
+              isEmptyTask || anotherRowIsDragging
                 ? "hidden"
                 : isDraggingRow
                   ? "flex"

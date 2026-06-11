@@ -1,5 +1,6 @@
 import {
   ArrowsOutCardinal,
+  CaretDown as CaretDownIcon,
   CaretUpDown,
   Clock as ClockIcon,
   Desktop,
@@ -34,6 +35,16 @@ export function ArrowsMove({ className, size = 24 }: IconProps) {
 export function DragVertical({ className, size = 20 }: IconProps) {
   return (
     <CaretUpDown
+      size={size}
+      className={phosphorClassName(className)}
+      aria-hidden
+    />
+  );
+}
+
+export function CaretDown({ className, size = 24 }: IconProps) {
+  return (
+    <CaretDownIcon
       size={size}
       className={phosphorClassName(className)}
       aria-hidden
