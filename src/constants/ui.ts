@@ -71,7 +71,7 @@ export const DIALOG_HEADER =
   "relative border-b border-line px-5 py-4 pr-14 dark:border-hairline";
 
 export const DIALOG_CLOSE_BUTTON = cn(
-  "absolute top-4 right-4 flex size-8 shrink-0 items-center justify-center rounded-full",
+  "absolute top-1/2 right-4 flex size-8 shrink-0 -translate-y-1/2 items-center justify-center rounded-full",
   DRAWER_HEADER_HOVER
 );
 

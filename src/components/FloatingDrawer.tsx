@@ -67,6 +67,7 @@ export function FloatingDrawer({
         : cn(DRAWER_HEADER_BUTTON, "w-full")
       : cn(DRAWER_COLLAPSED_BUTTON, "inline-flex"),
     headerActionBeforeToggle && "justify-end",
+    isOpen && side === "right" && !headerTrailing && "justify-end",
     isOpen && !headerTrailing && DRAWER_TOGGLE_DIVIDER
   );
 

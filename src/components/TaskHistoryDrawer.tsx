@@ -12,11 +12,12 @@ import {
   SIDE_ACTION_BORDER,
 } from "src/constants/ui";
 import {
+  pressFeedbackClassName,
   pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { useCanvasTasksContext } from "src/contexts";
-import { Clock, Trash } from "src/icons";
+import { Clock, Close, Trash } from "src/icons";
 import { cn, formatHistoryWhen } from "src/utils";
 
 const sideActionColumnClassName = "flex min-h-12 items-stretch";
@@ -72,94 +73,145 @@ export function HistoryClearButton({
   );
 }
 
-export function HistoryPanel() {
-  const { taskHistory, restoreTaskFromHistory } = useCanvasTasksContext();
+type HistoryPanelProps = {
+  onClose?: () => void;
+};
+
+export function HistoryPanel({ onClose }: HistoryPanelProps) {
+  const { taskHistory, restoreTaskFromHistory, clearTaskHistory } =
+    useCanvasTasksContext();
   const historyCount = taskHistory.length;
 
   return (
-    <ul>
-      {historyCount === 0 ? (
-        <li
+    <>
+      {onClose && (
+        <div
           className={cn(
-            "flex min-h-12 items-center px-4 text-sm",
-            DRAWER_MUTED_TEXT
+            "relative sticky top-0 z-10 flex min-h-12 items-stretch",
+            DRAWER_SURFACE,
+            ROW_DIVIDER
           )}
         >
-          nothing here yet — complete a task first.
-        </li>
-      ) : (
-        taskHistory.map((entry, index) => {
-          const isLastEntry = index === historyCount - 1;
-
-          return (
-            <li
-              key={entry.id}
+          {historyCount > 0 && (
+            <button
+              type="button"
+              aria-label="clear history"
+              onClick={clearTaskHistory}
               className={cn(
-                DRAWER_HEADER_GRID,
-                "group/row",
-                !isLastEntry && ROW_DIVIDER
+                "flex min-h-12 shrink-0 items-center gap-2 px-4 text-sm font-medium",
+                "border-r border-line dark:border-hairline",
+                pressFeedbackClassName,
+                DRAWER_TEXT,
+                DESTRUCTIVE_ACTION_HOVER
               )}
             >
-              <div
+              <Trash
+                size={20}
+                className={cn("shrink-0", DESTRUCTIVE_TRASH_ICON)}
+              />
+              <span className="whitespace-nowrap">clear history</span>
+            </button>
+          )}
+          <button
+            type="button"
+            aria-label="Close history"
+            onClick={onClose}
+            className={cn(
+              "absolute right-2 top-2 flex size-8 shrink-0 items-center justify-center rounded-full",
+              "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
+              pressFeedbackClassName
+            )}
+          >
+            <Close size={18} className="fill-black dark:fill-ink" />
+          </button>
+        </div>
+      )}
+      <ul>
+        {historyCount === 0 ? (
+          <li
+            className={cn(
+              "flex min-h-12 items-center px-4 text-sm",
+              DRAWER_MUTED_TEXT
+            )}
+          >
+            nothing here yet — complete a task first.
+          </li>
+        ) : (
+          taskHistory.map((entry, index) => {
+            const isLastEntry = index === historyCount - 1;
+
+            return (
+              <li
+                key={entry.id}
                 className={cn(
-                  "flex min-w-0 items-center gap-x-3 px-4",
-                  "outline-none"
+                  DRAWER_HEADER_GRID,
+                  "group/row",
+                  !isLastEntry && ROW_DIVIDER
                 )}
               >
-                <span
+                <div
                   className={cn(
-                    "min-w-0 truncate text-sm font-medium",
-                    DRAWER_TEXT
+                    "flex min-w-0 items-center gap-x-3 px-4",
+                    "outline-none"
                   )}
-                  title={entry.text}
                 >
-                  {entry.text}
-                </span>
-                {entry.listTag && (
                   <span
                     className={cn(
-                      "max-w-24 shrink-0 truncate rounded-full border border-line px-2 py-0.5",
-                      "text-xs dark:border-hairline",
+                      "min-w-0 truncate text-sm font-medium",
+                      DRAWER_TEXT
+                    )}
+                    title={entry.text}
+                  >
+                    {entry.text}
+                  </span>
+                  {entry.listTag && (
+                    <span
+                      className={cn(
+                        "max-w-24 shrink-0 truncate rounded-full border border-line px-2 py-0.5",
+                        "text-xs dark:border-hairline",
+                        DRAWER_MUTED_TEXT
+                      )}
+                      title={entry.listTag}
+                    >
+                      {entry.listTag}
+                    </span>
+                  )}
+                  <span
+                    className={cn(
+                      "shrink-0 whitespace-nowrap text-xs",
                       DRAWER_MUTED_TEXT
                     )}
-                    title={entry.listTag}
                   >
-                    {entry.listTag}
+                    {formatHistoryWhen(entry.completedAt)}
                   </span>
-                )}
-                <span
-                  className={cn(
-                    "shrink-0 whitespace-nowrap text-xs",
-                    DRAWER_MUTED_TEXT
-                  )}
-                >
-                  {formatHistoryWhen(entry.completedAt)}
-                </span>
-              </div>
+                </div>
 
-              <div className={sideActionColumnClassName}>
-                <button
-                  onClick={() => restoreTaskFromHistory(entry.id)}
-                  className={cn(
-                    pressFeedbackGroupClassName("restore"),
-                    restoreButtonClassName
-                  )}
-                >
-                  <span className={pressFeedbackGroupChildClassName("restore")}>
-                    restore
-                  </span>
-                </button>
-              </div>
-            </li>
-          );
-        })
-      )}
-    </ul>
+                <div className={sideActionColumnClassName}>
+                  <button
+                    onClick={() => restoreTaskFromHistory(entry.id)}
+                    className={cn(
+                      pressFeedbackGroupClassName("restore"),
+                      restoreButtonClassName
+                    )}
+                  >
+                    <span
+                      className={pressFeedbackGroupChildClassName("restore")}
+                    >
+                      restore
+                    </span>
+                  </button>
+                </div>
+              </li>
+            );
+          })
+        )}
+      </ul>
+    </>
   );
 }
 
 export function TaskHistoryDrawer() {
-  const { taskHistory, clearTaskHistory } = useCanvasTasksContext();
+  const { taskHistory } = useCanvasTasksContext();
   const historyCount = taskHistory.length;
 
   return (
@@ -179,14 +231,8 @@ export function TaskHistoryDrawer() {
           )}
         </>
       )}
-      headerTrailing={
-        historyCount > 0 ? (
-          <HistoryClearButton onClick={clearTaskHistory} dividerSide="right" />
-        ) : undefined
-      }
-      compactHeaderTrailing
     >
-      {() => <HistoryPanel />}
+      {({ close }) => <HistoryPanel onClose={close} />}
     </FloatingDrawer>
   );
 }
