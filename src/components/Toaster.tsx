@@ -10,7 +10,7 @@ const toastClassName = cn(
 export function Toaster() {
   return (
     <Sonner
-      position="bottom-center"
+      position="top-center"
       expand={false}
       duration={4000}
       closeButton={false}
