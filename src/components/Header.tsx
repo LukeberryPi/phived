@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { toast } from "sonner";
 import { HotkeysDialog } from "src/components/HotkeysDialog";
-import { useCanvasTasksContext, useDarkMode } from "src/contexts";
+import { ThemeIndicator } from "src/components/ThemeIndicator";
+import { useDarkMode } from "src/contexts";
+import { useClearCanvasAction } from "src/hooks";
 import {
   pressFeedbackClassName,
   pressFeedbackGroupChildClassName,
@@ -12,36 +13,25 @@ import {
   DESTRUCTIVE_TRASH_ICON,
   DRAWER_HEADER_HOVER,
   FLOATING_CHROME_Z,
-  NO_TASKS_TO_CLEAR_MESSAGE,
 } from "src/constants/ui";
-import { Computer, Keyboard, Trash, Moon, Sun } from "src/icons";
-import { cn, countFilledTasks } from "src/utils";
+import { Keyboard, Trash } from "src/icons";
+import { cn } from "src/utils";
 
 const logoClassName = cn(
   "font-normal text-black underline decoration-3 underline-offset-4",
-  "decoration-sky-300 dark:text-ink dark:decoration-cyan-800",
+  "decoration-sky-300 dark:text-ink-dark dark:decoration-cyan-800",
   pressFeedbackClassName
 );
 const headerActionClassName =
-  "flex min-h-12 select-none items-center gap-2 rounded-2xl px-4 text-sm font-normal";
+  "flex min-h-12 select-none items-center gap-2 rounded-2xl bg-canvas-light px-4 text-sm font-normal dark:bg-canvas-dark";
 
 export function Header() {
-  const { clearCanvas, lists } = useCanvasTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
+  const { clear: clearCanvas, unavailable: nothingToClear } =
+    useClearCanvasAction();
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
-  const nothingToClear =
-    lists.length <= 1 &&
-    lists.every((list) => countFilledTasks(list.tasks) === 0);
-  const themeIconClassName = "fill-black dark:fill-ink";
-  const handleClearCanvas = () => {
-    if (nothingToClear) {
-      toast(NO_TASKS_TO_CLEAR_MESSAGE);
-      return;
-    }
-
-    clearCanvas();
-  };
+  const themeIconClassName = "fill-black dark:fill-ink-dark";
 
   return (
     <>
@@ -50,7 +40,7 @@ export function Header() {
         className={cn(
           logoClassName,
           FLOATING_CHROME_Z,
-          "pointer-events-auto fixed left-1/2 top-4 -translate-x-1/2 text-3xl sm:hidden"
+          "pointer-events-auto fixed top-4 left-1/2 -translate-x-1/2 text-3xl sm:hidden"
         )}
       >
         phived
@@ -79,7 +69,7 @@ export function Header() {
             className={cn(
               pressFeedbackGroupClassName("theme"),
               headerActionClassName,
-              "text-black dark:text-ink",
+              "dark:text-ink-dark text-black",
               DRAWER_HEADER_HOVER
             )}
           >
@@ -89,22 +79,11 @@ export function Header() {
                 pressFeedbackGroupChildClassName("theme")
               )}
             >
-              {themePreference === "system" ? (
-                <>
-                  <Computer size={20} className={themeIconClassName} />
-                  system
-                </>
-              ) : themePreference === "dark" ? (
-                <>
-                  <Moon size={20} className={themeIconClassName} />
-                  dark
-                </>
-              ) : (
-                <>
-                  <Sun size={20} className={themeIconClassName} />
-                  light
-                </>
-              )}
+              <ThemeIndicator
+                preference={themePreference}
+                className={themeIconClassName}
+                showLabel
+              />
             </span>
           </button>
           <button
@@ -114,11 +93,11 @@ export function Header() {
                 ? "Clear canvas unavailable: nothing to clear"
                 : "clear canvas"
             }
-            onClick={handleClearCanvas}
+            onClick={clearCanvas}
             className={cn(
               pressFeedbackGroupClassName("clear-tasks"),
               headerActionClassName,
-              "text-black dark:text-ink",
+              "dark:text-ink-dark text-black",
               nothingToClear ? "cursor-not-allowed" : DESTRUCTIVE_ACTION_HOVER
             )}
           >
@@ -127,7 +106,7 @@ export function Header() {
                 "flex items-center gap-2",
                 !nothingToClear &&
                   pressFeedbackGroupChildClassName("clear-tasks"),
-                nothingToClear && "text-muted dark:text-inkMuted"
+                nothingToClear && "text-muted-light dark:text-muted-dark"
               )}
             >
               <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />
@@ -142,7 +121,7 @@ export function Header() {
             className={cn(
               pressFeedbackGroupClassName("hotkeys"),
               headerActionClassName,
-              "text-black dark:text-ink",
+              "dark:text-ink-dark text-black",
               DRAWER_HEADER_HOVER
             )}
           >
@@ -152,7 +131,7 @@ export function Header() {
                 pressFeedbackGroupChildClassName("hotkeys")
               )}
             >
-              <Keyboard size={20} className="fill-black dark:fill-ink" />
+              <Keyboard size={20} className="dark:fill-ink-dark fill-black" />
               show hotkeys
             </span>
           </button>

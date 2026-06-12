@@ -23,7 +23,7 @@ export function TasksPageShell({ children }: PropsWithChildren) {
   return (
     <div
       onKeyDown={handleKeyDown}
-      className={cn("h-full w-full", "bg-gray-50 dark:bg-canvas")}
+      className={cn("h-full w-full", "dark:bg-canvas-dark bg-canvas-light")}
     >
       <HelmetProvider>
         <Head />

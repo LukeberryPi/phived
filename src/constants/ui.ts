@@ -5,10 +5,11 @@ export const HOVER_REVEAL =
 
 export const NO_TASKS_TO_CLEAR_MESSAGE = "nothing to clear.";
 
-export const ROW_DIVIDER = "border-b border-line dark:border-hairline";
+export const ROW_DIVIDER =
+  "border-b border-line-light dark:border-hairline-dark";
 
 export const DRAWER_TOGGLE_DIVIDER =
-  "border-t border-line dark:border-hairline";
+  "border-t border-line-light dark:border-hairline-dark";
 
 export const DRAWER_HEADER_GRID =
   "grid min-h-12 grid-cols-[minmax(0,1fr)_5rem] items-stretch";
@@ -22,9 +23,11 @@ export const DRAWER_ICON_HEADER_GRID =
 export const DRAWER_ICON_HEADER_GRID_REVERSED =
   "grid min-h-12 grid-cols-[3rem_minmax(0,1fr)] items-stretch";
 
-export const DRAWER_HEADER_ACTIVE = "bg-zinc-100 dark:bg-surfaceActive";
+export const DRAWER_HEADER_ACTIVE =
+  "bg-surface-hover-light dark:bg-surface-active-dark";
 
-export const SIDE_ACTION_BORDER = "border-l border-line dark:border-hairline";
+export const SIDE_ACTION_BORDER =
+  "border-l border-line-light dark:border-hairline-dark";
 
 export const DESKTOP_BREAKPOINT = 640;
 
@@ -41,11 +44,11 @@ export const CANVAS_LAYER_Z = "z-0";
 /** Above drawers so center-bottom controls stay clickable. */
 export const CANVAS_CONTROLS_Z = "z-[60]";
 
-export const DRAWER_SURFACE = "bg-white dark:bg-surface";
+export const DRAWER_SURFACE = "bg-white dark:bg-surface-dark";
 
-export const DRAWER_TEXT = "text-black dark:text-ink";
+export const DRAWER_TEXT = "text-black dark:text-ink-dark";
 
-export const DRAWER_MUTED_TEXT = "text-muted dark:text-inkMuted";
+export const DRAWER_MUTED_TEXT = "text-muted-light dark:text-muted-dark";
 
 export const DRAWER_COLLAPSED_BUTTON = cn(
   "flex items-center gap-2 px-4 py-3 text-sm font-medium",
@@ -65,10 +68,10 @@ export const DRAWER_BODY = cn(
 );
 
 export const DRAWER_HEADER_HOVER =
-  "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover";
+  "sm:hover:bg-surface-hover-light dark:sm:hover:bg-surface-hover-dark";
 
 export const DIALOG_HEADER =
-  "relative border-b border-line px-5 py-4 pr-14 dark:border-hairline";
+  "relative border-b border-line-light px-5 py-4 pr-14 dark:border-hairline-dark";
 
 export const DIALOG_CLOSE_BUTTON = cn(
   "absolute top-1/2 right-4 flex size-8 shrink-0 -translate-y-1/2 items-center justify-center rounded-full",
@@ -79,20 +82,20 @@ export const DIALOG_CLOSE_BUTTON = cn(
 export const APP_DIALOG = "app-dialog";
 
 export const KBD_CLASS = cn(
-  "rounded border border-line bg-white px-2 py-1 font-sans",
+  "rounded border border-line-light bg-white px-2 py-1 font-sans",
   DRAWER_TEXT,
-  "dark:border-hairline dark:bg-surfaceHover"
+  "dark:border-hairline-dark dark:bg-surface-hover-dark"
 );
 
 /** Done button, history restore, and history count badge. */
 export const ACTION_ACCENT_SURFACE =
-  "bg-sky-300 text-black dark:bg-cyan-800 dark:text-ink";
+  "bg-sky-300 text-black dark:bg-cyan-800 dark:text-ink-dark";
 
 export const DRAWER_COUNT_BADGE = cn(
   "inline-flex size-6 shrink-0 items-center justify-center rounded-full",
   "border border-black text-xs tabular-nums",
   ACTION_ACCENT_SURFACE,
-  "dark:border-edge"
+  "dark:border-edge-dark"
 );
 
 /** Clear/delete trash buttons — red tint on hover in light and dark mode. */

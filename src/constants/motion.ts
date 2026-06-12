@@ -17,6 +17,7 @@ const pressFeedbackGroupClassNames = {
   restore: "group/restore",
   "drawer-toggle": "group/drawer-toggle",
   done: "group/done",
+  "add-row": "group/add-row",
 } as const;
 
 const pressFeedbackGroupActiveClassNames = {
@@ -28,6 +29,7 @@ const pressFeedbackGroupActiveClassNames = {
   restore: "group-active/restore:scale-95",
   "drawer-toggle": "group-active/drawer-toggle:scale-95",
   done: "group-active/done:scale-95",
+  "add-row": "group-active/add-row:scale-95",
 } as const;
 
 type PressFeedbackGroupName = keyof typeof pressFeedbackGroupClassNames;
@@ -46,7 +48,7 @@ export function pressFeedbackGroupChildClassName(name: PressFeedbackGroupName) {
 }
 
 export const dragLiftClassName =
-  "overflow-hidden rounded-2xl border border-black/30 shadow-none dark:border-edge motion-reduce:scale-100";
+  "overflow-hidden rounded-2xl border border-black/30 shadow-none dark:border-edge-dark motion-reduce:scale-100";
 
 export const dragScaleUpClassName = "scale-105";
 

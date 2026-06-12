@@ -100,6 +100,21 @@ export function createCanvasCenterList(tasks?: string[]): TaskList {
   );
 }
 
+/**
+ * Maps lists to render order plus stacking order for the canvas.
+ *
+ * Render order MUST stay stable while a list is being interacted with:
+ * `bringListToFront` fires on pointerdown, and if it reordered DOM nodes
+ * the browser would cancel the in-flight click, swallowing the first
+ * press of any button inside the card. Stacking is therefore expressed
+ * via `stackIndex` (z-index) while render order is keyed to list id.
+ */
+export function orderListsForRender(lists: TaskLists) {
+  return lists
+    .map((list, stackIndex) => ({ list, stackIndex }))
+    .sort((a, b) => a.list.id.localeCompare(b.list.id));
+}
+
 const LEGACY_TASKS_STORAGE_KEY = "storedGeneralTasks";
 
 /**

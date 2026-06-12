@@ -1,12 +1,17 @@
 import type { MouseEvent } from "react";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { CanvasControls } from "src/components/CanvasControls";
 import { TaskListCard } from "src/components/TaskListCard";
 import { CANVAS_LAYER_Z } from "src/constants/ui";
 import { useCanvasTasksContext } from "src/contexts";
 import { useCanvasViewport } from "src/hooks";
 import { cn } from "src/utils";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, LIST_WIDTH } from "src/utils/canvas";
+import {
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  LIST_WIDTH,
+  orderListsForRender,
+} from "src/utils/canvas";
 
 /** Vertical offset so a spawned list's header lands under the pointer. */
 const SPAWN_HEADER_OFFSET = 22;
@@ -18,9 +23,12 @@ export function CanvasBoard() {
     lists,
     addList,
     requestDeleteList,
+    bringListToFront,
     moveList,
     setListTag,
     changeTask,
+    addTaskRow,
+    removeEmptyTaskRow,
     completeTask,
     reorderTask,
     moveTaskUp,
@@ -37,6 +45,34 @@ export function CanvasBoard() {
     resetZoom,
   } = useCanvasViewport(boardRef);
   const [spawnedListId, setSpawnedListId] = useState<string | null>(null);
+  const taskListActions = useMemo(
+    () => ({
+      requestDeleteList,
+      bringListToFront,
+      moveList,
+      setListTag,
+      changeTask,
+      addTaskRow,
+      removeEmptyTaskRow,
+      completeTask,
+      reorderTask,
+      moveTaskUp,
+      moveTaskDown,
+    }),
+    [
+      requestDeleteList,
+      bringListToFront,
+      moveList,
+      setListTag,
+      changeTask,
+      addTaskRow,
+      removeEmptyTaskRow,
+      completeTask,
+      reorderTask,
+      moveTaskUp,
+      moveTaskDown,
+    ]
+  );
 
   const spawnListAt = (canvasX: number, canvasY: number) => {
     setSpawnedListId(
@@ -97,27 +133,21 @@ export function CanvasBoard() {
               transformOrigin: "0 0",
             }}
             className={cn(
-              "absolute left-0 top-0 border-2 border-line bg-gray-50",
-              "dark:border-edge dark:bg-canvas",
+              "border-line-light bg-canvas-light absolute top-0 left-0 border-2",
+              "dark:border-edge-dark dark:bg-canvas-dark",
               "bg-[radial-gradient(circle,rgb(0_0_0/0.12)_1.5px,transparent_1.5px)]",
               "dark:bg-[radial-gradient(circle,rgb(226_229_234/0.07)_1.5px,transparent_1.5px)]",
               "[background-size:32px_32px]"
             )}
           >
-            {lists.map((list) => (
+            {orderListsForRender(lists).map(({ list, stackIndex }) => (
               <TaskListCard
                 key={list.id}
                 list={list}
+                stackIndex={stackIndex}
                 zoomRef={zoomRef}
                 autoFocusFirstRow={list.id === spawnedListId}
-                onMove={moveList}
-                onDelete={requestDeleteList}
-                onTagChange={setListTag}
-                onTaskChange={changeTask}
-                onCompleteTask={completeTask}
-                onReorderTask={reorderTask}
-                onMoveTaskUp={moveTaskUp}
-                onMoveTaskDown={moveTaskDown}
+                actions={taskListActions}
               />
             ))}
           </div>

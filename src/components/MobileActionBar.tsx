@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { HelpPanel } from "src/components/HelpDrawer";
+import { ThemeIndicator } from "src/components/ThemeIndicator";
 import {
   HistoryClearButton,
   HistoryPanel,
@@ -19,7 +19,6 @@ import {
   DRAWER_TEXT,
   DRAWER_TOGGLE_DIVIDER,
   FLOATING_CHROME_Z,
-  NO_TASKS_TO_CLEAR_MESSAGE,
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
 } from "src/constants/ui";
@@ -28,8 +27,9 @@ import {
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { useCanvasTasksContext, useDarkMode } from "src/contexts";
-import { Clock, Computer, Moon, Question, Sun, Trash } from "src/icons";
-import { cn, countFilledTasks } from "src/utils";
+import { useClearCanvasAction } from "src/hooks";
+import { Clock, Question, Trash } from "src/icons";
+import { cn } from "src/utils";
 
 const barActionClassName = cn(
   "flex flex-1 items-center justify-center px-2 py-3 text-sm font-medium",
@@ -90,27 +90,16 @@ function HistoryToggleIcon({ historyCount }: { historyCount: number }) {
 }
 
 export function MobileActionBar() {
-  const { lists, taskHistory, clearCanvas, clearTaskHistory } =
-    useCanvasTasksContext();
+  const { taskHistory, clearTaskHistory } = useCanvasTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
+  const { clear: clearCanvas, unavailable: nothingToClear } =
+    useClearCanvasAction();
   const historyCount = taskHistory.length;
-  const nothingToClear =
-    lists.length <= 1 &&
-    lists.every((list) => countFilledTasks(list.tasks) === 0);
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const themeIconClassName = "fill-black dark:fill-ink";
+  const themeIconClassName = "fill-black dark:fill-ink-dark";
 
   const closeHelp = () => setHelpOpen(false);
-  const handleClearCanvas = () => {
-    if (nothingToClear) {
-      toast(NO_TASKS_TO_CLEAR_MESSAGE);
-      return;
-    }
-
-    clearCanvas();
-  };
-
   const toggleHelp = () => {
     setHelpOpen((open) => !open);
     setHistoryOpen(false);
@@ -127,7 +116,7 @@ export function MobileActionBar() {
     <div
       className={cn(
         FLOATING_CHROME_Z,
-        "pointer-events-auto fixed bottom-6 left-4 right-4 sm:hidden"
+        "pointer-events-auto fixed right-4 bottom-6 left-4 sm:hidden"
       )}
       aria-label="Actions"
     >
@@ -163,13 +152,10 @@ export function MobileActionBar() {
             aria-label={`Theme: ${themePreference}`}
             onClick={toggleDarkMode}
             icon={
-              themePreference === "system" ? (
-                <Computer size={20} className={themeIconClassName} />
-              ) : themePreference === "dark" ? (
-                <Moon size={20} className={themeIconClassName} />
-              ) : (
-                <Sun size={20} className={themeIconClassName} />
-              )
+              <ThemeIndicator
+                preference={themePreference}
+                className={themeIconClassName}
+              />
             }
             label={themePreference}
           />
@@ -180,7 +166,7 @@ export function MobileActionBar() {
                 ? "Clear canvas unavailable: nothing to clear"
                 : "clear canvas"
             }
-            onClick={handleClearCanvas}
+            onClick={clearCanvas}
             unavailable={nothingToClear}
             className={
               nothingToClear

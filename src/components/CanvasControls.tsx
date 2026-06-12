@@ -1,3 +1,4 @@
+import { Tooltip } from "src/components/Tooltip";
 import { pressFeedbackClassName } from "src/constants/motion";
 import { CANVAS_CONTROLS_Z, DRAWER_HEADER_HOVER } from "src/constants/ui";
 import { Minus, Plus } from "src/icons";
@@ -13,7 +14,7 @@ type CanvasControlsProps = {
 
 const controlButtonClassName = cn(
   "flex min-h-11 select-none items-center justify-center px-3",
-  "text-sm font-medium text-black dark:text-ink",
+  "text-sm font-medium text-black dark:text-ink-dark",
   DRAWER_HEADER_HOVER,
   pressFeedbackClassName
 );
@@ -31,8 +32,8 @@ export function CanvasControls({
       className={cn(
         CANVAS_CONTROLS_Z,
         "pointer-events-auto fixed flex items-stretch gap-3",
-        "bottom-28 right-4",
-        "sm:bottom-6 sm:left-1/2 sm:right-auto sm:-translate-x-1/2"
+        "right-4 bottom-28",
+        "sm:right-auto sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2"
       )}
     >
       <button
@@ -44,7 +45,7 @@ export function CanvasControls({
           "gap-2 px-4"
         )}
       >
-        <Plus size={16} className="fill-black dark:fill-ink" />
+        <Plus size={16} className="dark:fill-ink-dark fill-black" />
         new list
       </button>
 
@@ -53,31 +54,36 @@ export function CanvasControls({
         role="group"
         aria-label="zoom controls"
       >
-        <button
-          aria-label="zoom out"
-          onClick={onZoomOut}
-          className={controlButtonClassName}
-        >
-          <Minus size={16} className="fill-black dark:fill-ink" />
-        </button>
-        <button
-          aria-label="reset zoom"
-          title="reset zoom"
-          onClick={onResetZoom}
-          className={cn(
-            controlButtonClassName,
-            "min-w-14 border-x border-line tabular-nums dark:border-hairline"
-          )}
-        >
-          {Math.round(zoom * 100)}%
-        </button>
-        <button
-          aria-label="zoom in"
-          onClick={onZoomIn}
-          className={controlButtonClassName}
-        >
-          <Plus size={16} className="fill-black dark:fill-ink" />
-        </button>
+        <Tooltip label="zoom out">
+          <button
+            aria-label="zoom out"
+            onClick={onZoomOut}
+            className={controlButtonClassName}
+          >
+            <Minus size={16} className="dark:fill-ink-dark fill-black" />
+          </button>
+        </Tooltip>
+        <Tooltip label="reset zoom">
+          <button
+            aria-label="reset zoom"
+            onClick={onResetZoom}
+            className={cn(
+              controlButtonClassName,
+              "border-line-light dark:border-hairline-dark min-w-14 border-x tabular-nums"
+            )}
+          >
+            {Math.round(zoom * 100)}%
+          </button>
+        </Tooltip>
+        <Tooltip label="zoom in">
+          <button
+            aria-label="zoom in"
+            onClick={onZoomIn}
+            className={controlButtonClassName}
+          >
+            <Plus size={16} className="dark:fill-ink-dark fill-black" />
+          </button>
+        </Tooltip>
       </div>
     </div>
   );

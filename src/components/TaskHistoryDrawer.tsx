@@ -59,7 +59,7 @@ export function HistoryClearButton({
         pressFeedbackGroupClassName("clear-history"),
         historyClearButtonClassName,
         dividerSide === "right" &&
-          "border-l-0 border-r border-line dark:border-hairline",
+          "border-line-light dark:border-hairline-dark border-r border-l-0",
         DESTRUCTIVE_ACTION_HOVER
       )}
     >
@@ -99,7 +99,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
               onClick={clearTaskHistory}
               className={cn(
                 "flex min-h-12 shrink-0 items-center gap-2 px-4 text-sm font-medium",
-                "border-r border-line dark:border-hairline",
+                "border-line-light dark:border-hairline-dark border-r",
                 pressFeedbackClassName,
                 DRAWER_TEXT,
                 DESTRUCTIVE_ACTION_HOVER
@@ -117,12 +117,12 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
             aria-label="Close history"
             onClick={onClose}
             className={cn(
-              "absolute right-2 top-2 flex size-8 shrink-0 items-center justify-center rounded-full",
-              "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
+              "absolute top-2 right-2 flex size-8 shrink-0 items-center justify-center rounded-full",
+              "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
               pressFeedbackClassName
             )}
           >
-            <CaretDown size={18} className="fill-black dark:fill-ink" />
+            <CaretDown size={18} className="dark:fill-ink-dark fill-black" />
           </button>
         </div>
       )}
@@ -167,8 +167,8 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
                   {entry.listTag && (
                     <span
                       className={cn(
-                        "max-w-24 shrink-0 truncate rounded-full border border-line px-2 py-0.5",
-                        "text-xs dark:border-hairline",
+                        "border-line-light max-w-24 shrink-0 truncate rounded-full border px-2 py-0.5",
+                        "dark:border-hairline-dark text-xs",
                         DRAWER_MUTED_TEXT
                       )}
                       title={entry.listTag}
@@ -178,7 +178,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
                   )}
                   <span
                     className={cn(
-                      "shrink-0 whitespace-nowrap text-xs",
+                      "shrink-0 text-xs whitespace-nowrap",
                       DRAWER_MUTED_TEXT
                     )}
                   >

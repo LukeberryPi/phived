@@ -10,18 +10,18 @@ type HelpPanelProps = {
 
 export function HelpPanel({ onClose }: HelpPanelProps) {
   return (
-    <div className="relative space-y-3 px-5 pb-4 text-sm">
+    <div className="relative space-y-3 px-5 pt-4 pb-4 text-sm">
       <button
         type="button"
         aria-label="Close help"
         onClick={onClose}
         className={cn(
           "absolute right-3 flex size-8 shrink-0 items-center justify-center rounded-full",
-          "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
+          "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
           pressFeedbackClassName
         )}
       >
-        <CaretDown size={18} className="fill-black dark:fill-ink" />
+        <CaretDown size={18} className="dark:fill-ink-dark fill-black" />
       </button>
       <h1 className="pr-9">
         Welcome to <strong>phived, the anti-procrastination to-do list.</strong>

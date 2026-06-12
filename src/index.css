@@ -1,22 +1,81 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --breakpoint-tiny: 400px;
+  --breakpoint-xs: 500px;
+
+  --font-sans: "DM Sans", sans-serif;
+  --font-heading: "DM Sans", sans-serif;
+
+  --shadow-brutalist-dark: 3px 3px #080811;
+  --shadow-brutalist-light: 2px 2px #fdfdff;
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --color-muted-light: #71717a;
+  --color-line-light: #a1a1aa;
+  --color-canvas-light: #f9fafb;
+  --color-surface-hover-light: #f4f4f5;
+  --color-canvas-dark: #0a0c10;
+  --color-surface-dark: #14171d;
+  --color-surface-hover-dark: #1b1f27;
+  --color-surface-active-dark: #21262f;
+  --color-hairline-dark: #262b34;
+  --color-edge-dark: #363d49;
+  --color-ink-dark: #e2e5ea;
+  --color-muted-dark: #8b919d;
+}
 
 @layer components {
   .task-panel {
-    @apply rounded-2xl border border-black bg-white dark:border-edge dark:bg-surface;
+    @apply rounded-2xl border border-black bg-white dark:border-edge-dark dark:bg-surface-dark;
   }
 
   .app-dialog.task-panel {
-    @apply border-line dark:border-hairline;
+    @apply border-line-light dark:border-hairline-dark;
   }
 
   .toast-panel {
-    @apply rounded-2xl border border-black bg-white shadow-none dark:border-edge dark:bg-surface dark:shadow-none;
+    @apply rounded-2xl border border-black bg-white shadow-none dark:border-edge-dark dark:bg-surface-dark dark:shadow-none;
   }
 
   .drawer-shell {
     interpolate-size: allow-keywords;
+  }
+
+  /* Floating hover/focus tooltip. Positioned in screen space via a portal so
+     it escapes the controls group's overflow and ignores canvas zoom. Scales
+     up from just above its trigger; close is immediate as React unmounts it. */
+  .tooltip-bubble {
+    transform-origin: bottom center;
+    transform: translate(-50%, calc(-100% - 8px)) scale(1);
+    opacity: 1;
+    transition:
+      opacity 150ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @starting-style {
+    .tooltip-bubble {
+      opacity: 0;
+      transform: translate(-50%, calc(-100% - 4px)) scale(0.96);
+    }
+  }
+
+  .tooltip-bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: inherit;
+    border: inherit;
+    border-top: 0;
+    border-left: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 
   /* Native <dialog> enter polish. Close remains immediate because React
@@ -92,20 +151,20 @@
   }
 
   .dark .custom-scrollbar {
-    scrollbar-color: theme(colors.edge) transparent;
+    scrollbar-color: var(--color-edge-dark) transparent;
   }
 
   .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: theme(colors.edge);
+    background-color: var(--color-edge-dark);
   }
 
   .dark .custom-scrollbar:hover::-webkit-scrollbar-thumb,
   .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: theme(colors.inkMuted);
+    background-color: var(--color-muted-dark);
   }
 
   .dark .custom-scrollbar::-webkit-scrollbar-thumb:active {
-    background-color: theme(colors.ink);
+    background-color: var(--color-ink-dark);
   }
 
 }
@@ -135,6 +194,17 @@
 
   [data-sonner-toast] {
     transition: opacity 0ms;
+  }
+
+  .tooltip-bubble {
+    transform: translate(-50%, calc(-100% - 8px));
+    transition: opacity 150ms ease;
+  }
+
+  @starting-style {
+    .tooltip-bubble {
+      transform: translate(-50%, calc(-100% - 8px));
+    }
   }
 }
 
