@@ -25,9 +25,12 @@ export function CanvasBoard() {
     requestDeleteList,
     bringListToFront,
     moveList,
+    resizeList,
     setListTag,
     changeTask,
     addTaskRow,
+    insertTaskRowBelow,
+    insertTaskRowAbove,
     removeEmptyTaskRow,
     completeTask,
     reorderTask,
@@ -45,14 +48,22 @@ export function CanvasBoard() {
     resetZoom,
   } = useCanvasViewport(boardRef);
   const [spawnedListId, setSpawnedListId] = useState<string | null>(null);
+  const [focusedListId, setFocusedListId] = useState<string | null>(null);
+  // Ignore stale focus if the focused list was deleted.
+  const activeFocusId = lists.some((list) => list.id === focusedListId)
+    ? focusedListId
+    : null;
   const taskListActions = useMemo(
     () => ({
       requestDeleteList,
       bringListToFront,
       moveList,
+      resizeList,
       setListTag,
       changeTask,
       addTaskRow,
+      insertTaskRowBelow,
+      insertTaskRowAbove,
       removeEmptyTaskRow,
       completeTask,
       reorderTask,
@@ -63,9 +74,12 @@ export function CanvasBoard() {
       requestDeleteList,
       bringListToFront,
       moveList,
+      resizeList,
       setListTag,
       changeTask,
       addTaskRow,
+      insertTaskRowBelow,
+      insertTaskRowAbove,
       removeEmptyTaskRow,
       completeTask,
       reorderTask,
@@ -147,6 +161,13 @@ export function CanvasBoard() {
                 stackIndex={stackIndex}
                 zoomRef={zoomRef}
                 autoFocusFirstRow={list.id === spawnedListId}
+                focused={list.id === activeFocusId}
+                dimmed={activeFocusId !== null && list.id !== activeFocusId}
+                onToggleFocus={() =>
+                  setFocusedListId((current) =>
+                    current === list.id ? null : list.id
+                  )
+                }
                 actions={taskListActions}
               />
             ))}

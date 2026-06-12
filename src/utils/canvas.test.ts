@@ -8,8 +8,15 @@ import {
   MIN_ZOOM,
   clampListPosition,
   clampViewport,
+  LIST_WIDTH,
+  buildListsFromLegacyTasks,
+  MAX_LIST_WIDTH,
+  MIN_LIST_WIDTH,
+  clampListWidth,
   clampZoom,
   createTaskList,
+  movedListPosition,
+  resizedListWidth,
   orderListsForRender,
 } from "src/utils/canvas";
 import type { TaskLists } from "src/types/canvas";
@@ -56,6 +63,79 @@ describe("canvas utilities", () => {
       y: 800 - CANVAS_HEIGHT,
       zoom: 1,
     });
+  });
+});
+
+describe("list drag math", () => {
+  test("moves a list by the pointer delta at zoom 1", () => {
+    expect(
+      movedListPosition(
+        { x: 100, y: 200 },
+        { x: 10, y: 10 },
+        { x: 90, y: -40 },
+        1
+      )
+    ).toEqual({ x: 180, y: 150 });
+  });
+
+  test("divides the move delta by the zoom level", () => {
+    expect(
+      movedListPosition({ x: 100, y: 200 }, { x: 0, y: 0 }, { x: 50, y: 50 }, 2)
+    ).toEqual({ x: 125, y: 225 });
+  });
+
+  test("treats a zero/invalid zoom as 1 instead of dividing by zero", () => {
+    expect(
+      movedListPosition({ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 30, y: 30 }, 0)
+    ).toEqual({ x: 30, y: 30 });
+  });
+
+  test("resizes by the horizontal pointer delta, scaled by zoom", () => {
+    expect(resizedListWidth(340, 0, 160, 1)).toBe(500);
+    expect(resizedListWidth(340, 0, 160, 0.5)).toBe(660);
+    expect(resizedListWidth(340, 100, 40, 1)).toBe(280);
+    expect(resizedListWidth(340, 0, 100, 0)).toBe(440);
+  });
+
+  test("clamps list width to the allowed range", () => {
+    expect(clampListWidth(MIN_LIST_WIDTH - 100)).toBe(MIN_LIST_WIDTH);
+    expect(clampListWidth(400)).toBe(400);
+    expect(clampListWidth(MAX_LIST_WIDTH + 100)).toBe(MAX_LIST_WIDTH);
+  });
+});
+
+describe("buildListsFromLegacyTasks", () => {
+  test("starts with one empty centered list when nothing was stored", () => {
+    const lists = buildListsFromLegacyTasks(null, null);
+
+    expect(lists).toHaveLength(1);
+    expect(lists[0].tag).toBe("");
+    expect(lists[0].tasks.every((task) => task === "")).toBe(true);
+  });
+
+  test("migrates general tasks into the centered list", () => {
+    const lists = buildListsFromLegacyTasks(["one", "two"], null);
+
+    expect(lists).toHaveLength(1);
+    expect(lists[0].tasks.slice(0, 2)).toEqual(["one", "two"]);
+  });
+
+  test("migrates daily tasks into a second list tagged daily beside it", () => {
+    const lists = buildListsFromLegacyTasks(["one"], ["water plants"]);
+
+    expect(lists).toHaveLength(2);
+    expect(lists[1].tag).toBe("daily");
+    expect(lists[1].tasks[0]).toBe("water plants");
+    expect(lists[1].x).toBeGreaterThanOrEqual(lists[0].x + LIST_WIDTH);
+    expect(lists[1].y).toBe(lists[0].y);
+  });
+
+  test("migrates dailies even when no general tasks were stored", () => {
+    const lists = buildListsFromLegacyTasks(null, ["water plants"]);
+
+    expect(lists).toHaveLength(2);
+    expect(lists[0].tasks.every((task) => task === "")).toBe(true);
+    expect(lists[1].tag).toBe("daily");
   });
 });
 

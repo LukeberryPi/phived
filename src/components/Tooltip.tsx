@@ -6,6 +6,8 @@ import { cn } from "src/utils";
 type TooltipProps = {
   label: string;
   children: ReactElement;
+  /** Hides the tooltip and suppresses it while true (e.g. during drags). */
+  disabled?: boolean;
 };
 
 type Coords = { x: number; y: number };
@@ -22,10 +24,10 @@ function mergeRefs<T>(...refs: (Ref<T> | undefined)[]) {
   };
 }
 
-export function Tooltip({ label, children }: TooltipProps) {
+export function Tooltip({ label, children, disabled = false }: TooltipProps) {
   const triggerRef = useRef<HTMLElement>(null);
   const [coords, setCoords] = useState<Coords | null>(null);
-  const open = coords !== null;
+  const open = coords !== null && !disabled;
 
   const measure = useCallback(() => {
     const rect = triggerRef.current?.getBoundingClientRect();
@@ -54,7 +56,7 @@ export function Tooltip({ label, children }: TooltipProps) {
     ref: mergeRefs(triggerRef, childRef),
     onPointerEnter: (event: React.PointerEvent<HTMLElement>) => {
       children.props.onPointerEnter?.(event);
-      if (event.pointerType === "mouse") measure();
+      if (event.pointerType === "mouse" && !disabled) measure();
     },
     onPointerLeave: (event: React.PointerEvent<HTMLElement>) => {
       children.props.onPointerLeave?.(event);

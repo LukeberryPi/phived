@@ -7,6 +7,8 @@ import {
   changeTaskAt,
   createEmptyTasks,
   findFirstEmptyTaskIndex,
+  insertEmptyTaskRowAbove,
+  insertEmptyTaskRowBelow,
   removeEmptyExtraRow,
   removeTaskRow,
   reorderTaskRows,
@@ -65,6 +67,44 @@ describe("task list utilities", () => {
 
   test("adds exactly one explicit empty row", () => {
     expect(addEmptyTaskRow(["one"])).toEqual(["one", ""]);
+  });
+
+  test("inserts an empty row directly below the given index", () => {
+    const tasks = ["one", "two", "three"];
+
+    expect(insertEmptyTaskRowBelow(tasks, 0)).toEqual([
+      "one",
+      "",
+      "two",
+      "three",
+    ]);
+    expect(insertEmptyTaskRowBelow(tasks, 2)).toEqual([
+      "one",
+      "two",
+      "three",
+      "",
+    ]);
+    expect(insertEmptyTaskRowBelow(tasks, 3)).toBe(tasks);
+    expect(insertEmptyTaskRowBelow(tasks, -1)).toBe(tasks);
+  });
+
+  test("inserts an empty row directly above the given index", () => {
+    const tasks = ["one", "two", "three"];
+
+    expect(insertEmptyTaskRowAbove(tasks, 0)).toEqual([
+      "",
+      "one",
+      "two",
+      "three",
+    ]);
+    expect(insertEmptyTaskRowAbove(tasks, 2)).toEqual([
+      "one",
+      "two",
+      "",
+      "three",
+    ]);
+    expect(insertEmptyTaskRowAbove(tasks, 3)).toBe(tasks);
+    expect(insertEmptyTaskRowAbove(tasks, -1)).toBe(tasks);
   });
 
   test("only removes empty rows beyond the minimum", () => {

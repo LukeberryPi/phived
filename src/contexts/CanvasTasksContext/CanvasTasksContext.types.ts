@@ -10,9 +10,15 @@ export type CanvasTasksContextType = {
   requestDeleteList: (listId: string) => void;
   bringListToFront: (listId: string) => void;
   moveList: (listId: string, x: number, y: number) => void;
+  /** Sets a list's width, clamped to the allowed range. */
+  resizeList: (listId: string, width: number) => void;
   setListTag: (listId: string, tag: string) => void;
   changeTask: (listId: string, taskIndex: number, newValue: string) => void;
   addTaskRow: (listId: string) => void;
+  /** Inserts an empty row directly below the given task index. */
+  insertTaskRowBelow: (listId: string, taskIndex: number) => void;
+  /** Inserts an empty row directly above the given task index. */
+  insertTaskRowAbove: (listId: string, taskIndex: number) => void;
   removeEmptyTaskRow: (listId: string, taskIndex: number) => void;
   completeTask: (listId: string, taskIndex: number) => void;
   reorderTask: (listId: string, fromIndex: number, toIndex: number) => void;
@@ -27,10 +33,13 @@ export type TaskListActions = Pick<
   CanvasTasksContextType,
   | "bringListToFront"
   | "moveList"
+  | "resizeList"
   | "requestDeleteList"
   | "setListTag"
   | "changeTask"
   | "addTaskRow"
+  | "insertTaskRowBelow"
+  | "insertTaskRowAbove"
   | "removeEmptyTaskRow"
   | "completeTask"
   | "reorderTask"

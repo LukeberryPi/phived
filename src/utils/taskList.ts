@@ -43,6 +43,32 @@ export function addEmptyTaskRow(tasks: string[]): string[] {
   return [...tasks, ""];
 }
 
+export function insertEmptyTaskRowBelow(
+  tasks: string[],
+  index: number
+): string[] {
+  if (index < 0 || index >= tasks.length) {
+    return tasks;
+  }
+
+  const inserted = [...tasks];
+  inserted.splice(index + 1, 0, "");
+  return inserted;
+}
+
+export function insertEmptyTaskRowAbove(
+  tasks: string[],
+  index: number
+): string[] {
+  if (index < 0 || index >= tasks.length) {
+    return tasks;
+  }
+
+  const inserted = [...tasks];
+  inserted.splice(index, 0, "");
+  return inserted;
+}
+
 export function removeEmptyExtraRow(tasks: string[], index: number): string[] {
   if (
     tasks.length <= MIN_TASK_ROWS ||

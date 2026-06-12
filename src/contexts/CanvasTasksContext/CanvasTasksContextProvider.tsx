@@ -12,12 +12,15 @@ import { countFilledTasks, getRandomElement } from "src/utils";
 import {
   buildInitialLists,
   clampListPosition,
+  clampListWidth,
   createCanvasCenterList,
   createTaskList,
 } from "src/utils/canvas";
 import {
   addEmptyTaskRow,
   changeTaskAt,
+  insertEmptyTaskRowAbove,
+  insertEmptyTaskRowBelow,
   removeEmptyExtraRow,
   removeTaskRow,
   reorderTaskRows,
@@ -106,6 +109,16 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
     [updateList]
   );
 
+  const resizeList = useCallback(
+    (listId: string, width: number) => {
+      updateList(listId, (list) => ({
+        ...list,
+        width: clampListWidth(width),
+      }));
+    },
+    [updateList]
+  );
+
   const setListTag = useCallback(
     (listId: string, tag: string) => {
       updateList(listId, (list) => ({ ...list, tag }));
@@ -128,6 +141,26 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       updateList(listId, (list) => ({
         ...list,
         tasks: addEmptyTaskRow(list.tasks),
+      }));
+    },
+    [updateList]
+  );
+
+  const insertTaskRowBelow = useCallback(
+    (listId: string, taskIndex: number) => {
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: insertEmptyTaskRowBelow(list.tasks, taskIndex),
+      }));
+    },
+    [updateList]
+  );
+
+  const insertTaskRowAbove = useCallback(
+    (listId: string, taskIndex: number) => {
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: insertEmptyTaskRowAbove(list.tasks, taskIndex),
       }));
     },
     [updateList]
@@ -267,9 +300,12 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       requestDeleteList,
       bringListToFront,
       moveList,
+      resizeList,
       setListTag,
       changeTask,
       addTaskRow,
+      insertTaskRowBelow,
+      insertTaskRowAbove,
       removeEmptyTaskRow,
       completeTask,
       reorderTask,
@@ -286,9 +322,12 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       requestDeleteList,
       bringListToFront,
       moveList,
+      resizeList,
       setListTag,
       changeTask,
       addTaskRow,
+      insertTaskRowBelow,
+      insertTaskRowAbove,
       removeEmptyTaskRow,
       completeTask,
       reorderTask,

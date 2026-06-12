@@ -59,8 +59,10 @@ function buildSections(isMac: boolean): ShortcutSection[] {
     {
       title: "navigation",
       shortcuts: [
-        { label: "next task", combos: [[ENTER], [ARROW_DOWN]] },
-        { label: "previous task", combos: [[SHIFT, ENTER], [ARROW_UP]] },
+        { label: "next task", combos: [[ARROW_DOWN]] },
+        { label: "previous task", combos: [[ARROW_UP]] },
+        { label: "new task below", combos: [[ENTER]] },
+        { label: "new task above", combos: [[SHIFT, ENTER]] },
         { label: "unfocus task", combos: [[ESC]] },
       ],
     },

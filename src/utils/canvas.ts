@@ -9,6 +9,42 @@ export const CANVAS_WIDTH = 6000;
 export const CANVAS_HEIGHT = 4000;
 
 export const LIST_WIDTH = 340;
+export const MIN_LIST_WIDTH = 260;
+export const MAX_LIST_WIDTH = 620;
+
+export function clampListWidth(width: number) {
+  return clamp(width, MIN_LIST_WIDTH, MAX_LIST_WIDTH);
+}
+
+type Point = { x: number; y: number };
+
+/**
+ * New list position for a move drag. Pointer deltas are in screen px and
+ * must be divided by zoom to land in canvas coordinates.
+ */
+export function movedListPosition(
+  startPosition: Point,
+  startClient: Point,
+  currentClient: Point,
+  zoom: number
+): Point {
+  const safeZoom = zoom || 1;
+
+  return {
+    x: startPosition.x + (currentClient.x - startClient.x) / safeZoom,
+    y: startPosition.y + (currentClient.y - startClient.y) / safeZoom,
+  };
+}
+
+/** New list width for a right-edge resize drag, in canvas px (unclamped). */
+export function resizedListWidth(
+  startWidth: number,
+  startClientX: number,
+  currentClientX: number,
+  zoom: number
+): number {
+  return startWidth + (currentClientX - startClientX) / (zoom || 1);
+}
 /** Margin kept between a list and the canvas edge. */
 const LIST_EDGE_MARGIN = 16;
 /** Nominal height reserved when clamping a list near the bottom edge. */
@@ -115,15 +151,14 @@ export function orderListsForRender(lists: TaskLists) {
     .sort((a, b) => a.list.id.localeCompare(b.list.id));
 }
 
-const LEGACY_TASKS_STORAGE_KEY = "storedGeneralTasks";
+const LEGACY_GENERAL_TASKS_STORAGE_KEY = "storedGeneralTasks";
+const LEGACY_DAILY_TASKS_STORAGE_KEY = "storedDailyTasks";
+/** Gap between the migrated general list and the migrated daily list. */
+const LEGACY_DAILY_LIST_GAP = 24;
 
-/**
- * First-run lists: migrates the pre-canvas single five-task list when
- * present, otherwise starts with one empty list at the canvas center.
- */
-export function buildInitialLists(): TaskLists {
+function readLegacyTasks(key: string): string[] | null {
   try {
-    const item = window.localStorage.getItem(LEGACY_TASKS_STORAGE_KEY);
+    const item = window.localStorage.getItem(key);
     const legacyTasks: unknown = item ? JSON.parse(item) : null;
 
     if (
@@ -131,11 +166,51 @@ export function buildInitialLists(): TaskLists {
       legacyTasks.every((task) => typeof task === "string") &&
       legacyTasks.some((task) => task.trim() !== "")
     ) {
-      return [createCanvasCenterList(withTrailingEmptyRow(legacyTasks))];
+      return legacyTasks;
     }
   } catch (error) {
     console.warn(error);
   }
 
-  return [createCanvasCenterList()];
+  return null;
+}
+
+/**
+ * Pure core of the v1 migration: the general list lands at the canvas
+ * center; daily tasks (whose recurrence no longer exists) become a second
+ * list tagged "daily" beside it.
+ */
+export function buildListsFromLegacyTasks(
+  generalTasks: string[] | null,
+  dailyTasks: string[] | null
+): TaskLists {
+  const lists = [
+    createCanvasCenterList(
+      generalTasks ? withTrailingEmptyRow(generalTasks) : undefined
+    ),
+  ];
+
+  if (dailyTasks) {
+    lists.push(
+      createTaskList(
+        lists[0].x + LIST_WIDTH + LEGACY_DAILY_LIST_GAP,
+        lists[0].y,
+        "daily",
+        withTrailingEmptyRow(dailyTasks)
+      )
+    );
+  }
+
+  return lists;
+}
+
+/**
+ * First-run lists: migrates the pre-canvas v1 task lists when present,
+ * otherwise starts with one empty list at the canvas center.
+ */
+export function buildInitialLists(): TaskLists {
+  return buildListsFromLegacyTasks(
+    readLegacyTasks(LEGACY_GENERAL_TASKS_STORAGE_KEY),
+    readLegacyTasks(LEGACY_DAILY_TASKS_STORAGE_KEY)
+  );
 }
