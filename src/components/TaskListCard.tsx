@@ -67,6 +67,9 @@ export const TaskListCard = memo(function TaskListCard({
     onResize: actions.resizeList,
   });
   const controlsArePinned = isMoving || isResizing || focused;
+  // `inert` blocks focus, tabbing, and AT access on dimmed lists. React 18
+  // only forwards the attribute when given a non-boolean value.
+  const inertProps = dimmed ? { inert: "" as unknown as boolean } : {};
 
   const handleKeyDown = useTaskKeyboardNavigation({
     taskListRef: rowsRef,
@@ -111,7 +114,11 @@ export const TaskListCard = memo(function TaskListCard({
   return (
     <section
       data-canvas-item
-      onPointerDown={() => actions.bringListToFront(list.id)}
+      onPointerDown={() => {
+        if (!dimmed) {
+          actions.bringListToFront(list.id);
+        }
+      }}
       aria-label={list.tag.trim() ? `${list.tag} list` : "task list"}
       style={{
         left: list.x,
@@ -119,17 +126,24 @@ export const TaskListCard = memo(function TaskListCard({
         width: list.width ?? LIST_WIDTH,
         zIndex: controlsArePinned ? 30 : stackIndex,
       }}
-      // `inert` blocks pointer events, focus, and tabbing on dimmed lists.
-      // React 18 only forwards it when given a non-boolean value.
-      {...(dimmed ? { inert: "" as unknown as boolean } : {})}
       className={cn(
         "group/card ease-out-strong absolute transition-opacity duration-200",
-        dimmed && "pointer-events-none opacity-10 select-none"
+        dimmed && "opacity-10"
       )}
     >
+      {/* Swallows pointer interactions while dimmed: it sits above the inert
+          content but inside [data-canvas-item], so canvas pan/double-click
+          spawn ignore events here instead of acting "through" the card. */}
+      {dimmed && (
+        <div
+          aria-hidden="true"
+          className="absolute -top-7 -right-2 bottom-0 left-0 z-40 cursor-default"
+        />
+      )}
       {/* Folder tab: flush with the panel's left edge, fits its content,
           rounded top corners, and sits directly on the panel's top border. */}
       <input
+        {...inertProps}
         value={list.tag}
         onChange={(event) =>
           actions.setListTag(list.id, event.currentTarget.value)
@@ -147,10 +161,10 @@ export const TaskListCard = memo(function TaskListCard({
           "field-sizing-content min-w-16 border-x border-t border-black px-3",
           "text-sm font-medium focus:outline-none",
           ACTION_ACCENT_SURFACE,
-          "placeholder:text-black/45 dark:border-edge-dark dark:placeholder:text-ink-dark/45"
+          "dark:border-edge-dark dark:placeholder:text-ink-dark/45 placeholder:text-black/45"
         )}
       />
-      <div className="relative">
+      <div {...inertProps} className="relative">
         {/* Top-left corner squared so the folder tab connects seamlessly. */}
         <div className="task-panel shadow-brutalist-dark overflow-hidden rounded-tl-none dark:shadow-none">
           <ul ref={rowsRef}>{taskRows}</ul>
@@ -175,7 +189,7 @@ export const TaskListCard = memo(function TaskListCard({
             aria-label="resize list"
             onPointerDown={handleResizePointerDown}
             className={cn(
-              "absolute top-1/2 right-0 h-10 w-4 -translate-y-1/2 translate-x-1/2",
+              "absolute top-1/2 right-0 h-10 w-4 translate-x-1/2 -translate-y-1/2",
               "flex cursor-ew-resize touch-none items-center justify-center",
               HOVER_REVEAL_CONTROLS,
               "focus-visible:opacity-100",
@@ -193,6 +207,7 @@ export const TaskListCard = memo(function TaskListCard({
         </Tooltip>
       </div>
       <div
+        {...inertProps}
         className={cn(
           "flex items-center justify-center gap-1 pt-1.5",
           HOVER_REVEAL_CONTROLS,
@@ -211,7 +226,15 @@ export const TaskListCard = memo(function TaskListCard({
               isMoving ? "cursor-grabbing" : "cursor-grab"
             )}
           >
-            <span aria-hidden="true" className={cn(CIRCLE_BACKDROP, "bg-surface-hover-light dark:bg-surface-hover-dark", HOVER_CIRCLE_IN("move-list"), isMoving && "scale-100 opacity-100")} />
+            <span
+              aria-hidden="true"
+              className={cn(
+                CIRCLE_BACKDROP,
+                "bg-surface-hover-light dark:bg-surface-hover-dark",
+                HOVER_CIRCLE_IN("move-list"),
+                isMoving && "scale-100 opacity-100"
+              )}
+            />
             <ArrowsMove
               size={18}
               className="fill-muted-light dark:fill-muted-dark relative"
@@ -259,7 +282,14 @@ export const TaskListCard = memo(function TaskListCard({
               "group/delete-list relative flex size-9 items-center justify-center"
             )}
           >
-            <span aria-hidden="true" className={cn(CIRCLE_BACKDROP, "bg-red-100 dark:bg-red-950", HOVER_CIRCLE_IN("delete-list"))} />
+            <span
+              aria-hidden="true"
+              className={cn(
+                CIRCLE_BACKDROP,
+                "bg-red-100 dark:bg-red-950",
+                HOVER_CIRCLE_IN("delete-list")
+              )}
+            />
             <Trash
               size={16}
               className={cn(

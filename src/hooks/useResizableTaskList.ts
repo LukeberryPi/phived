@@ -38,7 +38,12 @@ export function useResizableTaskList({
 
       onResize(
         list.id,
-        resizedListWidth(startWidth, startClientX, moveEvent.clientX, zoomRef.current)
+        resizedListWidth(
+          startWidth,
+          startClientX,
+          moveEvent.clientX,
+          zoomRef.current
+        )
       );
     };
 
