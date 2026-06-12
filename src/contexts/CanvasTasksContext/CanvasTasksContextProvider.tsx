@@ -12,6 +12,7 @@ import { countFilledTasks, getRandomElement } from "src/utils";
 import {
   buildInitialLists,
   clampListPosition,
+  clampListWidth,
   createCanvasCenterList,
   createTaskList,
 } from "src/utils/canvas";
@@ -103,6 +104,16 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       updateList(listId, (list) => ({
         ...list,
         ...clampListPosition(x, y),
+      }));
+    },
+    [updateList]
+  );
+
+  const resizeList = useCallback(
+    (listId: string, width: number) => {
+      updateList(listId, (list) => ({
+        ...list,
+        width: clampListWidth(width),
       }));
     },
     [updateList]
@@ -289,6 +300,7 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       requestDeleteList,
       bringListToFront,
       moveList,
+      resizeList,
       setListTag,
       changeTask,
       addTaskRow,
@@ -310,6 +322,7 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       requestDeleteList,
       bringListToFront,
       moveList,
+      resizeList,
       setListTag,
       changeTask,
       addTaskRow,

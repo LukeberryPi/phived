@@ -2,24 +2,20 @@ import type { FormEvent, MutableRefObject } from "react";
 import { memo, useMemo, useRef } from "react";
 import { TaskRow } from "src/components/TaskRow";
 import { Tooltip } from "src/components/Tooltip";
+import { ACTION_ACCENT_SURFACE, DRAWER_MUTED_TEXT } from "src/constants/ui";
 import {
-  ACTION_ACCENT_SURFACE,
-  DESTRUCTIVE_ACTION_HOVER,
-  DESTRUCTIVE_TRASH_ICON,
-  DRAWER_TEXT,
-} from "src/constants/ui";
-import {
-  pressFeedbackGroupChildClassName,
+  pressFeedbackClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { placeholders } from "src/content";
 import type { TaskListActions } from "src/contexts/CanvasTasksContext/CanvasTasksContext.types";
 import {
   useMovableTaskList,
+  useResizableTaskList,
   useRowDragReorder,
   useTaskKeyboardNavigation,
 } from "src/hooks";
-import { ArrowsMove, Plus, Trash } from "src/icons";
+import { ArrowsMove, Focus, Plus, Trash } from "src/icons";
 import type { TaskList } from "src/types/canvas";
 import { cn, countFilledTasks, getRandomElement } from "src/utils";
 import { LIST_WIDTH } from "src/utils/canvas";
@@ -30,6 +26,11 @@ type TaskListCardProps = {
   stackIndex: number;
   zoomRef: MutableRefObject<number>;
   autoFocusFirstRow: boolean;
+  /** This list is the focus target; others are dimmed. */
+  focused: boolean;
+  /** Another list is focused; fade this one towards unreadability. */
+  dimmed: boolean;
+  onToggleFocus: () => void;
   actions: TaskListActions;
 };
 
@@ -38,6 +39,9 @@ export const TaskListCard = memo(function TaskListCard({
   stackIndex,
   zoomRef,
   autoFocusFirstRow,
+  focused,
+  dimmed,
+  onToggleFocus,
   actions,
 }: TaskListCardProps) {
   const rowsRef = useRef<HTMLUListElement>(null);
@@ -52,11 +56,17 @@ export const TaskListCard = memo(function TaskListCard({
       actions.reorderTask(list.id, fromIndex, toIndex),
   });
   const someRowIsDragging = draggingIndex !== null;
-  const { isMoving, handleHeaderPointerDown } = useMovableTaskList({
+  const { isMoving, handleMovePointerDown } = useMovableTaskList({
     list,
     zoomRef,
     onMove: actions.moveList,
   });
+  const { isResizing, handleResizePointerDown } = useResizableTaskList({
+    list,
+    zoomRef,
+    onResize: actions.resizeList,
+  });
+  const controlsArePinned = isMoving || isResizing || focused;
 
   const handleKeyDown = useTaskKeyboardNavigation({
     taskListRef: rowsRef,
@@ -106,76 +116,194 @@ export const TaskListCard = memo(function TaskListCard({
       style={{
         left: list.x,
         top: list.y,
-        width: LIST_WIDTH,
-        zIndex: isMoving ? 30 : stackIndex,
+        width: list.width ?? LIST_WIDTH,
+        zIndex: controlsArePinned ? 30 : stackIndex,
       }}
-      className="task-panel shadow-brutalist-dark absolute overflow-hidden dark:shadow-none"
+      // `inert` blocks pointer events, focus, and tabbing on dimmed lists.
+      // React 18 only forwards it when given a non-boolean value.
+      {...(dimmed ? { inert: "" as unknown as boolean } : {})}
+      className={cn(
+        "group/card ease-out-strong absolute transition-opacity duration-200",
+        dimmed && "pointer-events-none opacity-10 select-none"
+      )}
     >
-      <header
-        onPointerDown={handleHeaderPointerDown}
+      {/* Folder tab: flush with the panel's left edge, fits its content,
+          rounded top corners, and sits directly on the panel's top border. */}
+      <input
+        value={list.tag}
+        onChange={(event) =>
+          actions.setListTag(list.id, event.currentTarget.value)
+        }
+        autoCapitalize="false"
+        autoComplete="off"
+        spellCheck="false"
+        placeholder="add a tag"
+        aria-label="List tag"
+        // Inline style because the unlayered iOS `input` border-radius
+        // reset in index.css overrides rounded-* utilities.
+        style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
         className={cn(
-          "border-line-light flex min-h-11 touch-none items-stretch border-b bg-white",
-          "dark:border-hairline-dark dark:bg-surface-dark",
-          isMoving ? "cursor-grabbing" : "cursor-grab"
+          "absolute -top-7 left-0 z-10 h-7 max-w-full",
+          "field-sizing-content min-w-16 border-x border-t border-black px-3",
+          "text-sm font-medium focus:outline-none",
+          ACTION_ACCENT_SURFACE,
+          "placeholder:text-black/45 dark:border-edge-dark dark:placeholder:text-ink-dark/45"
         )}
-      >
-        <span aria-hidden="true" className="flex items-center pl-3 select-none">
-          <ArrowsMove
-            size={18}
-            className="fill-muted-light dark:fill-muted-dark"
-          />
-        </span>
-        <input
-          value={list.tag}
-          onChange={(event) =>
-            actions.setListTag(list.id, event.currentTarget.value)
-          }
-          autoCapitalize="false"
-          autoComplete="off"
-          spellCheck="false"
-          placeholder="add a tag (e.g. work)"
-          aria-label="List tag"
-          className={cn(
-            "w-full min-w-0 bg-transparent px-2 text-sm font-medium",
-            "placeholder:text-muted-light text-black focus:outline-none",
-            "dark:text-ink-dark dark:placeholder:text-muted-dark"
-          )}
-        />
-        <Tooltip label="delete list">
+      />
+      <div className="relative">
+        {/* Top-left corner squared so the folder tab connects seamlessly. */}
+        <div className="task-panel shadow-brutalist-dark overflow-hidden rounded-tl-none dark:shadow-none">
+          <ul ref={rowsRef}>{taskRows}</ul>
           <button
-            aria-label="delete list"
-            onClick={() => actions.requestDeleteList(list.id)}
+            type="button"
+            onClick={() => actions.addTaskRow(list.id)}
             className={cn(
-              pressFeedbackGroupClassName("clear-history"),
-              "border-line-light flex w-10 shrink-0 items-center justify-center border-l",
-              "dark:border-hairline-dark",
-              DRAWER_TEXT,
-              DESTRUCTIVE_ACTION_HOVER
+              "border-line-light flex min-h-10 w-full items-center justify-center gap-2 border-t",
+              "dark:border-hairline-dark dark:bg-surface-dark bg-white text-sm font-medium",
+              DRAWER_MUTED_TEXT,
+              "dark:sm:hover:text-ink-dark transition-colors duration-150 sm:hover:text-black",
+              pressFeedbackGroupClassName("add-row")
+            )}
+          >
+            <Plus size={16} className="fill-current" />
+            add row
+          </button>
+        </div>
+        <Tooltip label="resize list" disabled={isResizing}>
+          <button
+            type="button"
+            aria-label="resize list"
+            onPointerDown={handleResizePointerDown}
+            className={cn(
+              "absolute top-1/2 right-0 h-10 w-4 -translate-y-1/2 translate-x-1/2",
+              "flex cursor-ew-resize touch-none items-center justify-center",
+              HOVER_REVEAL_CONTROLS,
+              "focus-visible:opacity-100",
+              isResizing && "opacity-100"
             )}
           >
             <span
               aria-hidden="true"
-              className={pressFeedbackGroupChildClassName("clear-history")}
-            >
-              <Trash size={16} className={DESTRUCTIVE_TRASH_ICON} />
-            </span>
+              className={cn(
+                "h-9 w-2 rounded-full border border-black bg-white",
+                "dark:border-edge-dark dark:bg-surface-hover-dark"
+              )}
+            />
           </button>
         </Tooltip>
-      </header>
-      <ul ref={rowsRef}>{taskRows}</ul>
-      <button
-        type="button"
-        onClick={() => actions.addTaskRow(list.id)}
+      </div>
+      <div
         className={cn(
-          "border-line-light flex min-h-10 w-full items-center justify-center gap-2 border-t",
-          "dark:border-hairline-dark dark:bg-surface-dark dark:text-ink-dark bg-white text-sm font-medium text-black",
-          ACTION_ACCENT_SURFACE,
-          pressFeedbackGroupClassName("add-row")
+          "flex items-center justify-center gap-1 pt-1.5",
+          HOVER_REVEAL_CONTROLS,
+          "focus-within:opacity-100",
+          controlsArePinned && "opacity-100"
         )}
       >
-        <Plus size={16} className="dark:fill-ink-dark fill-black" />
-        add row
-      </button>
+        <Tooltip label="move list" disabled={isMoving}>
+          <button
+            type="button"
+            aria-label="move list"
+            onPointerDown={handleMovePointerDown}
+            className={cn(
+              pressFeedbackClassName,
+              "group/move-list relative flex size-9 touch-none items-center justify-center",
+              isMoving ? "cursor-grabbing" : "cursor-grab"
+            )}
+          >
+            <span aria-hidden="true" className={cn(CIRCLE_BACKDROP, "bg-surface-hover-light dark:bg-surface-hover-dark", HOVER_CIRCLE_IN("move-list"), isMoving && "scale-100 opacity-100")} />
+            <ArrowsMove
+              size={18}
+              className="fill-muted-light dark:fill-muted-dark relative"
+            />
+          </button>
+        </Tooltip>
+        <Tooltip label={focused ? "unfocus list" : "focus list"}>
+          <button
+            type="button"
+            aria-label={focused ? "unfocus list" : "focus list"}
+            aria-pressed={focused}
+            onClick={onToggleFocus}
+            className={cn(
+              pressFeedbackClassName,
+              "group/focus-list relative flex size-9 items-center justify-center"
+            )}
+          >
+            <span
+              aria-hidden="true"
+              className={cn(
+                CIRCLE_BACKDROP,
+                ACTION_ACCENT_SURFACE,
+                HOVER_CIRCLE_IN("focus-list"),
+                focused && "scale-100 opacity-100"
+              )}
+            />
+            <Focus
+              size={18}
+              className={cn(
+                "relative fill-current transition-colors duration-150",
+                focused
+                  ? "dark:text-ink-dark text-black"
+                  : "text-muted-light dark:text-muted-dark"
+              )}
+            />
+          </button>
+        </Tooltip>
+        <Tooltip label="delete list">
+          <button
+            type="button"
+            aria-label="delete list"
+            onClick={() => actions.requestDeleteList(list.id)}
+            className={cn(
+              pressFeedbackClassName,
+              "group/delete-list relative flex size-9 items-center justify-center"
+            )}
+          >
+            <span aria-hidden="true" className={cn(CIRCLE_BACKDROP, "bg-red-100 dark:bg-red-950", HOVER_CIRCLE_IN("delete-list"))} />
+            <Trash
+              size={16}
+              className={cn(
+                "text-muted-light dark:text-muted-dark relative fill-current transition-colors duration-150",
+                "[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:text-red-600",
+                "dark:[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:text-red-500"
+              )}
+            />
+          </button>
+        </Tooltip>
+      </div>
     </section>
   );
 });
+
+/** Controls fade in on card hover (pointer devices); always visible on touch. */
+const HOVER_REVEAL_CONTROLS = cn(
+  "transition-opacity duration-150",
+  "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
+  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/card:opacity-100"
+);
+
+/** Circular backdrop behind icon buttons; grows in on per-button hover. */
+const CIRCLE_BACKDROP = cn(
+  "ease-out-strong absolute inset-0 rounded-full",
+  "scale-75 opacity-0 transition-[transform,opacity] duration-150",
+  "motion-reduce:scale-100 motion-reduce:transition-[opacity]"
+);
+
+const HOVER_CIRCLE_IN_CLASSES = {
+  "move-list": cn(
+    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/move-list:scale-100",
+    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/move-list:opacity-100"
+  ),
+  "focus-list": cn(
+    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/focus-list:scale-100",
+    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/focus-list:opacity-100"
+  ),
+  "delete-list": cn(
+    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:scale-100",
+    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:opacity-100"
+  ),
+} as const;
+
+function HOVER_CIRCLE_IN(group: keyof typeof HOVER_CIRCLE_IN_CLASSES) {
+  return HOVER_CIRCLE_IN_CLASSES[group];
+}

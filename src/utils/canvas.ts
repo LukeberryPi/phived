@@ -9,6 +9,42 @@ export const CANVAS_WIDTH = 6000;
 export const CANVAS_HEIGHT = 4000;
 
 export const LIST_WIDTH = 340;
+export const MIN_LIST_WIDTH = 260;
+export const MAX_LIST_WIDTH = 620;
+
+export function clampListWidth(width: number) {
+  return clamp(width, MIN_LIST_WIDTH, MAX_LIST_WIDTH);
+}
+
+type Point = { x: number; y: number };
+
+/**
+ * New list position for a move drag. Pointer deltas are in screen px and
+ * must be divided by zoom to land in canvas coordinates.
+ */
+export function movedListPosition(
+  startPosition: Point,
+  startClient: Point,
+  currentClient: Point,
+  zoom: number
+): Point {
+  const safeZoom = zoom || 1;
+
+  return {
+    x: startPosition.x + (currentClient.x - startClient.x) / safeZoom,
+    y: startPosition.y + (currentClient.y - startClient.y) / safeZoom,
+  };
+}
+
+/** New list width for a right-edge resize drag, in canvas px (unclamped). */
+export function resizedListWidth(
+  startWidth: number,
+  startClientX: number,
+  currentClientX: number,
+  zoom: number
+): number {
+  return startWidth + (currentClientX - startClientX) / (zoom || 1);
+}
 /** Margin kept between a list and the canvas edge. */
 const LIST_EDGE_MARGIN = 16;
 /** Nominal height reserved when clamping a list near the bottom edge. */

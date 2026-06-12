@@ -1,6 +1,7 @@
 import {
   ArrowsOutCardinal,
   CaretDown as CaretDownIcon,
+  Crosshair,
   CaretUpDown,
   Clock as ClockIcon,
   Desktop,
@@ -25,6 +26,16 @@ function phosphorClassName(className?: string) {
 export function ArrowsMove({ className, size = 24 }: IconProps) {
   return (
     <ArrowsOutCardinal
+      size={size}
+      className={phosphorClassName(className)}
+      aria-hidden
+    />
+  );
+}
+
+export function Focus({ className, size = 24 }: IconProps) {
+  return (
+    <Crosshair
       size={size}
       className={phosphorClassName(className)}
       aria-hidden

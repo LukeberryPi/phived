@@ -4,45 +4,42 @@ import type {
 } from "react";
 import { useState } from "react";
 import type { TaskList } from "src/types/canvas";
-import { movedListPosition } from "src/utils/canvas";
+import { LIST_WIDTH, resizedListWidth } from "src/utils/canvas";
 
-type UseMovableTaskListOptions = {
+type UseResizableTaskListOptions = {
   list: TaskList;
   zoomRef: MutableRefObject<number>;
-  onMove: (listId: string, x: number, y: number) => void;
+  onResize: (listId: string, width: number) => void;
 };
 
-export function useMovableTaskList({
+/** Drag the list's right edge to change its width (clamped by the action). */
+export function useResizableTaskList({
   list,
   zoomRef,
-  onMove,
-}: UseMovableTaskListOptions) {
-  const [isMoving, setIsMoving] = useState(false);
+  onResize,
+}: UseResizableTaskListOptions) {
+  const [isResizing, setIsResizing] = useState(false);
 
-  // Attached to the dedicated move button, so any primary pointer counts.
-  const handleMovePointerDown = (event: ReactPointerEvent<HTMLElement>) => {
+  const handleResizePointerDown = (event: ReactPointerEvent<HTMLElement>) => {
     if (!event.isPrimary) {
       return;
     }
 
     event.preventDefault();
     const { pointerId } = event;
-    const startClient = { x: event.clientX, y: event.clientY };
-    const startPosition = { x: list.x, y: list.y };
-    setIsMoving(true);
+    const startClientX = event.clientX;
+    const startWidth = list.width ?? LIST_WIDTH;
+    setIsResizing(true);
 
     const handlePointerMove = (moveEvent: PointerEvent) => {
       if (moveEvent.pointerId !== pointerId) {
         return;
       }
 
-      const next = movedListPosition(
-        startPosition,
-        startClient,
-        { x: moveEvent.clientX, y: moveEvent.clientY },
-        zoomRef.current
+      onResize(
+        list.id,
+        resizedListWidth(startWidth, startClientX, moveEvent.clientX, zoomRef.current)
       );
-      onMove(list.id, next.x, next.y);
     };
 
     const handlePointerEnd = (endEvent: PointerEvent) => {
@@ -53,7 +50,7 @@ export function useMovableTaskList({
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerEnd);
       window.removeEventListener("pointercancel", handlePointerEnd);
-      setIsMoving(false);
+      setIsResizing(false);
     };
 
     window.addEventListener("pointermove", handlePointerMove);
@@ -61,5 +58,5 @@ export function useMovableTaskList({
     window.addEventListener("pointercancel", handlePointerEnd);
   };
 
-  return { isMoving, handleMovePointerDown };
+  return { isResizing, handleResizePointerDown };
 }

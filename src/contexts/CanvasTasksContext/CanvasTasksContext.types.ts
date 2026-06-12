@@ -10,6 +10,8 @@ export type CanvasTasksContextType = {
   requestDeleteList: (listId: string) => void;
   bringListToFront: (listId: string) => void;
   moveList: (listId: string, x: number, y: number) => void;
+  /** Sets a list's width, clamped to the allowed range. */
+  resizeList: (listId: string, width: number) => void;
   setListTag: (listId: string, tag: string) => void;
   changeTask: (listId: string, taskIndex: number, newValue: string) => void;
   addTaskRow: (listId: string) => void;
@@ -31,6 +33,7 @@ export type TaskListActions = Pick<
   CanvasTasksContextType,
   | "bringListToFront"
   | "moveList"
+  | "resizeList"
   | "requestDeleteList"
   | "setListTag"
   | "changeTask"
