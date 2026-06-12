@@ -30,3 +30,62 @@ export function withTrailingEmptyRow(tasks: string[]): string[] {
 export function removeTaskRow(tasks: string[], index: number): string[] {
   return withTrailingEmptyRow(tasks.filter((_, idx) => idx !== index));
 }
+
+export function changeTaskAt(
+  tasks: string[],
+  index: number,
+  value: string
+): string[] {
+  return tasks.map((task, taskIndex) => (taskIndex === index ? value : task));
+}
+
+export function addEmptyTaskRow(tasks: string[]): string[] {
+  return [...tasks, ""];
+}
+
+export function removeEmptyExtraRow(tasks: string[], index: number): string[] {
+  if (
+    tasks.length <= MIN_TASK_ROWS ||
+    index < 0 ||
+    index >= tasks.length ||
+    tasks[index].trim() !== ""
+  ) {
+    return tasks;
+  }
+
+  return tasks.filter((_, taskIndex) => taskIndex !== index);
+}
+
+export function reorderTaskRows(
+  tasks: string[],
+  fromIndex: number,
+  toIndex: number
+): string[] {
+  if (
+    fromIndex === toIndex ||
+    fromIndex < 0 ||
+    toIndex < 0 ||
+    fromIndex >= tasks.length ||
+    toIndex >= tasks.length
+  ) {
+    return tasks;
+  }
+
+  const reordered = [...tasks];
+  const [moved] = reordered.splice(fromIndex, 1);
+  reordered.splice(toIndex, 0, moved);
+  return reordered;
+}
+
+export function restoreTaskText(tasks: string[], text: string): string[] {
+  const restored = [...tasks];
+  const emptyIndex = findFirstEmptyTaskIndex(restored);
+
+  if (emptyIndex === -1) {
+    restored.push(text);
+  } else {
+    restored[emptyIndex] = text;
+  }
+
+  return withTrailingEmptyRow(restored);
+}

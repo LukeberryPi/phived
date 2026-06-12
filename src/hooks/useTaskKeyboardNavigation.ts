@@ -4,6 +4,8 @@ type UseTaskKeyboardNavigationOptions = {
   taskListRef: RefObject<HTMLElement | null>;
   taskCount: number;
   onDone: (index: number) => void;
+  addTaskRow: () => void;
+  removeEmptyTaskRow: (index: number) => void;
   moveTaskUp: (index: number) => void;
   moveTaskDown: (index: number) => void;
 };
@@ -16,6 +18,8 @@ export function useTaskKeyboardNavigation({
   taskListRef,
   taskCount,
   onDone,
+  addTaskRow,
+  removeEmptyTaskRow,
   moveTaskUp,
   moveTaskDown,
 }: UseTaskKeyboardNavigationOptions) {
@@ -23,6 +27,18 @@ export function useTaskKeyboardNavigation({
     const taskList = taskListRef.current;
     const isFirstTask = index === 0;
     const isLastTask = index === taskCount - 1;
+
+    if (
+      event.key === "Backspace" &&
+      event.currentTarget.value === "" &&
+      taskCount > 5
+    ) {
+      event.preventDefault();
+      removeEmptyTaskRow(index);
+      return requestAnimationFrame(() =>
+        focusTaskInput(taskList, Math.max(0, index - 1))
+      );
+    }
 
     if (event.altKey && event.key === "ArrowUp") {
       event.preventDefault();
@@ -64,8 +80,8 @@ export function useTaskKeyboardNavigation({
     ) {
       event.preventDefault();
       if (isLastTask) {
-        focusTaskInput(taskList, 0);
-        return;
+        addTaskRow();
+        return requestAnimationFrame(() => focusTaskInput(taskList, taskCount));
       }
       return focusTaskInput(taskList, index + 1);
     }

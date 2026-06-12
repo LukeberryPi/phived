@@ -8,9 +8,12 @@ export type CanvasTasksContextType = {
   addList: (x: number, y: number) => string;
   /** Deletes immediately when the list is empty, otherwise asks to confirm. */
   requestDeleteList: (listId: string) => void;
+  bringListToFront: (listId: string) => void;
   moveList: (listId: string, x: number, y: number) => void;
   setListTag: (listId: string, tag: string) => void;
   changeTask: (listId: string, taskIndex: number, newValue: string) => void;
+  addTaskRow: (listId: string) => void;
+  removeEmptyTaskRow: (listId: string, taskIndex: number) => void;
   completeTask: (listId: string, taskIndex: number) => void;
   reorderTask: (listId: string, fromIndex: number, toIndex: number) => void;
   moveTaskUp: (listId: string, taskIndex: number) => void;
@@ -19,3 +22,18 @@ export type CanvasTasksContextType = {
   clearCanvas: () => void;
   clearTaskHistory: () => void;
 };
+
+export type TaskListActions = Pick<
+  CanvasTasksContextType,
+  | "bringListToFront"
+  | "moveList"
+  | "requestDeleteList"
+  | "setListTag"
+  | "changeTask"
+  | "addTaskRow"
+  | "removeEmptyTaskRow"
+  | "completeTask"
+  | "reorderTask"
+  | "moveTaskUp"
+  | "moveTaskDown"
+>;

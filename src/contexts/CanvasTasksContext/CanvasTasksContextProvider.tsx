@@ -16,9 +16,12 @@ import {
   createTaskList,
 } from "src/utils/canvas";
 import {
-  findFirstEmptyTaskIndex,
+  addEmptyTaskRow,
+  changeTaskAt,
+  removeEmptyExtraRow,
   removeTaskRow,
-  withTrailingEmptyRow,
+  reorderTaskRows,
+  restoreTaskText,
 } from "src/utils/taskList";
 
 export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
@@ -75,6 +78,24 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
     [setLists]
   );
 
+  const bringListToFront = useCallback(
+    (listId: string) => {
+      setLists((prev) => {
+        const index = prev.findIndex((list) => list.id === listId);
+
+        if (index === -1 || index === prev.length - 1) {
+          return prev;
+        }
+
+        const next = [...prev];
+        const [list] = next.splice(index, 1);
+        next.push(list);
+        return next;
+      });
+    },
+    [setLists]
+  );
+
   const moveList = useCallback(
     (listId: string, x: number, y: number) => {
       updateList(listId, (list) => ({
@@ -94,11 +115,30 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
 
   const changeTask = useCallback(
     (listId: string, taskIndex: number, newValue: string) => {
-      updateList(listId, (list) => {
-        const tasks = [...list.tasks];
-        tasks[taskIndex] = newValue;
-        return { ...list, tasks: withTrailingEmptyRow(tasks) };
-      });
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: changeTaskAt(list.tasks, taskIndex, newValue),
+      }));
+    },
+    [updateList]
+  );
+
+  const addTaskRow = useCallback(
+    (listId: string) => {
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: addEmptyTaskRow(list.tasks),
+      }));
+    },
+    [updateList]
+  );
+
+  const removeEmptyTaskRow = useCallback(
+    (listId: string, taskIndex: number) => {
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: removeEmptyExtraRow(list.tasks, taskIndex),
+      }));
     },
     [updateList]
   );
@@ -133,24 +173,10 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
 
   const reorderTask = useCallback(
     (listId: string, fromIndex: number, toIndex: number) => {
-      updateList(listId, (list) => {
-        const lastIndex = list.tasks.length - 1;
-
-        if (
-          fromIndex === toIndex ||
-          fromIndex < 0 ||
-          toIndex < 0 ||
-          fromIndex > lastIndex ||
-          toIndex > lastIndex
-        ) {
-          return list;
-        }
-
-        const tasks = [...list.tasks];
-        const [moved] = tasks.splice(fromIndex, 1);
-        tasks.splice(toIndex, 0, moved);
-        return { ...list, tasks };
-      });
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: reorderTaskRows(list.tasks, fromIndex, toIndex),
+      }));
     },
     [updateList]
   );
@@ -183,20 +209,12 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
         currentLists[0];
 
       if (targetList) {
-        updateList(targetList.id, (list) => {
-          const tasks = [...list.tasks];
-          const emptyIndex = findFirstEmptyTaskIndex(tasks);
-
-          if (emptyIndex === -1) {
-            tasks.push(entry.text);
-          } else {
-            tasks[emptyIndex] = entry.text;
-          }
-
-          return { ...list, tasks: withTrailingEmptyRow(tasks) };
-        });
+        updateList(targetList.id, (list) => ({
+          ...list,
+          tasks: restoreTaskText(list.tasks, entry.text),
+        }));
       } else {
-        setLists([createCanvasCenterList(withTrailingEmptyRow([entry.text]))]);
+        setLists([createCanvasCenterList(restoreTaskText([], entry.text))]);
       }
 
       setTaskHistory((prev) => prev.filter((item) => item.id !== entryId));
@@ -247,9 +265,12 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       taskHistory,
       addList,
       requestDeleteList,
+      bringListToFront,
       moveList,
       setListTag,
       changeTask,
+      addTaskRow,
+      removeEmptyTaskRow,
       completeTask,
       reorderTask,
       moveTaskUp,
@@ -263,9 +284,12 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       taskHistory,
       addList,
       requestDeleteList,
+      bringListToFront,
       moveList,
       setListTag,
       changeTask,
+      addTaskRow,
+      removeEmptyTaskRow,
       completeTask,
       reorderTask,
       moveTaskUp,
