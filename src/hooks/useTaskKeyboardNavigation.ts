@@ -2,9 +2,11 @@ import type { KeyboardEvent, RefObject } from "react";
 
 type UseTaskKeyboardNavigationOptions = {
   taskListRef: RefObject<HTMLElement | null>;
-  taskCount: number;
+  tasks: string[];
   onDone: (index: number) => void;
   addTaskRow: () => void;
+  insertTaskRowBelow: (index: number) => void;
+  insertTaskRowAbove: (index: number) => void;
   removeEmptyTaskRow: (index: number) => void;
   moveTaskUp: (index: number) => void;
   moveTaskDown: (index: number) => void;
@@ -16,15 +18,18 @@ function focusTaskInput(taskList: HTMLElement | null, index: number) {
 
 export function useTaskKeyboardNavigation({
   taskListRef,
-  taskCount,
+  tasks,
   onDone,
   addTaskRow,
+  insertTaskRowBelow,
+  insertTaskRowAbove,
   removeEmptyTaskRow,
   moveTaskUp,
   moveTaskDown,
 }: UseTaskKeyboardNavigationOptions) {
   return (event: KeyboardEvent<HTMLInputElement>, index: number) => {
     const taskList = taskListRef.current;
+    const taskCount = tasks.length;
     const isFirstTask = index === 0;
     const isLastTask = index === taskCount - 1;
 
@@ -63,10 +68,7 @@ export function useTaskKeyboardNavigation({
       return onDone(index);
     }
 
-    if (
-      (event.key === "ArrowUp" && !event.altKey) ||
-      (event.key === "Enter" && event.shiftKey && !event.ctrlKey)
-    ) {
+    if (event.key === "ArrowUp" && !event.altKey) {
       event.preventDefault();
       if (isFirstTask) {
         return focusTaskInput(taskList, taskCount - 1);
@@ -74,16 +76,43 @@ export function useTaskKeyboardNavigation({
       return focusTaskInput(taskList, index - 1);
     }
 
-    if (
-      (event.key === "ArrowDown" && !event.altKey) ||
-      (event.key === "Enter" && !event.ctrlKey)
-    ) {
+    // Shift+Enter always lands on a fresh (empty) row above the current one.
+    if (event.key === "Enter" && event.shiftKey && !event.ctrlKey) {
+      event.preventDefault();
+      const previousTask = tasks[index - 1];
+
+      if (!isFirstTask && previousTask.trim() === "") {
+        return focusTaskInput(taskList, index - 1);
+      }
+
+      insertTaskRowAbove(index);
+      return requestAnimationFrame(() => focusTaskInput(taskList, index));
+    }
+
+    if (event.key === "ArrowDown" && !event.altKey) {
       event.preventDefault();
       if (isLastTask) {
         addTaskRow();
         return requestAnimationFrame(() => focusTaskInput(taskList, taskCount));
       }
       return focusTaskInput(taskList, index + 1);
+    }
+
+    // Plain Enter always lands on a fresh (empty) row below the current one.
+    if (event.key === "Enter" && !event.ctrlKey) {
+      event.preventDefault();
+      const nextTask = tasks[index + 1];
+
+      if (!isLastTask && nextTask.trim() === "") {
+        return focusTaskInput(taskList, index + 1);
+      }
+
+      if (isLastTask) {
+        addTaskRow();
+      } else {
+        insertTaskRowBelow(index);
+      }
+      return requestAnimationFrame(() => focusTaskInput(taskList, index + 1));
     }
   };
 }

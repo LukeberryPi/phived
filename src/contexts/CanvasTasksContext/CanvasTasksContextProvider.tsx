@@ -18,6 +18,8 @@ import {
 import {
   addEmptyTaskRow,
   changeTaskAt,
+  insertEmptyTaskRowAbove,
+  insertEmptyTaskRowBelow,
   removeEmptyExtraRow,
   removeTaskRow,
   reorderTaskRows,
@@ -128,6 +130,26 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       updateList(listId, (list) => ({
         ...list,
         tasks: addEmptyTaskRow(list.tasks),
+      }));
+    },
+    [updateList]
+  );
+
+  const insertTaskRowBelow = useCallback(
+    (listId: string, taskIndex: number) => {
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: insertEmptyTaskRowBelow(list.tasks, taskIndex),
+      }));
+    },
+    [updateList]
+  );
+
+  const insertTaskRowAbove = useCallback(
+    (listId: string, taskIndex: number) => {
+      updateList(listId, (list) => ({
+        ...list,
+        tasks: insertEmptyTaskRowAbove(list.tasks, taskIndex),
       }));
     },
     [updateList]
@@ -270,6 +292,8 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       setListTag,
       changeTask,
       addTaskRow,
+      insertTaskRowBelow,
+      insertTaskRowAbove,
       removeEmptyTaskRow,
       completeTask,
       reorderTask,
@@ -289,6 +313,8 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       setListTag,
       changeTask,
       addTaskRow,
+      insertTaskRowBelow,
+      insertTaskRowAbove,
       removeEmptyTaskRow,
       completeTask,
       reorderTask,

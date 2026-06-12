@@ -60,9 +60,11 @@ export const TaskListCard = memo(function TaskListCard({
 
   const handleKeyDown = useTaskKeyboardNavigation({
     taskListRef: rowsRef,
-    taskCount: list.tasks.length,
+    tasks: list.tasks,
     onDone: (index) => actions.completeTask(list.id, index),
     addTaskRow: () => actions.addTaskRow(list.id),
+    insertTaskRowBelow: (index) => actions.insertTaskRowBelow(list.id, index),
+    insertTaskRowAbove: (index) => actions.insertTaskRowAbove(list.id, index),
     removeEmptyTaskRow: (index) => actions.removeEmptyTaskRow(list.id, index),
     moveTaskUp: (index) => actions.moveTaskUp(list.id, index),
     moveTaskDown: (index) => actions.moveTaskDown(list.id, index),
