@@ -115,15 +115,14 @@ export function orderListsForRender(lists: TaskLists) {
     .sort((a, b) => a.list.id.localeCompare(b.list.id));
 }
 
-const LEGACY_TASKS_STORAGE_KEY = "storedGeneralTasks";
+const LEGACY_GENERAL_TASKS_STORAGE_KEY = "storedGeneralTasks";
+const LEGACY_DAILY_TASKS_STORAGE_KEY = "storedDailyTasks";
+/** Gap between the migrated general list and the migrated daily list. */
+const LEGACY_DAILY_LIST_GAP = 24;
 
-/**
- * First-run lists: migrates the pre-canvas single five-task list when
- * present, otherwise starts with one empty list at the canvas center.
- */
-export function buildInitialLists(): TaskLists {
+function readLegacyTasks(key: string): string[] | null {
   try {
-    const item = window.localStorage.getItem(LEGACY_TASKS_STORAGE_KEY);
+    const item = window.localStorage.getItem(key);
     const legacyTasks: unknown = item ? JSON.parse(item) : null;
 
     if (
@@ -131,11 +130,51 @@ export function buildInitialLists(): TaskLists {
       legacyTasks.every((task) => typeof task === "string") &&
       legacyTasks.some((task) => task.trim() !== "")
     ) {
-      return [createCanvasCenterList(withTrailingEmptyRow(legacyTasks))];
+      return legacyTasks;
     }
   } catch (error) {
     console.warn(error);
   }
 
-  return [createCanvasCenterList()];
+  return null;
+}
+
+/**
+ * Pure core of the v1 migration: the general list lands at the canvas
+ * center; daily tasks (whose recurrence no longer exists) become a second
+ * list tagged "daily" beside it.
+ */
+export function buildListsFromLegacyTasks(
+  generalTasks: string[] | null,
+  dailyTasks: string[] | null
+): TaskLists {
+  const lists = [
+    createCanvasCenterList(
+      generalTasks ? withTrailingEmptyRow(generalTasks) : undefined
+    ),
+  ];
+
+  if (dailyTasks) {
+    lists.push(
+      createTaskList(
+        lists[0].x + LIST_WIDTH + LEGACY_DAILY_LIST_GAP,
+        lists[0].y,
+        "daily",
+        withTrailingEmptyRow(dailyTasks)
+      )
+    );
+  }
+
+  return lists;
+}
+
+/**
+ * First-run lists: migrates the pre-canvas v1 task lists when present,
+ * otherwise starts with one empty list at the canvas center.
+ */
+export function buildInitialLists(): TaskLists {
+  return buildListsFromLegacyTasks(
+    readLegacyTasks(LEGACY_GENERAL_TASKS_STORAGE_KEY),
+    readLegacyTasks(LEGACY_DAILY_TASKS_STORAGE_KEY)
+  );
 }
