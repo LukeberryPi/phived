@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { HelpPanel } from "src/components/HelpDrawer";
+import { ThemeIndicator } from "src/components/ThemeIndicator";
 import {
   HistoryClearButton,
   HistoryPanel,
 } from "src/components/TaskHistoryDrawer";
 import {
+  DESTRUCTIVE_ACTION_HOVER,
+  DESTRUCTIVE_TRASH_ICON,
   DRAWER_BODY,
   DRAWER_COUNT_BADGE,
   DRAWER_HEADER_ACTIVE,
@@ -16,7 +18,7 @@ import {
   DRAWER_SURFACE,
   DRAWER_TEXT,
   DRAWER_TOGGLE_DIVIDER,
-  NO_TASKS_TO_CLEAR_MESSAGE,
+  FLOATING_CHROME_Z,
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
 } from "src/constants/ui";
@@ -24,9 +26,10 @@ import {
   pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
-import { useGeneralTasksContext, useDarkMode } from "src/contexts";
-import { Clock, Computer, Moon, Question, Sun, Trash } from "src/icons";
-import { cn, countFilledTasks } from "src/utils";
+import { useCanvasTasksContext, useDarkMode } from "src/contexts";
+import { useClearCanvasAction } from "src/hooks";
+import { Clock, Question, Trash } from "src/icons";
+import { cn } from "src/utils";
 
 const barActionClassName = cn(
   "flex flex-1 items-center justify-center px-2 py-3 text-sm font-medium",
@@ -87,25 +90,16 @@ function HistoryToggleIcon({ historyCount }: { historyCount: number }) {
 }
 
 export function MobileActionBar() {
-  const { generalTasks, taskHistory, clearGeneralTasks, clearTaskHistory } =
-    useGeneralTasksContext();
+  const { taskHistory, clearTaskHistory } = useCanvasTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
+  const { clear: clearCanvas, unavailable: nothingToClear } =
+    useClearCanvasAction();
   const historyCount = taskHistory.length;
-  const noGeneralTasks = countFilledTasks(generalTasks) === 0;
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const themeIconClassName = "fill-black dark:fill-ink";
+  const themeIconClassName = "fill-black dark:fill-ink-dark";
 
   const closeHelp = () => setHelpOpen(false);
-  const handleClearTasks = () => {
-    if (noGeneralTasks) {
-      toast(NO_TASKS_TO_CLEAR_MESSAGE);
-      return;
-    }
-
-    clearGeneralTasks();
-  };
-
   const toggleHelp = () => {
     setHelpOpen((open) => !open);
     setHistoryOpen(false);
@@ -120,7 +114,10 @@ export function MobileActionBar() {
 
   return (
     <div
-      className="fixed bottom-6 left-4 right-4 z-40 sm:hidden"
+      className={cn(
+        FLOATING_CHROME_Z,
+        "pointer-events-auto fixed right-4 bottom-6 left-4 sm:hidden"
+      )}
       aria-label="Actions"
     >
       <div className="task-panel flex flex-col-reverse overflow-hidden">
@@ -155,40 +152,28 @@ export function MobileActionBar() {
             aria-label={`Theme: ${themePreference}`}
             onClick={toggleDarkMode}
             icon={
-              themePreference === "system" ? (
-                <Computer size={20} className={themeIconClassName} />
-              ) : themePreference === "dark" ? (
-                <Moon size={20} className={themeIconClassName} />
-              ) : (
-                <Sun size={20} className={themeIconClassName} />
-              )
+              <ThemeIndicator
+                preference={themePreference}
+                className={themeIconClassName}
+              />
             }
             label={themePreference}
           />
           <BarAction
-            aria-disabled={noGeneralTasks}
+            aria-disabled={nothingToClear}
             aria-label={
-              noGeneralTasks
-                ? "Clear tasks unavailable: no tasks to clear"
-                : "clear tasks"
+              nothingToClear
+                ? "Clear canvas unavailable: nothing to clear"
+                : "clear canvas"
             }
-            onClick={handleClearTasks}
-            unavailable={noGeneralTasks}
+            onClick={clearCanvas}
+            unavailable={nothingToClear}
             className={
-              noGeneralTasks
+              nothingToClear
                 ? cn("cursor-not-allowed", DRAWER_MUTED_TEXT)
-                : undefined
+                : DESTRUCTIVE_ACTION_HOVER
             }
-            icon={
-              <Trash
-                size={20}
-                className={cn(
-                  noGeneralTasks
-                    ? "fill-muted dark:fill-inkMuted"
-                    : "fill-black dark:fill-ink"
-                )}
-              />
-            }
+            icon={<Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />}
             label="clear"
           />
         </div>

@@ -1,6 +1,8 @@
 import { FloatingDrawer } from "src/components/FloatingDrawer";
 import {
   ACTION_ACCENT_SURFACE,
+  DESTRUCTIVE_ACTION_HOVER,
+  DESTRUCTIVE_TRASH_ICON,
   DRAWER_COUNT_BADGE,
   DRAWER_HEADER_GRID,
   DRAWER_MUTED_TEXT,
@@ -14,8 +16,8 @@ import {
   pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
-import { useGeneralTasksContext } from "src/contexts";
-import { Clock, Close, Trash } from "src/icons";
+import { useCanvasTasksContext } from "src/contexts";
+import { CaretDown, Clock, Trash } from "src/icons";
 import { cn, formatHistoryWhen } from "src/utils";
 
 const sideActionColumnClassName = "flex min-h-12 items-stretch";
@@ -57,15 +59,15 @@ export function HistoryClearButton({
         pressFeedbackGroupClassName("clear-history"),
         historyClearButtonClassName,
         dividerSide === "right" &&
-          "border-l-0 border-r border-line dark:border-hairline",
-        "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
+          "border-line-light dark:border-hairline-dark border-r border-l-0",
+        DESTRUCTIVE_ACTION_HOVER
       )}
     >
       <span
         aria-hidden="true"
         className={pressFeedbackGroupChildClassName("clear-history")}
       >
-        <Trash size={20} className="fill-current" />
+        <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />
       </span>
     </button>
   );
@@ -77,7 +79,7 @@ type HistoryPanelProps = {
 
 export function HistoryPanel({ onClose }: HistoryPanelProps) {
   const { taskHistory, restoreTaskFromHistory, clearTaskHistory } =
-    useGeneralTasksContext();
+    useCanvasTasksContext();
   const historyCount = taskHistory.length;
 
   return (
@@ -97,13 +99,16 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
               onClick={clearTaskHistory}
               className={cn(
                 "flex min-h-12 shrink-0 items-center gap-2 px-4 text-sm font-medium",
-                "border-r border-line dark:border-hairline",
+                "border-line-light dark:border-hairline-dark border-r",
                 pressFeedbackClassName,
                 DRAWER_TEXT,
-                "sm:hover:bg-red-100 sm:hover:text-red-600 dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
+                DESTRUCTIVE_ACTION_HOVER
               )}
             >
-              <Trash size={20} className="shrink-0 fill-current" />
+              <Trash
+                size={20}
+                className={cn("shrink-0", DESTRUCTIVE_TRASH_ICON)}
+              />
               <span className="whitespace-nowrap">clear history</span>
             </button>
           )}
@@ -112,12 +117,12 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
             aria-label="Close history"
             onClick={onClose}
             className={cn(
-              "absolute right-2 top-2 flex size-8 shrink-0 items-center justify-center rounded-full",
-              "sm:hover:bg-zinc-100 dark:sm:hover:bg-surfaceHover",
+              "absolute top-2 right-2 flex size-8 shrink-0 items-center justify-center rounded-full",
+              "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
               pressFeedbackClassName
             )}
           >
-            <Close size={18} className="fill-black dark:fill-ink" />
+            <CaretDown size={18} className="dark:fill-ink-dark fill-black" />
           </button>
         </div>
       )}
@@ -159,9 +164,21 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
                   >
                     {entry.text}
                   </span>
+                  {entry.listTag && (
+                    <span
+                      className={cn(
+                        "border-line-light max-w-24 shrink-0 truncate rounded-full border px-2 py-0.5",
+                        "dark:border-hairline-dark text-xs",
+                        DRAWER_MUTED_TEXT
+                      )}
+                      title={entry.listTag}
+                    >
+                      {entry.listTag}
+                    </span>
+                  )}
                   <span
                     className={cn(
-                      "shrink-0 whitespace-nowrap text-xs",
+                      "shrink-0 text-xs whitespace-nowrap",
                       DRAWER_MUTED_TEXT
                     )}
                   >
@@ -194,7 +211,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
 }
 
 export function TaskHistoryDrawer() {
-  const { taskHistory } = useGeneralTasksContext();
+  const { taskHistory } = useCanvasTasksContext();
   const historyCount = taskHistory.length;
 
   return (

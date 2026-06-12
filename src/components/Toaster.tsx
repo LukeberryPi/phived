@@ -4,13 +4,13 @@ import { cn } from "src/utils";
 
 const toastClassName = cn(
   "toast-panel flex w-full justify-center px-5 py-3.5",
-  "text-base font-light text-black dark:text-ink"
+  "text-base font-light text-black dark:text-ink-dark"
 );
 
 export function Toaster() {
   return (
     <Sonner
-      position="bottom-center"
+      position="top-center"
       expand={false}
       duration={4000}
       closeButton={false}

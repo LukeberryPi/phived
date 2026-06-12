@@ -1,8 +1,12 @@
 export { Header } from "src/components/Header";
-export { GeneralTasks } from "src/components/GeneralTasks";
+export { CanvasBoard } from "src/components/CanvasBoard";
+export { ThemeIndicator } from "src/components/ThemeIndicator";
+export { CanvasControls } from "src/components/CanvasControls";
+export { TaskListCard } from "src/components/TaskListCard";
 export { Head } from "src/components/Head";
 export { HelpDrawer } from "src/components/HelpDrawer";
 export { MobileActionBar } from "src/components/MobileActionBar";
 export { TasksPageShell } from "src/components/TasksPageShell";
 export { TaskHistoryDrawer } from "src/components/TaskHistoryDrawer";
+export { Tooltip } from "src/components/Tooltip";
 export { Toaster } from "src/components/Toaster";

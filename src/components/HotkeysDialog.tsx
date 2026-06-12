@@ -72,6 +72,32 @@ function buildSections(isMac: boolean): ShortcutSection[] {
         { label: "move task down", combos: [[altModifier, ARROW_DOWN]] },
       ],
     },
+    {
+      title: "canvas",
+      shortcuts: [
+        {
+          label: "pan canvas",
+          combos: [
+            [{ display: "scroll" }],
+            [{ display: "drag", label: "drag the background" }],
+          ],
+        },
+        {
+          label: "zoom canvas",
+          combos: [[completeModifier, { display: "scroll" }]],
+        },
+        {
+          label: "new list",
+          combos: [
+            [{ display: "double-click", label: "double-click the background" }],
+          ],
+        },
+        {
+          label: "move list",
+          combos: [[{ display: "drag header", label: "drag the list header" }]],
+        },
+      ],
+    },
   ];
 }
 
@@ -86,14 +112,16 @@ function Keys({ combos }: { combos: Combo[] }) {
       {combos.map((combo, comboIdx) => (
         <span key={comboIdx} className="flex items-center gap-1.5">
           {comboIdx > 0 && (
-            <span className="text-sm text-muted dark:text-inkMuted">or</span>
+            <span className="text-muted-light dark:text-muted-dark text-sm">
+              or
+            </span>
           )}
           {combo.map((key, keyIdx) => (
             <span key={keyIdx} className="flex items-center gap-1.5">
               {keyIdx > 0 && (
                 <span
                   aria-hidden="true"
-                  className="text-sm text-muted dark:text-inkMuted"
+                  className="text-muted-light dark:text-muted-dark text-sm"
                 >
                   +
                 </span>
@@ -179,7 +207,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
       onKeyDown={handleKeyDown}
       className={cn(
         APP_DIALOG,
-        "task-panel m-auto w-full max-w-3xl p-0 text-black dark:text-ink",
+        "task-panel dark:text-ink-dark m-auto w-full max-w-3xl p-0 text-black",
         "max-h-[85vh] overflow-hidden"
       )}
     >
@@ -195,7 +223,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
             onClick={onClose}
             className={cn(DIALOG_CLOSE_BUTTON, pressFeedbackClassName)}
           >
-            <Close size={18} className="fill-black dark:fill-ink" />
+            <Close size={18} className="dark:fill-ink-dark fill-black" />
           </button>
         </header>
 
@@ -214,7 +242,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
                       key={shortcut.label}
                       className="flex items-center justify-between gap-4"
                     >
-                      <dt className="whitespace-nowrap text-base">
+                      <dt className="text-base whitespace-nowrap">
                         {shortcut.label}
                       </dt>
                       <dd className="m-0">

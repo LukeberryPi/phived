@@ -4,7 +4,7 @@
 
 have you ever clicked on a website just to be bombarded with cookie modals, newsletter beggers, and ads everywhere? this is fine if you're on piratebay, but if you're seeking productivity — you need a no-distractions experience to get it done.
 
-**phived is a dead-simple, anti-procrastination to-do list**. you can have up to 5 tasks at a time. to add more tasks, complete some of your ongoing ones. no login, no cookies, no images and no ads.
+**phived is a dead-simple, anti-procrastination to-do list**. arrange tagged task lists on a canvas and add rows as you need them. no login, no cookies, no images and no ads.
 
 just you and your next few steps.
 
@@ -15,7 +15,7 @@ just you and your next few steps.
 you need these:
 
 - [git](https://git-scm.com/downloads)
-- [node.js](https://nodejs.org/en/download/)
+- [bun](https://bun.sh/docs/installation)
 - [vs code](https://code.visualstudio.com/download)
 
 then, you can:
@@ -29,11 +29,11 @@ now, access the repo:
 
 finally, you should install dependencies:
 
-`npm install`
+`bun install`
 
 and build the website:
 
-`npm run dev`
+`bun run dev`
 
 this url should be running phived:
 

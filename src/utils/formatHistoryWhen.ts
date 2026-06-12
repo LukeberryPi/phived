@@ -9,7 +9,21 @@ export function formatHistoryWhen(isoDate: string) {
     return "";
   }
 
-  const today = startOfCalendarDay(new Date());
+  const now = new Date();
+  const elapsedMinutes = Math.max(
+    0,
+    Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
+  );
+
+  if (elapsedMinutes < 1) {
+    return "just now";
+  }
+
+  if (elapsedMinutes < 60) {
+    return `${elapsedMinutes} ${elapsedMinutes === 1 ? "minute" : "minutes"} ago`;
+  }
+
+  const today = startOfCalendarDay(now);
   const completedDay = startOfCalendarDay(date);
   const daysAgo = Math.floor(
     (today.getTime() - completedDay.getTime()) / (1000 * 60 * 60 * 24)

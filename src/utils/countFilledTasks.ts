@@ -1,5 +1,3 @@
-import type { GeneralTasks } from "src/contexts/GeneralTasksContext/GeneralTasksContext.types";
-
-export function countFilledTasks(tasks: GeneralTasks) {
+export function countFilledTasks(tasks: string[]) {
   return tasks.filter((task) => task.trim() !== "").length;
 }
