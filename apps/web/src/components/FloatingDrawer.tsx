@@ -11,6 +11,7 @@ import {
   DRAWER_SURFACE,
   DRAWER_WIDTH,
   DRAWER_TOGGLE_DIVIDER,
+  FLOATING_CHROME_Z,
 } from "src/constants/ui";
 import {
   drawerWidthTransitionClassName,
@@ -66,6 +67,7 @@ export function FloatingDrawer({
         : cn(DRAWER_HEADER_BUTTON, "w-full")
       : cn(DRAWER_COLLAPSED_BUTTON, "inline-flex"),
     headerActionBeforeToggle && "justify-end",
+    isOpen && side === "right" && !headerTrailing && "justify-end",
     isOpen && !headerTrailing && DRAWER_TOGGLE_DIVIDER
   );
 
@@ -92,7 +94,11 @@ export function FloatingDrawer({
 
   return (
     <aside
-      className={cn("fixed z-40 hidden sm:block", sidePositionClassName[side])}
+      className={cn(
+        FLOATING_CHROME_Z,
+        "pointer-events-auto fixed hidden sm:block",
+        sidePositionClassName[side]
+      )}
       aria-label={ariaLabel}
     >
       <div

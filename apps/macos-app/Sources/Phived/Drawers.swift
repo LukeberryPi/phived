@@ -85,8 +85,9 @@ struct HelpView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Welcome to **phived, the anti-procrastination to-do list.**")
-            Text("Stay focused on what matters. You can only have up to five tasks at a time.")
-            Text("To add a new task, you first have to **finish one you're already working on.**")
+            Text("Your tasks live on a canvas now. Spawn as many lists as you need and give each one a tag, like **work** or **personal**.")
+            Text("**Double-click** anywhere on the canvas (or press **new list**) to spawn a list. Use its move control to position it.")
+            Text("Drag the canvas to pan and pinch to zoom. Lists grow as you type, and finished tasks move to history when you press **done**.")
             Text("No login. No ads. No distractions.")
             HStack(spacing: 4) {
                 Link("Open Source", destination: URL(string: "https://www.github.com/lukeberrypi/phived")!).underline()
@@ -141,6 +142,15 @@ struct HistoryRow: View {
             Text(entry.text)
                 .font(.custom("DM Sans", size: 14).weight(.medium))
                 .lineLimit(1)
+            if let tag = entry.listTag {
+                Text(tag)
+                    .font(.custom("DM Sans", size: 11))
+                    .foregroundStyle(palette.muted)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 2)
+                    .overlay { Capsule().stroke(palette.line) }
+                    .lineLimit(1)
+            }
             Spacer()
             Text(historyWhen(entry.completedAt))
                 .font(.custom("DM Sans", size: 12))

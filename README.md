@@ -4,7 +4,7 @@
 
 have you ever clicked on a website just to be bombarded with cookie modals, newsletter beggers, and ads everywhere? this is fine if you're on piratebay, but if you're seeking productivity — you need a no-distractions experience to get it done.
 
-**phived is a dead-simple, anti-procrastination to-do list**. you can have up to 5 tasks at a time. to add more tasks, complete some of your ongoing ones. no login, no cookies, no images and no ads.
+**phived is a dead-simple, anti-procrastination to-do list**. arrange tagged task lists on a canvas and add rows as you need them. no login, no cookies, no images and no ads.
 
 just you and your next few steps.
 
@@ -20,7 +20,7 @@ just you and your next few steps.
 you need these:
 
 - [git](https://git-scm.com/downloads)
-- [node.js](https://nodejs.org/en/download/)
+- [bun](https://bun.sh/docs/installation)
 - [vs code](https://code.visualstudio.com/download)
 
 then, you can:
@@ -34,11 +34,11 @@ now, access the repo:
 
 finally, install web dependencies from the repository root:
 
-`npm install`
+`bun install`
 
 run the website:
 
-`npm run dev`
+`bun run dev`
 
 this url should be running phived:
 
@@ -46,22 +46,27 @@ this url should be running phived:
 
 Build both apps:
 
-`npm run build`
+`bun run build`
 
 Build and open the native app:
 
-`npm run dev:macos`
+`bun run dev:macos`
 
 The packaged app is written to `apps/macos-app/dist/Phived.app`.
 
 Run checks:
 
-- `npm run lint`
-- `npm run test:macos`
+- `bun run lint`
+- `bun run typecheck`
+- `bun run test:web`
+- `bun run test:macos`
 
 With a full Xcode installation selected, run the XCTest suite with:
 
-`npm run test:macos:xctest`
+`bun run test:macos:xctest`
+
+See [`docs/macos-parity.md`](docs/macos-parity.md) for the native parity
+contract and verification workflow.
 
 ---
 

@@ -70,7 +70,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let shortcuts = NSMenuItem(title: "Show Keyboard Shortcuts", action: #selector(showHotkeys), keyEquivalent: "/")
         shortcuts.keyEquivalentModifierMask = .command
         tasksMenu.addItem(shortcuts)
-        let clear = NSMenuItem(title: "Clear Tasks", action: #selector(clearTasks), keyEquivalent: "\u{8}")
+        let clear = NSMenuItem(title: "Clear Canvas", action: #selector(clearTasks), keyEquivalent: "\u{8}")
         clear.keyEquivalentModifierMask = [.command, .shift]
         tasksMenu.addItem(clear)
         tasksItem.submenu = tasksMenu
@@ -82,7 +82,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func clearTasks() {
-        store.requestClearTasks()
+        store.requestClearCanvas()
     }
 
     private func registerFonts() {

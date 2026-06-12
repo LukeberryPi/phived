@@ -1,7 +1,7 @@
 import { FloatingDrawer } from "src/components/FloatingDrawer";
 import { pressFeedbackClassName } from "src/constants/motion";
 import { DRAWER_TEXT } from "src/constants/ui";
-import { Close, Question } from "src/icons";
+import { CaretDown, Question } from "src/icons";
 import { cn } from "src/utils";
 
 type HelpPanelProps = {
@@ -10,29 +10,36 @@ type HelpPanelProps = {
 
 export function HelpPanel({ onClose }: HelpPanelProps) {
   return (
-    <div className="relative space-y-3 px-5 pb-4 text-sm">
+    <div className="relative space-y-3 px-5 pt-4 pb-4 text-sm">
       <button
         type="button"
         aria-label="Close help"
         onClick={onClose}
         className={cn(
           "absolute right-3 flex size-8 shrink-0 items-center justify-center rounded-full",
-          "dark:sm:hover:bg-surfaceHover sm:hover:bg-zinc-100",
+          "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
           pressFeedbackClassName
         )}
       >
-        <Close size={18} className="dark:fill-ink fill-black" />
+        <CaretDown size={18} className="dark:fill-ink-dark fill-black" />
       </button>
       <h1 className="pr-9">
         Welcome to <strong>phived, the anti-procrastination to-do list.</strong>
       </h1>
       <h2>
-        Stay focused on what matters. You can only have up to five tasks at a
-        time.
+        Your tasks live on a canvas now. Spawn as many lists as you need and
+        give each one a tag, like <strong>work</strong> or{" "}
+        <strong>personal</strong>.
       </h2>
       <p>
-        To add a new task, you first have to{" "}
-        <strong>finish one you&apos;re already working on.</strong>
+        <strong>Double-click</strong> anywhere on the canvas (or press{" "}
+        <strong>new list</strong>) to spawn a list. Drag a list by its header to
+        move it around.
+      </p>
+      <p>
+        <strong>Scroll to pan</strong> and <strong>ctrl/⌘ + scroll</strong> (or
+        pinch) to zoom. Lists grow as you type, and finished tasks move to
+        history when you press <strong>done</strong>.
       </p>
       <p>No login. No ads. No distractions.</p>
       <p>

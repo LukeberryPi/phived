@@ -1,31 +1,30 @@
 import Foundation
 
 extension TaskStore {
-    /// Applies demo fixtures used by screenshot tooling when `PHIVED_SNAPSHOT_STATE` is set.
-    /// Returns `true` when a snapshot state was requested, signalling that persistence should
-    /// stay disabled so the fixtures never overwrite the user's real data.
     func seedSnapshotStateIfRequested() -> Bool {
         guard let state = ProcessInfo.processInfo.environment["PHIVED_SNAPSHOT_STATE"] else {
             return false
         }
 
-        tasks = Self.emptyTasks()
+        lists = [Self.centeredList()]
         history = []
+        viewport = CanvasViewport(x: -2410, y: -1620, zoom: 1)
         theme = .system
         helpOpen = true
         historyOpen = true
-        taskPanelWidth = Self.defaultPanelWidth
 
         switch state {
         case "populated":
-            tasks = ["ship the native app", "compare every pixel", "", "", ""]
+            let first = Self.makeList(x: 2800, y: 1700, tag: "work", tasks: ["ship the native app", "compare every pixel"])
+            let second = Self.makeList(x: 3200, y: 1800, tag: "personal", tasks: ["buy coffee"])
+            lists = [first, second]
             history = [
-                HistoryEntry(id: UUID(), text: "build the monorepo", completedAt: Date()),
-                HistoryEntry(id: UUID(), text: "move the web app", completedAt: Calendar.current.date(byAdding: .day, value: -1, to: Date())!)
+                HistoryEntry(text: "build the monorepo", listId: first.id, listTag: first.tag),
+                HistoryEntry(text: "move the web app", completedAt: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, listId: first.id, listTag: first.tag)
             ]
         case "dialog":
-            tasks = ["ship the native app", "", "", "", ""]
-            confirmation = .tasks
+            lists = [Self.centeredList(tasks: ["ship the native app"])]
+            confirmation = .canvas
         case "light":
             theme = .light
         default:

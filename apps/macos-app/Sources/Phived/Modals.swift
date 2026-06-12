@@ -24,12 +24,36 @@ struct DeletionDialog: View {
     @EnvironmentObject private var store: TaskStore
     @Environment(\.palette) private var palette
 
-    private var isTasks: Bool { store.confirmation == .tasks }
+    private var copy: (title: String, description: String, cancel: String, confirm: String) {
+        switch store.confirmation {
+        case .canvas:
+            (
+                "clear the whole canvas?",
+                "This deletes every list and every task immediately. They will not move to history.",
+                "keep everything",
+                "clear canvas"
+            )
+        case .list:
+            (
+                "delete this list?",
+                "This deletes the list and its tasks immediately. They will not move to history.",
+                "keep list",
+                "delete list"
+            )
+        default:
+            (
+                "clear task history?",
+                "This removes every completed task from history. There is no undo for this action.",
+                "keep history",
+                "clear history"
+            )
+        }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text(isTasks ? "delete every task?" : "clear task history?")
+                Text(copy.title)
                     .font(.custom("DM Sans", size: 20).weight(.medium))
                 Spacer()
                 Button { store.confirmation = nil } label: {
@@ -41,19 +65,17 @@ struct DeletionDialog: View {
             .padding(.trailing, 16)
             .frame(height: 64)
             Rectangle().fill(palette.line).frame(height: 1)
-            Text(isTasks
-                 ? "This clears all tasks immediately. They will not move to history."
-                 : "This removes every completed task from history. There is no undo for this action.")
+            Text(copy.description)
                 .foregroundStyle(palette.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
             Rectangle().fill(palette.line).frame(height: 1)
             HStack(spacing: 0) {
-                Button(isTasks ? "keep tasks" : "keep history") { store.confirmation = nil }
+                Button(copy.cancel) { store.confirmation = nil }
                     .buttonStyle(.plain)
                     .frame(maxWidth: .infinity, minHeight: 52)
                 Rectangle().fill(palette.line).frame(width: 1)
-                Button(isTasks ? "delete tasks" : "clear history") { store.confirmDeletion() }
+                Button(copy.confirm) { store.confirmDeletion() }
                     .buttonStyle(.plain)
                     .foregroundStyle(.red)
                     .frame(maxWidth: .infinity, minHeight: 52)
@@ -87,8 +109,10 @@ struct HotkeysView: View {
             Divider()
             HStack(alignment: .top, spacing: 80) {
                 shortcutSection("navigation", [
-                    Shortcut(label: "next task", combos: [["enter"], ["↓"]]),
-                    Shortcut(label: "previous task", combos: [["shift", "enter"], ["↑"]]),
+                    Shortcut(label: "next task", combos: [["↓"]]),
+                    Shortcut(label: "previous task", combos: [["↑"]]),
+                    Shortcut(label: "new task below", combos: [["enter"]]),
+                    Shortcut(label: "new task above", combos: [["shift", "enter"]]),
                     Shortcut(label: "unfocus task", combos: [["esc"]])
                 ])
                 shortcutSection("action", [
@@ -96,10 +120,16 @@ struct HotkeysView: View {
                     Shortcut(label: "move task up", combos: [["⌥", "↑"]]),
                     Shortcut(label: "move task down", combos: [["⌥", "↓"]])
                 ])
+                shortcutSection("canvas", [
+                    Shortcut(label: "pan canvas", combos: [["drag"]]),
+                    Shortcut(label: "zoom canvas", combos: [["pinch"]]),
+                    Shortcut(label: "new list", combos: [["double-click"]]),
+                    Shortcut(label: "move list", combos: [["drag control"]])
+                ])
             }
             .padding(20)
         }
-        .frame(width: 768)
+        .frame(width: 820)
         .fixedSize(horizontal: false, vertical: true)
         .background(.background)
         .clipShape(RoundedRectangle(cornerRadius: 16))

@@ -1,5 +1,5 @@
-export { useGeneralTasksContext } from "src/contexts/GeneralTasksContext/GeneralTasksContext";
-export { GeneralTasksContextProvider } from "src/contexts/GeneralTasksContext/GeneralTasksContextProvider";
+export { useCanvasTasksContext } from "src/contexts/CanvasTasksContext/CanvasTasksContext";
+export { CanvasTasksContextProvider } from "src/contexts/CanvasTasksContext/CanvasTasksContextProvider";
 export {
   ThemeProvider,
   useDarkMode,

@@ -11,7 +11,10 @@ import {
 import { Close } from "src/icons";
 import { cn } from "src/utils";
 
-export type DeletionConfirmTarget = "tasks" | "history";
+export type DeletionConfirmTarget =
+  | { kind: "canvas" }
+  | { kind: "history" }
+  | { kind: "list"; listId: string };
 
 type DialogCopy = {
   title: string;
@@ -20,13 +23,20 @@ type DialogCopy = {
   cancelLabel: string;
 };
 
-const dialogCopyByTarget: Record<DeletionConfirmTarget, DialogCopy> = {
-  tasks: {
-    title: "delete every task?",
+const dialogCopyByKind: Record<DeletionConfirmTarget["kind"], DialogCopy> = {
+  canvas: {
+    title: "clear the whole canvas?",
     description:
-      "This clears all tasks immediately. They will not move to history.",
-    confirmLabel: "delete tasks",
-    cancelLabel: "keep tasks",
+      "This deletes every list and every task immediately. They will not move to history.",
+    confirmLabel: "clear canvas",
+    cancelLabel: "keep everything",
+  },
+  list: {
+    title: "delete this list?",
+    description:
+      "This deletes the list and its tasks immediately. They will not move to history.",
+    confirmLabel: "delete list",
+    cancelLabel: "keep list",
   },
   history: {
     title: "clear task history?",
@@ -49,7 +59,7 @@ export function DeletionConfirmDialog({
   onConfirm,
 }: DeletionConfirmDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const copy = target ? dialogCopyByTarget[target] : null;
+  const copy = target ? dialogCopyByKind[target.kind] : null;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -113,7 +123,7 @@ export function DeletionConfirmDialog({
       className={cn(
         APP_DIALOG,
         "task-panel m-auto w-[min(calc(100vw-2rem),28rem)] p-0",
-        "dark:text-ink text-black"
+        "dark:text-ink-dark text-black"
       )}
     >
       {copy && (
@@ -121,7 +131,7 @@ export function DeletionConfirmDialog({
           <header className={DIALOG_HEADER}>
             <h2
               id="deletion-confirm-title"
-              className={cn("text-xl font-medium leading-tight", DRAWER_TEXT)}
+              className={cn("text-xl leading-tight font-medium", DRAWER_TEXT)}
             >
               {copy.title}
             </h2>
@@ -132,7 +142,7 @@ export function DeletionConfirmDialog({
               onClick={onCancel}
               className={cn(DIALOG_CLOSE_BUTTON, pressFeedbackClassName)}
             >
-              <Close size={18} className="dark:fill-ink fill-black" />
+              <Close size={18} className="dark:fill-ink-dark fill-black" />
             </button>
           </header>
 
@@ -145,13 +155,13 @@ export function DeletionConfirmDialog({
             </p>
           </div>
 
-          <div className="border-line dark:border-hairline grid grid-cols-2 border-t">
+          <div className="border-line-light dark:border-hairline-dark grid grid-cols-2 border-t">
             <button
               type="button"
               onClick={onCancel}
               className={cn(
-                "border-line dark:border-hairline border-r px-4 py-4 text-sm font-medium",
-                "dark:sm:hover:bg-surfaceHover sm:hover:bg-zinc-100",
+                "border-line-light dark:border-hairline-dark border-r px-4 py-4 text-sm font-medium",
+                "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
                 pressFeedbackClassName
               )}
             >

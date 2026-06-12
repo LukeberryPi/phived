@@ -59,8 +59,10 @@ function buildSections(isMac: boolean): ShortcutSection[] {
     {
       title: "navigation",
       shortcuts: [
-        { label: "next task", combos: [[ENTER], [ARROW_DOWN]] },
-        { label: "previous task", combos: [[SHIFT, ENTER], [ARROW_UP]] },
+        { label: "next task", combos: [[ARROW_DOWN]] },
+        { label: "previous task", combos: [[ARROW_UP]] },
+        { label: "new task below", combos: [[ENTER]] },
+        { label: "new task above", combos: [[SHIFT, ENTER]] },
         { label: "unfocus task", combos: [[ESC]] },
       ],
     },
@@ -70,6 +72,32 @@ function buildSections(isMac: boolean): ShortcutSection[] {
         { label: "complete task", combos: [[completeModifier, ENTER]] },
         { label: "move task up", combos: [[altModifier, ARROW_UP]] },
         { label: "move task down", combos: [[altModifier, ARROW_DOWN]] },
+      ],
+    },
+    {
+      title: "canvas",
+      shortcuts: [
+        {
+          label: "pan canvas",
+          combos: [
+            [{ display: "scroll" }],
+            [{ display: "drag", label: "drag the background" }],
+          ],
+        },
+        {
+          label: "zoom canvas",
+          combos: [[completeModifier, { display: "scroll" }]],
+        },
+        {
+          label: "new list",
+          combos: [
+            [{ display: "double-click", label: "double-click the background" }],
+          ],
+        },
+        {
+          label: "move list",
+          combos: [[{ display: "drag header", label: "drag the list header" }]],
+        },
       ],
     },
   ];
@@ -86,14 +114,16 @@ function Keys({ combos }: { combos: Combo[] }) {
       {combos.map((combo, comboIdx) => (
         <span key={comboIdx} className="flex items-center gap-1.5">
           {comboIdx > 0 && (
-            <span className="text-muted dark:text-inkMuted text-sm">or</span>
+            <span className="text-muted-light dark:text-muted-dark text-sm">
+              or
+            </span>
           )}
           {combo.map((key, keyIdx) => (
             <span key={keyIdx} className="flex items-center gap-1.5">
               {keyIdx > 0 && (
                 <span
                   aria-hidden="true"
-                  className="text-muted dark:text-inkMuted text-sm"
+                  className="text-muted-light dark:text-muted-dark text-sm"
                 >
                   +
                 </span>
@@ -179,7 +209,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
       onKeyDown={handleKeyDown}
       className={cn(
         APP_DIALOG,
-        "task-panel dark:text-ink m-auto w-full max-w-3xl p-0 text-black",
+        "task-panel dark:text-ink-dark m-auto w-full max-w-3xl p-0 text-black",
         "max-h-[85vh] overflow-hidden"
       )}
     >
@@ -195,7 +225,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
             onClick={onClose}
             className={cn(DIALOG_CLOSE_BUTTON, pressFeedbackClassName)}
           >
-            <Close size={18} className="dark:fill-ink fill-black" />
+            <Close size={18} className="dark:fill-ink-dark fill-black" />
           </button>
         </header>
 
@@ -214,7 +244,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
                       key={shortcut.label}
                       className="flex items-center justify-between gap-4"
                     >
-                      <dt className="whitespace-nowrap text-base">
+                      <dt className="text-base whitespace-nowrap">
                         {shortcut.label}
                       </dt>
                       <dd className="m-0">

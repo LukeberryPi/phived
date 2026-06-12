@@ -1,10 +1,35 @@
 import Foundation
 import SwiftUI
 
+struct TaskList: Codable, Identifiable, Equatable {
+    let id: UUID
+    var tag: String
+    var x: Double
+    var y: Double
+    var width: Double
+    var tasks: [String]
+}
+
+struct CanvasViewport: Codable, Equatable {
+    var x: Double
+    var y: Double
+    var zoom: Double
+}
+
 struct HistoryEntry: Codable, Identifiable, Equatable {
     let id: UUID
     let text: String
     let completedAt: Date
+    let listId: UUID?
+    let listTag: String?
+
+    init(id: UUID = UUID(), text: String, completedAt: Date = Date(), listId: UUID? = nil, listTag: String? = nil) {
+        self.id = id
+        self.text = text
+        self.completedAt = completedAt
+        self.listId = listId
+        self.listTag = listTag
+    }
 }
 
 enum ThemePreference: String, Codable, CaseIterable {
@@ -26,26 +51,33 @@ enum ThemePreference: String, Codable, CaseIterable {
 
 @MainActor
 final class TaskStore: ObservableObject {
-    static let taskCount = 5
-    static let minPanelWidth: Double = 300
-    static let maxPanelWidth: Double = 720
-    static let defaultPanelWidth: Double = 400
+    static let minimumRows = 5
+    static let canvasWidth = 6000.0
+    static let canvasHeight = 4000.0
+    static let defaultListWidth = 340.0
+    static let minimumListWidth = 260.0
+    static let maximumListWidth = 620.0
+    static let minimumZoom = 0.15
+    static let maximumZoom = 2.0
 
-    @Published var tasks: [String] { didSet { persistTasks() } }
-    @Published var history: [HistoryEntry] { didSet { persistHistory() } }
-    @Published var theme: ThemePreference { didSet { persist(theme.rawValue, key: Keys.theme) } }
-    @Published var helpOpen: Bool { didSet { persist(helpOpen, key: Keys.help) } }
-    @Published var historyOpen: Bool { didSet { persist(historyOpen, key: Keys.historyOpen) } }
-    @Published var taskPanelWidth: Double { didSet { persist(taskPanelWidth, key: Keys.panelWidth) } }
+    @Published var lists: [TaskList] { didSet { persist(lists, key: Keys.lists) } }
+    @Published var history: [HistoryEntry] { didSet { persist(history, key: Keys.history) } }
+    @Published var viewport: CanvasViewport { didSet { persist(viewport, key: Keys.viewport) } }
+    @Published var theme: ThemePreference { didSet { defaults.set(theme.rawValue, forKey: Keys.theme) } }
+    @Published var helpOpen: Bool { didSet { defaults.set(helpOpen, forKey: Keys.help) } }
+    @Published var historyOpen: Bool { didSet { defaults.set(historyOpen, forKey: Keys.historyOpen) } }
+    @Published var focusedListId: UUID?
     @Published var toasts: [ToastMessage] = []
     @Published var confirmation: Confirmation?
-    let placeholder: String
 
+    let placeholder: String
     private let defaults: UserDefaults
     private var persistenceEnabled = false
 
-    enum Confirmation {
-        case tasks, history
+    enum Confirmation: Equatable {
+        case canvas
+        case history
+        case list(UUID)
     }
 
     struct ToastMessage: Identifiable, Equatable {
@@ -55,71 +87,164 @@ final class TaskStore: ObservableObject {
     }
 
     private enum Keys {
-        static let tasks = "storedGeneralTasks"
+        static let lists = "canvasLists"
         static let history = "taskHistory"
+        static let viewport = "canvasViewport"
+        static let legacyTasks = "storedGeneralTasks"
         static let theme = "themePreference"
         static let help = "showHelpMenu"
         static let historyOpen = "showTaskHistoryDrawer"
-        static let panelWidth = "tasksComponentWidth"
     }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        tasks = Self.decode([String].self, from: defaults.data(forKey: Keys.tasks))
-            .map(Self.normalized) ?? Self.emptyTasks()
+        if let stored = Self.decode([TaskList].self, from: defaults.data(forKey: Keys.lists)), !stored.isEmpty {
+            lists = stored.map(Self.normalized)
+        } else {
+            let legacy = Self.decode([String].self, from: defaults.data(forKey: Keys.legacyTasks)) ?? []
+            lists = [Self.centeredList(tasks: legacy)]
+        }
         history = Self.decode([HistoryEntry].self, from: defaults.data(forKey: Keys.history)) ?? []
+        viewport = Self.decode(CanvasViewport.self, from: defaults.data(forKey: Keys.viewport))
+            ?? CanvasViewport(x: 0, y: 0, zoom: 1)
         theme = ThemePreference(rawValue: defaults.string(forKey: Keys.theme) ?? "") ?? .system
         helpOpen = defaults.object(forKey: Keys.help) as? Bool ?? true
         historyOpen = defaults.object(forKey: Keys.historyOpen) as? Bool ?? true
-        taskPanelWidth = defaults.object(forKey: Keys.panelWidth) as? Double ?? Self.defaultPanelWidth
         placeholder = AppContent.placeholders.randomElement()!
-
         persistenceEnabled = !seedSnapshotStateIfRequested()
     }
 
-    var filledTaskCount: Int { tasks.filter { !$0.isBlank }.count }
+    var hasContent: Bool {
+        lists.count > 1 || lists.contains { !$0.tag.isBlank || $0.tasks.contains { !$0.isBlank } }
+    }
 
-    func complete(_ index: Int) {
-        guard tasks.indices.contains(index) else { return }
-        let text = tasks[index].trimmingCharacters(in: .whitespacesAndNewlines)
+    func addList(x: Double, y: Double) -> UUID {
+        let list = Self.makeList(x: x, y: y)
+        lists.append(list)
+        return list.id
+    }
+
+    func updateTag(_ listId: UUID, _ tag: String) {
+        updateList(listId) { $0.tag = tag }
+    }
+
+    func updateTask(_ listId: UUID, index: Int, value: String) {
+        updateList(listId) {
+            guard $0.tasks.indices.contains(index) else { return }
+            $0.tasks[index] = value
+        }
+    }
+
+    func addRow(_ listId: UUID) {
+        updateList(listId) { $0.tasks.append("") }
+    }
+
+    func insertRow(_ listId: UUID, at index: Int) {
+        updateList(listId) {
+            guard index >= 0, index <= $0.tasks.count else { return }
+            $0.tasks.insert("", at: index)
+        }
+    }
+
+    func removeEmptyExtraRow(_ listId: UUID, index: Int) {
+        updateList(listId) {
+            guard $0.tasks.count > Self.minimumRows,
+                  $0.tasks.indices.contains(index), $0.tasks[index].isBlank else { return }
+            $0.tasks.remove(at: index)
+        }
+    }
+
+    func complete(_ listId: UUID, index: Int) {
+        guard let list = lists.first(where: { $0.id == listId }),
+              list.tasks.indices.contains(index) else { return }
+        let text = list.tasks[index].trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
-        tasks.remove(at: index)
-        tasks.append("")
-        history.insert(HistoryEntry(id: UUID(), text: text, completedAt: Date()), at: 0)
+        updateList(listId) {
+            $0.tasks.remove(at: index)
+            $0.tasks = Self.normalizedTasks($0.tasks)
+        }
+        let tag = list.tag.trimmingCharacters(in: .whitespacesAndNewlines)
+        history.insert(HistoryEntry(text: text, listId: listId, listTag: tag.isEmpty ? nil : tag), at: 0)
         showToast(AppContent.incentives.randomElement()!)
     }
 
     func restore(_ entry: HistoryEntry) {
-        guard let slot = tasks.firstIndex(where: { $0.isBlank }) else {
-            showToast("can't restore — you already have 5 tasks! complete one first.", error: true)
-            return
+        let targetId = lists.contains(where: { $0.id == entry.listId }) ? entry.listId : lists.first?.id
+        let listId = targetId ?? addList(x: Self.canvasWidth / 2 - Self.defaultListWidth / 2, y: Self.canvasHeight / 2 - 280)
+        updateList(listId) {
+            if let empty = $0.tasks.firstIndex(where: \.isBlank) {
+                $0.tasks[empty] = entry.text
+            } else {
+                $0.tasks.append(entry.text)
+            }
+            $0.tasks = Self.normalizedTasks($0.tasks)
         }
-        tasks[slot] = entry.text
         history.removeAll { $0.id == entry.id }
         showToast("task restored!")
     }
 
-    func move(from source: Int, to destination: Int) {
-        guard tasks.indices.contains(source), tasks.indices.contains(destination), source != destination else { return }
-        let item = tasks.remove(at: source)
-        tasks.insert(item, at: destination)
+    func reorderTask(_ listId: UUID, from source: Int, to destination: Int) {
+        updateList(listId) {
+            guard $0.tasks.indices.contains(source), $0.tasks.indices.contains(destination), source != destination else { return }
+            let task = $0.tasks.remove(at: source)
+            $0.tasks.insert(task, at: destination)
+        }
     }
 
-    func requestClearTasks() {
-        if filledTaskCount == 0 { showToast("no tasks to clear.") }
-        else { confirmation = .tasks }
+    func moveList(_ listId: UUID, x: Double, y: Double) {
+        updateList(listId) {
+            $0.x = min(max(16, x), Self.canvasWidth - Self.defaultListWidth - 16)
+            $0.y = min(max(16, y), Self.canvasHeight - 376)
+        }
+    }
+
+    func resizeList(_ listId: UUID, width: Double) {
+        updateList(listId) { $0.width = min(max(Self.minimumListWidth, width), Self.maximumListWidth) }
+    }
+
+    func bringToFront(_ listId: UUID) {
+        guard let index = lists.firstIndex(where: { $0.id == listId }), index != lists.indices.last else { return }
+        lists.append(lists.remove(at: index))
+    }
+
+    func requestDeleteList(_ listId: UUID) {
+        guard let list = lists.first(where: { $0.id == listId }) else { return }
+        if list.tasks.allSatisfy(\.isBlank) {
+            lists.removeAll { $0.id == listId }
+        } else {
+            confirmation = .list(listId)
+        }
+    }
+
+    func requestClearCanvas() {
+        if hasContent { confirmation = .canvas }
+        else { showToast("no tasks to clear.") }
     }
 
     func confirmDeletion() {
         guard let confirmation else { return }
-        if confirmation == .tasks {
-            tasks = Self.emptyTasks()
-            showToast("tasks cleared!")
-        } else {
+        switch confirmation {
+        case .canvas:
+            lists = [Self.centeredList()]
+            focusedListId = nil
+            showToast("canvas cleared!")
+        case .history:
             history = []
             showToast("history cleared!")
+        case .list(let id):
+            lists.removeAll { $0.id == id }
+            if focusedListId == id { focusedListId = nil }
+            showToast("list deleted!")
         }
         self.confirmation = nil
+    }
+
+    func setViewport(_ next: CanvasViewport) {
+        viewport = CanvasViewport(
+            x: next.x,
+            y: next.y,
+            zoom: min(max(Self.minimumZoom, next.zoom), Self.maximumZoom)
+        )
     }
 
     func cycleTheme() {
@@ -130,38 +255,57 @@ final class TaskStore: ObservableObject {
     func showToast(_ text: String, error: Bool = false) {
         let message = ToastMessage(id: UUID(), text: text, isError: error)
         toasts.append(message)
-        if toasts.count > 3 {
-            toasts.removeFirst(toasts.count - 3)
-        }
+        if toasts.count > 3 { toasts.removeFirst(toasts.count - 3) }
         Task {
             try? await Task.sleep(for: .seconds(4))
             toasts.removeAll { $0.id == message.id }
         }
     }
 
-    static func emptyTasks() -> [String] { Array(repeating: "", count: taskCount) }
+    static func emptyTasks() -> [String] { Array(repeating: "", count: minimumRows) }
 
-    private func persistTasks() {
-        guard persistenceEnabled else { return }
-        defaults.set(try? JSONEncoder().encode(tasks), forKey: Keys.tasks)
+    static func centeredList(tasks: [String] = []) -> TaskList {
+        makeList(
+            x: canvasWidth / 2 - defaultListWidth / 2,
+            y: canvasHeight / 2 - 280,
+            tasks: tasks
+        )
     }
 
-    private func persistHistory() {
-        guard persistenceEnabled else { return }
-        defaults.set(try? JSONEncoder().encode(history), forKey: Keys.history)
+    static func makeList(x: Double, y: Double, tag: String = "", tasks: [String] = []) -> TaskList {
+        TaskList(id: UUID(), tag: tag, x: x, y: y, width: defaultListWidth, tasks: normalizedTasks(tasks))
     }
 
-    private func persist(_ value: Any, key: String) {
+    static func normalizedTasks(_ tasks: [String]) -> [String] {
+        var result = tasks
+        if result.count < minimumRows {
+            result.append(contentsOf: Array(repeating: "", count: minimumRows - result.count))
+        }
+        if !(result.last ?? "").isBlank { result.append("") }
+        return result
+    }
+
+    private static func normalized(_ list: TaskList) -> TaskList {
+        var result = list
+        result.width = min(max(minimumListWidth, result.width), maximumListWidth)
+        result.tasks = normalizedTasks(result.tasks)
+        return result
+    }
+
+    private func updateList(_ id: UUID, mutate: (inout TaskList) -> Void) {
+        guard let index = lists.firstIndex(where: { $0.id == id }) else { return }
+        var list = lists[index]
+        mutate(&list)
+        lists[index] = list
+    }
+
+    private func persist<T: Encodable>(_ value: T, key: String) {
         guard persistenceEnabled else { return }
-        defaults.set(value, forKey: key)
+        defaults.set(try? JSONEncoder().encode(value), forKey: key)
     }
 
     private static func decode<T: Decodable>(_ type: T.Type, from data: Data?) -> T? {
         guard let data else { return nil }
         return try? JSONDecoder().decode(type, from: data)
-    }
-
-    private static func normalized(_ values: [String]) -> [String] {
-        Array((values + emptyTasks()).prefix(taskCount))
     }
 }

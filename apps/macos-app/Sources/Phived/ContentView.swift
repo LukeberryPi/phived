@@ -4,23 +4,14 @@ struct ContentView: View {
     @EnvironmentObject private var store: TaskStore
     @Environment(\.palette) private var palette
     @State private var hotkeysOpen = false
-    @FocusState private var focusedTask: Int?
 
     init() {
-        _hotkeysOpen = State(
-            initialValue: ProcessInfo.processInfo.environment["PHIVED_SNAPSHOT_STATE"] == "hotkeys"
-        )
+        _hotkeysOpen = State(initialValue: ProcessInfo.processInfo.environment["PHIVED_SNAPSHOT_STATE"] == "hotkeys")
     }
 
     var body: some View {
         ZStack {
-            palette.canvas.ignoresSafeArea()
-            VStack(spacing: 16) {
-                Text("what do you want to do?")
-                    .font(.custom("DM Sans", size: 24))
-                TaskPanel(focusedTask: $focusedTask)
-            }
-            .foregroundStyle(palette.ink)
+            CanvasView()
             HeaderView(hotkeysOpen: $hotkeysOpen)
                 .frame(maxHeight: .infinity, alignment: .top)
             DrawersView()
@@ -36,6 +27,7 @@ struct ContentView: View {
                 }
             }
         }
+        .background(palette.canvas)
         .font(.custom("DM Sans", size: 16))
         .ignoresSafeArea()
         .onReceive(NotificationCenter.default.publisher(for: .showHotkeys)) { _ in hotkeysOpen = true }
@@ -54,12 +46,13 @@ struct HeaderView: View {
                 .underline(color: palette.accent)
             Spacer()
             headerButton(icon: themeIcon, label: store.theme.rawValue, action: store.cycleTheme)
-            headerButton(icon: "trash", label: "clear tasks", muted: store.filledTaskCount == 0, action: store.requestClearTasks)
+            headerButton(icon: "trash", label: "clear canvas", muted: !store.hasContent, action: store.requestClearCanvas)
             headerButton(icon: "keyboard", label: "show hotkeys") { hotkeysOpen = true }
         }
         .padding(.horizontal, 24)
         .frame(height: 64)
         .font(.custom("DM Sans", size: 14))
+        .foregroundStyle(palette.ink)
     }
 
     private var themeIcon: String {
@@ -74,8 +67,10 @@ struct HeaderView: View {
             }
             .padding(.horizontal, 12)
             .frame(height: 48)
+            .background(palette.canvas.opacity(0.94))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
         }
-            .buttonStyle(.plain)
-            .foregroundStyle(muted ? palette.muted : palette.ink)
+        .buttonStyle(.plain)
+        .foregroundStyle(muted ? palette.muted : palette.ink)
     }
 }

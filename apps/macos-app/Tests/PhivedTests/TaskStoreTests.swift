@@ -9,49 +9,110 @@ final class TaskStoreTests: XCTestCase {
         defaults = UserDefaults(suiteName: UUID().uuidString)!
     }
 
-    func testCompletingMovesTaskToHistory() {
+    func testStartsWithCenteredFiveRowList() {
         let store = TaskStore(defaults: defaults)
-        store.tasks[0] = " Ship it "
-        store.complete(0)
-        XCTAssertEqual(store.history.first?.text, "Ship it")
-        XCTAssertEqual(store.tasks, TaskStore.emptyTasks())
+        XCTAssertEqual(store.lists.count, 1)
+        XCTAssertEqual(store.lists[0].tasks, TaskStore.emptyTasks())
+        XCTAssertEqual(store.lists[0].width, TaskStore.defaultListWidth)
     }
 
-    func testRestoreUsesFirstEmptySlot() {
+    func testMigratesLegacyGeneralTasks() throws {
+        defaults.set(try JSONEncoder().encode(["one", "two", "", "", ""]), forKey: "storedGeneralTasks")
         let store = TaskStore(defaults: defaults)
-        store.tasks = ["one", "", "three", "", "five"]
-        let entry = HistoryEntry(id: UUID(), text: "two", completedAt: Date())
+        XCTAssertEqual(Array(store.lists[0].tasks.prefix(2)), ["one", "two"])
+    }
+
+    func testCompletingMovesTaskToHistoryWithListProvenance() {
+        let store = TaskStore(defaults: defaults)
+        let id = store.lists[0].id
+        store.updateTag(id, "work")
+        store.updateTask(id, index: 0, value: " Ship it ")
+        store.complete(id, index: 0)
+        XCTAssertEqual(store.history.first?.text, "Ship it")
+        XCTAssertEqual(store.history.first?.listId, id)
+        XCTAssertEqual(store.history.first?.listTag, "work")
+        XCTAssertEqual(store.lists[0].tasks, TaskStore.emptyTasks())
+    }
+
+    func testRestoreTargetsOriginalListAndCreatesTrailingRow() {
+        let store = TaskStore(defaults: defaults)
+        let id = store.lists[0].id
+        store.lists[0].tasks = ["1", "2", "3", "4", "5"]
+        let entry = HistoryEntry(text: "six", listId: id)
         store.history = [entry]
         store.restore(entry)
-        XCTAssertEqual(store.tasks, ["one", "two", "three", "", "five"])
+        XCTAssertEqual(store.lists[0].tasks, ["1", "2", "3", "4", "5", "six", ""])
         XCTAssertTrue(store.history.isEmpty)
     }
 
-    func testFullListCannotRestore() {
+    func testRestoreFallsBackToFirstList() {
         let store = TaskStore(defaults: defaults)
-        store.tasks = ["1", "2", "3", "4", "5"]
-        let entry = HistoryEntry(id: UUID(), text: "six", completedAt: Date())
+        let entry = HistoryEntry(text: "restored", listId: UUID())
         store.history = [entry]
         store.restore(entry)
-        XCTAssertEqual(store.history, [entry])
-        XCTAssertTrue(store.toasts.last?.isError == true)
+        XCTAssertEqual(store.lists[0].tasks[0], "restored")
     }
 
-    func testMoveReordersAllFiveSlots() {
+    func testRowsInsertRemoveAndReorder() {
         let store = TaskStore(defaults: defaults)
-        store.tasks = ["one", "two", "three", "", ""]
-        store.move(from: 0, to: 2)
-        XCTAssertEqual(store.tasks, ["two", "three", "one", "", ""])
+        let id = store.lists[0].id
+        store.updateTask(id, index: 0, value: "one")
+        store.insertRow(id, at: 1)
+        XCTAssertEqual(store.lists[0].tasks.count, 6)
+        store.removeEmptyExtraRow(id, index: 1)
+        XCTAssertEqual(store.lists[0].tasks.count, 5)
+        store.updateTask(id, index: 1, value: "two")
+        store.reorderTask(id, from: 0, to: 1)
+        XCTAssertEqual(Array(store.lists[0].tasks.prefix(2)), ["two", "one"])
     }
 
-    func testClearTasksRequiresAndAppliesConfirmation() {
+    func testListMoveResizeAndStackingAreClamped() {
         let store = TaskStore(defaults: defaults)
-        store.tasks[0] = "one"
-        store.requestClearTasks()
-        XCTAssertEqual(store.confirmation, .tasks)
+        let first = store.lists[0].id
+        let second = store.addList(x: 100, y: 100)
+        store.moveList(first, x: -100, y: 10_000)
+        store.resizeList(first, width: 10_000)
+        store.bringToFront(first)
+        XCTAssertEqual(store.lists.last?.id, first)
+        XCTAssertEqual(store.lists.first?.id, second)
+        XCTAssertEqual(store.lists.last?.x, 16)
+        XCTAssertEqual(store.lists.last?.y, TaskStore.canvasHeight - 376)
+        XCTAssertEqual(store.lists.last?.width, TaskStore.maximumListWidth)
+    }
+
+    func testEmptyListDeletesImmediatelyAndFilledListConfirms() {
+        let store = TaskStore(defaults: defaults)
+        let emptyId = store.addList(x: 100, y: 100)
+        store.requestDeleteList(emptyId)
+        XCTAssertFalse(store.lists.contains { $0.id == emptyId })
+
+        let filledId = store.lists[0].id
+        store.updateTask(filledId, index: 0, value: "keep")
+        store.requestDeleteList(filledId)
+        XCTAssertEqual(store.confirmation, .list(filledId))
         store.confirmDeletion()
-        XCTAssertEqual(store.tasks, TaskStore.emptyTasks())
-        XCTAssertEqual(store.toasts.last?.text, "tasks cleared!")
+        XCTAssertFalse(store.lists.contains { $0.id == filledId })
+    }
+
+    func testClearCanvasLeavesOneEmptyCenteredList() {
+        let store = TaskStore(defaults: defaults)
+        let id = store.lists[0].id
+        store.updateTask(id, index: 0, value: "one")
+        _ = store.addList(x: 100, y: 100)
+        store.requestClearCanvas()
+        XCTAssertEqual(store.confirmation, .canvas)
+        store.confirmDeletion()
+        XCTAssertEqual(store.lists.count, 1)
+        XCTAssertEqual(store.lists[0].tasks, TaskStore.emptyTasks())
+        XCTAssertEqual(store.toasts.last?.text, "canvas cleared!")
+    }
+
+    func testViewportZoomAndListWidthClamp() {
+        let store = TaskStore(defaults: defaults)
+        store.setViewport(CanvasViewport(x: 12, y: 34, zoom: 100))
+        XCTAssertEqual(store.viewport, CanvasViewport(x: 12, y: 34, zoom: TaskStore.maximumZoom))
+        store.setViewport(CanvasViewport(x: 12, y: 34, zoom: 0))
+        XCTAssertEqual(store.viewport.zoom, TaskStore.minimumZoom)
     }
 
     func testThemeCyclesInWebOrder() {
