@@ -45,7 +45,7 @@ export function HelpPanel({ onClose }: HelpPanelProps) {
       <p>
         <a
           className="text-blue-600 underline decoration-2 dark:text-blue-500"
-          href="https://www.github.com/lukeberrypi/phived"
+          href="https://github.com/lukeberrypi/phived"
           target="_blank"
           rel="noopener noreferrer"
         >

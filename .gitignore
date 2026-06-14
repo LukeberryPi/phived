@@ -15,6 +15,7 @@ dist-ssr
 *.local
 .vite
 .build
+.astro
 
 # Editor directories and files
 .vscode/*

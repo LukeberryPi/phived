@@ -7,5 +7,7 @@ export function getStoredThemePreference(): ThemePreference {
     return localStorageTheme;
   }
 
+  // Missing or invalid values default to "system" (see boot scripts in
+  // apps/app/index.html and apps/web/src/layouts/Base.astro).
   return "system";
 }

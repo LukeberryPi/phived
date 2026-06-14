@@ -1,8 +1,7 @@
-// Kill-switch service worker. phived v1 shipped a PWA whose workbox service
-// worker precached index.html; v2 removed the PWA but old clients still hold
-// that worker. The SPA rewrite in vercel.json means /sw.js never 404s, so
-// browsers never evict it on their own. This file replaces the zombie worker,
-// wipes its caches, unregisters itself, and reloads open tabs into v2.
+// Kill-switch service worker at the origin root. phived v1 shipped a PWA whose
+// workbox service worker precached index.html; v2 removed the PWA but old
+// clients still hold that worker. This file replaces the zombie worker, wipes
+// its caches, unregisters itself, and reloads open tabs into the current app.
 //
 // DO NOT DELETE THIS FILE. See docs/adr/0001-service-worker-kill-switch.md.
 self.addEventListener("install", () => {

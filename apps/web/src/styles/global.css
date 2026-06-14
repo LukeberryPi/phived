@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* Shared design tokens (@theme + dark variant). Single source of truth lives in
+   @phived/tokens and is also consumed by apps/app. */
+@import "@phived/tokens/tokens.css";
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: #080811;
+    color: #fdfdff;
+  }
+
+  .dark ::selection {
+    background-color: var(--color-ink-dark);
+    color: var(--color-canvas-dark);
+  }
+}
+
+@layer components {
+  /* Staggered entrance for the hero. Opt-out under reduced motion. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: reveal-up 0.9s var(--ease-out-strong) forwards;
+  }
+
+  @keyframes reveal-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+
+  /* Hairline rules used throughout the editorial layout. */
+  .rule-y {
+    @apply border-t border-line-light dark:border-hairline-dark;
+  }
+}

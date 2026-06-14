@@ -12,8 +12,13 @@ just you and your next few steps.
 
 ## repository
 
-- `apps/web` — Vite, React, and TypeScript web app
+See [`CONTEXT.md`](CONTEXT.md) for canonical surface names and
+[`docs/adr/`](docs/adr/) for deployment and routing decisions.
+
+- `apps/web` — Astro public web app served at `phived.com/`
+- `apps/app` — Vite, React, and TypeScript task app served at `phived.com/app`
 - `apps/macos-app` — native SwiftUI macOS app
+- `packages/tokens` — shared design tokens consumed by the web and app surfaces
 
 ## accessing locally
 
@@ -32,21 +37,34 @@ now, access the repo:
 
 `cd phived`
 
-finally, install web dependencies from the repository root:
+finally, install dependencies from the repository root:
 
 `bun install`
 
-run the website:
+run the production-shaped site locally with dev servers behind one origin:
 
 `bun run dev`
 
 this url should be running phived:
 
-[http://localhost:5173/](http://localhost:5173/)
+[http://localhost:3000/](http://localhost:3000/)
 
-Build both apps:
+run a focused app or web dev server:
+
+- `bun run dev:app`
+- `bun run dev:web`
+
+Build the deployable site and native app:
 
 `bun run build`
+
+Build only the deployable web site (`phived.com/` + `phived.com/app`):
+
+`bun run build:site`
+
+Preview the built site locally:
+
+`bun run preview`
 
 Build and open the native app:
 
@@ -56,9 +74,10 @@ The packaged app is written to `apps/macos-app/dist/Phived.app`.
 
 Run checks:
 
+- `bun run check`
 - `bun run lint`
 - `bun run typecheck`
-- `bun run test:web`
+- `bun run test:app`
 - `bun run test:macos`
 
 With a full Xcode installation selected, run the XCTest suite with:

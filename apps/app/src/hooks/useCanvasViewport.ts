@@ -12,7 +12,12 @@ import {
   clampZoom,
   createCenteredViewport,
 } from "src/utils/canvas";
+import { parseViewport } from "src/utils/persistence";
 import { useCanvasGestures } from "src/hooks/useCanvasGestures";
+import { toast } from "sonner";
+
+const STORAGE_WRITE_ERROR_MESSAGE =
+  "Changes may not persist — storage is full or unavailable.";
 
 const VIEWPORT_STORAGE_KEY = "canvasViewport";
 const ZOOM_STEP = 1.2;
@@ -22,7 +27,7 @@ type Point = { x: number; y: number };
 function loadStoredViewport(): Viewport | null {
   try {
     const item = window.localStorage.getItem(VIEWPORT_STORAGE_KEY);
-    return item ? (JSON.parse(item) as Viewport) : null;
+    return item ? parseViewport(JSON.parse(item), null) : null;
   } catch (error) {
     console.warn(error);
     return null;
@@ -92,6 +97,7 @@ export function useCanvasViewport(boardRef: RefObject<HTMLDivElement | null>) {
         );
       } catch (error) {
         console.warn(error);
+        toast(STORAGE_WRITE_ERROR_MESSAGE);
       }
     }, 250);
 

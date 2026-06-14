@@ -10,6 +10,11 @@ import type { TaskList, TaskLists } from "src/types/canvas";
 import type { TaskHistory } from "src/types/taskHistory";
 import { countFilledTasks, getRandomElement } from "src/utils";
 import {
+  parseTaskHistory,
+  parseTaskLists,
+  prependCappedTaskHistory,
+} from "src/utils/persistence";
+import {
   buildInitialLists,
   clampListPosition,
   clampListWidth,
@@ -31,11 +36,13 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
   const initialLists = useMemo(buildInitialLists, []);
   const [lists, setLists] = useLocalStorage<TaskLists>(
     "canvasLists",
-    initialLists
+    initialLists,
+    parseTaskLists
   );
   const [taskHistory, setTaskHistory] = useLocalStorage<TaskHistory>(
     "taskHistory",
-    []
+    [],
+    parseTaskHistory
   );
   const [deletionConfirmTarget, setDeletionConfirmTarget] =
     useState<DeletionConfirmTarget | null>(null);
@@ -189,16 +196,15 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
         ...item,
         tasks: removeTaskRow(item.tasks, taskIndex),
       }));
-      setTaskHistory((prev) => [
-        {
+      setTaskHistory((prev) =>
+        prependCappedTaskHistory(prev, {
           id: crypto.randomUUID(),
           text: completedText,
           completedAt: new Date().toISOString(),
           listId,
           listTag: list.tag.trim() || undefined,
-        },
-        ...prev,
-      ]);
+        })
+      );
       toast(getRandomElement(incentives));
     },
     [updateList, setTaskHistory]

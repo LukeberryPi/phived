@@ -4,19 +4,42 @@
   "version": "1.3.0",
   "packageManager": "bun@1.3.8",
   "workspaces": [
-    "apps/web"
+    "apps/app",
+    "apps/web",
+    "packages/tokens"
   ],
   "scripts": {
-    "dev": "bun --cwd apps/web dev",
-    "build": "bun run build:web && bun run build:macos",
+    "dev": "bun scripts/dev-site.mjs",
+    "dev:app": "bun --cwd apps/app dev",
+    "dev:web": "bun --cwd apps/web dev",
+    "build": "bun run build:site && bun run build:macos",
+    "build:app": "bun --cwd apps/app build",
     "build:web": "bun --cwd apps/web build",
+    "build:site": "bun scripts/build-site.mjs",
     "build:macos": "sh apps/macos-app/scripts/build-app.sh",
     "dev:macos": "bun run build:macos && open apps/macos-app/dist/Phived.app",
-    "lint": "bun --cwd apps/web lint",
-    "typecheck": "bun --cwd apps/web typecheck",
-    "test:web": "bun --cwd apps/web test",
-    "preview": "bun --cwd apps/web preview",
+    "lint": "bun run lint:app && bun run lint:scripts",
+    "lint:app": "bun --cwd apps/app lint",
+    "lint:scripts": "eslint scripts --max-warnings 0",
+    "typecheck": "bun run typecheck:app && bun run typecheck:web",
+    "typecheck:app": "bun --cwd apps/app typecheck",
+    "typecheck:web": "bun --cwd apps/web typecheck",
+    "test:app": "bun --cwd apps/app test",
+    "test:scripts": "bun test scripts",
+    "check": "bun run lint && bun run typecheck && bun run test:app && bun run test:scripts && bun run build:site",
+    "preview": "bun run build:site && bun scripts/preview-site.mjs",
+    "preview:app": "bun --cwd apps/app preview",
+    "preview:web": "bun --cwd apps/web preview",
     "test:macos": "bun run build:macos && PHIVED_SELF_TEST=1 apps/macos-app/dist/Phived.app/Contents/MacOS/Phived",
     "test:macos:xctest": "swift test --package-path apps/macos-app"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "http-proxy": "^1.18.1"
+  },
+  "overrides": {
+    "esbuild": "0.28.1"
   }
 }
