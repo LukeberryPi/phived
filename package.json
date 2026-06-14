@@ -16,6 +16,7 @@
     "build:app": "bun --cwd apps/app build",
     "build:web": "bun --cwd apps/web build",
     "build:site": "bun scripts/build-site.mjs",
+    "start": "bun scripts/preview-site.mjs",
     "build:macos": "sh apps/macos-app/scripts/build-app.sh",
     "dev:macos": "bun run build:macos && open apps/macos-app/dist/Phived.app",
     "lint": "bun run lint:app && bun run lint:scripts",

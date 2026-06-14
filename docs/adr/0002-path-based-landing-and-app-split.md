@@ -93,3 +93,17 @@ change — both paths share cookies, storage, and the service-worker scope.
   requested URL contract and, worse, splits the service-worker origin — v1
   stragglers on `phived.com` would never reach a healing `/sw.js` tied to the
   app again. Rejected on the strength of ADR 0001.
+
+## Addendum (2026-06-15): hosting moved off Vercel to Railway
+
+The combined single-`dist/` build decided here is unchanged. Only the host and
+serving layer changed: hosting moved from a single Vercel project to a Railway
+service, and `vercel.json` was removed. The `outputDirectory`, the `/app/*` SPA
+rewrite, the `/sw.js` no-cache header, and the security headers it declared are
+now emitted by `scripts/preview-site.mjs` (the production static server) via
+`scripts/site-contract.mjs`. See
+[ADR 0003](0003-host-combined-site-on-railway.md).
+
+The DNS note above still holds, except `phived.com` / `www.phived.com` now point
+at the Railway service instead of the Vercel project. The single-origin
+guarantee is preserved: everything is still one service on one origin.

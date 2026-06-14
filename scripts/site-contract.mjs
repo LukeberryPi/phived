@@ -36,6 +36,31 @@ export const serviceWorker = {
   cacheControl: "public, max-age=0, must-revalidate",
 };
 
+/**
+ * Baseline security headers applied to every response (see ADR 0003). These
+ * previously lived in vercel.json; since the site is served by our own Node
+ * server on Railway, they are emitted here so dev/preview/prod cannot drift.
+ * The CSP allows the inline theme-boot script, Google Fonts, and the web-only
+ * Google Analytics scripts; tighten it if those dependencies change.
+ */
+export const securityHeaders = {
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+  "Content-Security-Policy": [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https://www.phived.com",
+    "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
+    "object-src 'none'",
+  ].join("; "),
+};
+
 /** Files that must exist in the assembled dist for a deploy to be valid. */
 export const requiredOutputs = ["index.html", "app/index.html", "sw.js", "robots.txt"];
 

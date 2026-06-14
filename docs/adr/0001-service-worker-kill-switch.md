@@ -94,6 +94,20 @@ The host-migration notes below still hold: the kill-switch is bound to the
 `phived.com` **origin**, and `/sw.js` must remain a real static file at the root
 with the no-cache header on any host.
 
+## Addendum (2026-06-15): host is now Railway
+
+Hosting moved off Vercel to Railway (see
+[ADR 0003](0003-host-combined-site-on-railway.md)). `vercel.json` was removed,
+so the `Cache-Control: public, max-age=0, must-revalidate` header for `/sw.js`
+is no longer a platform config value — it is emitted by our own Node static
+server (`scripts/preview-site.mjs`) from `scripts/site-contract.mjs`.
+
+The host-migration requirements above are unchanged: `/sw.js` must remain a real
+static file at the origin root with the no-cache header. On Railway this is
+satisfied by serving `dist/sw.js` through that server. The `_headers`/nginx
+"equivalents" mentioned earlier are now moot because we control the serving
+process directly.
+
 ## Alternatives considered
 
 - Excluding `/sw.js` from the SPA rewrite so it 404s: relies on the browser's

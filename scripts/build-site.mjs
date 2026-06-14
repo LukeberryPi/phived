@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Assemble the combined phived.com deployment into ./dist, which Vercel serves
-// (see vercel.json). The routing contract lives in site-contract.mjs.
+// Assemble the combined phived.com deployment into ./dist, which the static host
+// serves. The routing contract lives in site-contract.mjs.
 import { spawnSync } from "node:child_process";
 import { cp, readFile, rm, stat } from "node:fs/promises";
 import path from "node:path";

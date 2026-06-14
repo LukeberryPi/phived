@@ -7,7 +7,7 @@ import { stat } from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
 import process from "node:process";
-import { host, isAppPath, paths, ports, serviceWorker } from "./site-contract.mjs";
+import { host, isAppPath, paths, ports, securityHeaders, serviceWorker } from "./site-contract.mjs";
 
 const root = paths.dist;
 
@@ -23,6 +23,13 @@ const contentTypes = new Map([
 ]);
 
 const server = http.createServer(async (req, res) => {
+  // Apply baseline security headers to every response (ADR 0003). setHeader runs
+  // before any writeHead, so these survive on static files, the SPA fallback,
+  // /sw.js, and error responses alike.
+  for (const [name, value] of Object.entries(securityHeaders)) {
+    res.setHeader(name, value);
+  }
+
   if (req.method !== "GET" && req.method !== "HEAD") {
     res.writeHead(405, { Allow: "GET, HEAD" });
     res.end();
