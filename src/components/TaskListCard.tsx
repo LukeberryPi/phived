@@ -157,8 +157,8 @@ export const TaskListCard = memo(function TaskListCard({
         // reset in index.css overrides rounded-* utilities.
         style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
         className={cn(
-          "absolute -top-7 left-0 z-10 h-7 max-w-full",
-          "field-sizing-content min-w-16 border-x border-t border-black px-3",
+          "absolute -top-7 left-0 z-10 h-7 max-w-[75%]",
+          "field-sizing-content min-w-[calc(1ch+1.5rem)] border-x border-t border-black px-3",
           "text-sm font-medium focus:outline-none",
           ACTION_ACCENT_SURFACE,
           "dark:border-edge-dark dark:placeholder:text-ink-dark/45 placeholder:text-black/45"
@@ -189,8 +189,8 @@ export const TaskListCard = memo(function TaskListCard({
             aria-label="resize list"
             onPointerDown={handleResizePointerDown}
             className={cn(
-              "absolute top-1/2 right-0 h-10 w-4 translate-x-1/2 -translate-y-1/2",
-              "flex cursor-ew-resize touch-none items-center justify-center",
+              "absolute top-1/2 right-0 h-10 w-4 translate-x-[56%] -translate-y-1/2 dark:translate-x-1/2",
+              "flex cursor-ew-resize touch-none items-center justify-center gap-2",
               HOVER_REVEAL_CONTROLS,
               "focus-visible:opacity-100",
               isResizing && "opacity-100"

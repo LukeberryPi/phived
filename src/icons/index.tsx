@@ -1,4 +1,5 @@
 import {
+  ArrowCounterClockwise,
   ArrowsOutCardinal,
   CaretDown as CaretDownIcon,
   Crosshair,
@@ -82,6 +83,16 @@ export function Sun({ className, size = 24 }: IconProps) {
 export function Trash({ className, size = 24 }: IconProps) {
   return (
     <TrashIcon
+      size={size}
+      className={phosphorClassName(className)}
+      aria-hidden
+    />
+  );
+}
+
+export function Restore({ className, size = 24 }: IconProps) {
+  return (
+    <ArrowCounterClockwise
       size={size}
       className={phosphorClassName(className)}
       aria-hidden
