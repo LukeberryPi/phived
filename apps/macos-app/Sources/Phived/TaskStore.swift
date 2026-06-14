@@ -52,13 +52,13 @@ enum ThemePreference: String, Codable, CaseIterable {
 @MainActor
 final class TaskStore: ObservableObject {
     static let minimumRows = 5
-    static let canvasWidth = 6000.0
-    static let canvasHeight = 4000.0
-    static let defaultListWidth = 340.0
-    static let minimumListWidth = 260.0
-    static let maximumListWidth = 620.0
-    static let minimumZoom = 0.15
-    static let maximumZoom = 2.0
+    static let canvasWidth = CanvasGeometry.canvasWidth
+    static let canvasHeight = CanvasGeometry.canvasHeight
+    static let defaultListWidth = CanvasGeometry.defaultListWidth
+    static let minimumListWidth = CanvasGeometry.minimumListWidth
+    static let maximumListWidth = CanvasGeometry.maximumListWidth
+    static let minimumZoom = CanvasGeometry.minimumZoom
+    static let maximumZoom = CanvasGeometry.maximumZoom
 
     @Published var lists: [TaskList] { didSet { persist(lists, key: Keys.lists) } }
     @Published var history: [HistoryEntry] { didSet { persist(history, key: Keys.history) } }
@@ -193,13 +193,14 @@ final class TaskStore: ObservableObject {
 
     func moveList(_ listId: UUID, x: Double, y: Double) {
         updateList(listId) {
-            $0.x = min(max(16, x), Self.canvasWidth - Self.defaultListWidth - 16)
-            $0.y = min(max(16, y), Self.canvasHeight - 376)
+            let position = CanvasGeometry.clampListPosition(x: x, y: y, width: $0.width)
+            $0.x = position.x
+            $0.y = position.y
         }
     }
 
     func resizeList(_ listId: UUID, width: Double) {
-        updateList(listId) { $0.width = min(max(Self.minimumListWidth, width), Self.maximumListWidth) }
+        updateList(listId) { $0.width = CanvasGeometry.clampListWidth(width) }
     }
 
     func bringToFront(_ listId: UUID) {
@@ -239,12 +240,16 @@ final class TaskStore: ObservableObject {
         self.confirmation = nil
     }
 
-    func setViewport(_ next: CanvasViewport) {
-        viewport = CanvasViewport(
-            x: next.x,
-            y: next.y,
-            zoom: min(max(Self.minimumZoom, next.zoom), Self.maximumZoom)
-        )
+    func setViewport(_ next: CanvasViewport, viewSize: CGSize? = nil) {
+        if let viewSize {
+            viewport = CanvasGeometry.clampViewport(next, in: viewSize)
+        } else {
+            viewport = CanvasViewport(
+                x: next.x,
+                y: next.y,
+                zoom: CanvasGeometry.clampZoom(next.zoom)
+            )
+        }
     }
 
     func cycleTheme() {
@@ -273,7 +278,8 @@ final class TaskStore: ObservableObject {
     }
 
     static func makeList(x: Double, y: Double, tag: String = "", tasks: [String] = []) -> TaskList {
-        TaskList(id: UUID(), tag: tag, x: x, y: y, width: defaultListWidth, tasks: normalizedTasks(tasks))
+        let position = CanvasGeometry.clampListPosition(x: x, y: y)
+        return TaskList(id: UUID(), tag: tag, x: position.x, y: position.y, width: defaultListWidth, tasks: normalizedTasks(tasks))
     }
 
     static func normalizedTasks(_ tasks: [String]) -> [String] {
@@ -287,7 +293,10 @@ final class TaskStore: ObservableObject {
 
     private static func normalized(_ list: TaskList) -> TaskList {
         var result = list
-        result.width = min(max(minimumListWidth, result.width), maximumListWidth)
+        result.width = CanvasGeometry.clampListWidth(result.width)
+        let position = CanvasGeometry.clampListPosition(x: result.x, y: result.y, width: result.width)
+        result.x = position.x
+        result.y = position.y
         result.tasks = normalizedTasks(result.tasks)
         return result
     }

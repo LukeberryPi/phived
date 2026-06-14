@@ -86,8 +86,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func registerFonts() {
-        ["DMSans-Light", "DMSans-Regular", "DMSans-Medium", "DMSans-Bold"].forEach { name in
-            guard let url = Bundle.main.url(forResource: name, withExtension: "ttf") else { return }
+        AppResources.fontNames.forEach { name in
+            guard let url = AppResources.url(forResource: name, withExtension: "ttf") else { return }
             CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
         }
     }

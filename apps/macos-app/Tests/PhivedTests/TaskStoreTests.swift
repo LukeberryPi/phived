@@ -1,4 +1,5 @@
 import XCTest
+import CoreGraphics
 @testable import Phived
 
 @MainActor
@@ -113,6 +114,47 @@ final class TaskStoreTests: XCTestCase {
         XCTAssertEqual(store.viewport, CanvasViewport(x: 12, y: 34, zoom: TaskStore.maximumZoom))
         store.setViewport(CanvasViewport(x: 12, y: 34, zoom: 0))
         XCTAssertEqual(store.viewport.zoom, TaskStore.minimumZoom)
+    }
+
+    func testViewportClampUsesFiniteCanvasBoundsWhenViewSizeIsKnown() {
+        let store = TaskStore(defaults: defaults)
+        let viewSize = CGSize(width: 1180, height: 760)
+        store.setViewport(CanvasViewport(x: -20_000, y: 20_000, zoom: 10), viewSize: viewSize)
+
+        XCTAssertEqual(store.viewport.zoom, TaskStore.maximumZoom)
+        XCTAssertEqual(store.viewport.x, viewSize.width - TaskStore.canvasWidth * TaskStore.maximumZoom)
+        XCTAssertEqual(store.viewport.y, 0)
+    }
+
+    func testKeyboardPolicyArrowDownOnlyNavigatesAndWraps() {
+        XCTAssertEqual(TaskKeyboardPolicy.arrowDownFocus(from: 0, taskCount: 5), 1)
+        XCTAssertEqual(TaskKeyboardPolicy.arrowDownFocus(from: 4, taskCount: 5), 0)
+        XCTAssertNil(TaskKeyboardPolicy.arrowDownFocus(from: 5, taskCount: 5))
+    }
+
+    func testKeyboardPolicyEnterLandsOnFreshRows() {
+        XCTAssertEqual(
+            TaskKeyboardPolicy.freshRowDecision(tasks: ["one", "", "two"], index: 0, above: false),
+            .focus(1)
+        )
+        XCTAssertEqual(
+            TaskKeyboardPolicy.freshRowDecision(tasks: ["one", "two"], index: 0, above: false),
+            .insert(at: 1, focus: 1)
+        )
+        XCTAssertEqual(
+            TaskKeyboardPolicy.freshRowDecision(tasks: ["one", "two"], index: 1, above: true),
+            .insert(at: 1, focus: 1)
+        )
+    }
+
+    func testTaskDragPayloadCarriesListIdentity() throws {
+        let payload = TaskDragPayload(listId: UUID(), index: 2)
+        let data = try JSONEncoder().encode(payload)
+        XCTAssertEqual(try JSONDecoder().decode(TaskDragPayload.self, from: data), payload)
+    }
+
+    func testRequiredResourcesAreAvailableThroughSwiftPM() {
+        XCTAssertTrue(AppResources.requiredResourcesAreAvailable)
     }
 
     func testThemeCyclesInWebOrder() {

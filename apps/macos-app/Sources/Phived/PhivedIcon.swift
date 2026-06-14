@@ -16,7 +16,7 @@ struct PhivedIcon: View {
     }
 
     private static func image(named name: String) -> NSImage? {
-        guard let url = Bundle.main.url(forResource: name, withExtension: "svg") else {
+        guard let url = AppResources.url(forResource: name, withExtension: "svg") else {
             return nil
         }
         return NSImage(contentsOf: url)

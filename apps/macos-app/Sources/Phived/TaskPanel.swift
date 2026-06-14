@@ -16,19 +16,16 @@ struct CanvasView: View {
                 CanvasControls(viewSize: proxy.size)
             }
             .contentShape(Rectangle())
-            .gesture(panGesture)
-            .simultaneousGesture(zoomGesture)
+            .gesture(panGesture(viewSize: proxy.size))
+            .simultaneousGesture(zoomGesture(viewSize: proxy.size))
             .onTapGesture(count: 2) { location in
-                let point = screenToCanvas(location)
-                _ = store.addList(x: point.x - TaskStore.defaultListWidth / 2, y: point.y - 22)
+                let point = CanvasGeometry.canvasPoint(for: location, viewport: store.viewport)
+                let origin = CanvasGeometry.listOrigin(centeredAt: point)
+                _ = store.addList(x: origin.x, y: origin.y)
             }
             .onAppear {
                 if store.viewport.x == 0, store.viewport.y == 0 {
-                    store.setViewport(CanvasViewport(
-                        x: proxy.size.width / 2 - TaskStore.canvasWidth / 2,
-                        y: proxy.size.height / 2 - TaskStore.canvasHeight / 2,
-                        zoom: 1
-                    ))
+                    store.setViewport(CanvasGeometry.centeredViewport(in: proxy.size), viewSize: proxy.size)
                 }
             }
         }
@@ -53,7 +50,7 @@ struct CanvasView: View {
         28 + Double(list.tasks.count) * 49 + 42 + 42
     }
 
-    private var panGesture: some Gesture {
+    private func panGesture(viewSize: CGSize) -> some Gesture {
         DragGesture(minimumDistance: 2)
             .onChanged { value in
                 if panStart == nil { panStart = store.viewport }
@@ -62,12 +59,12 @@ struct CanvasView: View {
                     x: start.x + value.translation.width,
                     y: start.y + value.translation.height,
                     zoom: start.zoom
-                ))
+                ), viewSize: viewSize)
             }
             .onEnded { _ in panStart = nil }
     }
 
-    private var zoomGesture: some Gesture {
+    private func zoomGesture(viewSize: CGSize) -> some Gesture {
         MagnificationGesture()
             .onChanged { value in
                 if zoomStart == nil { zoomStart = store.viewport.zoom }
@@ -75,16 +72,9 @@ struct CanvasView: View {
                     x: store.viewport.x,
                     y: store.viewport.y,
                     zoom: (zoomStart ?? store.viewport.zoom) * value
-                ))
+                ), viewSize: viewSize)
             }
             .onEnded { _ in zoomStart = nil }
-    }
-
-    private func screenToCanvas(_ point: CGPoint) -> CGPoint {
-        CGPoint(
-            x: (point.x - store.viewport.x) / store.viewport.zoom,
-            y: (point.y - store.viewport.y) / store.viewport.zoom
-        )
     }
 }
 
@@ -108,15 +98,18 @@ struct CanvasControls: View {
     var body: some View {
         HStack(spacing: 12) {
             controlButton("plus", "new list") {
-                let centerX = (viewSize.width / 2 - store.viewport.x) / store.viewport.zoom
-                let centerY = (viewSize.height / 2 - store.viewport.y) / store.viewport.zoom
+                let center = CanvasGeometry.canvasPoint(
+                    for: CGPoint(x: viewSize.width / 2, y: viewSize.height / 2),
+                    viewport: store.viewport
+                )
                 let cascade = Double(store.lists.count % 5) * 28
-                _ = store.addList(x: centerX - TaskStore.defaultListWidth / 2 + cascade, y: centerY - 22 + cascade)
+                let origin = CanvasGeometry.listOrigin(centeredAt: center, cascade: cascade)
+                _ = store.addList(x: origin.x, y: origin.y)
             }
             HStack(spacing: 0) {
                 controlButton("minus", nil) { zoom(by: 1 / 1.2) }
                 Button("\(Int((store.viewport.zoom * 100).rounded()))%") {
-                    store.setViewport(CanvasViewport(x: store.viewport.x, y: store.viewport.y, zoom: 1))
+                    store.setViewport(CanvasViewport(x: store.viewport.x, y: store.viewport.y, zoom: 1), viewSize: viewSize)
                 }
                 .buttonStyle(.plain)
                 .frame(minWidth: 56, minHeight: 44)
@@ -145,7 +138,10 @@ struct CanvasControls: View {
     }
 
     private func zoom(by factor: Double) {
-        store.setViewport(CanvasViewport(x: store.viewport.x, y: store.viewport.y, zoom: store.viewport.zoom * factor))
+        store.setViewport(
+            CanvasViewport(x: store.viewport.x, y: store.viewport.y, zoom: store.viewport.zoom * factor),
+            viewSize: viewSize
+        )
     }
 }
 
@@ -237,11 +233,12 @@ struct TaskListCard: View {
             .onChanged { value in
                 if moveStart == nil { moveStart = CGPoint(x: list.x, y: list.y) }
                 guard let start = moveStart else { return }
-                store.moveList(
-                    listId,
-                    x: start.x + value.translation.width / store.viewport.zoom,
-                    y: start.y + value.translation.height / store.viewport.zoom
+                let position = CanvasGeometry.movedListPosition(
+                    start: start,
+                    translation: value.translation,
+                    zoom: store.viewport.zoom
                 )
+                store.moveList(listId, x: position.x, y: position.y)
             }
             .onEnded { _ in moveStart = nil }
     }
@@ -250,7 +247,12 @@ struct TaskListCard: View {
         DragGesture()
             .onChanged { value in
                 if widthStart == nil { widthStart = list.width }
-                store.resizeList(listId, width: (widthStart ?? list.width) + value.translation.width / store.viewport.zoom)
+                let width = CanvasGeometry.resizedListWidth(
+                    startWidth: widthStart ?? list.width,
+                    translationWidth: value.translation.width,
+                    zoom: store.viewport.zoom
+                )
+                store.resizeList(listId, width: width)
             }
             .onEnded { _ in widthStart = nil }
     }
@@ -287,7 +289,7 @@ struct TaskRow: View {
                 if !list.tasks[index].isBlank && (hovering || focusedRow == index) {
                     PhivedIcon(name: "drag-vertical", size: 22)
                         .frame(width: 28, height: 48)
-                        .onDrag { NSItemProvider(object: "\(index)" as NSString) }
+                        .onDrag { TaskDragPayload(listId: listId, index: index).itemProvider() }
                     Button("done") { store.complete(listId, index: index) }
                         .buttonStyle(.plain)
                         .frame(width: 70, height: 48)
@@ -296,7 +298,7 @@ struct TaskRow: View {
             }
             .frame(height: 48)
             .onHover { hovering = $0 }
-            .onDrop(of: [.text], delegate: TaskDropDelegate(listId: listId, destination: index, store: store))
+            .onDrop(of: [TaskDragPayload.contentType], delegate: TaskDropDelegate(listId: listId, destination: index, store: store))
         }
     }
 
@@ -322,22 +324,23 @@ struct TaskRow: View {
             return .handled
         }
         if press.key == .upArrow {
-            focusedRow = index == 0 ? list.tasks.count - 1 : index - 1
+            focusedRow = TaskKeyboardPolicy.arrowUpFocus(from: index, taskCount: list.tasks.count)
             return .handled
         }
         if press.key == .downArrow {
-            if index == list.tasks.count - 1 { store.addRow(listId) }
-            focusedRow = index + 1
+            focusedRow = TaskKeyboardPolicy.arrowDownFocus(from: index, taskCount: list.tasks.count)
             return .handled
         }
         if press.key == .return {
-            let target = press.modifiers.contains(.shift) ? index - 1 : index + 1
-            if list.tasks.indices.contains(target), list.tasks[target].isBlank {
+            let above = press.modifiers.contains(.shift)
+            switch TaskKeyboardPolicy.freshRowDecision(tasks: list.tasks, index: index, above: above) {
+            case .focus(let target):
                 focusedRow = target
-            } else {
-                let insertion = press.modifiers.contains(.shift) ? index : index + 1
+            case .insert(let insertion, let focus):
                 store.insertRow(listId, at: insertion)
-                focusedRow = insertion
+                focusedRow = focus
+            case nil:
+                break
             }
             return .handled
         }
@@ -351,12 +354,16 @@ struct TaskDropDelegate: DropDelegate {
     let store: TaskStore
 
     func performDrop(info: DropInfo) -> Bool {
-        guard let provider = info.itemProviders(for: [.text]).first else { return false }
-        provider.loadObject(ofClass: NSString.self) { value, _ in
-            guard let source = Int(value as? String ?? "") else { return }
-            Task { @MainActor in store.reorderTask(listId, from: source, to: destination) }
+        guard let provider = info.itemProviders(for: [TaskDragPayload.contentType]).first else { return false }
+        TaskDragPayload.load(from: provider) { payload in
+            guard let payload, payload.listId == listId else { return }
+            Task { @MainActor in store.reorderTask(listId, from: payload.index, to: destination) }
         }
         return true
+    }
+
+    func validateDrop(info: DropInfo) -> Bool {
+        info.hasItemsConforming(to: [TaskDragPayload.contentType])
     }
 }
 

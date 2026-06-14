@@ -13,8 +13,20 @@ rm -rf "$APP_DIR"
 mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
 cp "$PACKAGE_DIR/.build/$BUILD_CONFIGURATION/Phived" "$APP_DIR/Contents/MacOS/Phived"
 cp "$PACKAGE_DIR/Resources/Info.plist" "$APP_DIR/Contents/Info.plist"
-cp "$PACKAGE_DIR"/Sources/Phived/Resources/*.ttf "$APP_DIR/Contents/Resources/"
-cp "$PACKAGE_DIR"/Sources/Phived/Resources/*.svg "$APP_DIR/Contents/Resources/"
+
+RESOURCE_BUNDLE=""
+for candidate in "$PACKAGE_DIR"/.build/"$BUILD_CONFIGURATION"/Phived_*.bundle; do
+  [ -d "$candidate" ] || continue
+  RESOURCE_BUNDLE="$candidate"
+  break
+done
+
+if [ -z "$RESOURCE_BUNDLE" ]; then
+  printf '%s\n' "SwiftPM resource bundle not found" >&2
+  exit 1
+fi
+
+cp -R "$RESOURCE_BUNDLE" "$APP_DIR/Contents/Resources/"
 
 ICON_SOURCE="$PACKAGE_DIR/../web/public/icon-512x512.png"
 ICONSET="$OUTPUT_DIR/Phived.iconset"

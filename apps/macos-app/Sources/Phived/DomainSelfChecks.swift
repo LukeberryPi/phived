@@ -8,6 +8,7 @@ enum DomainSelfChecks {
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
         let store = TaskStore(defaults: defaults)
+        precondition(AppResources.requiredResourcesAreAvailable)
         precondition(store.lists.count == 1)
         let listId = store.lists[0].id
         precondition(store.lists[0].tasks.count == TaskStore.minimumRows)
