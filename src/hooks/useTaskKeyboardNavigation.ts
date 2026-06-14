@@ -92,8 +92,7 @@ export function useTaskKeyboardNavigation({
     if (event.key === "ArrowDown" && !event.altKey) {
       event.preventDefault();
       if (isLastTask) {
-        addTaskRow();
-        return requestAnimationFrame(() => focusTaskInput(taskList, taskCount));
+        return focusTaskInput(taskList, 0);
       }
       return focusTaskInput(taskList, index + 1);
     }

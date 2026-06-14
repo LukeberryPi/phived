@@ -256,6 +256,14 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
     [updateList, setLists, setTaskHistory]
   );
 
+  const deleteTaskFromHistory = useCallback(
+    (entryId: string) => {
+      setTaskHistory((prev) => prev.filter((item) => item.id !== entryId));
+      toast("history entry deleted!");
+    },
+    [setTaskHistory]
+  );
+
   const clearCanvas = useCallback(() => {
     setDeletionConfirmTarget({ kind: "canvas" });
   }, []);
@@ -312,6 +320,7 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       moveTaskUp,
       moveTaskDown,
       restoreTaskFromHistory,
+      deleteTaskFromHistory,
       clearCanvas,
       clearTaskHistory,
     }),
@@ -334,6 +343,7 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       moveTaskUp,
       moveTaskDown,
       restoreTaskFromHistory,
+      deleteTaskFromHistory,
       clearCanvas,
       clearTaskHistory,
     ]

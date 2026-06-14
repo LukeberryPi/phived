@@ -1,10 +1,9 @@
 import { FloatingDrawer } from "src/components/FloatingDrawer";
+import { Tooltip } from "src/components/Tooltip";
 import {
-  ACTION_ACCENT_SURFACE,
   DESTRUCTIVE_ACTION_HOVER,
   DESTRUCTIVE_TRASH_ICON,
   DRAWER_COUNT_BADGE,
-  DRAWER_HEADER_GRID,
   DRAWER_MUTED_TEXT,
   DRAWER_SURFACE,
   DRAWER_TEXT,
@@ -17,10 +16,8 @@ import {
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { useCanvasTasksContext } from "src/contexts";
-import { CaretDown, Clock, Trash } from "src/icons";
+import { CaretDown, Clock, Restore, Trash } from "src/icons";
 import { cn, formatHistoryWhen } from "src/utils";
-
-const sideActionColumnClassName = "flex min-h-12 items-stretch";
 
 const sideActionButtonClassName = cn(
   "flex h-full w-full items-center justify-center whitespace-nowrap text-sm font-medium",
@@ -34,12 +31,24 @@ const historyClearButtonClassName = cn(
   DRAWER_TEXT
 );
 
-const restoreButtonClassName = cn(
-  sideActionButtonClassName,
-  "select-none",
-  ACTION_ACCENT_SURFACE,
-  "flex [@media(hover:hover)_and_(pointer:fine)]:lg:hidden",
-  "[@media(hover:hover)_and_(pointer:fine)]:lg:group-hover/row:flex"
+// Always shown on touch; on desktop the cluster fades in on row hover/focus.
+const historyEntryActionsClassName = cn(
+  "absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5 rounded-full",
+  DRAWER_SURFACE,
+  "[@media(hover:hover)_and_(pointer:fine)]:pointer-events-none",
+  "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
+  "[@media(hover:hover)_and_(pointer:fine)]:transition-opacity",
+  "[@media(hover:hover)_and_(pointer:fine)]:duration-150",
+  "[@media(hover:hover)_and_(pointer:fine)]:ease-out-strong",
+  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/row:pointer-events-auto",
+  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/row:opacity-100",
+  "[@media(hover:hover)_and_(pointer:fine)]:group-focus-within/row:pointer-events-auto",
+  "[@media(hover:hover)_and_(pointer:fine)]:group-focus-within/row:opacity-100"
+);
+
+const historyEntryActionButtonClassName = cn(
+  "flex size-8 shrink-0 items-center justify-center rounded-full",
+  pressFeedbackClassName
 );
 
 type HistoryClearButtonProps = {
@@ -78,8 +87,12 @@ type HistoryPanelProps = {
 };
 
 export function HistoryPanel({ onClose }: HistoryPanelProps) {
-  const { taskHistory, restoreTaskFromHistory, clearTaskHistory } =
-    useCanvasTasksContext();
+  const {
+    taskHistory,
+    restoreTaskFromHistory,
+    deleteTaskFromHistory,
+    clearTaskHistory,
+  } = useCanvasTasksContext();
   const historyCount = taskHistory.length;
 
   return (
@@ -144,17 +157,11 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
               <li
                 key={entry.id}
                 className={cn(
-                  DRAWER_HEADER_GRID,
-                  "group/row",
+                  "group/row relative flex items-center",
                   !isLastEntry && ROW_DIVIDER
                 )}
               >
-                <div
-                  className={cn(
-                    "flex min-w-0 items-center gap-x-3 px-4",
-                    "outline-none"
-                  )}
-                >
+                <div className="flex min-w-0 flex-1 flex-col gap-1 py-3 pr-20 pl-4">
                   <span
                     className={cn(
                       "min-w-0 truncate text-sm font-medium",
@@ -164,42 +171,70 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
                   >
                     {entry.text}
                   </span>
-                  {entry.listTag && (
+                  <div className="flex min-w-0 items-center gap-x-2">
+                    {entry.listTag && (
+                      <span
+                        className={cn(
+                          "border-line-light max-w-24 shrink-0 truncate rounded-full border px-2 py-0.5",
+                          "dark:border-hairline-dark text-xs",
+                          DRAWER_MUTED_TEXT
+                        )}
+                        title={entry.listTag}
+                      >
+                        {entry.listTag}
+                      </span>
+                    )}
                     <span
                       className={cn(
-                        "border-line-light max-w-24 shrink-0 truncate rounded-full border px-2 py-0.5",
-                        "dark:border-hairline-dark text-xs",
+                        "shrink-0 text-xs whitespace-nowrap",
                         DRAWER_MUTED_TEXT
                       )}
-                      title={entry.listTag}
                     >
-                      {entry.listTag}
+                      {formatHistoryWhen(entry.completedAt)}
                     </span>
-                  )}
-                  <span
-                    className={cn(
-                      "shrink-0 text-xs whitespace-nowrap",
-                      DRAWER_MUTED_TEXT
-                    )}
-                  >
-                    {formatHistoryWhen(entry.completedAt)}
-                  </span>
+                  </div>
                 </div>
 
-                <div className={sideActionColumnClassName}>
-                  <button
-                    onClick={() => restoreTaskFromHistory(entry.id)}
-                    className={cn(
-                      pressFeedbackGroupClassName("restore"),
-                      restoreButtonClassName
-                    )}
-                  >
-                    <span
-                      className={pressFeedbackGroupChildClassName("restore")}
+                <div className={historyEntryActionsClassName}>
+                  <Tooltip label="restore">
+                    <button
+                      type="button"
+                      aria-label="restore task"
+                      onClick={() => restoreTaskFromHistory(entry.id)}
+                      className={cn(
+                        pressFeedbackGroupClassName("restore"),
+                        historyEntryActionButtonClassName,
+                        "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
+                        DRAWER_TEXT
+                      )}
                     >
-                      restore
-                    </span>
-                  </button>
+                      <span
+                        className={pressFeedbackGroupChildClassName("restore")}
+                      >
+                        <Restore size={18} />
+                      </span>
+                    </button>
+                  </Tooltip>
+                  <Tooltip label="delete">
+                    <button
+                      type="button"
+                      aria-label="delete from history"
+                      onClick={() => deleteTaskFromHistory(entry.id)}
+                      className={cn(
+                        pressFeedbackGroupClassName("clear-history"),
+                        historyEntryActionButtonClassName,
+                        DESTRUCTIVE_ACTION_HOVER
+                      )}
+                    >
+                      <span
+                        className={pressFeedbackGroupChildClassName(
+                          "clear-history"
+                        )}
+                      >
+                        <Trash size={18} className={DESTRUCTIVE_TRASH_ICON} />
+                      </span>
+                    </button>
+                  </Tooltip>
                 </div>
               </li>
             );

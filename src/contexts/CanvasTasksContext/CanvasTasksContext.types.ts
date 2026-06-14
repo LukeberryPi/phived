@@ -25,6 +25,8 @@ export type CanvasTasksContextType = {
   moveTaskUp: (listId: string, taskIndex: number) => void;
   moveTaskDown: (listId: string, taskIndex: number) => void;
   restoreTaskFromHistory: (entryId: string) => void;
+  /** Removes a single entry from the task history. */
+  deleteTaskFromHistory: (entryId: string) => void;
   clearCanvas: () => void;
   clearTaskHistory: () => void;
 };
