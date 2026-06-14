@@ -10,6 +10,11 @@ just you and your next few steps.
 
 ---
 
+## repository
+
+- `apps/web` — Vite, React, and TypeScript web app
+- `apps/macos-app` — native SwiftUI macOS app
+
 ## accessing locally
 
 you need these:
@@ -27,17 +32,41 @@ now, access the repo:
 
 `cd phived`
 
-finally, you should install dependencies:
+finally, install web dependencies from the repository root:
 
 `bun install`
 
-and build the website:
+run the website:
 
 `bun run dev`
 
 this url should be running phived:
 
 [http://localhost:5173/](http://localhost:5173/)
+
+Build both apps:
+
+`bun run build`
+
+Build and open the native app:
+
+`bun run dev:macos`
+
+The packaged app is written to `apps/macos-app/dist/Phived.app`.
+
+Run checks:
+
+- `bun run lint`
+- `bun run typecheck`
+- `bun run test:web`
+- `bun run test:macos`
+
+With a full Xcode installation selected, run the XCTest suite with:
+
+`bun run test:macos:xctest`
+
+See [`docs/macos-parity.md`](docs/macos-parity.md) for the native parity
+contract and verification workflow.
 
 ---
 

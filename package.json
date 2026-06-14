@@ -2,50 +2,21 @@
   "name": "phived",
   "private": true,
   "version": "1.3.0",
-  "type": "module",
   "packageManager": "bun@1.3.8",
-  "engines": {
-    "bun": ">=1.3.8"
-  },
+  "workspaces": [
+    "apps/web"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint src eslint.config.js vite.config.ts --max-warnings 0",
-    "lint:fix": "eslint src eslint.config.js vite.config.ts --fix",
-    "typecheck": "tsc --noEmit",
-    "test": "bun test",
-    "check": "bun run lint && bun run typecheck && bun test && bun run build"
-  },
-  "dependencies": {
-    "@phosphor-icons/react": "^2.1.10",
-    "clsx": "^2.1.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-helmet-async": "^2.0.5",
-    "sonner": "^2.0.7",
-    "tailwind-merge": "^2.6.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@happy-dom/global-registrator": "^20.10.2",
-    "@tailwindcss/vite": "^4.3.0",
-    "@types/bun": "^1.3.14",
-    "@types/node": "^22.10.2",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.17.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react": "^7.37.3",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "globals": "^15.14.0",
-    "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.8.0",
-    "tailwindcss": "^4.3.0",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.3"
+    "dev": "bun --cwd apps/web dev",
+    "build": "bun run build:web && bun run build:macos",
+    "build:web": "bun --cwd apps/web build",
+    "build:macos": "sh apps/macos-app/scripts/build-app.sh",
+    "dev:macos": "bun run build:macos && open apps/macos-app/dist/Phived.app",
+    "lint": "bun --cwd apps/web lint",
+    "typecheck": "bun --cwd apps/web typecheck",
+    "test:web": "bun --cwd apps/web test",
+    "preview": "bun --cwd apps/web preview",
+    "test:macos": "bun run build:macos && PHIVED_SELF_TEST=1 apps/macos-app/dist/Phived.app/Contents/MacOS/Phived",
+    "test:macos:xctest": "swift test --package-path apps/macos-app"
   }
 }
