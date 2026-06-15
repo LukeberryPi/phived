@@ -233,7 +233,7 @@ export function CanvasBoard() {
           className={cn(
             CANVAS_LAYER_Z,
             "fixed inset-0 touch-none overflow-hidden",
-            "bg-zinc-200 dark:bg-black",
+            "bg-zinc-100 dark:bg-black",
             isPanning ? "cursor-grabbing select-none" : "cursor-grab"
           )}
         >
