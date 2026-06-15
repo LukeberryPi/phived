@@ -6,7 +6,6 @@ import tailwindcss from "@tailwindcss/vite";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
-// https://vitejs.dev/config/
 export default defineConfig({
   // The app is mounted under /app on phived.com; the web app owns the root.
   base: "/app/",

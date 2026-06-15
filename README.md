@@ -41,18 +41,14 @@ finally, install dependencies from the repository root:
 
 `bun install`
 
-run the production-shaped site locally with dev servers behind one origin:
+run a dev server:
 
-`bun run dev`
+- `bun run dev` — runs both apps at once
+- `bun run dev:app` — only the task app (Vite)
+- `bun run dev:web` — only the public web app (Astro)
 
-this url should be running phived:
-
-[http://localhost:3000/](http://localhost:3000/)
-
-run a focused app or web dev server:
-
-- `bun run dev:app`
-- `bun run dev:web`
+to see the production-shaped combined site (`/` + `/app` on one origin), use
+`bun run preview` below.
 
 Build the deployable site and native app:
 

@@ -67,8 +67,8 @@ server.once("error", (error) => {
   process.exit(1);
 });
 
-server.listen(ports.proxy, host, () => {
-  console.log(`site preview: http://localhost:${ports.proxy}`);
+server.listen(ports.server, host, () => {
+  console.log(`site preview: http://localhost:${ports.server}`);
 });
 
 async function resolveStatic(pathname) {

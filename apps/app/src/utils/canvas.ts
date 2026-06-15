@@ -2,15 +2,16 @@ import type { TaskList, TaskLists, Viewport } from "src/types/canvas";
 import { createEmptyTasks, withTrailingEmptyRow } from "src/utils/taskList";
 
 /**
- * Finite canvas, sized so ~15 lists of 10 tasks each sit comfortably
- * (a list is ~340px wide and ~620px tall at zoom 1).
+ * Finite canvas in a 16:9 widescreen ratio (1920x1080 scaled 2.5x), sized so
+ * several lists of 10 tasks each sit comfortably (a list is ~340px wide and
+ * ~620px tall at zoom 1).
  */
-export const CANVAS_WIDTH = 6000;
-export const CANVAS_HEIGHT = 4000;
+export const CANVAS_WIDTH = 4800;
+export const CANVAS_HEIGHT = 2700;
 
 export const LIST_WIDTH = 340;
 export const MIN_LIST_WIDTH = 260;
-export const MAX_LIST_WIDTH = 620;
+export const MAX_LIST_WIDTH = 780;
 
 export function clampListWidth(width: number) {
   return clamp(width, MIN_LIST_WIDTH, MAX_LIST_WIDTH);
@@ -45,10 +46,9 @@ export function resizedListWidth(
 ): number {
   return startWidth + (currentClientX - startClientX) / (zoom || 1);
 }
-/** Margin kept between a list and the canvas edge. */
-const LIST_EDGE_MARGIN = 16;
+export const LIST_EDGE_MARGIN = 16;
 /** Nominal height reserved when clamping a list near the bottom edge. */
-const LIST_MIN_VISIBLE_HEIGHT = 360;
+export const LIST_MIN_VISIBLE_HEIGHT = 360;
 
 export const MIN_ZOOM = 0.15;
 export const MAX_ZOOM = 2;

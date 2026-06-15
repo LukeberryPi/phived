@@ -46,7 +46,7 @@ Railway service configuration:
   Railway's builder detects Bun from `bun.lock`.
 - **Start command**: `bun scripts/preview-site.mjs` (serves `dist/`).
 - **Port**: the server already binds `process.env.PORT` (via
-  `site-contract.mjs` `ports.proxy`), which Railway injects. Do not hard-code it.
+  `site-contract.mjs` `ports.server`), which Railway injects. Do not hard-code it.
 - **Bind address**: set `BIND_HOST=0.0.0.0` in the Railway service variables.
   The default `127.0.0.1` is loopback-only (correct for local preview) and is
   unreachable on Railway.

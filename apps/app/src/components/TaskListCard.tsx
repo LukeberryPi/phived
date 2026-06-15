@@ -22,13 +22,10 @@ import { LIST_WIDTH } from "src/utils/canvas";
 
 type TaskListCardProps = {
   list: TaskList;
-  /** Stacking order on the canvas; higher renders above. */
   stackIndex: number;
   zoomRef: MutableRefObject<number>;
   autoFocusFirstRow: boolean;
-  /** This list is the focus target; others are dimmed. */
   focused: boolean;
-  /** Another list is focused; fade this one towards unreadability. */
   dimmed: boolean;
   onToggleFocus: () => void;
   actions: TaskListActions;

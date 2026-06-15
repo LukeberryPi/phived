@@ -9,6 +9,8 @@ import {
   clampListPosition,
   clampViewport,
   LIST_WIDTH,
+  LIST_EDGE_MARGIN,
+  LIST_MIN_VISIBLE_HEIGHT,
   buildListsFromLegacyTasks,
   MAX_LIST_WIDTH,
   MIN_LIST_WIDTH,
@@ -36,10 +38,13 @@ describe("canvas utilities", () => {
   });
 
   test("clamps list positions within canvas boundaries", () => {
-    expect(clampListPosition(-100, -200)).toEqual({ x: 16, y: 16 });
+    expect(clampListPosition(-100, -200)).toEqual({
+      x: LIST_EDGE_MARGIN,
+      y: LIST_EDGE_MARGIN,
+    });
     expect(clampListPosition(CANVAS_WIDTH, CANVAS_HEIGHT)).toEqual({
-      x: 5644,
-      y: 3624,
+      x: CANVAS_WIDTH - LIST_WIDTH - LIST_EDGE_MARGIN,
+      y: CANVAS_HEIGHT - LIST_MIN_VISIBLE_HEIGHT - LIST_EDGE_MARGIN,
     });
   });
 

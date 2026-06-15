@@ -49,9 +49,11 @@ Use **one Vercel project with a single combined build output** (option 1).
   - `apps/web/dist` → `dist/` (root)
   - `apps/app/dist` → `dist/app/`
 - The routing contract (app prefix, required outputs, `/sw.js` cache header,
-  dev/preview ports) is centralized in `scripts/site-contract.mjs` and shared by
-  the build assembler, the dev proxy (`scripts/dev-site.mjs`), and the static
-  preview (`scripts/preview-site.mjs`) so dev, preview, and prod cannot drift.
+  server port) is centralized in `scripts/site-contract.mjs` and shared by the
+  build assembler and the static server (`scripts/preview-site.mjs`, used for
+  both local preview and production) so preview and prod cannot drift. (The two
+  apps run as separate dev servers; `bun run dev` starts both at once, or use
+  `bun run dev:app` / `dev:web` individually. See the 2026-06-15 addendum.)
 - `vercel.json` sets `outputDirectory: "dist"`, rewrites `/app/:path*` →
   `/app/index.html` (SPA fallback scoped to the app), and keeps the `/sw.js`
   no-cache header.
@@ -107,3 +109,10 @@ now emitted by `scripts/preview-site.mjs` (the production static server) via
 The DNS note above still holds, except `phived.com` / `www.phived.com` now point
 at the Railway service instead of the Vercel project. The single-origin
 guarantee is preserved: everything is still one service on one origin.
+
+The original single-origin local dev proxy (`scripts/dev-site.mjs`, which fronted
+both dev servers behind one port with WebSocket HMR forwarding) was removed as
+unnecessary complexity. The web and app are now run as independent dev servers
+(`bun run dev` starts both at once, or `bun run dev:app` / `dev:web` run them
+individually); the single-origin contract still holds for the assembled build,
+local preview, and production, which is where it actually matters.
