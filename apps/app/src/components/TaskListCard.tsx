@@ -3,8 +3,8 @@ import { memo, useMemo, useRef } from "react";
 import { TaskRow } from "src/components/TaskRow";
 import { Tooltip } from "src/components/Tooltip";
 import {
-  ACTION_ACCENT_HOVER,
   ACTION_ACCENT_SURFACE,
+  DRAWER_HEADER_HOVER,
   DRAWER_MUTED_TEXT,
 } from "src/constants/ui";
 import {
@@ -46,6 +46,7 @@ export const TaskListCard = memo(function TaskListCard({
   actions,
 }: TaskListCardProps) {
   const rowsRef = useRef<HTMLUListElement>(null);
+  const tagRef = useRef<HTMLInputElement>(null);
   const placeholder = useMemo(() => getRandomElement(placeholders), []);
 
   const numberOfTasks = countFilledTasks(list.tasks);
@@ -72,8 +73,9 @@ export const TaskListCard = memo(function TaskListCard({
   // only forwards the attribute when given a non-boolean value.
   const inertProps = dimmed ? { inert: "" as unknown as boolean } : {};
 
-  const handleKeyDown = useTaskKeyboardNavigation({
+  const { onTaskKeyDown, onTagKeyDown } = useTaskKeyboardNavigation({
     taskListRef: rowsRef,
+    tagRef,
     tasks: list.tasks,
     onDone: (index) => actions.completeTask(list.id, index),
     addTaskRow: () => actions.addTaskRow(list.id),
@@ -105,7 +107,7 @@ export const TaskListCard = memo(function TaskListCard({
         isDragging={isDraggingRow}
         anotherRowIsDragging={someRowIsDragging && !isDraggingRow}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
+        onKeyDown={onTaskKeyDown}
         onDragPointerDown={handleDragHandlePointerDown}
         onComplete={(index) => actions.completeTask(list.id, index)}
       />
@@ -145,10 +147,12 @@ export const TaskListCard = memo(function TaskListCard({
           rounded top corners, and sits directly on the panel's top border. */}
       <input
         {...inertProps}
+        ref={tagRef}
         value={list.tag}
         onChange={(event) =>
           actions.setListTag(list.id, event.currentTarget.value)
         }
+        onKeyDown={onTagKeyDown}
         autoCapitalize="false"
         autoComplete="off"
         spellCheck="false"
@@ -176,7 +180,7 @@ export const TaskListCard = memo(function TaskListCard({
               "border-line-light flex min-h-10 w-full items-center justify-center gap-2 border-t",
               "dark:border-hairline-dark dark:bg-surface-dark bg-white text-sm font-medium",
               DRAWER_MUTED_TEXT,
-              ACTION_ACCENT_HOVER,
+              DRAWER_HEADER_HOVER,
               pressFeedbackGroupClassName("add-row")
             )}
           >
@@ -223,7 +227,8 @@ export const TaskListCard = memo(function TaskListCard({
             onPointerDown={handleMovePointerDown}
             className={cn(
               pressFeedbackClassName,
-              "group/move-list relative flex size-9 touch-none items-center justify-center",
+              LIST_ACTION_BUTTON,
+              "group/move-list touch-none",
               isMoving ? "cursor-grabbing" : "cursor-grab"
             )}
           >
@@ -250,7 +255,8 @@ export const TaskListCard = memo(function TaskListCard({
             onClick={onToggleFocus}
             className={cn(
               pressFeedbackClassName,
-              "group/focus-list relative flex size-9 items-center justify-center"
+              LIST_ACTION_BUTTON,
+              "group/focus-list"
             )}
           >
             <span
@@ -280,7 +286,8 @@ export const TaskListCard = memo(function TaskListCard({
             onClick={() => actions.requestDeleteList(list.id)}
             className={cn(
               pressFeedbackClassName,
-              "group/delete-list relative flex size-9 items-center justify-center"
+              LIST_ACTION_BUTTON,
+              "group/delete-list"
             )}
           >
             <span
@@ -293,11 +300,7 @@ export const TaskListCard = memo(function TaskListCard({
             />
             <Trash
               size={16}
-              className={cn(
-                "text-muted-light dark:text-muted-dark relative fill-current transition-colors duration-150",
-                "[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:text-red-600",
-                "dark:[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:text-red-500"
-              )}
+              className="relative fill-current text-red-600 dark:text-red-400"
             />
           </button>
         </Tooltip>
@@ -305,6 +308,13 @@ export const TaskListCard = memo(function TaskListCard({
     </section>
   );
 });
+
+/** List action icon buttons (move, focus, delete). An opaque canvas-light base
+ * keeps the dotted canvas from showing through the icon glyphs at rest. */
+const LIST_ACTION_BUTTON = cn(
+  "relative flex size-9 items-center justify-center rounded-full",
+  "bg-canvas-light dark:bg-canvas-dark"
+);
 
 /** Controls fade in on card hover (pointer devices); always visible on touch. */
 const HOVER_REVEAL_CONTROLS = cn(

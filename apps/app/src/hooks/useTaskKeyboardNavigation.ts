@@ -3,6 +3,7 @@ import { MIN_TASK_ROWS } from "src/utils/taskList";
 
 type UseTaskKeyboardNavigationOptions = {
   taskListRef: RefObject<HTMLElement | null>;
+  tagRef: RefObject<HTMLInputElement | null>;
   tasks: string[];
   onDone: (index: number) => void;
   addTaskRow: () => void;
@@ -19,6 +20,7 @@ function focusTaskInput(taskList: HTMLElement | null, index: number) {
 
 export function useTaskKeyboardNavigation({
   taskListRef,
+  tagRef,
   tasks,
   onDone,
   addTaskRow,
@@ -28,7 +30,12 @@ export function useTaskKeyboardNavigation({
   moveTaskUp,
   moveTaskDown,
 }: UseTaskKeyboardNavigationOptions) {
-  return (event: KeyboardEvent<HTMLInputElement>, index: number) => {
+  const focusTag = () => tagRef.current?.focus();
+
+  const onTaskKeyDown = (
+    event: KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const taskList = taskListRef.current;
     const taskCount = tasks.length;
     const isFirstTask = index === 0;
@@ -69,9 +76,13 @@ export function useTaskKeyboardNavigation({
       return onDone(index);
     }
 
+    // The tag sits directly above the list, so the first row steps up into it.
     if (event.key === "ArrowUp" && !event.altKey) {
       event.preventDefault();
       if (isFirstTask) {
+        if (tagRef.current) {
+          return focusTag();
+        }
         return focusTaskInput(taskList, taskCount - 1);
       }
       return focusTaskInput(taskList, index - 1);
@@ -90,9 +101,13 @@ export function useTaskKeyboardNavigation({
       return requestAnimationFrame(() => focusTaskInput(taskList, index));
     }
 
+    // Stepping down past the last row wraps up to the tag, closing the loop.
     if (event.key === "ArrowDown" && !event.altKey) {
       event.preventDefault();
       if (isLastTask) {
+        if (tagRef.current) {
+          return focusTag();
+        }
         return focusTaskInput(taskList, 0);
       }
       return focusTaskInput(taskList, index + 1);
@@ -115,4 +130,26 @@ export function useTaskKeyboardNavigation({
       return requestAnimationFrame(() => focusTaskInput(taskList, index + 1));
     }
   };
+
+  const onTagKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    const taskList = taskListRef.current;
+
+    // Down / Enter drop into the first row; Enter "submits" the tag by moving
+    // focus into the list whether or not the first row already has text.
+    if (
+      (event.key === "ArrowDown" && !event.altKey) ||
+      (event.key === "Enter" && !event.ctrlKey && !event.metaKey)
+    ) {
+      event.preventDefault();
+      return focusTaskInput(taskList, 0);
+    }
+
+    // Up from the tag wraps to the last row, closing the tag → list → tag loop.
+    if (event.key === "ArrowUp" && !event.altKey) {
+      event.preventDefault();
+      return focusTaskInput(taskList, tasks.length - 1);
+    }
+  };
+
+  return { onTaskKeyDown, onTagKeyDown };
 }

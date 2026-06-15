@@ -3,7 +3,7 @@
 import { cn } from "src/utils/cn";
 
 export const pressFeedbackClassName =
-  "transition-transform duration-150 ease-out-strong motion-reduce:transform-none active:scale-95";
+  "transition-[transform,background-color] duration-150 ease-out-strong motion-reduce:transform-none active:scale-95";
 
 const pressFeedbackGroupTransform =
   "transition-transform duration-150 ease-out-strong motion-reduce:transform-none";
@@ -47,10 +47,11 @@ export function pressFeedbackGroupChildClassName(name: PressFeedbackGroupName) {
   );
 }
 
+/** Dragged row reads as a detached rounded card. The row's <li> insets
+ * horizontally while dragging so this rounded border stays clear of the
+ * panel edges at any list width (no width-proportional scale to overflow). */
 export const dragLiftClassName =
-  "overflow-hidden rounded-2xl border border-black/30 shadow-none dark:border-edge-dark motion-reduce:scale-100";
-
-export const dragScaleUpClassName = "scale-105";
+  "overflow-hidden rounded-2xl border border-black/30 shadow-md dark:border-edge-dark";
 
 export const drawerWidthTransitionClassName =
   "transition-[width] duration-150 ease-out-strong motion-reduce:transition-none";

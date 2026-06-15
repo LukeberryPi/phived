@@ -66,8 +66,19 @@ export const DRAWER_BODY = cn(
   DRAWER_TEXT
 );
 
-export const DRAWER_HEADER_HOVER =
-  "sm:hover:bg-surface-hover-light dark:sm:hover:bg-surface-hover-dark";
+export const DRAWER_HEADER_HOVER = cn(
+  "transition-colors duration-150 ease-out-strong",
+  "hover:bg-surface-hover-light dark:hover:bg-surface-hover-dark"
+);
+
+/** Floating chrome surface (drawer toggle, zoom controls, new list): the same
+ * frosted canvas tint as the header actions (translucent + backdrop blur),
+ * with a muted hairline border so it reads as quiet control chrome rather
+ * than a solid black-bordered panel. */
+export const FLOATING_CONTROL_SURFACE = cn(
+  "rounded-2xl border border-line-light bg-canvas-light/80 backdrop-blur-md",
+  "dark:border-hairline-dark dark:bg-canvas-dark/80"
+);
 
 export const DIALOG_HEADER =
   "relative border-b border-line-light px-5 py-4 pr-14 dark:border-hairline-dark";
@@ -85,11 +96,12 @@ export const KBD_CLASS = cn(
 export const ACTION_ACCENT_SURFACE =
   "bg-sky-300 text-black dark:bg-cyan-800 dark:text-ink-dark";
 
-/** Brightness-dim hover shared with the accent Button variant — no color/text
- * swap, just a subtle dim (light) / lift (dark) that matches @phived/ui. */
+/** Hover feedback shared with the accent Button variant — no color/text swap.
+ * Light dims the bright accent; dark lifts it (a dim would just sink the
+ * already-dark surface into the canvas), tuned to read as clearly as light. */
 export const ACTION_ACCENT_HOVER = cn(
   "transition-[filter] duration-150 ease-out-strong motion-reduce:transition-none",
-  "sm:hover:brightness-95 dark:sm:hover:brightness-110"
+  "hover:brightness-95 dark:hover:brightness-125"
 );
 
 export const DRAWER_COUNT_BADGE = cn(
@@ -99,11 +111,15 @@ export const DRAWER_COUNT_BADGE = cn(
   "dark:border-edge-dark"
 );
 
-/** Clear/delete trash buttons — red tint on hover in light and dark mode. */
-export const DESTRUCTIVE_ACTION_HOVER = cn(
-  "sm:hover:bg-red-100 sm:hover:text-red-600",
-  "dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500"
+/** Clear/delete actions read red at rest (light and dark); hover only tints
+ * the background — no text/icon color change on hover. */
+export const DESTRUCTIVE_ACTION = cn(
+  // transform kept alongside bg so the press scale survives where this is
+  // composed with pressFeedbackClassName (twMerge keeps the last transition).
+  "transition-[transform,background-color] duration-150 ease-out-strong",
+  "text-red-600 dark:text-red-400",
+  "hover:bg-red-100 dark:hover:bg-red-950"
 );
 
-/** Pair with DESTRUCTIVE_ACTION_HOVER so the icon inherits hover color. */
+/** Pair with DESTRUCTIVE_ACTION so the trash icon inherits the red text. */
 export const DESTRUCTIVE_TRASH_ICON = "text-current";

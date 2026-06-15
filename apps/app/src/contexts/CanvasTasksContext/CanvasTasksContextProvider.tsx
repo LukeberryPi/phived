@@ -74,12 +74,22 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
         return;
       }
 
-      if (countFilledTasks(list.tasks) === 0) {
+      // Only skip the prompt for a truly empty list (no tasks and no tag).
+      // A tag alone is intentional content worth a confirmation.
+      const taskCount = countFilledTasks(list.tasks);
+      const hasTag = list.tag.trim() !== "";
+
+      if (taskCount === 0 && !hasTag) {
         setLists((prev) => prev.filter((item) => item.id !== listId));
         return;
       }
 
-      setDeletionConfirmTarget({ kind: "list", listId });
+      setDeletionConfirmTarget({
+        kind: "list",
+        listId,
+        tag: list.tag.trim() || undefined,
+        taskCount,
+      });
     },
     [setLists]
   );

@@ -19,20 +19,20 @@ import { cva, type VariantProps } from "class-variance-authority";
 export const buttonVariants = cva(
   [
     "inline-flex select-none items-center justify-center gap-2 font-medium",
-    "transition-[transform,filter] duration-150 ease-out-strong motion-reduce:transform-none active:scale-95",
+    "transition-[transform,filter,background-color] duration-150 ease-out-strong motion-reduce:transform-none active:scale-95",
     "focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
   ],
   {
     variants: {
       variant: {
         accent:
-          "border border-black bg-sky-300 text-black sm:hover:brightness-95 dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark dark:sm:hover:brightness-110",
+          "border border-black bg-sky-300 text-black hover:brightness-95 dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark dark:hover:brightness-125",
         ghost:
-          "text-black sm:hover:bg-surface-hover-light dark:text-ink-dark dark:sm:hover:bg-surface-hover-dark",
+          "text-black hover:bg-surface-hover-light dark:text-ink-dark dark:hover:bg-surface-hover-dark",
         surface:
-          "border border-black bg-white text-black sm:hover:bg-surface-hover-light dark:border-edge-dark dark:bg-surface-dark dark:text-ink-dark dark:sm:hover:bg-surface-hover-dark",
+          "border border-black bg-white text-black hover:bg-surface-hover-light dark:border-edge-dark dark:bg-surface-dark dark:text-ink-dark dark:hover:bg-surface-hover-dark",
         destructive:
-          "text-black sm:hover:bg-red-100 sm:hover:text-red-600 dark:text-ink-dark dark:sm:hover:bg-red-950 dark:sm:hover:text-red-500",
+          "text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-950",
       },
       size: {
         sm: "min-h-9 rounded-xl px-3 text-sm",

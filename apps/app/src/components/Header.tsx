@@ -15,9 +15,11 @@ const logoClassName = cn(
   pressFeedbackClassName
 );
 
-/** Header actions stay opaque over the dotted canvas and keep the calm
- * font-normal weight; the shared Button supplies the ghost hover + press. */
-const headerActionClassName = "bg-canvas-light font-normal dark:bg-canvas-dark";
+/** Header actions float over the dotted canvas as frosted glass (translucent
+ * canvas tint + backdrop blur) and keep the calm font-normal weight; the
+ * shared Button supplies the ghost hover + press. */
+const headerActionClassName =
+  "bg-canvas-light/80 font-normal backdrop-blur-md dark:bg-canvas-dark/80";
 
 export function Header() {
   const { themePreference, toggleDarkMode } = useDarkMode();
@@ -81,7 +83,7 @@ export function Header() {
             className={cn(
               headerActionClassName,
               nothingToClear &&
-                "text-muted-light dark:text-muted-dark cursor-not-allowed sm:hover:bg-transparent dark:sm:hover:bg-transparent"
+                "text-muted-light dark:text-muted-dark cursor-not-allowed hover:bg-transparent dark:hover:bg-transparent"
             )}
           >
             <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />

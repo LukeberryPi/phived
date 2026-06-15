@@ -7,7 +7,7 @@ import {
   HistoryPanel,
 } from "src/components/TaskHistoryDrawer";
 import {
-  DESTRUCTIVE_ACTION_HOVER,
+  DESTRUCTIVE_ACTION,
   DESTRUCTIVE_TRASH_ICON,
   DRAWER_BODY,
   DRAWER_COUNT_BADGE,
@@ -171,7 +171,7 @@ export function MobileActionBar() {
             className={
               nothingToClear
                 ? cn("cursor-not-allowed", DRAWER_MUTED_TEXT)
-                : DESTRUCTIVE_ACTION_HOVER
+                : DESTRUCTIVE_ACTION
             }
             icon={<Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />}
             label="clear"

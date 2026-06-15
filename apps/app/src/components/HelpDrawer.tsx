@@ -17,7 +17,7 @@ export function HelpPanel({ onClose }: HelpPanelProps) {
         onClick={onClose}
         className={cn(
           "absolute right-3 flex size-8 shrink-0 items-center justify-center rounded-full",
-          "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
+          "dark:hover:bg-surface-hover-dark hover:bg-surface-hover-light",
           pressFeedbackClassName
         )}
       >

@@ -1,6 +1,10 @@
 import { Tooltip } from "src/components/Tooltip";
 import { pressFeedbackClassName } from "src/constants/motion";
-import { CANVAS_CONTROLS_Z, DRAWER_HEADER_HOVER } from "src/constants/ui";
+import {
+  CANVAS_CONTROLS_Z,
+  DRAWER_HEADER_HOVER,
+  FLOATING_CONTROL_SURFACE,
+} from "src/constants/ui";
 import { Minus, Plus } from "src/icons";
 import { cn } from "src/utils";
 
@@ -40,7 +44,8 @@ export function CanvasControls({
         aria-label="new list"
         onClick={onNewList}
         className={cn(
-          "task-panel overflow-hidden shadow-none",
+          FLOATING_CONTROL_SURFACE,
+          "overflow-hidden shadow-none",
           controlButtonClassName,
           "gap-2 px-4"
         )}
@@ -50,7 +55,10 @@ export function CanvasControls({
       </button>
 
       <div
-        className="task-panel flex items-stretch overflow-hidden shadow-none"
+        className={cn(
+          FLOATING_CONTROL_SURFACE,
+          "flex items-stretch overflow-hidden shadow-none"
+        )}
         role="group"
         aria-label="zoom controls"
       >

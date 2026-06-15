@@ -13,7 +13,7 @@ import { cn } from "src/utils";
 export type DeletionConfirmTarget =
   | { kind: "canvas" }
   | { kind: "history" }
-  | { kind: "list"; listId: string };
+  | { kind: "list"; listId: string; tag?: string; taskCount: number };
 
 type DialogCopy = {
   title: string;
@@ -22,20 +22,13 @@ type DialogCopy = {
   cancelLabel: string;
 };
 
-const dialogCopyByKind: Record<DeletionConfirmTarget["kind"], DialogCopy> = {
+const staticDialogCopy: Record<"canvas" | "history", DialogCopy> = {
   canvas: {
     title: "clear the whole canvas?",
     description:
       "This deletes every list and every task immediately. They will not move to history.",
     confirmLabel: "clear canvas",
     cancelLabel: "keep everything",
-  },
-  list: {
-    title: "delete this list?",
-    description:
-      "This deletes the list and its tasks immediately. They will not move to history.",
-    confirmLabel: "delete list",
-    cancelLabel: "keep list",
   },
   history: {
     title: "clear task history?",
@@ -45,6 +38,30 @@ const dialogCopyByKind: Record<DeletionConfirmTarget["kind"], DialogCopy> = {
     cancelLabel: "keep history",
   },
 };
+
+function getDialogCopy(target: DeletionConfirmTarget): DialogCopy {
+  if (target.kind === "list") {
+    const tag = target.tag?.trim();
+    const { taskCount } = target;
+    // Only mention tasks when there are some (tag-only lists have none).
+    const description =
+      taskCount === 0
+        ? "This deletes the list immediately."
+        : `This deletes the list and ${
+            taskCount === 1 ? "its task" : "its tasks"
+          } immediately. They will not move to history.`;
+
+    return {
+      // Lead with the list's own tag so it's obvious which list is at risk.
+      title: tag ? `delete "${tag}"?` : "delete this list?",
+      description,
+      confirmLabel: "delete list",
+      cancelLabel: "keep list",
+    };
+  }
+
+  return staticDialogCopy[target.kind];
+}
 
 type DeletionConfirmDialogProps = {
   target: DeletionConfirmTarget | null;
@@ -58,7 +75,7 @@ export function DeletionConfirmDialog({
   onConfirm,
 }: DeletionConfirmDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const copy = target ? dialogCopyByKind[target.kind] : null;
+  const copy = target ? getDialogCopy(target) : null;
 
   useEffect(() => {
     const dialog = dialogRef.current;

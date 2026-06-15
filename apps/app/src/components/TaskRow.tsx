@@ -7,7 +7,6 @@ import {
 } from "src/constants/ui";
 import {
   dragLiftClassName,
-  dragScaleUpClassName,
   pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
@@ -45,11 +44,11 @@ export function TaskRow({
   const someRowIsDragging = isDragging || anotherRowIsDragging;
 
   return (
-    <li data-task-row className={cn("relative", isDragging && "z-10")}>
+    <li data-task-row className={cn("relative", isDragging && "z-10 px-1")}>
       <div
         className={cn(
           "group/row relative flex w-full origin-center",
-          isDragging && cn(dragLiftClassName, dragScaleUpClassName)
+          isDragging && dragLiftClassName
         )}
       >
         <input

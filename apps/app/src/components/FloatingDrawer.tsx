@@ -12,6 +12,7 @@ import {
   DRAWER_WIDTH,
   DRAWER_TOGGLE_DIVIDER,
   FLOATING_CHROME_Z,
+  FLOATING_CONTROL_SURFACE,
 } from "src/constants/ui";
 import {
   drawerWidthTransitionClassName,
@@ -103,7 +104,8 @@ export function FloatingDrawer({
     >
       <div
         className={cn(
-          "drawer-shell task-panel flex w-fit flex-col-reverse overflow-hidden",
+          "drawer-shell flex w-fit flex-col-reverse overflow-hidden",
+          FLOATING_CONTROL_SURFACE,
           drawerWidthTransitionClassName
         )}
       >

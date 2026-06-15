@@ -1,7 +1,7 @@
 import { FloatingDrawer } from "src/components/FloatingDrawer";
 import { Tooltip } from "src/components/Tooltip";
 import {
-  DESTRUCTIVE_ACTION_HOVER,
+  DESTRUCTIVE_ACTION,
   DESTRUCTIVE_TRASH_ICON,
   DRAWER_COUNT_BADGE,
   DRAWER_MUTED_TEXT,
@@ -28,7 +28,7 @@ const historyClearButtonClassName = cn(
   sideActionButtonClassName,
   DRAWER_SURFACE,
   "bg-clip-padding",
-  DRAWER_TEXT
+  DESTRUCTIVE_ACTION
 );
 
 // Always shown on touch; on desktop the cluster fades in on row hover/focus.
@@ -68,8 +68,7 @@ export function HistoryClearButton({
         pressFeedbackGroupClassName("clear-history"),
         historyClearButtonClassName,
         dividerSide === "right" &&
-          "border-line-light dark:border-hairline-dark border-r border-l-0",
-        DESTRUCTIVE_ACTION_HOVER
+          "border-line-light dark:border-hairline-dark border-r border-l-0"
       )}
     >
       <span
@@ -114,8 +113,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
                 "flex min-h-12 shrink-0 items-center gap-2 px-4 text-sm font-medium",
                 "border-line-light dark:border-hairline-dark border-r",
                 pressFeedbackClassName,
-                DRAWER_TEXT,
-                DESTRUCTIVE_ACTION_HOVER
+                DESTRUCTIVE_ACTION
               )}
             >
               <Trash
@@ -131,7 +129,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
             onClick={onClose}
             className={cn(
               "absolute top-2 right-2 flex size-8 shrink-0 items-center justify-center rounded-full",
-              "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
+              "dark:hover:bg-surface-hover-dark hover:bg-surface-hover-light",
               pressFeedbackClassName
             )}
           >
@@ -204,7 +202,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
                       className={cn(
                         pressFeedbackGroupClassName("restore"),
                         historyEntryActionButtonClassName,
-                        "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
+                        "dark:hover:bg-surface-hover-dark hover:bg-surface-hover-light",
                         DRAWER_TEXT
                       )}
                     >
@@ -223,7 +221,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
                       className={cn(
                         pressFeedbackGroupClassName("clear-history"),
                         historyEntryActionButtonClassName,
-                        DESTRUCTIVE_ACTION_HOVER
+                        DESTRUCTIVE_ACTION
                       )}
                     >
                       <span
