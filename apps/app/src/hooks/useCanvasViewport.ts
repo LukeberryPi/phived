@@ -19,6 +19,7 @@ import { STORAGE_WRITE_ERROR_MESSAGE } from "src/constants/ui";
 
 const VIEWPORT_STORAGE_KEY = "canvasViewport";
 const ZOOM_STEP = 1.2;
+const CENTER_ANIMATION_MS = 220;
 
 type Point = { x: number; y: number };
 
@@ -32,6 +33,10 @@ function loadStoredViewport(): Viewport | null {
   }
 }
 
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
 /**
  * Pan/zoom state for the finite canvas: drag-to-pan on the background,
  * wheel to pan, ctrl/cmd+wheel or two-finger pinch to zoom, persisted to
@@ -43,6 +48,7 @@ export function useCanvasViewport(boardRef: RefObject<HTMLDivElement | null>) {
   );
   const viewportRef = useRef(viewport);
   viewportRef.current = viewport;
+  const animationFrameRef = useRef<number | null>(null);
 
   const zoomRef = useRef(viewport?.zoom ?? 1);
   zoomRef.current = viewport?.zoom ?? 1;
@@ -55,10 +61,24 @@ export function useCanvasViewport(boardRef: RefObject<HTMLDivElement | null>) {
         return;
       }
 
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+
       const rect = board.getBoundingClientRect();
       setViewportState(clampViewport(next, rect.width, rect.height));
     },
     [boardRef]
+  );
+
+  useEffect(
+    () => () => {
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+    },
+    []
   );
 
   useLayoutEffect(() => {
@@ -163,11 +183,47 @@ export function useCanvasViewport(boardRef: RefObject<HTMLDivElement | null>) {
       }
 
       const rect = board.getBoundingClientRect();
-      setViewport({
-        x: rect.width / 2 - point.x * current.zoom,
-        y: rect.height / 2 - point.y * current.zoom,
-        zoom: current.zoom,
-      });
+      const next = clampViewport(
+        {
+          x: rect.width / 2 - point.x * current.zoom,
+          y: rect.height / 2 - point.y * current.zoom,
+          zoom: current.zoom,
+        },
+        rect.width,
+        rect.height
+      );
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setViewport(next);
+        return;
+      }
+
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+
+      const start = current;
+      const startedAt = performance.now();
+
+      const step = (now: number) => {
+        const progress = Math.min((now - startedAt) / CENTER_ANIMATION_MS, 1);
+        const eased = easeOutCubic(progress);
+
+        setViewportState({
+          x: start.x + (next.x - start.x) * eased,
+          y: start.y + (next.y - start.y) * eased,
+          zoom: start.zoom + (next.zoom - start.zoom) * eased,
+        });
+
+        if (progress < 1) {
+          animationFrameRef.current = window.requestAnimationFrame(step);
+          return;
+        }
+
+        animationFrameRef.current = null;
+      };
+
+      animationFrameRef.current = window.requestAnimationFrame(step);
     },
     [boardRef, setViewport]
   );

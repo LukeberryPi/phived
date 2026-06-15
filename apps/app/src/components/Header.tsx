@@ -3,10 +3,9 @@ import { Button } from "src/components/Button";
 import { HotkeysDialog } from "src/components/HotkeysDialog";
 import { ThemeIndicator } from "src/components/ThemeIndicator";
 import { useDarkMode } from "src/contexts";
-import { useClearCanvasAction } from "src/hooks";
 import { pressFeedbackClassName } from "src/constants/motion";
-import { DESTRUCTIVE_TRASH_ICON, FLOATING_CHROME_Z } from "src/constants/ui";
-import { Keyboard, Trash } from "src/icons";
+import { FLOATING_CHROME_Z } from "src/constants/ui";
+import { Keyboard } from "src/icons";
 import { cn } from "src/utils";
 
 const logoClassName = cn(
@@ -23,8 +22,6 @@ const headerActionClassName =
 
 export function Header() {
   const { themePreference, toggleDarkMode } = useDarkMode();
-  const { clear: clearCanvas, unavailable: nothingToClear } =
-    useClearCanvasAction();
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
   const themeIconClassName = "fill-black dark:fill-ink-dark";
@@ -70,24 +67,6 @@ export function Header() {
               className={themeIconClassName}
               showLabel
             />
-          </Button>
-          <Button
-            onClick={clearCanvas}
-            aria-disabled={nothingToClear}
-            aria-label={
-              nothingToClear
-                ? "Clear canvas unavailable: nothing to clear"
-                : "clear canvas"
-            }
-            variant={nothingToClear ? "ghost" : "destructive"}
-            className={cn(
-              headerActionClassName,
-              nothingToClear &&
-                "text-muted-light dark:text-muted-dark cursor-not-allowed hover:bg-transparent dark:hover:bg-transparent"
-            )}
-          >
-            <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />
-            clear canvas
           </Button>
           <Button
             aria-haspopup="dialog"
