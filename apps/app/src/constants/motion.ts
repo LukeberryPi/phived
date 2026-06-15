@@ -1,9 +1,12 @@
-/** Shared motion tokens — transform-only, ease-out, under 300ms. */
+/** Shared motion tokens — transform/scale-only, ease-out, under 300ms. */
 
 import { cn } from "src/utils/cn";
 
+// Tailwind v4 `scale-*` sets the standalone `scale` property (not `transform`),
+// so the transition must list `scale` for the press to animate instead of
+// snapping; reduced motion neutralizes with `scale-100` (not `transform-none`).
 export const pressFeedbackClassName =
-  "transition-[transform,background-color] duration-150 ease-out-strong motion-reduce:transform-none active:scale-95";
+  "transition-[scale,background-color] duration-150 ease-out-strong motion-reduce:scale-100 active:scale-95";
 
 const pressFeedbackGroupTransform =
   "transition-transform duration-150 ease-out-strong motion-reduce:transform-none";

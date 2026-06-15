@@ -172,19 +172,11 @@ export function DeletionConfirmDialog({
             </p>
           </div>
 
-          <div className="border-line-light dark:border-hairline-dark grid grid-cols-2 border-t">
-            <Button
-              onClick={onCancel}
-              variant="ghost"
-              className="border-line-light dark:border-hairline-dark rounded-none border-r px-4 py-4"
-            >
+          <div className="flex items-center justify-end gap-2 px-5 pb-5">
+            <Button onClick={onCancel} variant="ghost" size="sm">
               {copy.cancelLabel}
             </Button>
-            <Button
-              onClick={onConfirm}
-              variant="destructive"
-              className="rounded-none px-4 py-4 text-red-600 dark:text-red-400"
-            >
+            <Button onClick={onConfirm} variant="destructive" size="sm">
               {copy.confirmLabel}
             </Button>
           </div>
