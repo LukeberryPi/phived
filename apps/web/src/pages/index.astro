@@ -2,8 +2,8 @@
 import Base from "../layouts/Base.astro";
 import Button from "../components/Button.astro";
 import ThemeIndicator from "../components/ThemeIndicator.astro";
+import { appHref } from "../../../../scripts/site-contract.mjs";
 
-const appUrl = "/app";
 const githubUrl = "https://github.com/lukeberrypi/phived";
 
 const principles = [
@@ -92,7 +92,7 @@ const demoTasks = [
         >
           <ThemeIndicator />
         </Button>
-        <Button as="a" href={appUrl} variant="accent" size="sm" class="lowercase">
+        <Button as="a" href={appHref} variant="accent" size="sm" class="lowercase">
           open app
         </Button>
       </nav>
@@ -119,7 +119,7 @@ const demoTasks = [
             keep you there.
           </p>
           <div class="reveal mt-9 flex flex-wrap items-center gap-4">
-            <Button as="a" href={appUrl} variant="accent" size="lg" class="lowercase">
+            <Button as="a" href={appHref} variant="accent" size="lg" class="lowercase">
               open phived →
             </Button>
             <Button
@@ -286,7 +286,7 @@ const demoTasks = [
         <h2 class="text-balance text-5xl font-bold lowercase tracking-tight text-ink-light sm:text-6xl dark:text-ink-dark">
           stop reading.<br />start doing.
         </h2>
-        <Button as="a" href={appUrl} variant="surface" size="lg" class="lowercase">
+        <Button as="a" href={appHref} variant="surface" size="lg" class="lowercase">
           open phived →
         </Button>
       </div>
@@ -308,7 +308,7 @@ const demoTasks = [
           github
         </a>
         <a
-          href={appUrl}
+          href={appHref}
           class="lowercase underline-offset-4 hover:text-ink-light hover:underline dark:hover:text-ink-dark"
         >
           open app

@@ -5,6 +5,10 @@ export function createEmptyTasks(): string[] {
   return Array<string>(MIN_TASK_ROWS).fill("");
 }
 
+export function taskListHasTasks(tasks: string[]): boolean {
+  return tasks.some((task) => task.trim() !== "");
+}
+
 function findFirstEmptyTaskIndex(tasks: string[]) {
   return tasks.findIndex((task) => task.trim() === "");
 }

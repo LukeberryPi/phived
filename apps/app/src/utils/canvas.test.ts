@@ -2,6 +2,7 @@
 
 import { describe, expect, test } from "bun:test";
 import {
+  canvasHasContent,
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
   MAX_ZOOM,
@@ -17,6 +18,7 @@ import {
   clampListWidth,
   clampZoom,
   createTaskList,
+  listHasContent,
   movedListPosition,
   resizedListWidth,
   orderListsForRender,
@@ -48,6 +50,12 @@ describe("canvas utilities", () => {
     });
   });
 
+  test("clamps wide lists using their actual width", () => {
+    expect(clampListPosition(CANVAS_WIDTH, 0, MAX_LIST_WIDTH).x).toBe(
+      CANVAS_WIDTH - MAX_LIST_WIDTH - LIST_EDGE_MARGIN
+    );
+  });
+
   test("centers canvas axes smaller than the viewport", () => {
     expect(
       clampViewport(
@@ -68,6 +76,22 @@ describe("canvas utilities", () => {
       y: 800 - CANVAS_HEIGHT,
       zoom: 1,
     });
+  });
+});
+
+describe("canvas content semantics", () => {
+  test("treats a tag-only list as content", () => {
+    const list = { ...createTaskList(0, 0), tag: "work" };
+
+    expect(listHasContent(list)).toBe(true);
+    expect(canvasHasContent([list])).toBe(true);
+  });
+
+  test("treats an untagged empty list as empty", () => {
+    const list = createTaskList(0, 0);
+
+    expect(listHasContent(list)).toBe(false);
+    expect(canvasHasContent([list])).toBe(false);
   });
 });
 

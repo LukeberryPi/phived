@@ -1,5 +1,9 @@
 import type { TaskList, TaskLists, Viewport } from "src/types/canvas";
-import { createEmptyTasks, withTrailingEmptyRow } from "src/utils/taskList";
+import {
+  createEmptyTasks,
+  taskListHasTasks,
+  withTrailingEmptyRow,
+} from "src/utils/taskList";
 
 /**
  * Finite canvas in a 16:9 widescreen ratio (1920x1080 scaled 2.5x), sized so
@@ -61,9 +65,15 @@ export function clampZoom(zoom: number) {
   return clamp(zoom, MIN_ZOOM, MAX_ZOOM);
 }
 
-export function clampListPosition(x: number, y: number) {
+export function clampListPosition(x: number, y: number, width = LIST_WIDTH) {
+  const clampedWidth = clampListWidth(width);
+
   return {
-    x: clamp(x, LIST_EDGE_MARGIN, CANVAS_WIDTH - LIST_WIDTH - LIST_EDGE_MARGIN),
+    x: clamp(
+      x,
+      LIST_EDGE_MARGIN,
+      CANVAS_WIDTH - clampedWidth - LIST_EDGE_MARGIN
+    ),
     y: clamp(
       y,
       LIST_EDGE_MARGIN,
@@ -125,6 +135,14 @@ export function createTaskList(
     ...clampListPosition(x, y),
     tasks,
   };
+}
+
+export function listHasContent(list: TaskList): boolean {
+  return list.tag.trim() !== "" || taskListHasTasks(list.tasks);
+}
+
+export function canvasHasContent(lists: TaskLists): boolean {
+  return lists.some(listHasContent);
 }
 
 export function createCanvasCenterList(tasks?: string[]): TaskList {

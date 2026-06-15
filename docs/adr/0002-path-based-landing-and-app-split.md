@@ -50,7 +50,7 @@ Use **one Vercel project with a single combined build output** (option 1).
   - `apps/app/dist` → `dist/app/`
 - The routing contract (app prefix, required outputs, `/sw.js` cache header,
   server port) is centralized in `scripts/site-contract.mjs` and shared by the
-  build assembler and the static server (`scripts/preview-site.mjs`, used for
+  build assembler and the static server (`scripts/serve-site.mjs`, used for
   both local preview and production) so preview and prod cannot drift. (The two
   apps run as separate dev servers; `bun run dev` starts both at once, or use
   `bun run dev:app` / `dev:web` individually. See the 2026-06-15 addendum.)
@@ -102,7 +102,7 @@ The combined single-`dist/` build decided here is unchanged. Only the host and
 serving layer changed: hosting moved from a single Vercel project to a Railway
 service, and `vercel.json` was removed. The `outputDirectory`, the `/app/*` SPA
 rewrite, the `/sw.js` no-cache header, and the security headers it declared are
-now emitted by `scripts/preview-site.mjs` (the production static server) via
+now emitted by `scripts/serve-site.mjs` (the production static server) via
 `scripts/site-contract.mjs`. See
 [ADR 0003](0003-host-combined-site-on-railway.md).
 

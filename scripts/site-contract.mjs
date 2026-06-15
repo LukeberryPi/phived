@@ -19,6 +19,8 @@ export const paths = {
 };
 
 export const appBasePath = "/app";
+export const appMountDir = "app";
+export const appHref = appBasePath;
 
 export const ports = {
   server: Number(process.env.PORT ?? 3000),
@@ -63,7 +65,12 @@ export const securityHeaders = {
 };
 
 /** Files that must exist in the assembled dist for a deploy to be valid. */
-export const requiredOutputs = ["index.html", "app/index.html", "sw.js", "robots.txt"];
+export const requiredOutputs = [
+  "index.html",
+  `${appMountDir}/index.html`,
+  "sw.js",
+  "robots.txt",
+];
 
 export function isAppPath(pathname = "") {
   return pathname === appBasePath || pathname.startsWith(`${appBasePath}/`);

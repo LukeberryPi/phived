@@ -16,6 +16,7 @@ import {
   clampListWidth,
   createCanvasCenterList,
   createTaskList,
+  listHasContent,
 } from "src/utils/canvas";
 import {
   addEmptyTaskRow,
@@ -74,12 +75,9 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
         return;
       }
 
-      // Only skip the prompt for a truly empty list (no tasks and no tag).
-      // A tag alone is intentional content worth a confirmation.
       const taskCount = countFilledTasks(list.tasks);
-      const hasTag = list.tag.trim() !== "";
 
-      if (taskCount === 0 && !hasTag) {
+      if (!listHasContent(list)) {
         setLists((prev) => prev.filter((item) => item.id !== listId));
         return;
       }
@@ -116,7 +114,7 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
     (listId: string, x: number, y: number) => {
       updateList(listId, (list) => ({
         ...list,
-        ...clampListPosition(x, y),
+        ...clampListPosition(x, y, list.width),
       }));
     },
     [updateList]

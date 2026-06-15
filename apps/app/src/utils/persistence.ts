@@ -1,5 +1,11 @@
 import type { TaskList, TaskLists, Viewport } from "src/types/canvas";
 import type { TaskHistory, TaskHistoryEntry } from "src/types/taskHistory";
+import {
+  clampListPosition,
+  clampListWidth,
+  LIST_WIDTH,
+} from "src/utils/canvas";
+import { withTrailingEmptyRow } from "src/utils/taskList";
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
@@ -38,13 +44,16 @@ function parseTaskList(value: unknown): TaskList | null {
     return null;
   }
 
+  const width =
+    record.width !== undefined ? clampListWidth(record.width) : undefined;
+  const position = clampListPosition(record.x, record.y, width ?? LIST_WIDTH);
+
   return {
     id: record.id,
     tag: record.tag,
-    x: record.x,
-    y: record.y,
-    ...(record.width !== undefined ? { width: record.width } : {}),
-    tasks: record.tasks,
+    ...position,
+    ...(width !== undefined ? { width } : {}),
+    tasks: withTrailingEmptyRow(record.tasks),
   };
 }
 
@@ -53,9 +62,11 @@ export function parseTaskLists(value: unknown, fallback: TaskLists): TaskLists {
     return fallback;
   }
 
-  return value
+  const lists = value
     .map(parseTaskList)
     .filter((list): list is TaskList => list !== null);
+
+  return lists.length > 0 ? lists : fallback;
 }
 
 function parseTaskHistoryEntry(value: unknown): TaskHistoryEntry | null {

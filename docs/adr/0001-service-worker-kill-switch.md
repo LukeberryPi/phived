@@ -100,7 +100,7 @@ Hosting moved off Vercel to Railway (see
 [ADR 0003](0003-host-combined-site-on-railway.md)). `vercel.json` was removed,
 so the `Cache-Control: public, max-age=0, must-revalidate` header for `/sw.js`
 is no longer a platform config value — it is emitted by our own Node static
-server (`scripts/preview-site.mjs`) from `scripts/site-contract.mjs`.
+server (`scripts/serve-site.mjs`) from `scripts/site-contract.mjs`.
 
 The host-migration requirements above are unchanged: `/sw.js` must remain a real
 static file at the origin root with the no-cache header. On Railway this is

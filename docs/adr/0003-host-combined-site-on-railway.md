@@ -27,24 +27,23 @@ directory fronted by a platform-native `_headers`/`_redirects` file. So the
 routing + header contract that `vercel.json` declared must now be emitted by an
 HTTP server we run.
 
-The repo already has that server: `scripts/preview-site.mjs`, a contract-driven
-Node static server (used by `bun run preview`) that serves `dist/`, applies the
-`/app/*` SPA fallback, and sets the `/sw.js` no-cache header — all sourced from
-`scripts/site-contract.mjs`. It reads `process.env.PORT` and honours a
+The repo already has that server: `scripts/serve-site.mjs`, a contract-driven
+Node static server (also used by `bun run preview`) that serves `dist/`, applies
+the `/app/*` SPA fallback, and sets the `/sw.js` no-cache header — all sourced
+from `scripts/site-contract.mjs`. It reads `process.env.PORT` and honours a
 `BIND_HOST` override.
 
 ## Decision
 
-Serve the assembled `dist/` on Railway with the existing Node static server
-(`scripts/preview-site.mjs`), promoted from "local preview" to the production
-serving path. The routing/header contract stays centralized in
+Serve the assembled `dist/` on Railway with the Node static server
+(`scripts/serve-site.mjs`). The routing/header contract stays centralized in
 `scripts/site-contract.mjs` so dev, local preview, and Railway cannot drift.
 
 Railway service configuration:
 
 - **Build command**: `bun run build:site` → `dist/` (unchanged from ADR 0002).
   Railway's builder detects Bun from `bun.lock`.
-- **Start command**: `bun scripts/preview-site.mjs` (serves `dist/`).
+- **Start command**: `bun scripts/serve-site.mjs` (serves `dist/`).
 - **Port**: the server already binds `process.env.PORT` (via
   `site-contract.mjs` `ports.server`), which Railway injects. Do not hard-code it.
 - **Bind address**: set `BIND_HOST=0.0.0.0` in the Railway service variables.
@@ -69,7 +68,7 @@ service-worker contract.
 ## Consequences
 
 - `vercel.json` is gone; the routing/caching/security contract is now owned by
-  `scripts/preview-site.mjs` + `scripts/site-contract.mjs`, the same code path
+  `scripts/serve-site.mjs` + `scripts/site-contract.mjs`, the same code path
   `bun run preview` exercises. Local preview now matches production more closely
   than it did under Vercel's platform config.
 - The service-worker kill-switch (ADR 0001) is unaffected: `/sw.js` is still a
@@ -81,8 +80,8 @@ service-worker contract.
 - Parity with the old `vercel.json` is implemented:
   - The four security headers are exported from `scripts/site-contract.mjs`
     (`securityHeaders`) and applied to every response by
-    `scripts/preview-site.mjs`.
-  - A `start` script (`bun scripts/preview-site.mjs`) exists, and `railway.json`
+    `scripts/serve-site.mjs`.
+  - A `start` script (`bun scripts/serve-site.mjs`) exists, and `railway.json`
     runs it with `BIND_HOST=0.0.0.0`.
 - Trade-off vs a static/edge CDN: a Railway service has uptime/cold-path
   considerations and is not a global edge CDN by default. Acceptable at this

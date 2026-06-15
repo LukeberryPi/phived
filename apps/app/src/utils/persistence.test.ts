@@ -29,8 +29,8 @@ describe("parseTaskLists", () => {
     expect(parseTaskLists("bad", fallbackLists)).toBe(fallbackLists);
   });
 
-  test("accepts a valid empty array", () => {
-    expect(parseTaskLists([], fallbackLists)).toEqual([]);
+  test("returns fallback when no valid lists survive", () => {
+    expect(parseTaskLists([], fallbackLists)).toBe(fallbackLists);
   });
 
   test("accepts valid task lists", () => {
@@ -45,7 +45,13 @@ describe("parseTaskLists", () => {
       },
     ];
 
-    expect(parseTaskLists(lists, fallbackLists)).toEqual(lists);
+    expect(parseTaskLists(lists, fallbackLists)).toEqual([
+      {
+        ...lists[0],
+        x: 16,
+        tasks: ["one", "", "", "", ""],
+      },
+    ]);
   });
 
   test("skips invalid list entries and keeps the valid ones", () => {
@@ -56,7 +62,13 @@ describe("parseTaskLists", () => {
         [{ id: "b", tag: "", x: "bad", y: 0, tasks: [] }, valid],
         fallbackLists
       )
-    ).toEqual([valid]);
+    ).toEqual([
+      {
+        ...valid,
+        x: 16,
+        tasks: ["one", "", "", "", ""],
+      },
+    ]);
   });
 
   test("skips entries whose tasks are not strings", () => {
@@ -65,7 +77,29 @@ describe("parseTaskLists", () => {
         [{ id: "a", tag: "", x: 0, y: 0, tasks: [1, 2] }],
         fallbackLists
       )
-    ).toEqual([]);
+    ).toBe(fallbackLists);
+  });
+
+  test("normalizes stored list position, width, and task rows", () => {
+    const [list] = parseTaskLists(
+      [
+        {
+          id: "a",
+          tag: "",
+          x: 999999,
+          y: -999999,
+          width: 999999,
+          tasks: ["one"],
+        },
+      ],
+      fallbackLists
+    );
+
+    expect(list.x).toBeLessThan(999999);
+    expect(list.y).toBeGreaterThan(-999999);
+    expect(list.width).toBe(960);
+    expect(list.tasks.length).toBeGreaterThan(1);
+    expect(list.tasks.at(-1)).toBe("");
   });
 });
 

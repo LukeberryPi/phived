@@ -1,15 +1,22 @@
 #!/usr/bin/env node
-// Production-shaped static preview of the assembled dist: serves files, falls
-// back /app/* to the app shell, and serves /sw.js with its no-cache header.
+// Production static server for the assembled dist: serves files, falls back
+// /app/* to the app shell, and serves /sw.js with its no-cache header.
 // The routing contract lives in site-contract.mjs.
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
 import process from "node:process";
-import { host, isAppPath, paths, ports, securityHeaders, serviceWorker } from "./site-contract.mjs";
-
-const root = paths.dist;
+import { fileURLToPath } from "node:url";
+import {
+  appMountDir,
+  host,
+  isAppPath,
+  paths,
+  ports,
+  securityHeaders,
+  serviceWorker,
+} from "./site-contract.mjs";
 
 const contentTypes = new Map([
   [".css", "text/css; charset=utf-8"],
@@ -21,7 +28,13 @@ const contentTypes = new Map([
   [".txt", "text/plain; charset=utf-8"],
 ]);
 
-const server = http.createServer(async (req, res) => {
+export function createSiteServer(root = paths.dist) {
+  return http.createServer(async (req, res) => {
+    await handleRequest(req, res, root);
+  });
+}
+
+async function handleRequest(req, res, root) {
   // Apply baseline security headers to every response (ADR 0003). setHeader runs
   // before any writeHead, so these survive on static files, the SPA fallback,
   // /sw.js, and error responses alike.
@@ -35,8 +48,12 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
-  const pathname = decodeURIComponent(url.pathname);
+  const pathname = parsePathname(req);
+  if (!pathname) {
+    res.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("bad request\n");
+    return;
+  }
 
   if (pathname === serviceWorker.path) {
     await sendFile(req, res, path.join(root, "sw.js"), {
@@ -46,12 +63,16 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (isAppPath(pathname)) {
-    const appFile = await resolveStatic(pathname);
-    await sendFile(req, res, appFile ?? path.join(root, "app", "index.html"));
+    const appFile = await resolveStatic(root, pathname);
+    await sendFile(
+      req,
+      res,
+      appFile ?? path.join(root, appMountDir, "index.html")
+    );
     return;
   }
 
-  const file = await resolveStatic(pathname);
+  const file = await resolveStatic(root, pathname);
   if (file) {
     await sendFile(req, res, file);
     return;
@@ -59,19 +80,32 @@ const server = http.createServer(async (req, res) => {
 
   res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
   res.end("not found\n");
-});
+}
 
-server.once("error", (error) => {
-  console.error(`site preview failed to start: ${error.message}`);
-  process.exit(1);
-});
+export const server = createSiteServer();
 
-server.listen(ports.server, host, () => {
-  console.log(`site preview: http://localhost:${ports.server}`);
-});
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  server.once("error", (error) => {
+    console.error(`site preview failed to start: ${error.message}`);
+    process.exit(1);
+  });
 
-async function resolveStatic(pathname) {
-  const candidate = safeResolve(pathname);
+  server.listen(ports.server, host, () => {
+    console.log(`site preview: http://localhost:${ports.server}`);
+  });
+}
+
+function parsePathname(req) {
+  try {
+    const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
+    return decodeURIComponent(url.pathname);
+  } catch {
+    return null;
+  }
+}
+
+async function resolveStatic(root, pathname) {
+  const candidate = safeResolve(root, pathname);
   if (!candidate) {
     return null;
   }
@@ -92,7 +126,7 @@ async function resolveStatic(pathname) {
   return null;
 }
 
-function safeResolve(pathname) {
+function safeResolve(root, pathname) {
   const filePath = path.resolve(root, `.${pathname}`);
   if (filePath === root || filePath.startsWith(`${root}${path.sep}`)) {
     return filePath;

@@ -5,7 +5,12 @@ import { spawnSync } from "node:child_process";
 import { cp, readFile, rm, stat } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import { appBasePath, paths, requiredOutputs } from "./site-contract.mjs";
+import {
+  appBasePath,
+  appMountDir,
+  paths,
+  requiredOutputs,
+} from "./site-contract.mjs";
 
 build("web (astro)", ["--cwd", "apps/web", "build"]);
 build("app (vite, base=/app/)", ["--cwd", "apps/app", "build"]);
@@ -13,7 +18,7 @@ build("app (vite, base=/app/)", ["--cwd", "apps/app", "build"]);
 console.log("assembling combined output into dist/");
 await rm(paths.dist, { recursive: true, force: true });
 await cp(paths.webDist, paths.dist, { recursive: true });
-await cp(paths.appDist, path.join(paths.dist, "app"), { recursive: true });
+await cp(paths.appDist, path.join(paths.dist, appMountDir), { recursive: true });
 
 await assertRequiredOutputs();
 await assertAppAssetBase();
@@ -42,7 +47,10 @@ async function assertRequiredOutputs() {
 }
 
 async function assertAppAssetBase() {
-  const appHtml = await readFile(path.join(paths.dist, "app", "index.html"), "utf8");
+  const appHtml = await readFile(
+    path.join(paths.dist, appMountDir, "index.html"),
+    "utf8"
+  );
 
   if (!appHtml.includes(`"${appBasePath}/assets/`)) {
     fail(`app build is not using ${appBasePath}/assets/ asset URLs`);
