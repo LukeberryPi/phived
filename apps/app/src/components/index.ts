@@ -1,6 +1,7 @@
 export { Button } from "src/components/Button";
 export { Header } from "src/components/Header";
 export { CanvasBoard } from "src/components/CanvasBoard";
+export { CanvasContextMenu } from "src/components/CanvasContextMenu";
 export { Head } from "src/components/Head";
 export { HelpDrawer } from "src/components/HelpDrawer";
 export { MobileActionBar } from "src/components/MobileActionBar";

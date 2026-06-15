@@ -117,6 +117,7 @@ export const TaskListCard = memo(function TaskListCard({
   return (
     <section
       data-canvas-item
+      onContextMenu={(event) => event.stopPropagation()}
       onPointerDown={() => {
         if (!dimmed) {
           actions.bringListToFront(list.id);

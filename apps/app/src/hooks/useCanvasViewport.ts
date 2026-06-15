@@ -153,6 +153,25 @@ export function useCanvasViewport(boardRef: RefObject<HTMLDivElement | null>) {
     }
   }, [zoomAtBoardCenter]);
 
+  const centerCanvasPoint = useCallback(
+    (point: Point) => {
+      const board = boardRef.current;
+      const current = viewportRef.current;
+
+      if (!board || !current) {
+        return;
+      }
+
+      const rect = board.getBoundingClientRect();
+      setViewport({
+        x: rect.width / 2 - point.x * current.zoom,
+        y: rect.height / 2 - point.y * current.zoom,
+        zoom: current.zoom,
+      });
+    },
+    [boardRef, setViewport]
+  );
+
   const screenToCanvas = useCallback(
     (point: Point): Point => {
       const current = viewportRef.current;
@@ -186,5 +205,6 @@ export function useCanvasViewport(boardRef: RefObject<HTMLDivElement | null>) {
     zoomIn,
     zoomOut,
     resetZoom,
+    centerCanvasPoint,
   };
 }

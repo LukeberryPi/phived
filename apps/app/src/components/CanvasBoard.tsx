@@ -1,15 +1,21 @@
 import type { MouseEvent } from "react";
 import { useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 import { CanvasControls } from "src/components/CanvasControls";
+import { CanvasContextMenu } from "src/components/CanvasContextMenu";
+import type { FocusListOption } from "src/components/CanvasContextMenu";
 import { TaskListCard } from "src/components/TaskListCard";
 import { CANVAS_LAYER_Z } from "src/constants/ui";
 import { useCanvasTasksContext } from "src/contexts";
-import { useCanvasViewport } from "src/hooks";
-import { cn } from "src/utils";
+import { useCanvasViewport, useClearCanvasAction } from "src/hooks";
+import { cn, exportCanvas } from "src/utils";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  LIST_MIN_VISIBLE_HEIGHT,
   LIST_WIDTH,
+  canvasHasContent,
+  isCanvasBackgroundTarget,
   orderListsForRender,
 } from "src/utils/canvas";
 
@@ -21,6 +27,7 @@ const SPAWN_CASCADE_STEP = 28;
 export function CanvasBoard() {
   const {
     lists,
+    taskHistory,
     addList,
     requestDeleteList,
     bringListToFront,
@@ -36,8 +43,11 @@ export function CanvasBoard() {
     reorderTask,
     moveTaskUp,
     moveTaskDown,
+    clearTaskHistory,
   } = useCanvasTasksContext();
+  const { clear: clearCanvas } = useClearCanvasAction();
   const boardRef = useRef<HTMLDivElement>(null);
+  const contextMenuPointRef = useRef<{ x: number; y: number } | null>(null);
   const {
     viewport,
     isPanning,
@@ -46,6 +56,7 @@ export function CanvasBoard() {
     zoomIn,
     zoomOut,
     resetZoom,
+    centerCanvasPoint,
   } = useCanvasViewport(boardRef);
   const [spawnedListId, setSpawnedListId] = useState<string | null>(null);
   const [focusedListId, setFocusedListId] = useState<string | null>(null);
@@ -87,26 +98,34 @@ export function CanvasBoard() {
       moveTaskDown,
     ]
   );
+  const focusListOptions = useMemo<FocusListOption[]>(
+    () =>
+      lists
+        .map((list, index) => ({
+          id: list.id,
+          label: list.tag.trim() || `untagged list ${index + 1}`,
+          tagged: list.tag.trim() !== "",
+          index,
+        }))
+        .sort((a, b) => {
+          if (a.tagged !== b.tagged) {
+            return a.tagged ? -1 : 1;
+          }
+
+          if (!a.tagged) {
+            return a.index - b.index;
+          }
+
+          return a.label.localeCompare(b.label);
+        })
+        .map(({ id, label }) => ({ id, label })),
+    [lists]
+  );
 
   const spawnListAt = (canvasX: number, canvasY: number) => {
     setSpawnedListId(
       addList(canvasX - LIST_WIDTH / 2, canvasY - SPAWN_HEADER_OFFSET)
     );
-  };
-
-  const handleDoubleClick = (event: MouseEvent<HTMLDivElement>) => {
-    const target = event.target;
-
-    if (
-      target instanceof Element &&
-      (target.closest("[data-canvas-item]") ||
-        target.closest("[data-canvas-ui]"))
-    ) {
-      return;
-    }
-
-    const point = screenToCanvas({ x: event.clientX, y: event.clientY });
-    spawnListAt(point.x, point.y);
   };
 
   const handleNewList = () => {
@@ -125,55 +144,120 @@ export function CanvasBoard() {
     spawnListAt(center.x + cascade, center.y + cascade);
   };
 
+  const handleDoubleClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (!isCanvasBackgroundTarget(event.target)) {
+      return;
+    }
+
+    const point = screenToCanvas({ x: event.clientX, y: event.clientY });
+    spawnListAt(point.x, point.y);
+  };
+
+  const handleNewListHere = () => {
+    const point = contextMenuPointRef.current;
+
+    if (!point) {
+      handleNewList();
+      return;
+    }
+
+    spawnListAt(point.x, point.y);
+  };
+
+  const handleExport = (format: "md" | "json") => {
+    exportCanvas(format, lists, taskHistory);
+    toast(`exported canvas as .${format}`);
+  };
+
+  const handleFocusList = (listId: string) => {
+    const list = lists.find((candidate) => candidate.id === listId);
+
+    if (!list) {
+      return;
+    }
+
+    setFocusedListId(list.id);
+    centerCanvasPoint({
+      x: list.x + (list.width ?? LIST_WIDTH) / 2,
+      y: list.y + LIST_MIN_VISIBLE_HEIGHT / 2,
+    });
+  };
+
+  const handleContextMenu = (event: MouseEvent<HTMLDivElement>) => {
+    if (!isCanvasBackgroundTarget(event.target)) {
+      contextMenuPointRef.current = null;
+      return;
+    }
+
+    contextMenuPointRef.current = screenToCanvas({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
   return (
     <>
-      <div
-        ref={boardRef}
-        onDoubleClick={handleDoubleClick}
-        aria-label="task canvas"
-        className={cn(
-          CANVAS_LAYER_Z,
-          "fixed inset-0 touch-none overflow-hidden",
-          "bg-zinc-200 dark:bg-black",
-          isPanning ? "cursor-grabbing select-none" : "cursor-grab"
-        )}
+      <CanvasContextMenu
+        focusListOptions={focusListOptions}
+        focusedListId={activeFocusId}
+        onNewListHere={handleNewListHere}
+        onFocusList={handleFocusList}
+        onRemoveFocus={() => setFocusedListId(null)}
+        onExport={handleExport}
+        onClearHistory={clearTaskHistory}
+        onClearCanvas={clearCanvas}
+        clearHistoryDisabled={taskHistory.length === 0}
+        clearCanvasDisabled={!canvasHasContent(lists)}
       >
-        {viewport && (
-          <div
-            style={{
-              width: CANVAS_WIDTH,
-              height: CANVAS_HEIGHT,
-              transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
-              transformOrigin: "0 0",
-            }}
-            className={cn(
-              "border-line-light bg-canvas-light absolute top-0 left-0 border-2",
-              "dark:border-edge-dark dark:bg-canvas-dark",
-              "bg-[radial-gradient(circle,rgb(0_0_0/0.12)_1.5px,transparent_1.5px)]",
-              "dark:bg-[radial-gradient(circle,rgb(226_229_234/0.07)_1.5px,transparent_1.5px)]",
-              "[background-size:32px_32px]"
-            )}
-          >
-            {orderListsForRender(lists).map(({ list, stackIndex }) => (
-              <TaskListCard
-                key={list.id}
-                list={list}
-                stackIndex={stackIndex}
-                zoomRef={zoomRef}
-                autoFocusFirstRow={list.id === spawnedListId}
-                focused={list.id === activeFocusId}
-                dimmed={activeFocusId !== null && list.id !== activeFocusId}
-                onToggleFocus={() =>
-                  setFocusedListId((current) =>
-                    current === list.id ? null : list.id
-                  )
-                }
-                actions={taskListActions}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+        <div
+          ref={boardRef}
+          onContextMenu={handleContextMenu}
+          onDoubleClick={handleDoubleClick}
+          aria-label="task canvas"
+          className={cn(
+            CANVAS_LAYER_Z,
+            "fixed inset-0 touch-none overflow-hidden",
+            "bg-zinc-200 dark:bg-black",
+            isPanning ? "cursor-grabbing select-none" : "cursor-grab"
+          )}
+        >
+          {viewport && (
+            <div
+              style={{
+                width: CANVAS_WIDTH,
+                height: CANVAS_HEIGHT,
+                transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
+                transformOrigin: "0 0",
+              }}
+              className={cn(
+                "border-line-light bg-canvas-light absolute top-0 left-0 border-2",
+                "dark:border-edge-dark dark:bg-canvas-dark",
+                "bg-[radial-gradient(circle,rgb(0_0_0/0.12)_1.5px,transparent_1.5px)]",
+                "dark:bg-[radial-gradient(circle,rgb(226_229_234/0.07)_1.5px,transparent_1.5px)]",
+                "[background-size:32px_32px]"
+              )}
+            >
+              {orderListsForRender(lists).map(({ list, stackIndex }) => (
+                <TaskListCard
+                  key={list.id}
+                  list={list}
+                  stackIndex={stackIndex}
+                  zoomRef={zoomRef}
+                  autoFocusFirstRow={list.id === spawnedListId}
+                  focused={list.id === activeFocusId}
+                  dimmed={activeFocusId !== null && list.id !== activeFocusId}
+                  onToggleFocus={() =>
+                    setFocusedListId((current) =>
+                      current === list.id ? null : list.id
+                    )
+                  }
+                  actions={taskListActions}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </CanvasContextMenu>
 
       <CanvasControls
         zoom={viewport?.zoom ?? 1}

@@ -10,7 +10,7 @@
 
 @layer components {
   .task-panel {
-    @apply rounded-2xl border border-black bg-white dark:border-edge-dark dark:bg-surface-dark;
+    @apply dark:border-edge-dark dark:bg-surface-dark rounded-2xl border border-black bg-white;
   }
 
   .app-dialog.task-panel {
@@ -18,7 +18,7 @@
   }
 
   .toast-panel {
-    @apply rounded-2xl border border-black bg-white shadow-none dark:border-edge-dark dark:bg-surface-dark dark:shadow-none;
+    @apply dark:border-edge-dark dark:bg-surface-dark rounded-2xl border border-black bg-white shadow-none dark:shadow-none;
   }
 
   .drawer-shell {
@@ -56,6 +56,22 @@
     border-top: 0;
     border-left: 0;
     transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .context-menu-content {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transform-origin: var(--radix-context-menu-content-transform-origin);
+    transition:
+      opacity 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 120ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @starting-style {
+    .context-menu-content {
+      opacity: 0;
+      transform: translateY(4px) scale(0.97);
+    }
   }
 
   /* Native <dialog> enter polish. Close remains immediate because React
@@ -146,7 +162,6 @@
   .dark .custom-scrollbar::-webkit-scrollbar-thumb:active {
     background-color: var(--color-ink-dark);
   }
-
 }
 
 [data-sonner-toaster] {
@@ -181,9 +196,19 @@
     transition: opacity 150ms ease;
   }
 
+  .context-menu-content {
+    transform: none;
+    transition: opacity 120ms ease;
+  }
+
   @starting-style {
     .tooltip-bubble {
       transform: translate(-50%, calc(-100% - 8px));
+    }
+
+    .context-menu-content {
+      opacity: 0;
+      transform: none;
     }
   }
 }

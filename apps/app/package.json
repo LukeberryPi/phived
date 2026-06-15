@@ -21,6 +21,7 @@
     "@phived/tokens": "workspace:*",
     "@phived/ui": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",
+    "@radix-ui/react-context-menu": "^2.3.0",
     "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

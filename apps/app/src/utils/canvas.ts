@@ -23,6 +23,14 @@ export function clampListWidth(width: number) {
 
 type Point = { x: number; y: number };
 
+export function isCanvasBackgroundTarget(target: EventTarget | null) {
+  return (
+    target instanceof Element &&
+    !target.closest("[data-canvas-item]") &&
+    !target.closest("[data-canvas-ui]")
+  );
+}
+
 /**
  * New list position for a move drag. Pointer deltas are in screen px and
  * must be divided by zoom to land in canvas coordinates.

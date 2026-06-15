@@ -33,6 +33,7 @@ export function CanvasControls({
   return (
     <div
       data-canvas-ui
+      onContextMenu={(event) => event.stopPropagation()}
       className={cn(
         CANVAS_CONTROLS_Z,
         "pointer-events-auto fixed flex items-stretch gap-3",
