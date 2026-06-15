@@ -6,7 +6,6 @@ import {
   addEmptyTaskRow,
   changeTaskAt,
   createEmptyTasks,
-  findFirstEmptyTaskIndex,
   insertEmptyTaskRowAbove,
   insertEmptyTaskRowBelow,
   removeEmptyExtraRow,
@@ -19,10 +18,6 @@ import {
 describe("task list utilities", () => {
   test("creates exactly the minimum number of empty rows", () => {
     expect(createEmptyTasks()).toEqual(Array(MIN_TASK_ROWS).fill(""));
-  });
-
-  test("finds whitespace-only content as the first empty task", () => {
-    expect(findFirstEmptyTaskIndex(["first", " \t ", "third"])).toBe(1);
   });
 
   test("pads short task arrays to the minimum row count", () => {

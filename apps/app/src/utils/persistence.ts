@@ -1,8 +1,6 @@
 import type { TaskList, TaskLists, Viewport } from "src/types/canvas";
 import type { TaskHistory, TaskHistoryEntry } from "src/types/taskHistory";
 
-export const TASK_HISTORY_LIMIT = 200;
-
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
 }
@@ -55,19 +53,9 @@ export function parseTaskLists(value: unknown, fallback: TaskLists): TaskLists {
     return fallback;
   }
 
-  const lists: TaskList[] = [];
-
-  for (const item of value) {
-    const list = parseTaskList(item);
-
-    if (!list) {
-      return fallback;
-    }
-
-    lists.push(list);
-  }
-
-  return lists;
+  return value
+    .map(parseTaskList)
+    .filter((list): list is TaskList => list !== null);
 }
 
 function parseTaskHistoryEntry(value: unknown): TaskHistoryEntry | null {
@@ -110,19 +98,9 @@ export function parseTaskHistory(
     return fallback;
   }
 
-  const entries: TaskHistoryEntry[] = [];
-
-  for (const item of value) {
-    const entry = parseTaskHistoryEntry(item);
-
-    if (!entry) {
-      return fallback;
-    }
-
-    entries.push(entry);
-  }
-
-  return entries;
+  return value
+    .map(parseTaskHistoryEntry)
+    .filter((entry): entry is TaskHistoryEntry => entry !== null);
 }
 
 export function parseViewport(
@@ -148,11 +126,4 @@ export function parseViewport(
     y: record.y,
     zoom: record.zoom,
   };
-}
-
-export function prependCappedTaskHistory(
-  prev: TaskHistory,
-  entry: TaskHistoryEntry
-): TaskHistory {
-  return [entry, ...prev].slice(0, TASK_HISTORY_LIMIT);
 }

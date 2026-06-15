@@ -15,9 +15,7 @@ import {
 import { parseViewport } from "src/utils/persistence";
 import { useCanvasGestures } from "src/hooks/useCanvasGestures";
 import { toast } from "sonner";
-
-const STORAGE_WRITE_ERROR_MESSAGE =
-  "Changes may not persist — storage is full or unavailable.";
+import { STORAGE_WRITE_ERROR_MESSAGE } from "src/constants/ui";
 
 const VIEWPORT_STORAGE_KEY = "canvasViewport";
 const ZOOM_STEP = 1.2;

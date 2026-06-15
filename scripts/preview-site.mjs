@@ -19,7 +19,6 @@ const contentTypes = new Map([
   [".png", "image/png"],
   [".svg", "image/svg+xml"],
   [".txt", "text/plain; charset=utf-8"],
-  [".webmanifest", "application/manifest+json"],
 ]);
 
 const server = http.createServer(async (req, res) => {

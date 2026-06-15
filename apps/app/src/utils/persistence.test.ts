@@ -2,13 +2,11 @@
 
 import { describe, expect, test } from "bun:test";
 import type { TaskLists, Viewport } from "src/types/canvas";
-import type { TaskHistory, TaskHistoryEntry } from "src/types/taskHistory";
+import type { TaskHistory } from "src/types/taskHistory";
 import {
-  TASK_HISTORY_LIMIT,
   parseTaskHistory,
   parseTaskLists,
   parseViewport,
-  prependCappedTaskHistory,
 } from "src/utils/persistence";
 
 const fallbackLists: TaskLists = [
@@ -50,22 +48,24 @@ describe("parseTaskLists", () => {
     expect(parseTaskLists(lists, fallbackLists)).toEqual(lists);
   });
 
-  test("returns fallback when a list entry is invalid", () => {
+  test("skips invalid list entries and keeps the valid ones", () => {
+    const valid = { id: "a", tag: "", x: 10, y: 20, tasks: ["one", ""] };
+
     expect(
       parseTaskLists(
-        [{ id: "a", tag: "", x: "bad", y: 0, tasks: [] }],
+        [{ id: "b", tag: "", x: "bad", y: 0, tasks: [] }, valid],
         fallbackLists
       )
-    ).toBe(fallbackLists);
+    ).toEqual([valid]);
   });
 
-  test("returns fallback when tasks are not strings", () => {
+  test("skips entries whose tasks are not strings", () => {
     expect(
       parseTaskLists(
         [{ id: "a", tag: "", x: 0, y: 0, tasks: [1, 2] }],
         fallbackLists
       )
-    ).toBe(fallbackLists);
+    ).toEqual([]);
   });
 });
 
@@ -88,13 +88,19 @@ describe("parseTaskHistory", () => {
     expect(parseTaskHistory(history, fallbackHistory)).toEqual(history);
   });
 
-  test("returns fallback when an entry is invalid", () => {
+  test("skips invalid entries and keeps the valid ones", () => {
+    const valid = {
+      id: "2",
+      text: "kept",
+      completedAt: "2026-02-01T00:00:00.000Z",
+    };
+
     expect(
       parseTaskHistory(
-        [{ id: "1", text: 42, completedAt: "2026-01-01T00:00:00.000Z" }],
+        [{ id: "1", text: 42, completedAt: "2026-01-01T00:00:00.000Z" }, valid],
         fallbackHistory
       )
-    ).toBe(fallbackHistory);
+    ).toEqual([valid]);
   });
 });
 
@@ -113,32 +119,5 @@ describe("parseViewport", () => {
       y: -20,
       zoom: 0.5,
     });
-  });
-});
-
-describe("prependCappedTaskHistory", () => {
-  test("prepends an entry and caps history at TASK_HISTORY_LIMIT", () => {
-    const prev: TaskHistory = Array.from(
-      { length: TASK_HISTORY_LIMIT },
-      (_, index) => ({
-        id: `old-${index}`,
-        text: `task ${index}`,
-        completedAt: "2026-01-01T00:00:00.000Z",
-      })
-    );
-
-    const entry: TaskHistoryEntry = {
-      id: "new",
-      text: "newest",
-      completedAt: "2026-06-01T00:00:00.000Z",
-    };
-
-    const next = prependCappedTaskHistory(prev, entry);
-
-    expect(next).toHaveLength(TASK_HISTORY_LIMIT);
-    expect(next[0]).toEqual(entry);
-    expect(next[TASK_HISTORY_LIMIT - 1]?.id).toBe(
-      `old-${TASK_HISTORY_LIMIT - 2}`
-    );
   });
 });

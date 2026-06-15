@@ -8,11 +8,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --breakpoint-tiny: 400px;
   --breakpoint-xs: 500px;
 
   --font-sans: "DM Sans", sans-serif;
-  --font-heading: "DM Sans", sans-serif;
 
   --shadow-brutalist-dark: 3px 3px #080811;
   --shadow-brutalist-light: 2px 2px #fdfdff;

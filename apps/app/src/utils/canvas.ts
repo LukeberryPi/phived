@@ -11,7 +11,7 @@ export const CANVAS_HEIGHT = 2700;
 
 export const LIST_WIDTH = 340;
 export const MIN_LIST_WIDTH = 260;
-export const MAX_LIST_WIDTH = 780;
+export const MAX_LIST_WIDTH = 960;
 
 export function clampListWidth(width: number) {
   return clamp(width, MIN_LIST_WIDTH, MAX_LIST_WIDTH);

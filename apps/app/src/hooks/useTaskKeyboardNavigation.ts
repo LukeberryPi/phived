@@ -1,4 +1,5 @@
 import type { KeyboardEvent, RefObject } from "react";
+import { MIN_TASK_ROWS } from "src/utils/taskList";
 
 type UseTaskKeyboardNavigationOptions = {
   taskListRef: RefObject<HTMLElement | null>;
@@ -36,7 +37,7 @@ export function useTaskKeyboardNavigation({
     if (
       event.key === "Backspace" &&
       event.currentTarget.value === "" &&
-      taskCount > 5
+      taskCount > MIN_TASK_ROWS
     ) {
       event.preventDefault();
       removeEmptyTaskRow(index);

@@ -5,6 +5,9 @@ export const HOVER_REVEAL =
 
 export const NO_TASKS_TO_CLEAR_MESSAGE = "nothing to clear.";
 
+export const STORAGE_WRITE_ERROR_MESSAGE =
+  "Changes may not persist — storage is full or unavailable.";
+
 export const ROW_DIVIDER =
   "border-b border-line-light dark:border-hairline-dark";
 
@@ -28,10 +31,6 @@ export const DRAWER_HEADER_ACTIVE =
 
 export const SIDE_ACTION_BORDER =
   "border-l border-line-light dark:border-hairline-dark";
-
-export const DESKTOP_BREAKPOINT = 640;
-
-export const DESKTOP_MEDIA_QUERY = `(min-width: ${DESKTOP_BREAKPOINT}px)`;
 
 export const DRAWER_WIDTH = "w-[min(100vw-2rem,22rem)]";
 

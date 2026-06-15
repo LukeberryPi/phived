@@ -1,10 +1,8 @@
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import { STORAGE_WRITE_ERROR_MESSAGE } from "src/constants/ui";
 
-const STORAGE_WRITE_ERROR_MESSAGE =
-  "Changes may not persist — storage is full or unavailable.";
-
-export type ParseStoredValue<T> = (raw: unknown, initialValue: T) => T;
+type ParseStoredValue<T> = (raw: unknown, initialValue: T) => T;
 
 export function useLocalStorage<T>(
   key: string,
