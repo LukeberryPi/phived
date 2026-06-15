@@ -1,0 +1,12 @@
+{
+  "name": "@phived/ui",
+  "private": true,
+  "version": "1.3.0",
+  "type": "module",
+  "exports": {
+    "./button-variants": "./button-variants.ts"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1"
+  }
+}

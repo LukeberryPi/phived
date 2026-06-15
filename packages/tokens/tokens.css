@@ -1,0 +1,34 @@
+/* Shared phived design tokens.
+ *
+ * Single source of truth for both apps/app (Vite) and apps/web (Astro).
+ * Import AFTER `@import "tailwindcss";` in each app's entry stylesheet so the
+ * @theme values feed Tailwind's token system and the `dark` variant resolves.
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --breakpoint-xs: 500px;
+
+  --font-sans: "DM Sans", sans-serif;
+
+  --shadow-brutalist-dark: 3px 3px #080811;
+  --shadow-brutalist-light: 2px 2px #fdfdff;
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --color-ink-light: #080811;
+  --color-paper-light: #fdfdff;
+  --color-muted-light: #71717a;
+  --color-line-light: #a1a1aa;
+  --color-canvas-light: #f9fafb;
+  --color-surface-hover-light: #f4f4f5;
+  --color-canvas-dark: #0a0c10;
+  --color-surface-dark: #14171d;
+  --color-surface-hover-dark: #1b1f27;
+  --color-surface-active-dark: #21262f;
+  --color-hairline-dark: #262b34;
+  --color-edge-dark: #363d49;
+  --color-ink-dark: #e2e5ea;
+  --color-muted-dark: #8b919d;
+}

@@ -90,7 +90,7 @@ struct HelpView: View {
             Text("Drag the canvas to pan and pinch to zoom. Lists grow as you type, and finished tasks move to history when you press **done**.")
             Text("No login. No ads. No distractions.")
             HStack(spacing: 4) {
-                Link("Open Source", destination: URL(string: "https://www.github.com/lukeberrypi/phived")!).underline()
+                Link("Open Source", destination: URL(string: "https://github.com/lukeberrypi/phived")!).underline()
                 Text("and free. Forever.")
             }
         }

@@ -20,7 +20,7 @@ Run all checks available with Command Line Tools:
 ```sh
 bun run lint
 bun run typecheck
-bun run test:web
+bun run test:app
 bun run build
 bun run test:macos
 ```

@@ -1,0 +1,8 @@
+{
+  "name": "@phived/tokens",
+  "private": true,
+  "version": "1.3.0",
+  "exports": {
+    "./tokens.css": "./tokens.css"
+  }
+}

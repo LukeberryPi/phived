@@ -1,0 +1,352 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import ThemeIndicator from "../components/ThemeIndicator.astro";
+import { appHref } from "../../../../scripts/site-contract.mjs";
+
+const githubUrl = "https://github.com/lukeberrypi/phived";
+
+const principles = [
+  { label: "no cookies", note: "No banners to dismiss, no consent theatre." },
+  { label: "no images", note: "Nothing to load, nothing to gawk at." },
+  { label: "no ads", note: "The page is for your tasks, not for sale." },
+];
+
+const steps = [
+  {
+    n: "01",
+    title: "write your next few steps",
+    body: "Spawn tagged lists on the canvas and add your next few steps. No projects, no due dates, no fuss.",
+  },
+  {
+    n: "02",
+    title: "focus on what's in front of you",
+    body: "A short list is a finishable list. The canvas stays quiet so your attention doesn't wander.",
+  },
+  {
+    n: "03",
+    title: "press done and watch it clear",
+    body: "Finished tasks move to history. Clear the board, breathe, and line up the next few.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Do you store my data?",
+    a: "No. Your tasks live in your browser's local storage. There's no account and no server keeping a copy.",
+  },
+  {
+    q: "Why keep lists short?",
+    a: "Because a wall of fifty to-dos is just procrastination with extra steps. A few next steps per list is what actually gets done.",
+  },
+  {
+    q: "Can I reorder and tag my lists?",
+    a: "Yes. Drag rows to reorder, drop tagged lists anywhere on the canvas, and focus one list at a time when you need to.",
+  },
+];
+
+const demoTasks = [
+  "brew some coffee",
+  "read 10 pages of your book",
+  "walk for 20 minutes",
+  "call grandma",
+  "drink 2L water",
+];
+---
+
+<Base>
+  <a
+    href="#main"
+    class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:border focus:border-black focus:bg-sky-300 focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-ink-light"
+  >
+    skip to content
+  </a>
+
+  <header
+    class="sticky top-0 z-50 border-b border-line-light bg-canvas-light/90 backdrop-blur dark:border-hairline-dark dark:bg-canvas-dark/90"
+  >
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+      <a
+        href="/"
+        class="text-4xl font-normal text-black underline decoration-sky-300 decoration-3 underline-offset-4 transition-transform duration-150 ease-out-strong active:scale-95 motion-reduce:transform-none dark:text-ink-dark dark:decoration-cyan-800"
+        aria-label="phived home"
+      >
+        phived
+      </a>
+
+      <nav class="flex items-center gap-2 sm:gap-3">
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden text-sm font-medium lowercase underline-offset-4 hover:underline sm:inline-block"
+        >
+          github
+        </a>
+        <Button
+          id="theme-toggle"
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label="Theme: system"
+        >
+          <ThemeIndicator />
+        </Button>
+        <Button as="a" href={appHref} variant="accent" size="sm" class="lowercase">
+          open app
+        </Button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="mx-auto max-w-5xl px-6 pb-20 pt-14 sm:pt-20">
+      <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <p class="reveal eyebrow">
+            the anti-procrastination to-do list
+          </p>
+          <h1
+            class="reveal mt-7 text-balance text-6xl font-bold lowercase leading-[0.88] tracking-tight sm:text-7xl lg:text-8xl"
+          >
+            just you and<br />your
+            <span class="highlight">next few steps.</span>
+          </h1>
+          <p class="reveal copy mt-8 max-w-md text-lg leading-relaxed text-muted-light dark:text-muted-dark">
+            Ever opened a website just to be buried in cookie modals,
+            newsletter beggars, and ads? Phived is the opposite. A quiet
+            canvas, tagged lists for your next few steps, and nothing trying to
+            keep you there.
+          </p>
+          <div class="reveal mt-9 flex flex-wrap items-center gap-4">
+            <Button as="a" href={appHref} variant="accent" size="lg" class="lowercase">
+              open phived →
+            </Button>
+            <Button
+              as="a"
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="surface"
+              size="lg"
+              class="lowercase"
+            >
+              view source
+            </Button>
+          </div>
+        </div>
+
+        <div class="reveal lg:justify-self-end" aria-hidden="true">
+          <div
+            class="canvas-dots brutal-shadow-lg relative w-full max-w-sm border border-black bg-canvas-light p-7 pt-9 dark:border-edge-dark dark:bg-canvas-dark"
+          >
+            <div
+              class="absolute -right-3 -top-3 hidden w-40 -rotate-3 sm:block"
+            >
+              <span
+                class="ml-1 inline-block rounded-t-md border border-b-0 border-black bg-sky-300 px-2 py-0.5 text-xs font-bold lowercase text-ink-light dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark"
+              >
+                errands
+              </span>
+              <div
+                class="rounded-xl rounded-tl-none border border-black bg-white p-3 text-xs text-muted-light dark:border-edge-dark dark:bg-surface-dark dark:text-muted-dark"
+              >
+                <p class="border-b border-line-light pb-2 dark:border-hairline-dark">get toilet paper</p>
+                <p class="pt-2">take the trash out</p>
+              </div>
+            </div>
+
+            <div class="relative rotate-1">
+              <span
+                class="absolute -top-6 left-0 z-10 border border-b-0 border-black bg-sky-300 px-3 py-1 text-sm font-bold lowercase text-ink-light dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark"
+                style="border-top-left-radius: 10px; border-top-right-radius: 10px;"
+              >
+                today
+              </span>
+              <div
+                class="overflow-hidden rounded-2xl rounded-tl-none border border-black bg-white dark:border-edge-dark dark:bg-surface-dark"
+              >
+                <ul>
+                  {
+                    demoTasks.map((task, i) => (
+                      <li class="flex items-stretch border-b border-line-light dark:border-hairline-dark">
+                        <span class="w-full px-4 py-3 text-[15px]">{task}</span>
+                        {i === 0 && (
+                          <span class="flex items-center border-l border-black bg-sky-300 px-4 text-sm font-bold lowercase text-ink-light dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark">
+                            done
+                          </span>
+                        )}
+                      </li>
+                    ))
+                  }
+                </ul>
+                <div
+                  class="flex min-h-10 w-full items-center justify-center gap-2 border-t border-line-light bg-white text-sm font-medium text-muted-light dark:border-hairline-dark dark:bg-surface-dark dark:text-muted-dark"
+                >
+                  <span class="text-lg leading-none">+</span>
+                  add row
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rule-y bg-white dark:bg-surface-dark">
+      <div class="mx-auto max-w-5xl px-6">
+        <div
+          class="grid grid-cols-1 divide-y divide-line-light sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-hairline-dark"
+        >
+          {
+            principles.map((p) => (
+              <div class="px-0 py-10 sm:px-7">
+                <p class="flex items-baseline gap-2 text-2xl font-bold lowercase tracking-tight">
+                  <span class="text-sky-400 dark:text-cyan-500">/</span>
+                  {p.label}
+                </p>
+                <p class="copy mt-3 text-sm leading-relaxed text-muted-light dark:text-muted-dark">
+                  {p.note}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="rule-y">
+      <div class="mx-auto max-w-5xl px-6 py-20 sm:py-28">
+        <header class="mb-14 max-w-2xl">
+          <p class="eyebrow">how it works</p>
+          <h2 class="mt-6 text-4xl font-bold lowercase tracking-tight sm:text-5xl">
+            a shorter list is a
+            <span class="highlight">finishable</span>
+            list.
+          </h2>
+        </header>
+
+        <div class="grid gap-7 sm:grid-cols-3">
+          {
+            steps.map((s) => (
+              <div class="rounded-2xl border border-black bg-white p-7 dark:border-edge-dark dark:bg-surface-dark">
+                <span class="inline-grid size-10 place-items-center rounded-lg border border-black bg-sky-300 font-mono text-sm font-bold text-ink-light dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark">
+                  {s.n}
+                </span>
+                <h3 class="mt-6 text-xl font-bold lowercase tracking-tight">
+                  {s.title}
+                </h3>
+                <p class="copy mt-3 text-sm leading-relaxed text-muted-light dark:text-muted-dark">
+                  {s.body}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="rule-y bg-white dark:bg-surface-dark">
+      <div class="mx-auto grid max-w-5xl gap-12 px-6 py-20 sm:py-28 lg:grid-cols-[0.4fr_0.6fr]">
+        <header>
+          <p class="eyebrow">questions</p>
+          <h2 class="mt-6 text-4xl font-bold lowercase tracking-tight sm:text-5xl">
+            the short
+            <span class="highlight">answers.</span>
+          </h2>
+        </header>
+
+        <div class="flex flex-col gap-4">
+          {
+            faqs.map((f, i) => (
+              <details
+                class="group rounded-xl border border-black bg-white px-5 dark:border-edge-dark dark:bg-surface-dark"
+                open={i === 0}
+              >
+                <summary class="copy flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-lg font-bold">
+                  {f.q}
+                  <span class="grid size-7 shrink-0 place-items-center rounded-lg border border-black bg-sky-300 text-lg leading-none text-ink-light transition-transform duration-150 ease-out-strong group-open:rotate-45 dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark">
+                    +
+                  </span>
+                </summary>
+                <p class="copy mb-5 max-w-prose text-[15px] leading-relaxed text-muted-light dark:text-muted-dark">
+                  {f.a}
+                </p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="rule-y border-b border-line-light bg-sky-300 dark:border-hairline-dark dark:bg-cyan-800">
+      <div
+        class="mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 py-24 text-center sm:py-32"
+      >
+        <h2 class="text-balance text-5xl font-bold lowercase tracking-tight text-ink-light sm:text-6xl dark:text-ink-dark">
+          stop reading.<br />start doing.
+        </h2>
+        <Button as="a" href={appHref} variant="surface" size="lg" class="lowercase">
+          open phived →
+        </Button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-muted-light sm:flex-row dark:text-muted-dark"
+    >
+      <p class="lowercase">just you and your next few steps.</p>
+      <div class="flex items-center gap-5">
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="lowercase underline-offset-4 hover:text-ink-light hover:underline dark:hover:text-ink-dark"
+        >
+          github
+        </a>
+        <a
+          href={appHref}
+          class="lowercase underline-offset-4 hover:text-ink-light hover:underline dark:hover:text-ink-dark"
+        >
+          open app
+        </a>
+        <span aria-hidden="true">·</span>
+        <span class="lowercase">open source</span>
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    const themeCycle = ["system", "dark", "light"];
+    const themeToggle = document.getElementById("theme-toggle");
+    const systemDarkQuery = "(prefers-color-scheme: dark)";
+
+    function getStoredThemePreference() {
+      const stored = localStorage.getItem("theme");
+      return stored === "dark" || stored === "light" ? stored : "system";
+    }
+
+    function applyThemePreference(preference) {
+      const prefersDark = window.matchMedia(systemDarkQuery).matches;
+      const isDark =
+        preference === "dark" ||
+        (preference === "system" && prefersDark);
+      document.documentElement.classList.toggle("dark", isDark);
+      document.documentElement.dataset.themePreference = preference;
+      localStorage.setItem("theme", preference);
+      themeToggle?.setAttribute("aria-label", `Theme: ${preference}`);
+    }
+
+    applyThemePreference(getStoredThemePreference());
+
+    themeToggle?.addEventListener("click", () => {
+      const current = getStoredThemePreference();
+      const currentIndex = themeCycle.indexOf(current);
+      const next = themeCycle[(currentIndex + 1) % themeCycle.length];
+      applyThemePreference(next);
+    });
+  </script>
+</Base>

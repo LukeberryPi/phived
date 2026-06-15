@@ -1,0 +1,31 @@
+---
+import {
+  buttonVariants,
+  type ButtonVariants,
+} from "@phived/ui/button-variants";
+
+/**
+ * Thin local wrapper over the shared @phived/ui button-variants. JS-free:
+ * renders a plain <a> or <button> with the shared classes so the landing page
+ * ships no runtime. Source of truth for styling stays in @phived/ui.
+ */
+interface Props extends ButtonVariants {
+  as?: "a" | "button";
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  as = "button",
+  variant,
+  size,
+  class: className,
+  ...rest
+}: Props = Astro.props;
+const Tag = as;
+const classes = [buttonVariants({ variant, size }), className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<Tag class={classes} {...rest}><slot /></Tag>

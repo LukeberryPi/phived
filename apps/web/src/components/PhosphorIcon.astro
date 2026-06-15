@@ -1,0 +1,30 @@
+---
+import desktop from "@phosphor-icons/core/assets/regular/desktop.svg?raw";
+import moon from "@phosphor-icons/core/assets/regular/moon.svg?raw";
+import sun from "@phosphor-icons/core/assets/regular/sun.svg?raw";
+
+/** Mirrors apps/app ThemeIndicator icons (Desktop, Moon, Sun from Phosphor). */
+const icons = {
+  desktop,
+  moon,
+  sun,
+} as const;
+
+interface Props {
+  name: keyof typeof icons;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 20, class: className = "" } = Astro.props;
+const svg = icons[name];
+---
+
+<span
+  class:list={["inline-grid shrink-0 place-items-center", className]}
+  style={`width:${size}px;height:${size}px`}
+  set:html={svg.replace(
+    "<svg",
+    `<svg width="${size}" height="${size}" class="block"`
+  )}
+/>

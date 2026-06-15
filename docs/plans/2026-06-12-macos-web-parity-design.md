@@ -2,7 +2,7 @@
 
 ## Source of truth
 
-The React app in `apps/web` defines product behavior. The native macOS app
+The React app in `apps/app` defines product behavior. The native macOS app
 must expose the same task model and desktop workflows while using native
 SwiftUI controls and macOS input conventions.
 
