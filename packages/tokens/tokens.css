@@ -17,6 +17,8 @@
 
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 
+  --color-ink-light: #080811;
+  --color-paper-light: #fdfdff;
   --color-muted-light: #71717a;
   --color-line-light: #a1a1aa;
   --color-canvas-light: #f9fafb;

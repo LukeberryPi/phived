@@ -2,7 +2,11 @@ import type { FormEvent, MutableRefObject } from "react";
 import { memo, useMemo, useRef } from "react";
 import { TaskRow } from "src/components/TaskRow";
 import { Tooltip } from "src/components/Tooltip";
-import { ACTION_ACCENT_SURFACE, DRAWER_MUTED_TEXT } from "src/constants/ui";
+import {
+  ACTION_ACCENT_HOVER,
+  ACTION_ACCENT_SURFACE,
+  DRAWER_MUTED_TEXT,
+} from "src/constants/ui";
 import {
   pressFeedbackClassName,
   pressFeedbackGroupClassName,
@@ -172,7 +176,7 @@ export const TaskListCard = memo(function TaskListCard({
               "border-line-light flex min-h-10 w-full items-center justify-center gap-2 border-t",
               "dark:border-hairline-dark dark:bg-surface-dark bg-white text-sm font-medium",
               DRAWER_MUTED_TEXT,
-              "dark:sm:hover:text-ink-dark transition-colors duration-150 sm:hover:text-black",
+              ACTION_ACCENT_HOVER,
               pressFeedbackGroupClassName("add-row")
             )}
           >

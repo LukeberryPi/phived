@@ -4,6 +4,10 @@
    @phived/tokens and is also consumed by apps/web. */
 @import "@phived/tokens/tokens.css";
 
+/* Scan the shared button-variants source so its cva class strings aren't purged
+   (Tailwind v4 ignores node_modules, where the workspace package is linked). */
+@source "../../../packages/ui/**/*.ts";
+
 @layer components {
   .task-panel {
     @apply rounded-2xl border border-black bg-white dark:border-edge-dark dark:bg-surface-dark;

@@ -4,6 +4,10 @@
    @phived/tokens and is also consumed by apps/app. */
 @import "@phived/tokens/tokens.css";
 
+/* Scan the shared button-variants source so its cva class strings aren't purged
+   (Tailwind v4 ignores node_modules, where the workspace package is linked). */
+@source "../../../../packages/ui/**/*.ts";
+
 @layer base {
   :root {
     color-scheme: light;
@@ -30,8 +34,8 @@
   }
 
   ::selection {
-    background-color: #080811;
-    color: #fdfdff;
+    background-color: var(--color-ink-light);
+    color: var(--color-paper-light);
   }
 
   .dark ::selection {
@@ -41,11 +45,28 @@
 }
 
 @layer components {
-  /* Staggered entrance for the hero. Opt-out under reduced motion. */
+  /* Staggered hero entrance — decorative, rare. Under 300ms per Emil; stagger
+     keeps the cascade without blocking interaction. */
   .reveal {
     opacity: 0;
-    transform: translateY(12px);
-    animation: reveal-up 0.9s var(--ease-out-strong) forwards;
+    transform: translateY(8px);
+    animation: reveal-up 0.55s var(--ease-out-strong) forwards;
+  }
+
+  .reveal:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .reveal:nth-child(2) {
+    animation-delay: 60ms;
+  }
+  .reveal:nth-child(3) {
+    animation-delay: 120ms;
+  }
+  .reveal:nth-child(4) {
+    animation-delay: 180ms;
+  }
+  .reveal:nth-child(5) {
+    animation-delay: 240ms;
   }
 
   @keyframes reveal-up {
@@ -63,8 +84,75 @@
     }
   }
 
-  /* Hairline rules used throughout the editorial layout. */
+  /* Hairline section rules — matches apps/app ROW_DIVIDER weight. */
   .rule-y {
     @apply border-t border-line-light dark:border-hairline-dark;
+  }
+
+  .canvas-dots {
+    background-image: radial-gradient(
+      circle,
+      rgb(0 0 0 / 0.12) 1.5px,
+      transparent 1.5px
+    );
+    background-size: 32px 32px;
+  }
+
+  .dark .canvas-dots {
+    background-image: radial-gradient(
+      circle,
+      rgb(226 229 234 / 0.07) 1.5px,
+      transparent 1.5px
+    );
+  }
+
+  /* Offset shadow for marketing cards only — token-backed, not a border. */
+  .brutal-shadow {
+    box-shadow: 4px 4px 0 0 var(--color-ink-light);
+  }
+
+  .dark .brutal-shadow {
+    box-shadow: 4px 4px 0 0 var(--color-edge-dark);
+  }
+
+  .brutal-shadow-lg {
+    box-shadow: 6px 6px 0 0 var(--color-ink-light);
+  }
+
+  .dark .brutal-shadow-lg {
+    box-shadow: 6px 6px 0 0 var(--color-edge-dark);
+  }
+
+  /* Accent eyebrow chips — same weight as task-panel borders in apps/app. */
+  .eyebrow {
+    @apply inline-block rounded-lg border border-black bg-sky-300 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-ink-light dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark;
+  }
+
+  .highlight {
+    @apply box-decoration-clone bg-sky-300 px-1.5 text-ink-light dark:bg-cyan-800 dark:text-ink-dark;
+  }
+
+  /* Body copy and official statements — normal sentence case, even inside the
+     lowercase display voice used for headlines and UI chrome. */
+  .copy {
+    @apply normal-case;
+  }
+
+  /* Theme toggle: stack three Phosphor icons in one button cell; show one per
+     <html data-theme-preference>. Rules live in components (not base) so
+     display:none beats any stray utility classes on the icon wrappers. */
+  .theme-icon-stack {
+    @apply relative inline-grid size-5 shrink-0 place-items-center;
+  }
+
+  .theme-icon {
+    @apply col-start-1 row-start-1 grid place-items-center;
+  }
+
+  html:not([data-theme-preference]) .theme-icon:not([data-theme-icon="system"]),
+  html[data-theme-preference="system"] .theme-icon:not([data-theme-icon="system"]),
+  html[data-theme-preference="dark"] .theme-icon:not([data-theme-icon="dark"]),
+  html[data-theme-preference="light"] .theme-icon:not([data-theme-icon="light"]) {
+    @apply hidden;
   }
 }

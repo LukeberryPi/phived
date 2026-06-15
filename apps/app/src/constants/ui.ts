@@ -72,11 +72,6 @@ export const DRAWER_HEADER_HOVER =
 export const DIALOG_HEADER =
   "relative border-b border-line-light px-5 py-4 pr-14 dark:border-hairline-dark";
 
-export const DIALOG_CLOSE_BUTTON = cn(
-  "absolute top-1/2 right-4 flex size-8 shrink-0 -translate-y-1/2 items-center justify-center rounded-full",
-  DRAWER_HEADER_HOVER
-);
-
 /** Shared native `<dialog>` shell — pairs with `.app-dialog::backdrop` in index.css. */
 export const APP_DIALOG = "app-dialog";
 
@@ -89,6 +84,13 @@ export const KBD_CLASS = cn(
 /** Done button, history restore, and history count badge. */
 export const ACTION_ACCENT_SURFACE =
   "bg-sky-300 text-black dark:bg-cyan-800 dark:text-ink-dark";
+
+/** Brightness-dim hover shared with the accent Button variant — no color/text
+ * swap, just a subtle dim (light) / lift (dark) that matches @phived/ui. */
+export const ACTION_ACCENT_HOVER = cn(
+  "transition-[filter] duration-150 ease-out-strong motion-reduce:transition-none",
+  "sm:hover:brightness-95 dark:sm:hover:brightness-110"
+);
 
 export const DRAWER_COUNT_BADGE = cn(
   "inline-flex size-6 shrink-0 items-center justify-center rounded-full",

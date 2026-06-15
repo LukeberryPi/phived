@@ -1,9 +1,8 @@
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from "react";
 import { useEffect, useRef } from "react";
-import { pressFeedbackClassName } from "src/constants/motion";
+import { Button } from "src/components/Button";
 import {
   APP_DIALOG,
-  DIALOG_CLOSE_BUTTON,
   DIALOG_HEADER,
   DRAWER_MUTED_TEXT,
   DRAWER_TEXT,
@@ -135,15 +134,16 @@ export function DeletionConfirmDialog({
             >
               {copy.title}
             </h2>
-            <button
+            <Button
               autoFocus
-              type="button"
               aria-label="Close"
               onClick={onCancel}
-              className={cn(DIALOG_CLOSE_BUTTON, pressFeedbackClassName)}
+              variant="ghost"
+              size="icon-sm"
+              className="absolute top-1/2 right-4 shrink-0 -translate-y-1/2"
             >
               <Close size={18} className="dark:fill-ink-dark fill-black" />
-            </button>
+            </Button>
           </header>
 
           <div className="px-5 py-5">
@@ -156,28 +156,20 @@ export function DeletionConfirmDialog({
           </div>
 
           <div className="border-line-light dark:border-hairline-dark grid grid-cols-2 border-t">
-            <button
-              type="button"
+            <Button
               onClick={onCancel}
-              className={cn(
-                "border-line-light dark:border-hairline-dark border-r px-4 py-4 text-sm font-medium",
-                "dark:sm:hover:bg-surface-hover-dark sm:hover:bg-surface-hover-light",
-                pressFeedbackClassName
-              )}
+              variant="ghost"
+              className="border-line-light dark:border-hairline-dark rounded-none border-r px-4 py-4"
             >
               {copy.cancelLabel}
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
               onClick={onConfirm}
-              className={cn(
-                "px-4 py-4 text-sm font-medium text-red-600 dark:text-red-400",
-                "sm:hover:bg-red-100 dark:sm:hover:bg-red-950",
-                pressFeedbackClassName
-              )}
+              variant="destructive"
+              className="rounded-none px-4 py-4 text-red-600 dark:text-red-400"
             >
               {copy.confirmLabel}
-            </button>
+            </Button>
           </div>
         </div>
       )}

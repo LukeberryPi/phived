@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title = "phived — the anti-procrastination to-do list",
-  description = "phived is a dead-simple, anti-procrastination to-do list. no login, no cookies, no images, no ads. just you and your next few steps.",
+  description = "Phived is a dead-simple, anti-procrastination to-do list. No cookies, no images, no ads. Just you and your next few steps.",
 } = Astro.props;
 
 const canonical = "https://www.phived.com/";
@@ -65,8 +65,12 @@ const ogImage = "https://www.phived.com/share-banner.png";
       const stored = localStorage.getItem("theme");
       const prefersDark =
         window?.matchMedia?.("(prefers-color-scheme: dark)")?.matches ?? false;
-      const isDark = stored === "dark" || (stored !== "light" && prefersDark);
+      const preference =
+        stored === "dark" || stored === "light" ? stored : "system";
+      const isDark =
+        preference === "dark" || (preference === "system" && prefersDark);
       document.documentElement.classList.toggle("dark", isDark);
+      document.documentElement.dataset.themePreference = preference;
     </script>
 
     <script
@@ -83,7 +87,7 @@ const ogImage = "https://www.phived.com/share-banner.png";
     </script>
   </head>
   <body
-    class="min-h-full bg-canvas-light text-[#080811] antialiased dark:bg-canvas-dark dark:text-ink-dark"
+    class="canvas-dots min-h-full bg-canvas-light text-ink-light antialiased dark:bg-canvas-dark dark:text-ink-dark"
   >
     <slot />
   </body>

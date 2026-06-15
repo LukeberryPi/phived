@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@phived/tokens": "workspace:*",
+    "@phived/ui": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",
     "clsx": "^2.1.1",
     "react": "^18.3.1",

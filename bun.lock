@@ -15,6 +15,7 @@
       "version": "1.3.0",
       "dependencies": {
         "@phived/tokens": "workspace:*",
+        "@phived/ui": "workspace:*",
         "@phosphor-icons/react": "^2.1.10",
         "clsx": "^2.1.1",
         "react": "^18.3.1",
@@ -51,6 +52,8 @@
       "version": "1.3.0",
       "dependencies": {
         "@phived/tokens": "workspace:*",
+        "@phived/ui": "workspace:*",
+        "@phosphor-icons/core": "^2.1.1",
         "astro": "^6.4.6",
       },
       "devDependencies": {
@@ -63,6 +66,13 @@
     "packages/tokens": {
       "name": "@phived/tokens",
       "version": "1.3.0",
+    },
+    "packages/ui": {
+      "name": "@phived/ui",
+      "version": "1.3.0",
+      "dependencies": {
+        "class-variance-authority": "^0.7.1",
+      },
     },
   },
   "overrides": {
@@ -295,7 +305,11 @@
 
     "@phived/tokens": ["@phived/tokens@workspace:packages/tokens"],
 
+    "@phived/ui": ["@phived/ui@workspace:packages/ui"],
+
     "@phived/web": ["@phived/web@workspace:apps/web"],
+
+    "@phosphor-icons/core": ["@phosphor-icons/core@2.1.1", "", {}, "sha512-v4ARvrip4qBCImOE5rmPUylOEK4iiED9ZyKjcvzuezqMaiRASCHKcRIuvvxL/twvLpkfnEODCOJp5dM4eZilxQ=="],
 
     "@phosphor-icons/react": ["@phosphor-icons/react@2.1.10", "", { "peerDependencies": { "react": ">= 16.8", "react-dom": ">= 16.8" } }, "sha512-vt8Tvq8GLjheAZZYa+YG/pW7HDbov8El/MANW8pOAz4eGxrwhnbfrQZq0Cp4q8zBEu8NIhHdnr+r8thnfRSNYA=="],
 
@@ -562,6 +576,8 @@
     "chokidar": ["chokidar@4.0.3", "", { "dependencies": { "readdirp": "^4.0.1" } }, "sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA=="],
 
     "ci-info": ["ci-info@4.4.0", "", {}, "sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg=="],
+
+    "class-variance-authority": ["class-variance-authority@0.7.1", "", { "dependencies": { "clsx": "^2.1.1" } }, "sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg=="],
 
     "cliui": ["cliui@8.0.1", "", { "dependencies": { "string-width": "^4.2.0", "strip-ansi": "^6.0.1", "wrap-ansi": "^7.0.0" } }, "sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ=="],
 

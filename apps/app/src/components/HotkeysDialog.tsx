@@ -1,12 +1,7 @@
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  APP_DIALOG,
-  DIALOG_CLOSE_BUTTON,
-  DIALOG_HEADER,
-  KBD_CLASS,
-} from "src/constants/ui";
-import { pressFeedbackClassName } from "src/constants/motion";
+import { Button } from "src/components/Button";
+import { APP_DIALOG, DIALOG_HEADER, KBD_CLASS } from "src/constants/ui";
 import { Close } from "src/icons";
 import { cn } from "src/utils";
 
@@ -218,15 +213,16 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
           <h2 id="hotkeys-dialog-title" className="text-xl font-medium">
             keyboard shortcuts
           </h2>
-          <button
+          <Button
             autoFocus
-            type="button"
             aria-label="Close keyboard shortcuts"
             onClick={onClose}
-            className={cn(DIALOG_CLOSE_BUTTON, pressFeedbackClassName)}
+            variant="ghost"
+            size="icon-sm"
+            className="absolute top-1/2 right-4 shrink-0 -translate-y-1/2"
           >
             <Close size={18} className="dark:fill-ink-dark fill-black" />
-          </button>
+          </Button>
         </header>
 
         <div className="custom-scrollbar grid gap-x-20 gap-y-8 overflow-y-auto px-5 py-5 sm:grid-cols-2">

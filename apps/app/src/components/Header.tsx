@@ -1,19 +1,11 @@
 import { useState } from "react";
+import { Button } from "src/components/Button";
 import { HotkeysDialog } from "src/components/HotkeysDialog";
 import { ThemeIndicator } from "src/components/ThemeIndicator";
 import { useDarkMode } from "src/contexts";
 import { useClearCanvasAction } from "src/hooks";
-import {
-  pressFeedbackClassName,
-  pressFeedbackGroupChildClassName,
-  pressFeedbackGroupClassName,
-} from "src/constants/motion";
-import {
-  DESTRUCTIVE_ACTION_HOVER,
-  DESTRUCTIVE_TRASH_ICON,
-  DRAWER_HEADER_HOVER,
-  FLOATING_CHROME_Z,
-} from "src/constants/ui";
+import { pressFeedbackClassName } from "src/constants/motion";
+import { DESTRUCTIVE_TRASH_ICON, FLOATING_CHROME_Z } from "src/constants/ui";
 import { Keyboard, Trash } from "src/icons";
 import { cn } from "src/utils";
 
@@ -22,8 +14,10 @@ const logoClassName = cn(
   "decoration-sky-300 dark:text-ink-dark dark:decoration-cyan-800",
   pressFeedbackClassName
 );
-const headerActionClassName =
-  "flex min-h-12 select-none items-center gap-2 rounded-2xl bg-canvas-light px-4 text-sm font-normal dark:bg-canvas-dark";
+
+/** Header actions stay opaque over the dotted canvas and keep the calm
+ * font-normal weight; the shared Button supplies the ghost hover + press. */
+const headerActionClassName = "bg-canvas-light font-normal dark:bg-canvas-dark";
 
 export function Header() {
   const { themePreference, toggleDarkMode } = useDarkMode();
@@ -63,78 +57,47 @@ export function Header() {
           phived
         </a>
         <nav className="pointer-events-auto flex h-full items-center justify-between gap-4">
-          <button
+          <Button
             onClick={toggleDarkMode}
             aria-label={`Theme: ${themePreference}`}
-            className={cn(
-              pressFeedbackGroupClassName("theme"),
-              headerActionClassName,
-              "dark:text-ink-dark text-black",
-              DRAWER_HEADER_HOVER
-            )}
+            variant="ghost"
+            className={headerActionClassName}
           >
-            <span
-              className={cn(
-                "flex items-center gap-2",
-                pressFeedbackGroupChildClassName("theme")
-              )}
-            >
-              <ThemeIndicator
-                preference={themePreference}
-                className={themeIconClassName}
-                showLabel
-              />
-            </span>
-          </button>
-          <button
+            <ThemeIndicator
+              preference={themePreference}
+              className={themeIconClassName}
+              showLabel
+            />
+          </Button>
+          <Button
+            onClick={clearCanvas}
             aria-disabled={nothingToClear}
             aria-label={
               nothingToClear
                 ? "Clear canvas unavailable: nothing to clear"
                 : "clear canvas"
             }
-            onClick={clearCanvas}
+            variant={nothingToClear ? "ghost" : "destructive"}
             className={cn(
-              pressFeedbackGroupClassName("clear-tasks"),
               headerActionClassName,
-              "dark:text-ink-dark text-black",
-              nothingToClear ? "cursor-not-allowed" : DESTRUCTIVE_ACTION_HOVER
+              nothingToClear &&
+                "text-muted-light dark:text-muted-dark cursor-not-allowed sm:hover:bg-transparent dark:sm:hover:bg-transparent"
             )}
           >
-            <span
-              className={cn(
-                "flex items-center gap-2",
-                !nothingToClear &&
-                  pressFeedbackGroupChildClassName("clear-tasks"),
-                nothingToClear && "text-muted-light dark:text-muted-dark"
-              )}
-            >
-              <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />
-              clear canvas
-            </span>
-          </button>
-          <button
+            <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />
+            clear canvas
+          </Button>
+          <Button
             aria-haspopup="dialog"
             aria-expanded={hotkeysOpen}
             aria-label="show hotkeys"
             onClick={() => setHotkeysOpen(true)}
-            className={cn(
-              pressFeedbackGroupClassName("hotkeys"),
-              headerActionClassName,
-              "dark:text-ink-dark text-black",
-              DRAWER_HEADER_HOVER
-            )}
+            variant="ghost"
+            className={headerActionClassName}
           >
-            <span
-              className={cn(
-                "flex items-center gap-2",
-                pressFeedbackGroupChildClassName("hotkeys")
-              )}
-            >
-              <Keyboard size={20} className="dark:fill-ink-dark fill-black" />
-              show hotkeys
-            </span>
-          </button>
+            <Keyboard size={20} className="dark:fill-ink-dark fill-black" />
+            show hotkeys
+          </Button>
         </nav>
       </header>
       <HotkeysDialog open={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />

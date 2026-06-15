@@ -1,3 +1,4 @@
+export { Button } from "src/components/Button";
 export { Header } from "src/components/Header";
 export { CanvasBoard } from "src/components/CanvasBoard";
 export { Head } from "src/components/Head";

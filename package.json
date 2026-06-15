@@ -6,7 +6,8 @@
   "workspaces": [
     "apps/app",
     "apps/web",
-    "packages/tokens"
+    "packages/tokens",
+    "packages/ui"
   ],
   "scripts": {
     "dev": "bun run dev:app & bun run dev:web & wait",

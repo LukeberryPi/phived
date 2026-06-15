@@ -1,0 +1,22 @@
+---
+import PhosphorIcon from "./PhosphorIcon.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+const iconClass = className || "text-ink-light dark:text-ink-dark";
+---
+
+<span class="theme-icon-stack" aria-hidden="true">
+  <span data-theme-icon="system" class="theme-icon">
+    <PhosphorIcon name="desktop" size={20} class={iconClass} />
+  </span>
+  <span data-theme-icon="dark" class="theme-icon">
+    <PhosphorIcon name="moon" size={20} class={iconClass} />
+  </span>
+  <span data-theme-icon="light" class="theme-icon">
+    <PhosphorIcon name="sun" size={20} class={iconClass} />
+  </span>
+</span>

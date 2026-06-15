@@ -1,5 +1,6 @@
 import type { FormEvent, KeyboardEvent, PointerEvent } from "react";
 import {
+  ACTION_ACCENT_HOVER,
   ACTION_ACCENT_SURFACE,
   HOVER_REVEAL,
   ROW_DIVIDER,
@@ -100,6 +101,7 @@ export function TaskRow({
             "border-line-light dark:border-edge-dark border-l px-4",
             !isLast && "border-b",
             ACTION_ACCENT_SURFACE,
+            ACTION_ACCENT_HOVER,
             isEmpty || someRowIsDragging ? "hidden" : HOVER_REVEAL
           )}
         >
