@@ -24,6 +24,22 @@ const SPAWN_HEADER_OFFSET = 22;
 /** Cascade step so repeated "new list" clicks don't perfectly overlap. */
 const SPAWN_CASCADE_STEP = 28;
 
+function isCanvasContextMenuTarget(
+  target: EventTarget | null,
+  hasFocusedList: boolean
+) {
+  if (isCanvasBackgroundTarget(target)) {
+    return true;
+  }
+
+  if (!hasFocusedList || !(target instanceof Element)) {
+    return false;
+  }
+
+  const canvasItem = target.closest("[data-canvas-item]");
+  return canvasItem !== null && !canvasItem.hasAttribute("data-canvas-focused");
+}
+
 export function CanvasBoard() {
   const {
     lists,
@@ -184,7 +200,7 @@ export function CanvasBoard() {
   };
 
   const handleContextMenu = (event: MouseEvent<HTMLDivElement>) => {
-    if (!isCanvasBackgroundTarget(event.target)) {
+    if (!isCanvasContextMenuTarget(event.target, activeFocusId !== null)) {
       contextMenuPointRef.current = null;
       return;
     }

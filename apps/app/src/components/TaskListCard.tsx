@@ -117,7 +117,12 @@ export const TaskListCard = memo(function TaskListCard({
   return (
     <section
       data-canvas-item
-      onContextMenu={(event) => event.stopPropagation()}
+      data-canvas-focused={focused ? "" : undefined}
+      onContextMenu={(event) => {
+        if (!dimmed) {
+          event.stopPropagation();
+        }
+      }}
       onPointerDown={() => {
         if (!dimmed) {
           actions.bringListToFront(list.id);
