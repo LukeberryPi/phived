@@ -117,6 +117,12 @@ export const TaskListCard = memo(function TaskListCard({
   return (
     <section
       data-canvas-item
+      data-canvas-focused={focused ? "" : undefined}
+      onContextMenu={(event) => {
+        if (!dimmed) {
+          event.stopPropagation();
+        }
+      }}
       onPointerDown={() => {
         if (!dimmed) {
           actions.bringListToFront(list.id);
@@ -319,8 +325,7 @@ const LIST_ACTION_BUTTON = cn(
 /** Controls fade in on card hover (pointer devices); always visible on touch. */
 const HOVER_REVEAL_CONTROLS = cn(
   "transition-opacity duration-150",
-  "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/card:opacity-100"
+  "pointer-fine:opacity-0 pointer-fine:group-hover/card:opacity-100"
 );
 
 /** Circular backdrop behind icon buttons; grows in on per-button hover. */
@@ -331,18 +336,12 @@ const CIRCLE_BACKDROP = cn(
 );
 
 const HOVER_CIRCLE_IN_CLASSES = {
-  "move-list": cn(
-    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/move-list:scale-100",
-    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/move-list:opacity-100"
-  ),
-  "focus-list": cn(
-    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/focus-list:scale-100",
-    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/focus-list:opacity-100"
-  ),
-  "delete-list": cn(
-    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:scale-100",
-    "[@media(hover:hover)_and_(pointer:fine)]:group-hover/delete-list:opacity-100"
-  ),
+  "move-list":
+    "pointer-fine:group-hover/move-list:scale-100 pointer-fine:group-hover/move-list:opacity-100",
+  "focus-list":
+    "pointer-fine:group-hover/focus-list:scale-100 pointer-fine:group-hover/focus-list:opacity-100",
+  "delete-list":
+    "pointer-fine:group-hover/delete-list:scale-100 pointer-fine:group-hover/delete-list:opacity-100",
 } as const;
 
 function HOVER_CIRCLE_IN(group: keyof typeof HOVER_CIRCLE_IN_CLASSES) {

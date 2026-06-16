@@ -2,19 +2,12 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { HelpPanel } from "src/components/HelpDrawer";
 import { ThemeIndicator } from "src/components/ThemeIndicator";
+import { HistoryPanel } from "src/components/TaskHistoryDrawer";
 import {
-  HistoryClearButton,
-  HistoryPanel,
-} from "src/components/TaskHistoryDrawer";
-import {
-  DESTRUCTIVE_ACTION,
-  DESTRUCTIVE_TRASH_ICON,
   DRAWER_BODY,
   DRAWER_COUNT_BADGE,
   DRAWER_HEADER_ACTIVE,
-  DRAWER_HEADER_GRID,
   DRAWER_HEADER_HOVER,
-  DRAWER_MUTED_TEXT,
   DRAWER_SURFACE,
   DRAWER_TEXT,
   DRAWER_TOGGLE_DIVIDER,
@@ -27,8 +20,7 @@ import {
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { useCanvasTasksContext, useDarkMode } from "src/contexts";
-import { useClearCanvasAction } from "src/hooks";
-import { Clock, Question, Trash } from "src/icons";
+import { Clock, Question } from "src/icons";
 import { cn } from "src/utils";
 
 const barActionClassName = cn(
@@ -90,10 +82,8 @@ function HistoryToggleIcon({ historyCount }: { historyCount: number }) {
 }
 
 export function MobileActionBar() {
-  const { taskHistory, clearTaskHistory } = useCanvasTasksContext();
+  const { taskHistory } = useCanvasTasksContext();
   const { themePreference, toggleDarkMode } = useDarkMode();
-  const { clear: clearCanvas, unavailable: nothingToClear } =
-    useClearCanvasAction();
   const historyCount = taskHistory.length;
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -159,23 +149,6 @@ export function MobileActionBar() {
             }
             label={themePreference}
           />
-          <BarAction
-            aria-disabled={nothingToClear}
-            aria-label={
-              nothingToClear
-                ? "Clear canvas unavailable: nothing to clear"
-                : "clear canvas"
-            }
-            onClick={clearCanvas}
-            unavailable={nothingToClear}
-            className={
-              nothingToClear
-                ? cn("cursor-not-allowed", DRAWER_MUTED_TEXT)
-                : DESTRUCTIVE_ACTION
-            }
-            icon={<Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />}
-            label="clear"
-          />
         </div>
 
         {helpOpen && (
@@ -196,34 +169,17 @@ export function MobileActionBar() {
             aria-label="Task history"
             className={cn(DRAWER_BODY, "w-full")}
           >
-            {historyCount > 0 ? (
-              <div
-                className={cn(DRAWER_HEADER_GRID, DRAWER_SURFACE, ROW_DIVIDER)}
-              >
-                <div
-                  className={cn(
-                    "flex min-h-12 items-center gap-2 px-4 text-sm font-medium",
-                    DRAWER_TEXT
-                  )}
-                >
-                  <HistoryToggleIcon historyCount={historyCount} />
-                  <span>history</span>
-                </div>
-                <HistoryClearButton onClick={clearTaskHistory} />
-              </div>
-            ) : (
-              <div
-                className={cn(
-                  DRAWER_SURFACE,
-                  ROW_DIVIDER,
-                  "flex min-h-12 items-center gap-2 px-4 text-sm font-medium",
-                  DRAWER_TEXT
-                )}
-              >
-                <HistoryToggleIcon historyCount={historyCount} />
-                <span>history</span>
-              </div>
-            )}
+            <div
+              className={cn(
+                DRAWER_SURFACE,
+                ROW_DIVIDER,
+                "flex min-h-12 items-center gap-2 px-4 text-sm font-medium",
+                DRAWER_TEXT
+              )}
+            >
+              <HistoryToggleIcon historyCount={historyCount} />
+              <span>history</span>
+            </div>
             <HistoryPanel />
           </div>
         )}

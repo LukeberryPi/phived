@@ -1,7 +1,7 @@
 import { cn } from "src/utils/cn";
 
 export const HOVER_REVEAL =
-  "hidden max-lg:active:flex max-lg:peer-focus:flex [@media(hover:hover)_and_(pointer:fine)]:group-hover/row:flex";
+  "hidden max-lg:active:flex max-lg:peer-focus:flex pointer-fine:group-hover/row:flex";
 
 export const NO_TASKS_TO_CLEAR_MESSAGE = "nothing to clear.";
 
@@ -114,9 +114,10 @@ export const DRAWER_COUNT_BADGE = cn(
 /** Clear/delete actions read red at rest (light and dark); hover only tints
  * the background — no text/icon color change on hover. */
 export const DESTRUCTIVE_ACTION = cn(
-  // transform kept alongside bg so the press scale survives where this is
-  // composed with pressFeedbackClassName (twMerge keeps the last transition).
-  "transition-[transform,background-color] duration-150 ease-out-strong",
+  // `scale` (Tailwind v4's standalone property) kept alongside bg so the press
+  // scale survives where this is composed with pressFeedbackClassName (twMerge
+  // keeps the last transition).
+  "transition-[scale,background-color] duration-150 ease-out-strong",
   "text-red-600 dark:text-red-400",
   "hover:bg-red-100 dark:hover:bg-red-950"
 );

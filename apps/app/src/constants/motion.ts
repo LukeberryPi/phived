@@ -1,9 +1,12 @@
-/** Shared motion tokens — transform-only, ease-out, under 300ms. */
+/** Shared motion tokens — transform/scale-only, ease-out, under 300ms. */
 
 import { cn } from "src/utils/cn";
 
+// Tailwind v4 `scale-*` sets the standalone `scale` property (not `transform`),
+// so the transition must list `scale` for the press to animate instead of
+// snapping; reduced motion neutralizes with `scale-100` (not `transform-none`).
 export const pressFeedbackClassName =
-  "transition-[transform,background-color] duration-150 ease-out-strong motion-reduce:transform-none active:scale-95";
+  "transition-[scale,background-color] duration-150 ease-out-strong motion-reduce:scale-100 active:scale-95";
 
 const pressFeedbackGroupTransform =
   "transition-transform duration-150 ease-out-strong motion-reduce:transform-none";
@@ -18,6 +21,7 @@ const pressFeedbackGroupClassNames = {
   "drawer-toggle": "group/drawer-toggle",
   done: "group/done",
   "add-row": "group/add-row",
+  "menu-item": "group/menu-item",
 } as const;
 
 const pressFeedbackGroupActiveClassNames = {
@@ -30,6 +34,7 @@ const pressFeedbackGroupActiveClassNames = {
   "drawer-toggle": "group-active/drawer-toggle:scale-95",
   done: "group-active/done:scale-95",
   "add-row": "group-active/add-row:scale-95",
+  "menu-item": "group-active/menu-item:scale-95",
 } as const;
 
 type PressFeedbackGroupName = keyof typeof pressFeedbackGroupClassNames;

@@ -8,7 +8,6 @@ import {
   DRAWER_SURFACE,
   DRAWER_TEXT,
   ROW_DIVIDER,
-  SIDE_ACTION_BORDER,
 } from "src/constants/ui";
 import {
   pressFeedbackClassName,
@@ -19,31 +18,14 @@ import { useCanvasTasksContext } from "src/contexts";
 import { CaretDown, Clock, Restore, Trash } from "src/icons";
 import { cn, formatHistoryWhen } from "src/utils";
 
-const sideActionButtonClassName = cn(
-  "flex h-full w-full items-center justify-center whitespace-nowrap text-sm font-medium",
-  SIDE_ACTION_BORDER
-);
-
-const historyClearButtonClassName = cn(
-  sideActionButtonClassName,
-  DRAWER_SURFACE,
-  "bg-clip-padding",
-  DESTRUCTIVE_ACTION
-);
-
 // Always shown on touch; on desktop the cluster fades in on row hover/focus.
 const historyEntryActionsClassName = cn(
   "absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5 rounded-full",
   DRAWER_SURFACE,
-  "[@media(hover:hover)_and_(pointer:fine)]:pointer-events-none",
-  "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
-  "[@media(hover:hover)_and_(pointer:fine)]:transition-opacity",
-  "[@media(hover:hover)_and_(pointer:fine)]:duration-150",
-  "[@media(hover:hover)_and_(pointer:fine)]:ease-out-strong",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/row:pointer-events-auto",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/row:opacity-100",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-focus-within/row:pointer-events-auto",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-focus-within/row:opacity-100"
+  "pointer-fine:pointer-events-none pointer-fine:opacity-0",
+  "pointer-fine:transition-opacity pointer-fine:duration-150 pointer-fine:ease-out-strong",
+  "pointer-fine:group-hover/row:pointer-events-auto pointer-fine:group-hover/row:opacity-100",
+  "pointer-fine:group-focus-within/row:pointer-events-auto pointer-fine:group-focus-within/row:opacity-100"
 );
 
 const historyEntryActionButtonClassName = cn(
@@ -51,47 +33,13 @@ const historyEntryActionButtonClassName = cn(
   pressFeedbackClassName
 );
 
-type HistoryClearButtonProps = {
-  onClick: () => void;
-  dividerSide?: "left" | "right";
-};
-
-export function HistoryClearButton({
-  onClick,
-  dividerSide = "left",
-}: HistoryClearButtonProps) {
-  return (
-    <button
-      aria-label="clear history"
-      onClick={onClick}
-      className={cn(
-        pressFeedbackGroupClassName("clear-history"),
-        historyClearButtonClassName,
-        dividerSide === "right" &&
-          "border-line-light dark:border-hairline-dark border-r border-l-0"
-      )}
-    >
-      <span
-        aria-hidden="true"
-        className={pressFeedbackGroupChildClassName("clear-history")}
-      >
-        <Trash size={20} className={DESTRUCTIVE_TRASH_ICON} />
-      </span>
-    </button>
-  );
-}
-
 type HistoryPanelProps = {
   onClose?: () => void;
 };
 
 export function HistoryPanel({ onClose }: HistoryPanelProps) {
-  const {
-    taskHistory,
-    restoreTaskFromHistory,
-    deleteTaskFromHistory,
-    clearTaskHistory,
-  } = useCanvasTasksContext();
+  const { taskHistory, restoreTaskFromHistory, deleteTaskFromHistory } =
+    useCanvasTasksContext();
   const historyCount = taskHistory.length;
 
   return (
@@ -104,25 +52,6 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
             ROW_DIVIDER
           )}
         >
-          {historyCount > 0 && (
-            <button
-              type="button"
-              aria-label="clear history"
-              onClick={clearTaskHistory}
-              className={cn(
-                "flex min-h-12 shrink-0 items-center gap-2 px-4 text-sm font-medium",
-                "border-line-light dark:border-hairline-dark border-r",
-                pressFeedbackClassName,
-                DESTRUCTIVE_ACTION
-              )}
-            >
-              <Trash
-                size={20}
-                className={cn("shrink-0", DESTRUCTIVE_TRASH_ICON)}
-              />
-              <span className="whitespace-nowrap">clear history</span>
-            </button>
-          )}
           <button
             type="button"
             aria-label="Close history"

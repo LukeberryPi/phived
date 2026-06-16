@@ -1,7 +1,7 @@
 import type { MutableRefObject, RefObject } from "react";
 import { useEffect, useState } from "react";
 import type { Viewport } from "src/types/canvas";
-import { clampZoom } from "src/utils/canvas";
+import { clampZoom, isCanvasBackgroundTarget } from "src/utils/canvas";
 
 const WHEEL_ZOOM_SENSITIVITY = 0.01;
 
@@ -21,14 +21,6 @@ function getPinchState(pointers: Map<number, Point>) {
     distance: Math.max(Math.hypot(first.x - second.x, first.y - second.y), 1),
     center: { x: (first.x + second.x) / 2, y: (first.y + second.y) / 2 },
   };
-}
-
-function isBackgroundTarget(target: EventTarget | null) {
-  return (
-    target instanceof Element &&
-    !target.closest("[data-canvas-item]") &&
-    !target.closest("[data-canvas-ui]")
-  );
 }
 
 export function useCanvasGestures({
@@ -52,7 +44,7 @@ export function useCanvasGestures({
     let pinch: ReturnType<typeof getPinchState> | null = null;
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!isBackgroundTarget(event.target)) {
+      if (!isCanvasBackgroundTarget(event.target)) {
         return;
       }
 
