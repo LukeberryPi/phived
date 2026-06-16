@@ -267,6 +267,7 @@ export function CanvasBoard() {
                       current === list.id ? null : list.id
                     )
                   }
+                  canDeleteList={lists.length > 1}
                   actions={taskListActions}
                 />
               ))}

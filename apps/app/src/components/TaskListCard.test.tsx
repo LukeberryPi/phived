@@ -57,6 +57,7 @@ function renderCard({
         autoFocusFirstRow={false}
         focused={false}
         dimmed={dimmed}
+        canDeleteList
         onToggleFocus={() => {}}
         actions={actions}
       />

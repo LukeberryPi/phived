@@ -31,6 +31,7 @@ type TaskListCardProps = {
   autoFocusFirstRow: boolean;
   focused: boolean;
   dimmed: boolean;
+  canDeleteList: boolean;
   onToggleFocus: () => void;
   actions: TaskListActions;
 };
@@ -42,6 +43,7 @@ export const TaskListCard = memo(function TaskListCard({
   autoFocusFirstRow,
   focused,
   dimmed,
+  canDeleteList,
   onToggleFocus,
   actions,
 }: TaskListCardProps) {
@@ -285,15 +287,30 @@ export const TaskListCard = memo(function TaskListCard({
             />
           </button>
         </Tooltip>
-        <Tooltip label="delete list">
+        <Tooltip
+          label={canDeleteList ? "delete list" : "can't delete the last list"}
+        >
+          {/* `aria-disabled` rather than the native `disabled` attribute keeps
+           * the button focusable so keyboard/screen-reader users can reach it
+           * and hear why it's unavailable; activation is blocked in the
+           * handler since `aria-disabled` is advisory only. */}
           <button
             type="button"
-            aria-label="delete list"
-            onClick={() => actions.requestDeleteList(list.id)}
+            aria-label={
+              canDeleteList ? "delete list" : "can't delete the last list"
+            }
+            aria-disabled={!canDeleteList}
+            onClick={() => {
+              if (!canDeleteList) {
+                return;
+              }
+              actions.requestDeleteList(list.id);
+            }}
             className={cn(
-              pressFeedbackClassName,
+              canDeleteList && pressFeedbackClassName,
               LIST_ACTION_BUTTON,
-              "group/delete-list"
+              "group/delete-list",
+              "aria-disabled:cursor-not-allowed aria-disabled:opacity-45"
             )}
           >
             <span
@@ -301,7 +318,7 @@ export const TaskListCard = memo(function TaskListCard({
               className={cn(
                 CIRCLE_BACKDROP,
                 "bg-red-100 dark:bg-red-950",
-                HOVER_CIRCLE_IN("delete-list")
+                canDeleteList && HOVER_CIRCLE_IN("delete-list")
               )}
             />
             <Trash

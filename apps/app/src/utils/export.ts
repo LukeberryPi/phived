@@ -1,5 +1,6 @@
 import type { TaskLists } from "src/types/canvas";
 import type { TaskHistory } from "src/types/taskHistory";
+import { formatHistoryExportWhen } from "src/utils/formatHistoryWhen";
 
 export type CanvasExportFormat = "md" | "json";
 
@@ -53,8 +54,9 @@ export function buildCanvasMarkdown(
   } else {
     taskHistory.forEach((entry) => {
       const tag = entry.listTag?.trim() ? ` (${entry.listTag.trim()})` : "";
+      const completedAt = formatHistoryExportWhen(entry.completedAt);
       lines.push(
-        `- [x] ${escapeMarkdownText(entry.text)}${tag} — ${entry.completedAt}`
+        `- [x] ${escapeMarkdownText(entry.text)}${tag} - ${completedAt}`
       );
     });
     lines.push("");
