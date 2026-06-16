@@ -21,6 +21,7 @@ const pressFeedbackGroupClassNames = {
   "drawer-toggle": "group/drawer-toggle",
   done: "group/done",
   "add-row": "group/add-row",
+  "menu-item": "group/menu-item",
 } as const;
 
 const pressFeedbackGroupActiveClassNames = {
@@ -33,6 +34,7 @@ const pressFeedbackGroupActiveClassNames = {
   "drawer-toggle": "group-active/drawer-toggle:scale-95",
   done: "group-active/done:scale-95",
   "add-row": "group-active/add-row:scale-95",
+  "menu-item": "group-active/menu-item:scale-95",
 } as const;
 
 type PressFeedbackGroupName = keyof typeof pressFeedbackGroupClassNames;

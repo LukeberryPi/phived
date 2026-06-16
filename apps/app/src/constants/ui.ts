@@ -1,7 +1,7 @@
 import { cn } from "src/utils/cn";
 
 export const HOVER_REVEAL =
-  "hidden max-lg:active:flex max-lg:peer-focus:flex [@media(hover:hover)_and_(pointer:fine)]:group-hover/row:flex";
+  "hidden max-lg:active:flex max-lg:peer-focus:flex pointer-fine:group-hover/row:flex";
 
 export const NO_TASKS_TO_CLEAR_MESSAGE = "nothing to clear.";
 

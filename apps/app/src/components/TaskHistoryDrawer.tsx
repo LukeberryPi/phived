@@ -22,15 +22,10 @@ import { cn, formatHistoryWhen } from "src/utils";
 const historyEntryActionsClassName = cn(
   "absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-0.5 rounded-full",
   DRAWER_SURFACE,
-  "[@media(hover:hover)_and_(pointer:fine)]:pointer-events-none",
-  "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
-  "[@media(hover:hover)_and_(pointer:fine)]:transition-opacity",
-  "[@media(hover:hover)_and_(pointer:fine)]:duration-150",
-  "[@media(hover:hover)_and_(pointer:fine)]:ease-out-strong",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/row:pointer-events-auto",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-hover/row:opacity-100",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-focus-within/row:pointer-events-auto",
-  "[@media(hover:hover)_and_(pointer:fine)]:group-focus-within/row:opacity-100"
+  "pointer-fine:pointer-events-none pointer-fine:opacity-0",
+  "pointer-fine:transition-opacity pointer-fine:duration-150 pointer-fine:ease-out-strong",
+  "pointer-fine:group-hover/row:pointer-events-auto pointer-fine:group-hover/row:opacity-100",
+  "pointer-fine:group-focus-within/row:pointer-events-auto pointer-fine:group-focus-within/row:opacity-100"
 );
 
 const historyEntryActionButtonClassName = cn(

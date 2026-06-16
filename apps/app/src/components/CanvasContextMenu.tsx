@@ -8,6 +8,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
+  menuItemContentClassName,
 } from "src/components/ContextMenu";
 import { DESTRUCTIVE_TRASH_ICON, DRAWER_MUTED_TEXT } from "src/constants/ui";
 import {
@@ -108,8 +109,10 @@ export function CanvasContextMenu({
 
         <ContextMenuItem asChild>
           <a href="/">
-            <Globe size={16} className={iconClassName} />
-            go to website
+            <span className={menuItemContentClassName}>
+              <Globe size={16} className={iconClassName} />
+              go to website
+            </span>
           </a>
         </ContextMenuItem>
 

@@ -1,7 +1,10 @@
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { forwardRef } from "react";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
-import { pressFeedbackClassName } from "src/constants/motion";
+import {
+  pressFeedbackGroupChildClassName,
+  pressFeedbackGroupClassName,
+} from "src/constants/motion";
 import {
   DESTRUCTIVE_ACTION,
   DRAWER_HEADER_HOVER,
@@ -22,12 +25,20 @@ const menuSurfaceClassName = cn(
   DRAWER_SURFACE
 );
 
+// The row itself only carries the hover background + group marker; the inner
+// content scales on press (like the `done` button) so the text moves, not the
+// whole row. Exported so `asChild` items (e.g. links) can match the layout.
 const menuItemClassName = cn(
-  "relative flex min-h-12 w-full select-none items-center gap-2 px-4 text-sm outline-none",
+  "relative flex min-h-12 w-full select-none items-center px-4 text-sm outline-none",
   DRAWER_TEXT,
   DRAWER_HEADER_HOVER,
-  pressFeedbackClassName,
+  pressFeedbackGroupClassName("menu-item"),
   "data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-45"
+);
+
+export const menuItemContentClassName = cn(
+  "flex flex-1 items-center gap-2",
+  pressFeedbackGroupChildClassName("menu-item")
 );
 
 export const ContextMenuContent = forwardRef<
@@ -53,7 +64,7 @@ type ContextMenuItemProps = ComponentPropsWithoutRef<
 export const ContextMenuItem = forwardRef<
   ElementRef<typeof ContextMenuPrimitive.Item>,
   ContextMenuItemProps
->(({ className, destructive, ...props }, ref) => (
+>(({ className, destructive, children, ...props }, ref) => (
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
@@ -62,7 +73,13 @@ export const ContextMenuItem = forwardRef<
       className
     )}
     {...props}
-  />
+  >
+    {props.asChild ? (
+      children
+    ) : (
+      <span className={menuItemContentClassName}>{children}</span>
+    )}
+  </ContextMenuPrimitive.Item>
 ));
 ContextMenuItem.displayName = ContextMenuPrimitive.Item.displayName;
 
@@ -79,8 +96,10 @@ export const ContextMenuSubTrigger = forwardRef<
     )}
     {...props}
   >
-    {children}
-    <CaretRight size={16} className={cn("ml-auto", DRAWER_MUTED_TEXT)} />
+    <span className={menuItemContentClassName}>
+      {children}
+      <CaretRight size={16} className={cn("ml-auto", DRAWER_MUTED_TEXT)} />
+    </span>
   </ContextMenuPrimitive.SubTrigger>
 ));
 ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName;
