@@ -92,7 +92,14 @@ export const TaskListCard = memo(function TaskListCard({
     event: FormEvent<HTMLInputElement>,
     taskIndex: number
   ) => {
-    actions.changeTask(list.id, taskIndex, event.currentTarget.value);
+    const input = event.currentTarget;
+    actions.changeTask(list.id, taskIndex, input.value);
+
+    const overflow = input.scrollWidth - input.clientWidth;
+    if (overflow > 0) {
+      const currentWidth = list.width ?? LIST_WIDTH;
+      actions.resizeList(list.id, currentWidth + overflow + 2);
+    }
   };
 
   const taskRows = list.tasks.map((task, idx) => {

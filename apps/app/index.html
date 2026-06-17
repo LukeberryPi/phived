@@ -62,10 +62,49 @@
         document.documentElement.classList.remove("dark");
       }
     </script>
+    <style>
+      #app-splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f9fafb;
+      }
+      html.dark #app-splash {
+        background: #0a0c10;
+      }
+      .app-splash-spinner {
+        width: 28px;
+        height: 28px;
+        border-radius: 9999px;
+        border: 3px solid rgba(0, 0, 0, 0.15);
+        border-top-color: #000;
+        animation: app-splash-spin 0.7s linear infinite;
+      }
+      html.dark .app-splash-spinner {
+        border-color: rgba(255, 255, 255, 0.15);
+        border-top-color: #fff;
+      }
+      @keyframes app-splash-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .app-splash-spinner {
+          animation: none;
+        }
+      }
+    </style>
   </head>
 
   <body class="h-full w-full">
-    <div class="h-full w-full" id="root"></div>
+    <div class="h-full w-full" id="root">
+      <div id="app-splash" aria-hidden="true">
+        <div class="app-splash-spinner"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
