@@ -199,7 +199,7 @@ export const TaskListCard = memo(function TaskListCard({
               pressFeedbackGroupClassName("add-row")
             )}
           >
-            <Plus size={16} className="fill-current" />
+            <Plus size={16} className="text-current" />
             add row
           </button>
         </div>
@@ -258,7 +258,7 @@ export const TaskListCard = memo(function TaskListCard({
             />
             <ArrowsMove
               size={18}
-              className="fill-muted-light dark:fill-muted-dark relative"
+              className="text-muted-light dark:text-muted-dark relative"
             />
           </button>
         </Tooltip>
@@ -286,7 +286,7 @@ export const TaskListCard = memo(function TaskListCard({
             <Focus
               size={18}
               className={cn(
-                "relative fill-current transition-colors duration-150",
+                "relative transition-colors duration-150",
                 focused
                   ? "dark:text-ink-dark text-black"
                   : "text-muted-light dark:text-muted-dark"
@@ -330,7 +330,7 @@ export const TaskListCard = memo(function TaskListCard({
             />
             <Trash
               size={16}
-              className="relative fill-current text-red-600 dark:text-red-400"
+              className="relative text-red-600 dark:text-red-400"
             />
           </button>
         </Tooltip>

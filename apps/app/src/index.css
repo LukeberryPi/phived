@@ -18,7 +18,7 @@
   }
 
   .toast-panel {
-    @apply dark:border-edge-dark dark:bg-surface-dark rounded-2xl border border-black bg-white shadow-none dark:shadow-none;
+    @apply rounded-2xl border border-line-light bg-white shadow-none dark:border-hairline-dark dark:bg-surface-dark dark:shadow-none;
   }
 
   .drawer-shell {

@@ -51,7 +51,7 @@ export function CanvasControls({
           "gap-2 px-4"
         )}
       >
-        <Plus size={16} className="dark:fill-ink-dark fill-black" />
+        <Plus size={16} className="text-black dark:text-ink-dark" />
         new list
       </button>
 
@@ -69,7 +69,7 @@ export function CanvasControls({
             onClick={onZoomOut}
             className={controlButtonClassName}
           >
-            <Minus size={16} className="dark:fill-ink-dark fill-black" />
+            <Minus size={16} className="text-black dark:text-ink-dark" />
           </button>
         </Tooltip>
         <Tooltip label="reset zoom">
@@ -90,7 +90,7 @@ export function CanvasControls({
             onClick={onZoomIn}
             className={controlButtonClassName}
           >
-            <Plus size={16} className="dark:fill-ink-dark fill-black" />
+            <Plus size={16} className="text-black dark:text-ink-dark" />
           </button>
         </Tooltip>
       </div>

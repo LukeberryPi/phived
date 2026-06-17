@@ -62,7 +62,7 @@ export function HistoryPanel({ onClose }: HistoryPanelProps) {
               pressFeedbackClassName
             )}
           >
-            <CaretDown size={18} className="dark:fill-ink-dark fill-black" />
+            <CaretDown size={18} className="text-black dark:text-ink-dark" />
           </button>
         </div>
       )}

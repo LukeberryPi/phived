@@ -221,7 +221,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
             size="icon-sm"
             className="absolute top-1/2 right-4 shrink-0 -translate-y-1/2"
           >
-            <Close size={18} className="dark:fill-ink-dark fill-black" />
+            <Close size={18} className="text-black dark:text-ink-dark" />
           </Button>
         </header>
 

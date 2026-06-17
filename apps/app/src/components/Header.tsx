@@ -24,7 +24,7 @@ export function Header() {
   const { themePreference, toggleDarkMode } = useDarkMode();
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
-  const themeIconClassName = "fill-black dark:fill-ink-dark";
+  const themeIconClassName = "text-black dark:text-ink-dark";
 
   return (
     <>
@@ -76,7 +76,7 @@ export function Header() {
             variant="ghost"
             className={headerActionClassName}
           >
-            <Keyboard size={20} className="dark:fill-ink-dark fill-black" />
+            <Keyboard size={20} className="text-black dark:text-ink-dark" />
             show hotkeys
           </Button>
         </nav>
