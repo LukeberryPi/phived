@@ -10,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "lint": "eslint . --max-warnings 0",
     "typecheck": "astro check"
   },
   "dependencies": {

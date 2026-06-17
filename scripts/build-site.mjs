@@ -18,7 +18,9 @@ build("app (vite, base=/app/)", ["--cwd", "apps/app", "build"]);
 console.log("assembling combined output into dist/");
 await rm(paths.dist, { recursive: true, force: true });
 await cp(paths.webDist, paths.dist, { recursive: true });
-await cp(paths.appDist, path.join(paths.dist, appMountDir), { recursive: true });
+await cp(paths.appDist, path.join(paths.dist, appMountDir), {
+  recursive: true,
+});
 
 await assertRequiredOutputs();
 await assertAppAssetBase();
@@ -68,7 +70,11 @@ async function assertServiceWorkerKillSwitch() {
     fail("sw.js must not be HTML");
   }
 
-  for (const token of ["skipWaiting", "caches.keys", "registration.unregister"]) {
+  for (const token of [
+    "skipWaiting",
+    "caches.keys",
+    "registration.unregister",
+  ]) {
     if (!sw.includes(token)) {
       fail(`sw.js is missing kill-switch token: ${token}`);
     }

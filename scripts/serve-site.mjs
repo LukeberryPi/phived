@@ -97,7 +97,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
 function parsePathname(req) {
   try {
-    const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
+    const url = new URL(
+      req.url ?? "/",
+      `http://${req.headers.host ?? "localhost"}`
+    );
     return decodeURIComponent(url.pathname);
   } catch {
     return null;
@@ -145,7 +148,8 @@ async function sendFile(req, res, filePath, headers = {}) {
 
   res.writeHead(200, {
     "Content-Length": fileStat.size,
-    "Content-Type": contentTypes.get(path.extname(filePath)) ?? "application/octet-stream",
+    "Content-Type":
+      contentTypes.get(path.extname(filePath)) ?? "application/octet-stream",
     ...headers,
   });
 

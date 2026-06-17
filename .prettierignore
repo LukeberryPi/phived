@@ -1,0 +1,11 @@
+node_modules
+.cursor
+dist
+dist-ssr
+dev-dist
+apps/macos-app/dist
+.astro
+.vite
+.build
+bun.lock
+*.log

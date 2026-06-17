@@ -87,7 +87,7 @@ export function MobileActionBar() {
   const historyCount = taskHistory.length;
   const [helpOpen, setHelpOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const themeIconClassName = "fill-black dark:fill-ink-dark";
+  const themeIconClassName = "text-black dark:text-ink-dark";
 
   const closeHelp = () => setHelpOpen(false);
   const toggleHelp = () => {

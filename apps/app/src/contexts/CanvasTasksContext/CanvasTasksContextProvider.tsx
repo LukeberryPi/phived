@@ -69,7 +69,13 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
 
   const requestDeleteList = useCallback(
     (listId: string) => {
-      const list = listsRef.current.find((item) => item.id === listId);
+      const currentLists = listsRef.current;
+
+      if (currentLists.length <= 1) {
+        return;
+      }
+
+      const list = currentLists.find((item) => item.id === listId);
 
       if (!list) {
         return;
@@ -78,7 +84,9 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
       const taskCount = countFilledTasks(list.tasks);
 
       if (!listHasContent(list)) {
-        setLists((prev) => prev.filter((item) => item.id !== listId));
+        setLists((prev) =>
+          prev.length <= 1 ? prev : prev.filter((item) => item.id !== listId)
+        );
         return;
       }
 
@@ -304,8 +312,11 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
 
     if (deletionConfirmTarget.kind === "list") {
       const { listId } = deletionConfirmTarget;
-      setLists((prev) => prev.filter((list) => list.id !== listId));
-      toast("list deleted!");
+
+      if (listsRef.current.length > 1) {
+        setLists((prev) => prev.filter((list) => list.id !== listId));
+        toast("list deleted!");
+      }
     }
 
     setDeletionConfirmTarget(null);

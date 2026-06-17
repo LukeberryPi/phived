@@ -3,11 +3,12 @@ import { useEffect, useRef } from "react";
 import { Button } from "src/components/Button";
 import {
   APP_DIALOG,
+  DESTRUCTIVE_TRASH_ICON,
   DIALOG_HEADER,
   DRAWER_MUTED_TEXT,
   DRAWER_TEXT,
 } from "src/constants/ui";
-import { Close } from "src/icons";
+import { Back, Close, Trash } from "src/icons";
 import { cn } from "src/utils";
 
 export type DeletionConfirmTarget =
@@ -159,7 +160,7 @@ export function DeletionConfirmDialog({
               size="icon-sm"
               className="absolute top-1/2 right-4 shrink-0 -translate-y-1/2"
             >
-              <Close size={18} className="dark:fill-ink-dark fill-black" />
+              <Close size={18} className="dark:text-ink-dark text-black" />
             </Button>
           </header>
 
@@ -174,9 +175,11 @@ export function DeletionConfirmDialog({
 
           <div className="flex items-center justify-end gap-2 px-5 pb-5">
             <Button onClick={onCancel} variant="ghost" size="sm">
+              <Back size={16} className="text-current" />
               {copy.cancelLabel}
             </Button>
             <Button onClick={onConfirm} variant="destructive" size="sm">
+              <Trash size={16} className={DESTRUCTIVE_TRASH_ICON} />
               {copy.confirmLabel}
             </Button>
           </div>

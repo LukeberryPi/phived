@@ -1,9 +1,14 @@
-// Root ESLint config for repo-level orchestration code (build/dev/preview
-// scripts). App-specific linting lives in each app's own eslint config.
+// Root ESLint config for repo-level code that lives outside the apps' own
+// configs: the build/dev/preview scripts (node ESM) and the shared workspace
+// packages (TypeScript). App-specific linting lives in each app's eslint
+// config. Formatting is owned by Prettier (`prettier --check .`), so
+// `eslint-config-prettier` stays last to disable conflicting formatting rules.
 import js from "@eslint/js";
+import prettier from "eslint-config-prettier";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 
-export default [
+export default tseslint.config(
   js.configs.recommended,
   {
     files: ["scripts/**/*.mjs", "*.mjs"],
@@ -13,7 +18,26 @@ export default [
       globals: { ...globals.node },
     },
     rules: {
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+      "no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
     },
   },
-];
+  {
+    files: ["packages/**/*.ts"],
+    extends: [tseslint.configs.recommended],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+    },
+    rules: {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports" },
+      ],
+      eqeqeq: ["error", "always"],
+    },
+  },
+  prettier
+);

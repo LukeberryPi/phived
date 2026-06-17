@@ -31,6 +31,7 @@ type TaskListCardProps = {
   autoFocusFirstRow: boolean;
   focused: boolean;
   dimmed: boolean;
+  canDeleteList: boolean;
   onToggleFocus: () => void;
   actions: TaskListActions;
 };
@@ -42,6 +43,7 @@ export const TaskListCard = memo(function TaskListCard({
   autoFocusFirstRow,
   focused,
   dimmed,
+  canDeleteList,
   onToggleFocus,
   actions,
 }: TaskListCardProps) {
@@ -90,7 +92,13 @@ export const TaskListCard = memo(function TaskListCard({
     event: FormEvent<HTMLInputElement>,
     taskIndex: number
   ) => {
-    actions.changeTask(list.id, taskIndex, event.currentTarget.value);
+    const input = event.currentTarget;
+    actions.changeTask(list.id, taskIndex, input.value);
+
+    const currentWidth = list.width ?? LIST_WIDTH;
+    if (input.scrollWidth > currentWidth) {
+      actions.resizeList(list.id, input.scrollWidth + 2);
+    }
   };
 
   const taskRows = list.tasks.map((task, idx) => {
@@ -190,7 +198,7 @@ export const TaskListCard = memo(function TaskListCard({
               pressFeedbackGroupClassName("add-row")
             )}
           >
-            <Plus size={16} className="fill-current" />
+            <Plus size={16} className="text-current" />
             add row
           </button>
         </div>
@@ -249,7 +257,7 @@ export const TaskListCard = memo(function TaskListCard({
             />
             <ArrowsMove
               size={18}
-              className="fill-muted-light dark:fill-muted-dark relative"
+              className="text-muted-light dark:text-muted-dark relative"
             />
           </button>
         </Tooltip>
@@ -277,7 +285,7 @@ export const TaskListCard = memo(function TaskListCard({
             <Focus
               size={18}
               className={cn(
-                "relative fill-current transition-colors duration-150",
+                "relative transition-colors duration-150",
                 focused
                   ? "dark:text-ink-dark text-black"
                   : "text-muted-light dark:text-muted-dark"
@@ -285,15 +293,30 @@ export const TaskListCard = memo(function TaskListCard({
             />
           </button>
         </Tooltip>
-        <Tooltip label="delete list">
+        <Tooltip
+          label={canDeleteList ? "delete list" : "can't delete the last list"}
+        >
+          {/* `aria-disabled` rather than the native `disabled` attribute keeps
+           * the button focusable so keyboard/screen-reader users can reach it
+           * and hear why it's unavailable; activation is blocked in the
+           * handler since `aria-disabled` is advisory only. */}
           <button
             type="button"
-            aria-label="delete list"
-            onClick={() => actions.requestDeleteList(list.id)}
+            aria-label={
+              canDeleteList ? "delete list" : "can't delete the last list"
+            }
+            aria-disabled={!canDeleteList}
+            onClick={() => {
+              if (!canDeleteList) {
+                return;
+              }
+              actions.requestDeleteList(list.id);
+            }}
             className={cn(
-              pressFeedbackClassName,
+              canDeleteList && pressFeedbackClassName,
               LIST_ACTION_BUTTON,
-              "group/delete-list"
+              "group/delete-list",
+              "aria-disabled:cursor-not-allowed aria-disabled:opacity-45"
             )}
           >
             <span
@@ -301,12 +324,12 @@ export const TaskListCard = memo(function TaskListCard({
               className={cn(
                 CIRCLE_BACKDROP,
                 "bg-red-100 dark:bg-red-950",
-                HOVER_CIRCLE_IN("delete-list")
+                canDeleteList && HOVER_CIRCLE_IN("delete-list")
               )}
             />
             <Trash
               size={16}
-              className="relative fill-current text-red-600 dark:text-red-400"
+              className="relative text-red-600 dark:text-red-400"
             />
           </button>
         </Tooltip>

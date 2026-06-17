@@ -6,6 +6,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { TaskListCard } from "src/components/TaskListCard";
 import type { TaskListActions } from "src/contexts/CanvasTasksContext/CanvasTasksContext.types";
 import type { TaskList } from "src/types/canvas";
+import { LIST_WIDTH } from "src/utils/canvas";
 
 function createActions(): TaskListActions {
   return {
@@ -40,9 +41,11 @@ let container: HTMLElement | null = null;
 function renderCard({
   dimmed,
   actions,
+  taskList = list,
 }: {
   dimmed: boolean;
   actions: TaskListActions;
+  taskList?: TaskList;
 }) {
   container = document.createElement("div");
   document.body.appendChild(container);
@@ -51,12 +54,13 @@ function renderCard({
   act(() => {
     root!.render(
       <TaskListCard
-        list={list}
+        list={taskList}
         stackIndex={0}
         zoomRef={{ current: 1 }}
         autoFocusFirstRow={false}
         focused={false}
         dimmed={dimmed}
+        canDeleteList
         onToggleFocus={() => {}}
         actions={actions}
       />
@@ -64,6 +68,42 @@ function renderCard({
   });
 
   return container.querySelector("section")!;
+}
+
+function getFirstTaskInput(section: HTMLElement) {
+  return section.querySelector<HTMLInputElement>('input[aria-label="Task 1"]')!;
+}
+
+function setInputWidthMetrics(
+  input: HTMLInputElement,
+  {
+    scrollWidth,
+    clientWidth,
+  }: {
+    scrollWidth: number;
+    clientWidth: number;
+  }
+) {
+  Object.defineProperty(input, "scrollWidth", {
+    configurable: true,
+    value: scrollWidth,
+  });
+  Object.defineProperty(input, "clientWidth", {
+    configurable: true,
+    value: clientWidth,
+  });
+}
+
+function changeInputValue(input: HTMLInputElement, value: string) {
+  const valueSetter = Object.getOwnPropertyDescriptor(
+    HTMLInputElement.prototype,
+    "value"
+  )?.set;
+
+  act(() => {
+    valueSetter?.call(input, value);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
 }
 
 afterEach(() => {
@@ -133,5 +173,40 @@ describe("TaskListCard active state", () => {
     });
 
     expect(actions.bringListToFront).toHaveBeenCalledWith("list-1");
+  });
+});
+
+describe("TaskListCard auto width", () => {
+  test("does not resize when row controls shrink the input but text fits the list", () => {
+    const actions = createActions();
+    const section = renderCard({ dimmed: false, actions });
+    const input = getFirstTaskInput(section);
+
+    setInputWidthMetrics(input, {
+      scrollWidth: LIST_WIDTH - 20,
+      clientWidth: LIST_WIDTH - 120,
+    });
+    changeInputValue(input, "do tasksssssssss");
+
+    expect(actions.changeTask).toHaveBeenCalledWith(
+      "list-1",
+      0,
+      "do tasksssssssss"
+    );
+    expect(actions.resizeList).not.toHaveBeenCalled();
+  });
+
+  test("resizes when the task text exceeds the list width", () => {
+    const actions = createActions();
+    const section = renderCard({ dimmed: false, actions });
+    const input = getFirstTaskInput(section);
+
+    setInputWidthMetrics(input, {
+      scrollWidth: LIST_WIDTH + 10,
+      clientWidth: LIST_WIDTH - 120,
+    });
+    changeInputValue(input, "do taskssssssssssssssssssssssss");
+
+    expect(actions.resizeList).toHaveBeenCalledWith("list-1", LIST_WIDTH + 12);
   });
 });
