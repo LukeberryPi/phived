@@ -95,10 +95,9 @@ export const TaskListCard = memo(function TaskListCard({
     const input = event.currentTarget;
     actions.changeTask(list.id, taskIndex, input.value);
 
-    const overflow = input.scrollWidth - input.clientWidth;
-    if (overflow > 0) {
-      const currentWidth = list.width ?? LIST_WIDTH;
-      actions.resizeList(list.id, currentWidth + overflow + 2);
+    const currentWidth = list.width ?? LIST_WIDTH;
+    if (input.scrollWidth > currentWidth) {
+      actions.resizeList(list.id, input.scrollWidth + 2);
     }
   };
 
