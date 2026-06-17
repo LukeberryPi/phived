@@ -24,7 +24,10 @@ const ogImage = "https://www.phived.com/share-banner.png";
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="productive, procrastination, task, list, to-do" />
+    <meta
+      name="keywords"
+      content="productive, procrastination, task, list, to-do"
+    />
     <link rel="canonical" href={canonical} />
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -43,8 +46,10 @@ const ogImage = "https://www.phived.com/share-banner.png";
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    {/* Origin-level Search Console verification lives on the web root, which
-        owns phived.com/ (see ADR 0002). */}
+    {
+      /* Origin-level Search Console verification lives on the web root, which
+        owns phived.com/ (see ADR 0002). */
+    }
     <meta
       name="google-site-verification"
       content="R6_yqIps0bS9JxwYUtpbusnOBIb6KfY4Aiwx9TruGZs"
@@ -57,10 +62,12 @@ const ogImage = "https://www.phived.com/share-banner.png";
       rel="stylesheet"
     />
 
-    {/* No-flash theme boot. Intentionally mirrors apps/app/index.html and
+    {
+      /* No-flash theme boot. Intentionally mirrors apps/app/index.html and
         getStoredThemePreference() in apps/app/src/utils/isThemeSetToDark.ts.
         Stored values: "system" (follow OS), "dark", "light". Missing or
-        invalid values are treated as "system". */}
+        invalid values are treated as "system". */
+    }
     <script is:inline>
       const stored = localStorage.getItem("theme");
       const prefersDark =
@@ -80,6 +87,7 @@ const ogImage = "https://www.phived.com/share-banner.png";
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
+        // eslint-disable-next-line prefer-rest-params -- canonical Google Analytics snippet
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
@@ -87,7 +95,7 @@ const ogImage = "https://www.phived.com/share-banner.png";
     </script>
   </head>
   <body
-    class="canvas-dots min-h-full bg-canvas-light text-ink-light antialiased dark:bg-canvas-dark dark:text-ink-dark"
+    class="canvas-dots bg-canvas-light text-ink-light dark:bg-canvas-dark dark:text-ink-dark min-h-full antialiased"
   >
     <slot />
   </body>

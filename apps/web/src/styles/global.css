@@ -86,7 +86,7 @@
 
   /* Hairline section rules — matches apps/app ROW_DIVIDER weight. */
   .rule-y {
-    @apply border-t border-line-light dark:border-hairline-dark;
+    @apply border-line-light dark:border-hairline-dark border-t;
   }
 
   .canvas-dots {
@@ -125,11 +125,11 @@
 
   /* Accent eyebrow chips — same weight as task-panel borders in apps/app. */
   .eyebrow {
-    @apply inline-block rounded-lg border border-black bg-sky-300 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-ink-light dark:border-edge-dark dark:bg-cyan-800 dark:text-ink-dark;
+    @apply text-ink-light dark:border-edge-dark dark:text-ink-dark inline-block rounded-lg border border-black bg-sky-300 px-3 py-1 text-xs font-bold tracking-[0.18em] uppercase dark:bg-cyan-800;
   }
 
   .highlight {
-    @apply box-decoration-clone bg-sky-300 px-1.5 text-ink-light dark:bg-cyan-800 dark:text-ink-dark;
+    @apply text-ink-light dark:text-ink-dark bg-sky-300 box-decoration-clone px-1.5 dark:bg-cyan-800;
   }
 
   /* Body copy and official statements — normal sentence case, even inside the
@@ -150,9 +150,11 @@
   }
 
   html:not([data-theme-preference]) .theme-icon:not([data-theme-icon="system"]),
-  html[data-theme-preference="system"] .theme-icon:not([data-theme-icon="system"]),
+  html[data-theme-preference="system"]
+    .theme-icon:not([data-theme-icon="system"]),
   html[data-theme-preference="dark"] .theme-icon:not([data-theme-icon="dark"]),
-  html[data-theme-preference="light"] .theme-icon:not([data-theme-icon="light"]) {
+  html[data-theme-preference="light"]
+    .theme-icon:not([data-theme-icon="light"]) {
     @apply hidden;
   }
 }

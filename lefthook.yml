@@ -1,0 +1,8 @@
+# Runs the full CI-equivalent `check` before every push so lint, formatting,
+# type, test, and build failures are caught locally instead of in CI. A green
+# push therefore means a green pipeline. Bypass in emergencies with
+# `git push --no-verify`.
+pre-push:
+  commands:
+    check:
+      run: bun run check

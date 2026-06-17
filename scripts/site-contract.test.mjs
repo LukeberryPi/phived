@@ -17,7 +17,9 @@ const tempRoots = [];
 
 afterEach(async () => {
   await Promise.all(
-    tempRoots.splice(0).map((root) => rm(root, { recursive: true, force: true }))
+    tempRoots
+      .splice(0)
+      .map((root) => rm(root, { recursive: true, force: true }))
   );
 });
 
@@ -58,9 +60,12 @@ describe("isAppPath", () => {
     }
   );
 
-  test.each(["/", "/sw.js", "/application"])("returns false for %s", (pathname) => {
-    expect(isAppPath(pathname)).toBe(false);
-  });
+  test.each(["/", "/sw.js", "/application"])(
+    "returns false for %s",
+    (pathname) => {
+      expect(isAppPath(pathname)).toBe(false);
+    }
+  );
 });
 
 describe("app route contract", () => {
@@ -77,7 +82,9 @@ describe("serviceWorker", () => {
   });
 
   test("cacheControl is no-cache kill-switch header", () => {
-    expect(serviceWorker.cacheControl).toBe("public, max-age=0, must-revalidate");
+    expect(serviceWorker.cacheControl).toBe(
+      "public, max-age=0, must-revalidate"
+    );
   });
 });
 
@@ -98,8 +105,12 @@ describe("securityHeaders", () => {
   });
 
   test("CSP restricts default-src to self and disallows object-src", () => {
-    expect(securityHeaders["Content-Security-Policy"]).toContain("default-src 'self'");
-    expect(securityHeaders["Content-Security-Policy"]).toContain("object-src 'none'");
+    expect(securityHeaders["Content-Security-Policy"]).toContain(
+      "default-src 'self'"
+    );
+    expect(securityHeaders["Content-Security-Policy"]).toContain(
+      "object-src 'none'"
+    );
   });
 });
 
@@ -122,9 +133,9 @@ describe("site server routing", () => {
 
     await withServer(root, async (origin) => {
       await expect((await fetch(`${origin}/`)).text()).resolves.toBe("web");
-      await expect((await fetch(`${origin}${appHref}/deep`)).text()).resolves.toBe(
-        "app"
-      );
+      await expect(
+        (await fetch(`${origin}${appHref}/deep`)).text()
+      ).resolves.toBe("app");
       await expect(
         (await fetch(`${origin}${appHref}/asset.js`)).text()
       ).resolves.toBe("asset");

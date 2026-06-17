@@ -1,7 +1,10 @@
 /// <reference types="bun" />
 
 import { afterEach, describe, expect, setSystemTime, test } from "bun:test";
-import { formatHistoryExportWhen, formatHistoryWhen } from "src/utils/formatHistoryWhen";
+import {
+  formatHistoryExportWhen,
+  formatHistoryWhen,
+} from "src/utils/formatHistoryWhen";
 
 describe("formatHistoryWhen", () => {
   afterEach(() => {

@@ -20,24 +20,36 @@
     "start": "bun scripts/serve-site.mjs",
     "build:macos": "sh apps/macos-app/scripts/build-app.sh",
     "dev:macos": "bun run build:macos && open apps/macos-app/dist/Phived.app",
-    "lint": "bun run lint:app && bun run lint:scripts",
+    "lint": "bun run lint:app && bun run lint:web && bun run lint:packages && bun run lint:scripts",
     "lint:app": "bun --cwd apps/app lint",
+    "lint:web": "bun --cwd apps/web lint",
+    "lint:packages": "eslint packages --max-warnings 0",
     "lint:scripts": "eslint scripts --max-warnings 0",
-    "typecheck": "bun run typecheck:app && bun run typecheck:web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "bun run typecheck:app && bun run typecheck:web && bun run typecheck:packages",
     "typecheck:app": "bun --cwd apps/app typecheck",
     "typecheck:web": "bun --cwd apps/web typecheck",
+    "typecheck:packages": "tsc -p packages/ui/tsconfig.json --noEmit",
     "test:app": "bun --cwd apps/app test",
     "test:scripts": "bun test scripts",
-    "check": "bun run lint && bun run typecheck && bun run test:app && bun run test:scripts && bun run build:site",
+    "check": "bun run format:check && bun run lint && bun run typecheck && bun run test:app && bun run test:scripts && bun run build:site",
     "preview": "bun run build:site && bun scripts/serve-site.mjs",
     "preview:app": "bun --cwd apps/app preview",
     "preview:web": "bun --cwd apps/web preview",
     "test:macos": "bun run build:macos && PHIVED_SELF_TEST=1 apps/macos-app/dist/Phived.app/Contents/MacOS/Phived",
-    "test:macos:xctest": "swift test --package-path apps/macos-app"
+    "test:macos:xctest": "swift test --package-path apps/macos-app",
+    "prepare": "lefthook install || true"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "eslint": "^9.17.0",
-    "globals": "^15.14.0"
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.7.0",
+    "globals": "^15.14.0",
+    "lefthook": "^2.1.9",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.1"
   }
 }

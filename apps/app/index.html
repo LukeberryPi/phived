@@ -51,8 +51,7 @@
     <script>
       const localStorageTheme = localStorage.getItem("theme");
       const isBrowserDark =
-        window?.matchMedia?.("(prefers-color-scheme: dark)")?.matches ??
-        false;
+        window?.matchMedia?.("(prefers-color-scheme: dark)")?.matches ?? false;
       const isDarkMode =
         localStorageTheme === "dark" ||
         (localStorageTheme !== "light" && isBrowserDark);

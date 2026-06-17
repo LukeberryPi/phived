@@ -1,5 +1,5 @@
 import eslint from "@eslint/js";
-import prettier from "eslint-plugin-prettier/recommended";
+import prettier from "eslint-config-prettier";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
@@ -42,25 +42,15 @@ export default tseslint.config(
         "error",
         { prefer: "type-imports" },
       ],
-      "@typescript-eslint/semi": ["error", "always"],
-      "@typescript-eslint/member-delimiter-style": [
-        "error",
-        {
-          multiline: { delimiter: "semi", requireLast: true },
-          singleline: { delimiter: "semi", requireLast: false },
-          multilineDetection: "brackets",
-        },
-      ],
-      quotes: ["error", "double"],
-      "arrow-parens": ["error", "always"],
       eqeqeq: ["error", "always"],
-      "arrow-body-style": ["error", "as-needed"],
     },
   },
+  // Formatting is owned by the root `prettier --check .` gate. Keep
+  // eslint-config-prettier last so ESLint never fights Prettier.
   prettier,
   {
     rules: {
-      "prettier/prettier": "error",
+      "arrow-body-style": ["error", "as-needed"],
     },
   }
 );
