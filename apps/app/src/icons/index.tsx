@@ -27,175 +27,77 @@ import type { DefaultSvgProps } from "src/utils";
 type IconProps = DefaultSvgProps;
 
 export function ArrowsMove({ className, size = 24 }: IconProps) {
-  return (
-    <ArrowsOutCardinal
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <ArrowsOutCardinal size={size} className={className} aria-hidden />;
 }
 
 export function Focus({ className, size = 24 }: IconProps) {
-  return (
-    <Crosshair
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <Crosshair size={size} className={className} aria-hidden />;
 }
 
 export function DragVertical({ className, size = 20 }: IconProps) {
-  return (
-    <CaretUpDown
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <CaretUpDown size={size} className={className} aria-hidden />;
 }
 
 export function CaretDown({ className, size = 24 }: IconProps) {
-  return (
-    <CaretDownIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <CaretDownIcon size={size} className={className} aria-hidden />;
 }
 
 export function CaretRight({ className, size = 24 }: IconProps) {
-  return (
-    <CaretRightIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <CaretRightIcon size={size} className={className} aria-hidden />;
 }
 
 export function Export({ className, size = 24 }: IconProps) {
-  return (
-    <ExportIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <ExportIcon size={size} className={className} aria-hidden />;
 }
 
 export function MarkdownFile({ className, size = 24 }: IconProps) {
-  return (
-    <FileText
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <FileText size={size} className={className} aria-hidden />;
 }
 
 export function JsonFile({ className, size = 24 }: IconProps) {
-  return (
-    <FileCode
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <FileCode size={size} className={className} aria-hidden />;
 }
 
 export function Globe({ className, size = 24 }: IconProps) {
-  return (
-    <GlobeIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <GlobeIcon size={size} className={className} aria-hidden />;
 }
 
 export function Moon({ className, size = 24 }: IconProps) {
-  return (
-    <MoonIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <MoonIcon size={size} className={className} aria-hidden />;
 }
 
 export function Sun({ className, size = 24 }: IconProps) {
-  return (
-    <SunIcon size={size} className={className} aria-hidden />
-  );
+  return <SunIcon size={size} className={className} aria-hidden />;
 }
 
 export function Trash({ className, size = 24 }: IconProps) {
-  return (
-    <TrashIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <TrashIcon size={size} className={className} aria-hidden />;
 }
 
 export function Restore({ className, size = 24 }: IconProps) {
   return (
-    <ArrowCounterClockwise
-      size={size}
-      className={className}
-      aria-hidden
-    />
+    <ArrowCounterClockwise size={size} className={className} aria-hidden />
   );
 }
 
 export function Back({ className, size = 24 }: IconProps) {
-  return (
-    <ArrowLeftIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <ArrowLeftIcon size={size} className={className} aria-hidden />;
 }
 
 export function Question({ className, size = 24 }: IconProps) {
-  return (
-    <QuestionIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <QuestionIcon size={size} className={className} aria-hidden />;
 }
 
 export function Clock({ className, size = 20 }: IconProps) {
-  return (
-    <ClockIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <ClockIcon size={size} className={className} aria-hidden />;
 }
 
 export function Computer({ className, size = 24 }: IconProps) {
-  return (
-    <Desktop size={size} className={className} aria-hidden />
-  );
+  return <Desktop size={size} className={className} aria-hidden />;
 }
 
 export function Keyboard({ className, size = 24 }: IconProps) {
-  return (
-    <KeyboardIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <KeyboardIcon size={size} className={className} aria-hidden />;
 }
 
 export function Close({ className, size = 24 }: IconProps) {
@@ -203,27 +105,13 @@ export function Close({ className, size = 24 }: IconProps) {
 }
 
 export function CircleX({ className, size = 24 }: IconProps) {
-  return (
-    <XCircle size={size} className={className} aria-hidden />
-  );
+  return <XCircle size={size} className={className} aria-hidden />;
 }
 
 export function Plus({ className, size = 24 }: IconProps) {
-  return (
-    <PlusIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <PlusIcon size={size} className={className} aria-hidden />;
 }
 
 export function Minus({ className, size = 24 }: IconProps) {
-  return (
-    <MinusIcon
-      size={size}
-      className={className}
-      aria-hidden
-    />
-  );
+  return <MinusIcon size={size} className={className} aria-hidden />;
 }

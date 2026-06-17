@@ -76,7 +76,7 @@ export function Header() {
             variant="ghost"
             className={headerActionClassName}
           >
-            <Keyboard size={20} className="text-black dark:text-ink-dark" />
+            <Keyboard size={20} className="dark:text-ink-dark text-black" />
             show hotkeys
           </Button>
         </nav>

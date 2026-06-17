@@ -88,7 +88,7 @@ export function TaskRow({
                 : HOVER_REVEAL
           )}
         >
-          <DragVertical className="origin-center text-black dark:text-ink-dark" />
+          <DragVertical className="dark:text-ink-dark origin-center text-black" />
         </span>
         <button
           aria-label="complete task"

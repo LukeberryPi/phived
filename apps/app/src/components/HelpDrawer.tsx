@@ -21,7 +21,7 @@ export function HelpPanel({ onClose }: HelpPanelProps) {
           pressFeedbackClassName
         )}
       >
-        <CaretDown size={18} className="text-black dark:text-ink-dark" />
+        <CaretDown size={18} className="dark:text-ink-dark text-black" />
       </button>
       <h1 className="pr-9">
         Welcome to <strong>phived, the anti-procrastination to-do list.</strong>
