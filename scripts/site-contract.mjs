@@ -47,7 +47,9 @@ export const serviceWorker = {
  * previously lived in vercel.json; since the site is served by our own Node
  * server on Railway, they are emitted here so dev/preview/prod cannot drift.
  * The CSP allows the inline theme-boot script, Google Fonts, and the web-only
- * Google Analytics scripts; tighten it if those dependencies change.
+ * Google Analytics scripts; tighten it if those dependencies change. The
+ * form-action allowance covers the Pro auth/billing top-level redirects to
+ * Google (OAuth) and Polar (hosted checkout + customer portal); see ADR 0004.
  */
 export const securityHeaders = {
   "X-Content-Type-Options": "nosniff",
@@ -56,7 +58,7 @@ export const securityHeaders = {
   "Content-Security-Policy": [
     "default-src 'self'",
     "base-uri 'self'",
-    "form-action 'self'",
+    "form-action 'self' https://accounts.google.com https://checkout.polar.sh https://polar.sh https://sandbox.polar.sh https://sandbox-api.polar.sh",
     "frame-ancestors 'none'",
     "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",

@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title = "phived — the anti-procrastination to-do list",
-  description = "Phived is a dead-simple, anti-procrastination to-do list. No cookies, no images, no ads. Just you and your next few steps.",
+  description = "Phived is a dead-simple, anti-procrastination to-do list. No tracking cookies, no images, no ads. Just you and your next few steps.",
 } = Astro.props;
 
 const canonical = "https://www.phived.com/";
@@ -91,7 +91,13 @@ const ogImage = "https://www.phived.com/share-banner.png";
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "G-NC0FFZ2WB2");
+      // Cookieless GA4: client_storage "none" stops GA from writing the _ga
+      // cookies (and localStorage), so the only cookie the product ever sets is
+      // the essential Pro session cookie. See ADR 0004.
+      gtag("config", "G-NC0FFZ2WB2", {
+        client_storage: "none",
+        anonymize_ip: true,
+      });
     </script>
   </head>
   <body

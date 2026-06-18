@@ -1,0 +1,35 @@
+{
+  "name": "@phived/api",
+  "private": true,
+  "version": "1.3.0",
+  "type": "module",
+  "packageManager": "bun@1.3.8",
+  "engines": {
+    "bun": ">=1.3.8"
+  },
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "migrate": "bun src/db/migrate.ts",
+    "serve": "bun src/index.ts",
+    "start": "bun src/db/migrate.ts && bun src/index.ts",
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@polar-sh/better-auth": "^1.1.4",
+    "@polar-sh/sdk": "^0.36.0",
+    "better-auth": "^1.3.34",
+    "hono": "^4.10.7",
+    "kysely": "^0.28.10",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.15.6",
+    "eslint": "^9.17.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.61.1"
+  }
+}

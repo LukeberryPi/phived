@@ -5,6 +5,7 @@ import {
   Head,
   HelpDrawer,
   MobileActionBar,
+  ProBanner,
   TaskHistoryDrawer,
 } from "src/components";
 import { cn } from "src/utils";
@@ -33,6 +34,7 @@ export function TasksPageShell({ children }: PropsWithChildren) {
       <HelpDrawer />
       <TaskHistoryDrawer />
       <MobileActionBar />
+      <ProBanner />
     </div>
   );
 }

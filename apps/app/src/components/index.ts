@@ -1,5 +1,7 @@
+export { AccountMenu } from "src/components/AccountMenu";
 export { Button } from "src/components/Button";
 export { Header } from "src/components/Header";
+export { ProBanner } from "src/components/ProBanner";
 export { CanvasBoard } from "src/components/CanvasBoard";
 export { CanvasContextMenu } from "src/components/CanvasContextMenu";
 export { Head } from "src/components/Head";

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AccountMenu } from "src/components/AccountMenu";
 import { Button } from "src/components/Button";
 import { HotkeysDialog } from "src/components/HotkeysDialog";
 import { ThemeIndicator } from "src/components/ThemeIndicator";
@@ -79,6 +80,7 @@ export function Header() {
             <Keyboard size={20} className="dark:text-ink-dark text-black" />
             show hotkeys
           </Button>
+          <AccountMenu actionClassName={headerActionClassName} />
         </nav>
       </header>
       <HotkeysDialog open={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />

@@ -17,8 +17,26 @@ See [`CONTEXT.md`](CONTEXT.md) for canonical surface names and
 
 - `apps/web` — Astro public web app served at `phived.com/`
 - `apps/app` — Vite, React, and TypeScript task app served at `phived.com/app`
+- `apps/api` — Bun + Hono server: serves the assembled site and the Phived Pro
+  `/api/*` surface (auth, billing, encrypted task sync)
 - `apps/macos-app` — native SwiftUI macOS app
 - `packages/tokens` — shared design tokens consumed by the web and app surfaces
+
+### Phived Pro (`apps/api`)
+
+Pro adds an authenticated, cross-device tier on the **same origin**: Google
+login (Better Auth), Polar subscriptions, and tasks encrypted at rest in
+Postgres. Free stays local-only and unchanged. The architecture is documented
+in [`docs/adr/0004-phived-pro-auth-sync.md`](docs/adr/0004-phived-pro-auth-sync.md).
+
+The server boots static-only when unconfigured, so Pro is purely additive. To
+enable it, set the variables in [`apps/api/.env.example`](apps/api/.env.example)
+(Railway service variables in production): `DATABASE_URL`, `BETTER_AUTH_SECRET`,
+`BETTER_AUTH_URL`, `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`,
+`POLAR_ACCESS_TOKEN`, `POLAR_WEBHOOK_SECRET`, `POLAR_PRODUCT_ID_MONTHLY`,
+`POLAR_PRODUCT_ID_ANNUAL`, and `TASKS_ENC_KEY`. Configure the Polar webhook to
+`<BETTER_AUTH_URL>/api/auth/polar/webhooks`. Railway runs migrate-then-boot via
+`bun --cwd apps/api run start`.
 
 ## accessing locally
 
@@ -74,6 +92,7 @@ Run checks:
 - `bun run lint`
 - `bun run typecheck`
 - `bun run test:app`
+- `bun run test:api`
 - `bun run test:macos`
 
 With a full Xcode installation selected, run the XCTest suite with:

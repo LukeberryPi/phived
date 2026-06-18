@@ -5,7 +5,9 @@ import type { DeletionConfirmTarget } from "src/components/DeletionConfirmDialog
 import { DeletionConfirmDialog } from "src/components/DeletionConfirmDialog";
 import { incentives } from "src/content";
 import { CanvasTasksContext } from "src/contexts/CanvasTasksContext/CanvasTasksContext";
+import { useAuth } from "src/contexts/AuthContext/AuthContext";
 import { useLocalStorage } from "src/hooks";
+import { useTaskSync } from "src/hooks/useTaskSync";
 import type { TaskList, TaskLists } from "src/types/canvas";
 import type { TaskHistory } from "src/types/taskHistory";
 import { countFilledTasks, getRandomElement } from "src/utils";
@@ -43,6 +45,23 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
   );
   const [deletionConfirmTarget, setDeletionConfirmTarget] =
     useState<DeletionConfirmTarget | null>(null);
+
+  const { mode, setSyncStatus, setNeedsReSignIn, registerSyncBridge } =
+    useAuth();
+
+  // Pro layer: keep instant local writes (above) and mirror the synced unit
+  // ({ canvasLists, taskHistory }) to the server in the background. A no-op for
+  // free / LocalOnly modes.
+  useTaskSync({
+    mode,
+    lists,
+    taskHistory,
+    setLists,
+    setTaskHistory,
+    setSyncStatus,
+    onAuthError: () => setNeedsReSignIn(true),
+    registerSyncBridge,
+  });
 
   const listsRef = useRef(lists);
   listsRef.current = lists;
