@@ -7,7 +7,10 @@ import { appHref } from "../../../../scripts/site-contract.mjs";
 const githubUrl = "https://github.com/lukeberrypi/phived";
 
 const principles = [
-  { label: "no cookies", note: "No banners to dismiss, no consent theatre." },
+  {
+    label: "no tracking cookies",
+    note: "No banners to dismiss, no consent theatre.",
+  },
   { label: "no images", note: "Nothing to load, nothing to gawk at." },
   { label: "no ads", note: "The page is for your tasks, not for sale." },
 ];
@@ -33,7 +36,7 @@ const steps = [
 const faqs = [
   {
     q: "Do you store my data?",
-    a: "No. Your tasks live in your browser's local storage. There's no account and no server keeping a copy.",
+    a: "Free tasks live in your browser's local storage. Phived Pro adds an account and encrypted-at-rest sync when you choose it.",
   },
   {
     q: "Why keep lists short?",
@@ -313,12 +316,35 @@ const demoTasks = [
         </h2>
         <Button
           as="a"
-          href={appHref}
+          href="/pricing"
           variant="surface"
           size="lg"
           class="lowercase"
         >
-          open phived →
+          see pricing →
+        </Button>
+      </div>
+    </section>
+
+    <section class="rule-y dark:bg-surface-dark bg-white">
+      <div
+        class="mx-auto flex max-w-5xl flex-col items-start justify-between gap-6 px-6 py-12 sm:flex-row sm:items-center"
+      >
+        <div>
+          <p class="eyebrow">phived pro</p>
+          <h2 class="mt-5 text-3xl font-bold tracking-tight lowercase">
+            same quiet canvas, synced across browsers.
+          </h2>
+        </div>
+        <Button
+          as="a"
+          href="/pricing"
+          variant="accent"
+          size="lg"
+          class="lowercase"
+          data-analytics-event="upgrade_cta"
+        >
+          compare plans →
         </Button>
       </div>
     </section>
@@ -377,6 +403,12 @@ const demoTasks = [
       const currentIndex = themeCycle.indexOf(current);
       const next = themeCycle[(currentIndex + 1) % themeCycle.length];
       applyThemePreference(next);
+    });
+
+    document.querySelectorAll("[data-analytics-event]").forEach((item) => {
+      item.addEventListener("click", () => {
+        window.gtag?.("event", item.dataset.analyticsEvent);
+      });
     });
   </script>
 </Base>

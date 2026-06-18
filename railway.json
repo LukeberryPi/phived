@@ -5,7 +5,7 @@
     "buildCommand": "bun run build:site"
   },
   "deploy": {
-    "startCommand": "BIND_HOST=0.0.0.0 bun run start",
+    "startCommand": "BIND_HOST=0.0.0.0 bun run migrate && BIND_HOST=0.0.0.0 bun run start",
     "healthcheckPath": "/",
     "restartPolicyType": "ON_FAILURE"
   }

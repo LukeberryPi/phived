@@ -1,0 +1,167 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import ThemeIndicator from "../components/ThemeIndicator.astro";
+import { appHref } from "../../../../scripts/site-contract.mjs";
+
+const plans = [
+  {
+    name: "free",
+    price: "0",
+    cadence: "forever",
+    body: "local-only, private by default, no account.",
+    cta: "open app",
+    href: appHref,
+    variant: "surface" as const,
+    features: [
+      "instant local storage",
+      "canvas lists and task history",
+      "no account",
+      "no tracking cookies",
+    ],
+  },
+  {
+    name: "phived pro",
+    price: "monthly or annual",
+    cadence: "hosted checkout",
+    body: "same local-first canvas with encrypted-at-rest sync across browsers.",
+    cta: "upgrade to pro",
+    href: `${appHref}?upgrade=1`,
+    variant: "accent" as const,
+    features: [
+      "google sign-in",
+      "cross-device sync",
+      "encrypted-at-rest task document",
+      "hosted billing portal",
+    ],
+  },
+];
+---
+
+<Base
+  title="phived pricing - free and pro"
+  description="Compare free local-only Phived with Phived Pro sync."
+>
+  <header
+    class="border-line-light bg-canvas-light/90 dark:border-hairline-dark dark:bg-canvas-dark/90 sticky top-0 z-50 border-b backdrop-blur"
+  >
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+      <a
+        href="/"
+        class="ease-out-strong dark:text-ink-dark text-4xl font-normal text-black underline decoration-sky-300 decoration-3 underline-offset-4 transition-transform duration-150 active:scale-95 motion-reduce:transform-none dark:decoration-cyan-800"
+      >
+        phived
+      </a>
+      <nav class="flex items-center gap-2 sm:gap-3">
+        <Button
+          id="theme-toggle"
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label="Theme: system"
+        >
+          <ThemeIndicator />
+        </Button>
+        <Button as="a" href={appHref} variant="surface" size="sm">
+          open app
+        </Button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="mx-auto max-w-5xl px-6 pt-14 pb-16 sm:pt-20">
+      <p class="eyebrow">pricing</p>
+      <h1
+        class="mt-7 max-w-3xl text-6xl leading-[0.9] font-bold tracking-tight text-balance lowercase sm:text-7xl"
+      >
+        free stays local. pro keeps it
+        <span class="highlight">synced.</span>
+      </h1>
+      <p
+        class="copy text-muted-light dark:text-muted-dark mt-8 max-w-2xl text-lg leading-relaxed"
+      >
+        Phived Pro is for the same short-list workflow on more than one browser.
+        The app still writes locally first, then syncs in the background when
+        your subscription is active.
+      </p>
+    </section>
+
+    <section class="rule-y dark:bg-surface-dark bg-white">
+      <div class="mx-auto grid max-w-5xl gap-6 px-6 py-16 md:grid-cols-2">
+        {
+          plans.map((plan) => (
+            <article class="dark:border-edge-dark dark:bg-surface-dark brutal-shadow flex min-h-[28rem] flex-col border border-black bg-white p-7">
+              <h2 class="text-4xl font-bold lowercase">{plan.name}</h2>
+              <p class="mt-6 text-3xl font-bold lowercase">{plan.price}</p>
+              <p class="text-muted-light dark:text-muted-dark mt-1 text-sm lowercase">
+                {plan.cadence}
+              </p>
+              <p class="copy text-muted-light dark:text-muted-dark mt-6 leading-relaxed">
+                {plan.body}
+              </p>
+              <ul class="mt-8 flex flex-col gap-3">
+                {plan.features.map((feature) => (
+                  <li class="flex items-start gap-3 lowercase">
+                    <span class="mt-1 size-2 shrink-0 bg-sky-300 dark:bg-cyan-800" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-auto pt-8">
+                <Button
+                  as="a"
+                  href={plan.href}
+                  variant={plan.variant}
+                  size="lg"
+                  class="lowercase"
+                  data-analytics-event={
+                    plan.name === "phived pro" ? "upgrade_cta" : undefined
+                  }
+                >
+                  {plan.cta} →
+                </Button>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <script is:inline>
+    const themeCycle = ["system", "dark", "light"];
+    const themeToggle = document.getElementById("theme-toggle");
+    const systemDarkQuery = "(prefers-color-scheme: dark)";
+
+    function getStoredThemePreference() {
+      const stored = localStorage.getItem("theme");
+      return stored === "dark" || stored === "light" ? stored : "system";
+    }
+
+    function applyThemePreference(preference) {
+      const prefersDark = window.matchMedia(systemDarkQuery).matches;
+      const isDark =
+        preference === "dark" || (preference === "system" && prefersDark);
+      document.documentElement.classList.toggle("dark", isDark);
+      document.documentElement.dataset.themePreference = preference;
+      localStorage.setItem("theme", preference);
+      themeToggle?.setAttribute("aria-label", `Theme: ${preference}`);
+    }
+
+    applyThemePreference(getStoredThemePreference());
+
+    themeToggle?.addEventListener("click", () => {
+      const current = getStoredThemePreference();
+      const currentIndex = themeCycle.indexOf(current);
+      const next = themeCycle[(currentIndex + 1) % themeCycle.length];
+      applyThemePreference(next);
+    });
+
+    document.querySelectorAll("[data-analytics-event]").forEach((item) => {
+      item.addEventListener("click", () => {
+        window.gtag?.("event", item.dataset.analyticsEvent);
+      });
+    });
+  </script>
+</Base>

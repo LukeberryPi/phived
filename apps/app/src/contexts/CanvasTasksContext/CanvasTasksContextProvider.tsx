@@ -1,11 +1,14 @@
 import type { PropsWithChildren } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import { useAuth } from "src/auth/AuthContext";
+import { Button } from "src/components/Button";
 import type { DeletionConfirmTarget } from "src/components/DeletionConfirmDialog";
 import { DeletionConfirmDialog } from "src/components/DeletionConfirmDialog";
 import { incentives } from "src/content";
 import { CanvasTasksContext } from "src/contexts/CanvasTasksContext/CanvasTasksContext";
 import { useLocalStorage } from "src/hooks";
+import { useTaskSync } from "src/sync/useTaskSync";
 import type { TaskList, TaskLists } from "src/types/canvas";
 import type { TaskHistory } from "src/types/taskHistory";
 import { countFilledTasks, getRandomElement } from "src/utils";
@@ -30,6 +33,7 @@ import {
 } from "src/utils/taskList";
 
 export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
+  const { mode } = useAuth();
   const initialLists = useMemo(buildInitialLists, []);
   const [lists, setLists] = useLocalStorage<TaskLists>(
     "canvasLists",
@@ -48,6 +52,14 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
   listsRef.current = lists;
   const historyRef = useRef(taskHistory);
   historyRef.current = taskHistory;
+
+  useTaskSync({
+    mode,
+    lists,
+    taskHistory,
+    setLists,
+    setTaskHistory,
+  });
 
   const updateList = useCallback(
     (listId: string, updater: (list: TaskList) => TaskList) => {
@@ -373,6 +385,7 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <CanvasTasksContext.Provider value={value}>
+      <SyncModeBanner />
       {children}
       <DeletionConfirmDialog
         target={deletionConfirmTarget}
@@ -382,3 +395,32 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
     </CanvasTasksContext.Provider>
   );
 };
+
+function SyncModeBanner() {
+  const { mode, signIn, checkout } = useAuth();
+
+  if (mode === "free" || mode === "pro") {
+    return null;
+  }
+
+  const isReauth = mode === "reauth";
+
+  return (
+    <div className="dark:border-edge-dark dark:bg-surface-dark pointer-events-auto fixed top-20 left-1/2 z-50 w-[min(92vw,34rem)] -translate-x-1/2 border border-black bg-white px-4 py-3 text-sm shadow-[4px_4px_0_0_#000] dark:shadow-[4px_4px_0_0_var(--color-edge-dark)]">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span className="normal-case">
+          {isReauth
+            ? "session expired - saving locally only until you sign in again."
+            : "saving locally only - resume pro to sync this browser."}
+        </span>
+        <Button
+          variant="ghost"
+          className="h-8 bg-sky-300 px-3 text-sm font-normal dark:bg-cyan-800"
+          onClick={() => (isReauth ? void signIn() : void checkout("monthly"))}
+        >
+          {isReauth ? "sign in" : "resume pro"}
+        </Button>
+      </div>
+    </div>
+  );
+}

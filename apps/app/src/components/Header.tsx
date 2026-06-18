@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "src/auth/AuthContext";
 import { Button } from "src/components/Button";
 import { HotkeysDialog } from "src/components/HotkeysDialog";
 import { ThemeIndicator } from "src/components/ThemeIndicator";
@@ -22,6 +23,7 @@ const headerActionClassName =
 
 export function Header() {
   const { themePreference, toggleDarkMode } = useDarkMode();
+  const { mode, checkout, openBillingPortal, signOut } = useAuth();
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
   const themeIconClassName = "text-black dark:text-ink-dark";
@@ -56,6 +58,32 @@ export function Header() {
           phived
         </a>
         <nav className="pointer-events-auto flex h-full items-center justify-between gap-4">
+          {mode === "pro" ? (
+            <>
+              <Button
+                onClick={() => void openBillingPortal()}
+                variant="ghost"
+                className={headerActionClassName}
+              >
+                billing
+              </Button>
+              <Button
+                onClick={() => void signOut()}
+                variant="ghost"
+                className={headerActionClassName}
+              >
+                sign out
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={() => void checkout("monthly")}
+              variant="ghost"
+              className={headerActionClassName}
+            >
+              upgrade to pro
+            </Button>
+          )}
           <Button
             onClick={toggleDarkMode}
             aria-label={`Theme: ${themePreference}`}
