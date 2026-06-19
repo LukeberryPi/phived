@@ -80,8 +80,7 @@ export const FLOATING_CONTROL_SURFACE = cn(
   "dark:border-hairline-dark dark:bg-canvas-dark/80"
 );
 
-export const DIALOG_HEADER =
-  "relative border-b border-line-light px-5 py-4 pr-14 dark:border-hairline-dark";
+export const DIALOG_HEADER = "relative px-5 py-5 pr-14";
 
 /** Shared native `<dialog>` shell — pairs with `.app-dialog::backdrop` in index.css. */
 export const APP_DIALOG = "app-dialog";
@@ -101,7 +100,8 @@ export const ACTION_ACCENT_SURFACE =
  * already-dark surface into the canvas), tuned to read as clearly as light. */
 export const ACTION_ACCENT_HOVER = cn(
   "transition-[filter] duration-150 ease-out-strong motion-reduce:transition-none",
-  "hover:brightness-95 dark:hover:brightness-125"
+  "hover:brightness-95 dark:hover:brightness-125",
+  "active:brightness-90 dark:active:brightness-90"
 );
 
 export const DRAWER_COUNT_BADGE = cn(

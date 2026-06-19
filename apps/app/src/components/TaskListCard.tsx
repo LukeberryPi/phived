@@ -114,6 +114,7 @@ export const TaskListCard = memo(function TaskListCard({
         isLast={idx === list.tasks.length - 1}
         isDragging={isDraggingRow}
         anotherRowIsDragging={someRowIsDragging && !isDraggingRow}
+        belowIsDragging={draggingIndex === idx + 1}
         onChange={handleChange}
         onKeyDown={onTaskKeyDown}
         onDragPointerDown={handleDragHandlePointerDown}
@@ -219,7 +220,7 @@ export const TaskListCard = memo(function TaskListCard({
               aria-hidden="true"
               className={cn(
                 "h-9 w-2 rounded-full border border-black bg-white",
-                "dark:border-edge-dark dark:bg-surface-hover-dark"
+                "dark:border-muted-dark dark:bg-muted-dark"
               )}
             />
           </button>

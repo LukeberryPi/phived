@@ -8,13 +8,23 @@
    (Tailwind v4 ignores node_modules, where the workspace package is linked). */
 @source "../../../packages/ui/**/*.ts";
 
+@layer base {
+  /* Buttons read as pointer affordances by default. Placed in `base` so the
+     utilities layer (cursor-grab / cursor-ew-resize / cursor-not-allowed on
+     handles and disabled controls) still wins where set. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
 @layer components {
   .task-panel {
     @apply dark:border-edge-dark dark:bg-surface-dark rounded-2xl border border-black bg-white;
   }
 
+  /* Dialogs float borderless on the blurred backdrop. */
   .app-dialog.task-panel {
-    @apply border-line-light dark:border-hairline-dark;
+    @apply border-0;
   }
 
   .toast-panel {

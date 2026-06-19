@@ -4,6 +4,7 @@ import {
   ArrowsOutCardinal,
   CaretDown as CaretDownIcon,
   CaretRight as CaretRightIcon,
+  Check as CheckIcon,
   Crosshair,
   CaretUpDown,
   Clock as ClockIcon,
@@ -34,8 +35,12 @@ export function Focus({ className, size = 24 }: IconProps) {
   return <Crosshair size={size} className={className} aria-hidden />;
 }
 
-export function DragVertical({ className, size = 20 }: IconProps) {
+export function DragVertical({ className, size = 16 }: IconProps) {
   return <CaretUpDown size={size} className={className} aria-hidden />;
+}
+
+export function Check({ className, size = 18 }: IconProps) {
+  return <CheckIcon size={size} className={className} aria-hidden />;
 }
 
 export function CaretDown({ className, size = 24 }: IconProps) {

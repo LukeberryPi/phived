@@ -164,24 +164,24 @@ export function DeletionConfirmDialog({
             </Button>
           </header>
 
-          <div className="px-5 py-5">
+          <div className="space-y-5 px-5 pb-5">
             <p
               id="deletion-confirm-description"
               className={cn("text-base leading-6", DRAWER_MUTED_TEXT)}
             >
               {copy.description}
             </p>
-          </div>
 
-          <div className="flex items-center justify-end gap-2 px-5 pb-5">
-            <Button onClick={onCancel} variant="ghost" size="sm">
-              <Back size={16} className="text-current" />
-              {copy.cancelLabel}
-            </Button>
-            <Button onClick={onConfirm} variant="destructive" size="sm">
-              <Trash size={16} className={DESTRUCTIVE_TRASH_ICON} />
-              {copy.confirmLabel}
-            </Button>
+            <div className="flex items-center justify-end gap-2">
+              <Button onClick={onCancel} variant="ghost" size="sm">
+                <Back size={16} className="text-current" />
+                {copy.cancelLabel}
+              </Button>
+              <Button onClick={onConfirm} variant="destructive" size="sm">
+                <Trash size={16} className={DESTRUCTIVE_TRASH_ICON} />
+                {copy.confirmLabel}
+              </Button>
+            </div>
           </div>
         </div>
       )}

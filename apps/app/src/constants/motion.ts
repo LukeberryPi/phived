@@ -6,10 +6,10 @@ import { cn } from "src/utils/cn";
 // so the transition must list `scale` for the press to animate instead of
 // snapping; reduced motion neutralizes with `scale-100` (not `transform-none`).
 export const pressFeedbackClassName =
-  "transition-[scale,background-color] duration-150 ease-out-strong motion-reduce:scale-100 active:scale-95";
+  "transition-[scale,background-color,filter] duration-150 ease-out-strong motion-reduce:scale-100 active:scale-95 active:brightness-90";
 
 const pressFeedbackGroupTransform =
-  "transition-transform duration-150 ease-out-strong motion-reduce:transform-none";
+  "transition-[transform,filter] duration-150 ease-out-strong motion-reduce:transform-none";
 
 const pressFeedbackGroupClassNames = {
   theme: "group/theme",
@@ -25,16 +25,21 @@ const pressFeedbackGroupClassNames = {
 } as const;
 
 const pressFeedbackGroupActiveClassNames = {
-  theme: "group-active/theme:scale-95",
-  "clear-tasks": "group-active/clear-tasks:scale-95",
-  hotkeys: "group-active/hotkeys:scale-95",
-  "bar-action": "group-active/bar-action:scale-95",
-  "clear-history": "group-active/clear-history:scale-95",
-  restore: "group-active/restore:scale-95",
-  "drawer-toggle": "group-active/drawer-toggle:scale-95",
-  done: "group-active/done:scale-95",
-  "add-row": "group-active/add-row:scale-95",
-  "menu-item": "group-active/menu-item:scale-95",
+  theme: "group-active/theme:scale-95 group-active/theme:brightness-90",
+  "clear-tasks":
+    "group-active/clear-tasks:scale-95 group-active/clear-tasks:brightness-90",
+  hotkeys: "group-active/hotkeys:scale-95 group-active/hotkeys:brightness-90",
+  "bar-action":
+    "group-active/bar-action:scale-95 group-active/bar-action:brightness-90",
+  "clear-history":
+    "group-active/clear-history:scale-95 group-active/clear-history:brightness-90",
+  restore: "group-active/restore:scale-95 group-active/restore:brightness-90",
+  "drawer-toggle":
+    "group-active/drawer-toggle:scale-95 group-active/drawer-toggle:brightness-90",
+  done: "group-active/done:scale-95 group-active/done:brightness-90",
+  "add-row": "group-active/add-row:scale-95 group-active/add-row:brightness-90",
+  "menu-item":
+    "group-active/menu-item:scale-95 group-active/menu-item:brightness-90",
 } as const;
 
 type PressFeedbackGroupName = keyof typeof pressFeedbackGroupClassNames;

@@ -19,7 +19,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 export const buttonVariants = cva(
   [
     "inline-flex select-none items-center justify-center gap-2 font-medium",
-    "transition-[transform,filter,background-color] duration-150 ease-out-strong motion-reduce:transform-none active:scale-95",
+    "transition-[transform,filter,background-color] duration-150 ease-out-strong motion-reduce:transform-none active:scale-95 active:brightness-90",
     "focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
   ],
   {
