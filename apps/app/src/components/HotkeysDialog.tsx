@@ -219,7 +219,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
             onClick={onClose}
             variant="ghost"
             size="icon-sm"
-            className="absolute top-1/2 right-4 shrink-0 -translate-y-1/2"
+            className="absolute top-4 right-4 shrink-0"
           >
             <Close size={18} className="dark:text-ink-dark text-black" />
           </Button>

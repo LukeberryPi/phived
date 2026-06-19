@@ -11,6 +11,7 @@
   --breakpoint-xs: 500px;
 
   --font-sans: "DM Sans", sans-serif;
+  --font-mono: "DM Mono", monospace;
 
   --shadow-brutalist-dark: 3px 3px #080811;
   --shadow-brutalist-light: 2px 2px #fdfdff;

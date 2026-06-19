@@ -145,7 +145,7 @@ export function DeletionConfirmDialog({
     >
       {copy && (
         <div className="overflow-hidden rounded-2xl">
-          <header className={DIALOG_HEADER}>
+          <header className={cn(DIALOG_HEADER, "pb-8")}>
             <h2
               id="deletion-confirm-title"
               className={cn("text-xl leading-tight font-medium", DRAWER_TEXT)}
@@ -158,13 +158,13 @@ export function DeletionConfirmDialog({
               onClick={onCancel}
               variant="ghost"
               size="icon-sm"
-              className="absolute top-1/2 right-4 shrink-0 -translate-y-1/2"
+              className="absolute top-4 right-4 shrink-0"
             >
               <Close size={18} className="dark:text-ink-dark text-black" />
             </Button>
           </header>
 
-          <div className="space-y-5 px-5 pb-5">
+          <div className="space-y-8 px-5 pb-5">
             <p
               id="deletion-confirm-description"
               className={cn("text-base leading-6", DRAWER_MUTED_TEXT)}

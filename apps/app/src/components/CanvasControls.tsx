@@ -83,7 +83,7 @@ export function CanvasControls({
           >
             {/* DM Sans has no tabular figures, so `tabular-nums` is a no-op and
                 proportional digits (e.g. 1 vs 2) reflow the centered bar. Render
-                the value in a monospace stack instead for equal-width digits. */}
+                the value in DM Mono instead for equal-width digits. */}
             <span className="font-mono text-[0.8125rem] tabular-nums">
               {Math.round(zoom * 100)}%
             </span>
