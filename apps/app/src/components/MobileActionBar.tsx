@@ -1,19 +1,19 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { HelpPanel } from "src/components/HelpDrawer";
+import { HelpPanel } from "src/components/Help";
 import { ThemeIndicator } from "src/components/ThemeIndicator";
-import { HistoryPanel } from "src/components/TaskHistoryDrawer";
+import { HistoryList } from "src/components/TaskHistoryDrawer";
 import {
-  DRAWER_BODY,
-  DRAWER_COUNT_BADGE,
-  DRAWER_HEADER_ACTIVE,
-  DRAWER_HEADER_HOVER,
-  DRAWER_SURFACE,
-  DRAWER_TEXT,
-  DRAWER_TOGGLE_DIVIDER,
+  ACTIVE_SURFACE,
+  COUNT_BADGE,
   FLOATING_CHROME_Z,
+  FOCUS_RING,
+  PANEL_BODY,
+  PRIMARY_TEXT,
   ROW_DIVIDER,
   SIDE_ACTION_BORDER,
+  SURFACE,
+  TOP_DIVIDER,
 } from "src/constants/ui";
 import {
   pressFeedbackGroupChildClassName,
@@ -23,11 +23,22 @@ import { useCanvasTasksContext, useDarkMode } from "src/contexts";
 import { Clock, Question } from "src/icons";
 import { cn } from "src/utils";
 
+// min-h-12 keeps every tap target >= 44px (WCAG 2.5.5 / Apple). Focus outline is
+// inset so the bar's `overflow-hidden` doesn't clip it on edge-to-edge buttons.
 const barActionClassName = cn(
-  "flex flex-1 items-center justify-center px-2 py-3 text-sm font-medium",
+  "flex min-h-12 flex-1 items-center justify-center px-2 py-3 text-sm font-medium",
   "xs:px-4",
-  DRAWER_TEXT,
-  SIDE_ACTION_BORDER
+  PRIMARY_TEXT,
+  SIDE_ACTION_BORDER,
+  FOCUS_RING,
+  "focus-visible:outline-offset-[-2px]"
+);
+
+// Hover is gated behind pointer-fine so a tap doesn't leave a stuck hover tint
+// on touch; the open ACTIVE_SURFACE state and press scale cover touch feedback.
+const barActionHoverClassName = cn(
+  "transition-colors duration-150 ease-out-strong",
+  "pointer-fine:hover:bg-surface-hover-light dark:pointer-fine:hover:bg-surface-hover-dark"
 );
 
 const barActionContentClassName =
@@ -51,11 +62,12 @@ function BarAction({
 }: BarActionProps) {
   return (
     <button
+      type="button"
       className={cn(
         pressFeedbackGroupClassName("bar-action"),
         barActionClassName,
-        !unavailable && DRAWER_HEADER_HOVER,
-        active && DRAWER_HEADER_ACTIVE,
+        !unavailable && barActionHoverClassName,
+        active && ACTIVE_SURFACE,
         className
       )}
       {...props}
@@ -75,10 +87,10 @@ function BarAction({
 
 function HistoryToggleIcon({ historyCount }: { historyCount: number }) {
   if (historyCount > 0) {
-    return <span className={DRAWER_COUNT_BADGE}>{historyCount}</span>;
+    return <span className={COUNT_BADGE}>{historyCount}</span>;
   }
 
-  return <Clock size={20} className={DRAWER_TEXT} />;
+  return <Clock size={20} className={PRIMARY_TEXT} />;
 }
 
 export function MobileActionBar() {
@@ -112,10 +124,7 @@ export function MobileActionBar() {
     >
       <div className="task-panel flex flex-col-reverse overflow-hidden">
         <div
-          className={cn(
-            "flex items-stretch",
-            sheetOpen && DRAWER_TOGGLE_DIVIDER
-          )}
+          className={cn("flex items-stretch", sheetOpen && TOP_DIVIDER)}
           role="toolbar"
         >
           <BarAction
@@ -124,7 +133,7 @@ export function MobileActionBar() {
             onClick={toggleHelp}
             active={helpOpen}
             className="w-full border-l-0"
-            icon={<Question size={20} className={DRAWER_TEXT} />}
+            icon={<Question size={20} className={PRIMARY_TEXT} />}
             label="help"
           />
 
@@ -156,7 +165,7 @@ export function MobileActionBar() {
             id="mobile-help-panel"
             role="region"
             aria-label="Help"
-            className={cn(DRAWER_BODY, "w-full")}
+            className={cn(PANEL_BODY, "w-full")}
           >
             <HelpPanel onClose={closeHelp} />
           </div>
@@ -167,20 +176,20 @@ export function MobileActionBar() {
             id="mobile-history-panel"
             role="region"
             aria-label="Task history"
-            className={cn(DRAWER_BODY, "w-full")}
+            className={cn(PANEL_BODY, "w-full")}
           >
             <div
               className={cn(
-                DRAWER_SURFACE,
+                SURFACE,
                 ROW_DIVIDER,
                 "flex min-h-12 items-center gap-2 px-4 text-sm font-medium",
-                DRAWER_TEXT
+                PRIMARY_TEXT
               )}
             >
               <HistoryToggleIcon historyCount={historyCount} />
               <span>history</span>
             </div>
-            <HistoryPanel />
+            <HistoryList />
           </div>
         )}
       </div>

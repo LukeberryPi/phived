@@ -1,8 +1,8 @@
 import { Tooltip } from "src/components/Tooltip";
-import { pressFeedbackClassName } from "src/constants/motion";
 import {
   CANVAS_CONTROLS_Z,
-  DRAWER_HEADER_HOVER,
+  CONTROL_BUTTON,
+  CONTROL_SEGMENT,
   FLOATING_CONTROL_SURFACE,
 } from "src/constants/ui";
 import { Minus, Plus } from "src/icons";
@@ -15,13 +15,6 @@ type CanvasControlsProps = {
   onResetZoom: () => void;
   onNewList: () => void;
 };
-
-const controlButtonClassName = cn(
-  "flex min-h-11 select-none items-center justify-center px-3",
-  "text-sm font-medium text-black dark:text-ink-dark",
-  DRAWER_HEADER_HOVER,
-  pressFeedbackClassName
-);
 
 export function CanvasControls({
   zoom,
@@ -42,14 +35,10 @@ export function CanvasControls({
       )}
     >
       <button
+        type="button"
         aria-label="new list"
         onClick={onNewList}
-        className={cn(
-          FLOATING_CONTROL_SURFACE,
-          "overflow-hidden shadow-none",
-          controlButtonClassName,
-          "gap-2 px-4"
-        )}
+        className={CONTROL_BUTTON}
       >
         <Plus size={16} className="dark:text-ink-dark text-black" />
         new list
@@ -58,26 +47,28 @@ export function CanvasControls({
       <div
         className={cn(
           FLOATING_CONTROL_SURFACE,
-          "flex items-stretch overflow-hidden shadow-none"
+          "box-border flex h-11 items-stretch overflow-hidden shadow-none"
         )}
         role="group"
         aria-label="zoom controls"
       >
         <Tooltip label="zoom out">
           <button
+            type="button"
             aria-label="zoom out"
             onClick={onZoomOut}
-            className={controlButtonClassName}
+            className={CONTROL_SEGMENT}
           >
             <Minus size={16} className="dark:text-ink-dark text-black" />
           </button>
         </Tooltip>
         <Tooltip label="reset zoom">
           <button
+            type="button"
             aria-label="reset zoom"
             onClick={onResetZoom}
             className={cn(
-              controlButtonClassName,
+              CONTROL_SEGMENT,
               "border-line-light dark:border-hairline-dark min-w-14 border-x"
             )}
           >
@@ -91,9 +82,10 @@ export function CanvasControls({
         </Tooltip>
         <Tooltip label="zoom in">
           <button
+            type="button"
             aria-label="zoom in"
             onClick={onZoomIn}
-            className={controlButtonClassName}
+            className={CONTROL_SEGMENT}
           >
             <Plus size={16} className="dark:text-ink-dark text-black" />
           </button>

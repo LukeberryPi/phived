@@ -11,73 +11,82 @@ export const STORAGE_WRITE_ERROR_MESSAGE =
 export const ROW_DIVIDER =
   "border-b border-line-light dark:border-hairline-dark";
 
-export const DRAWER_TOGGLE_DIVIDER =
+export const TOP_DIVIDER =
   "border-t border-line-light dark:border-hairline-dark";
 
-export const DRAWER_HEADER_GRID =
-  "grid min-h-12 grid-cols-[minmax(0,1fr)_5rem] items-stretch";
-
-export const DRAWER_HEADER_GRID_REVERSED =
-  "grid min-h-12 grid-cols-[5rem_minmax(0,1fr)] items-stretch";
-
-export const DRAWER_ICON_HEADER_GRID =
-  "grid min-h-12 grid-cols-[minmax(0,1fr)_3rem] items-stretch";
-
-export const DRAWER_ICON_HEADER_GRID_REVERSED =
-  "grid min-h-12 grid-cols-[3rem_minmax(0,1fr)] items-stretch";
-
-export const DRAWER_HEADER_ACTIVE =
+export const ACTIVE_SURFACE =
   "bg-surface-hover-light dark:bg-surface-active-dark";
 
 export const SIDE_ACTION_BORDER =
   "border-l border-line-light dark:border-hairline-dark";
 
-export const DRAWER_WIDTH = "w-[min(100vw-2rem,22rem)]";
-
-/** Shared z-index for header, drawers, canvas controls, and mobile bar. */
+/** Shared z-index for header, history drawer, canvas controls, and mobile bar. */
 export const FLOATING_CHROME_Z = "z-50";
 
 /** Canvas pan/zoom surface sits below floating chrome. */
 export const CANVAS_LAYER_Z = "z-0";
 
-/** Above drawers so center-bottom controls stay clickable. */
+/** Above the history drawer so center-bottom controls stay clickable. */
 export const CANVAS_CONTROLS_Z = "z-[60]";
 
-export const DRAWER_SURFACE = "bg-white dark:bg-surface-dark";
+export const SURFACE = "bg-white dark:bg-surface-dark";
 
-export const DRAWER_TEXT = "text-black dark:text-ink-dark";
+export const PRIMARY_TEXT = "text-black dark:text-ink-dark";
 
-export const DRAWER_MUTED_TEXT = "text-muted-light dark:text-muted-dark";
+export const MUTED_TEXT = "text-muted-light dark:text-muted-dark";
 
-export const DRAWER_COLLAPSED_BUTTON = cn(
-  "flex items-center gap-2 px-4 py-3 text-sm font-medium",
-  DRAWER_TEXT
-);
-
-export const DRAWER_HEADER_BUTTON = cn(
-  "flex min-h-12 items-center gap-2 px-4 text-sm font-medium",
-  DRAWER_SURFACE,
-  DRAWER_TEXT
-);
-
-export const DRAWER_BODY = cn(
+export const PANEL_BODY = cn(
   "custom-scrollbar max-h-[min(40rem,100vh)] overflow-y-auto",
-  DRAWER_SURFACE,
-  DRAWER_TEXT
+  SURFACE,
+  PRIMARY_TEXT
 );
 
-export const DRAWER_HEADER_HOVER = cn(
+export const HOVER_SURFACE = cn(
   "transition-colors duration-150 ease-out-strong",
   "hover:bg-surface-hover-light dark:hover:bg-surface-hover-dark"
 );
 
-/** Floating chrome surface (drawer toggle, zoom controls, new list): the same
- * frosted canvas tint as the header actions (translucent + backdrop blur),
- * with a muted hairline border so it reads as quiet control chrome rather
- * than a solid black-bordered panel. */
+/** App-local floating chrome surface (header actions, history toggle, zoom
+ * controls, new list): frosted canvas tint plus a muted hairline border. This
+ * is intentionally separate from @phived/ui's shared CTA/dialog variants. */
 export const FLOATING_CONTROL_SURFACE = cn(
   "rounded-2xl border border-line-light bg-canvas-light/80 backdrop-blur-md",
   "dark:border-hairline-dark dark:bg-canvas-dark/80"
+);
+
+/** Visible keyboard focus indicator. Uses `outline` (not a box-shadow `ring`)
+ * with `outline-offset` so the page behind shows through the gap, and so it
+ * stays crisp on any surface. Outset by default; control segments that fill an
+ * `overflow-hidden` cluster override to an inset offset so it isn't clipped. */
+export const FOCUS_RING = cn(
+  "focus-visible:outline-2 focus-visible:outline-offset-2",
+  "focus-visible:outline-black dark:focus-visible:outline-ink-dark"
+);
+
+/** The single app chrome button: header actions, "new list", and the collapsed
+ * "show history" toggle all share it. `h-11` owns the outer border-box height,
+ * so borders cannot make one chrome control taller than another. */
+export const CONTROL_BUTTON = cn(
+  "inline-flex h-11 box-border select-none items-center justify-center gap-2 px-4 text-sm font-medium",
+  PRIMARY_TEXT,
+  FLOATING_CONTROL_SURFACE,
+  "transition-[scale,filter] duration-150 ease-out-strong motion-reduce:scale-100",
+  "hover:brightness-95 dark:hover:brightness-125",
+  "active:scale-95 active:brightness-90 dark:active:brightness-125",
+  FOCUS_RING
+);
+
+/** Segment inside a sized chrome surface (the zoom cluster). It fills the
+ * parent's explicit 44px outer height instead of owning height itself; that
+ * keeps the parent's border from stacking on top of a 44px child. */
+export const CONTROL_SEGMENT = cn(
+  "flex h-full min-h-0 select-none items-center justify-center px-3 text-sm font-medium",
+  PRIMARY_TEXT,
+  "transition-[scale,background-color] duration-150 ease-out-strong motion-reduce:scale-100",
+  "hover:bg-surface-hover-light dark:hover:bg-surface-hover-dark",
+  "active:scale-95",
+  FOCUS_RING,
+  "focus-visible:outline-offset-[-2px]"
 );
 
 export const DIALOG_HEADER = "relative px-5 py-5 pr-14";
@@ -86,8 +95,8 @@ export const DIALOG_HEADER = "relative px-5 py-5 pr-14";
 export const APP_DIALOG = "app-dialog";
 
 export const KBD_CLASS = cn(
-  "rounded border border-line-light bg-white px-2 py-1 font-sans",
-  DRAWER_TEXT,
+  "rounded border border-line-light bg-white px-2 py-1 font-mono font-normal",
+  PRIMARY_TEXT,
   "dark:border-hairline-dark dark:bg-surface-hover-dark"
 );
 
@@ -101,10 +110,12 @@ export const ACTION_ACCENT_SURFACE =
 export const ACTION_ACCENT_HOVER = cn(
   "transition-[filter] duration-150 ease-out-strong motion-reduce:transition-none",
   "hover:brightness-95 dark:hover:brightness-125",
-  "active:brightness-90 dark:active:brightness-90"
+  // Press continues each theme's hover direction (light dims, dark lifts) so
+  // the accent doesn't flash by reversing brightness on press.
+  "active:brightness-90 dark:active:brightness-150"
 );
 
-export const DRAWER_COUNT_BADGE = cn(
+export const COUNT_BADGE = cn(
   "inline-flex size-6 shrink-0 items-center justify-center rounded-full",
   "border border-black text-xs tabular-nums",
   ACTION_ACCENT_SURFACE,

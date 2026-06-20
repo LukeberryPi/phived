@@ -95,9 +95,10 @@ export function TaskRow({
         >
           <DragVertical
             className={cn(
-              "ease-out-strong origin-center transition-[color,scale] duration-150",
-              "text-muted-light dark:text-muted-dark motion-reduce:scale-100",
-              "dark:group-hover/drag:text-ink-dark group-hover/drag:scale-110 group-hover/drag:text-black"
+              "ease origin-center transition-[color,scale] duration-150 motion-reduce:scale-100",
+              "text-muted-light dark:text-muted-dark",
+              "pointer-fine:group-hover/drag:scale-110 pointer-fine:group-hover/drag:text-black",
+              "dark:pointer-fine:group-hover/drag:text-ink-dark"
             )}
           />
         </span>

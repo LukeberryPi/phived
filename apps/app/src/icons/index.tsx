@@ -1,6 +1,8 @@
 import {
   ArrowCounterClockwise,
+  ArrowDown as PhArrowDown,
   ArrowLeft as ArrowLeftIcon,
+  ArrowUp as PhArrowUp,
   ArrowsOutCardinal,
   CaretDown as CaretDownIcon,
   CaretRight as CaretRightIcon,
@@ -8,6 +10,8 @@ import {
   Crosshair,
   CaretUpDown,
   Clock as ClockIcon,
+  Command as PhCommand,
+  Control as PhControl,
   Desktop,
   Export as ExportIcon,
   FileCode,
@@ -16,6 +20,7 @@ import {
   Keyboard as KeyboardIcon,
   Minus as MinusIcon,
   Moon as MoonIcon,
+  Option as PhOption,
   Plus as PlusIcon,
   Question as QuestionIcon,
   Sun as SunIcon,
@@ -89,6 +94,14 @@ export function Back({ className, size = 24 }: IconProps) {
   return <ArrowLeftIcon size={size} className={className} aria-hidden />;
 }
 
+export function ArrowUp({ className, size = 24 }: IconProps) {
+  return <PhArrowUp size={size} className={className} aria-hidden />;
+}
+
+export function ArrowDown({ className, size = 24 }: IconProps) {
+  return <PhArrowDown size={size} className={className} aria-hidden />;
+}
+
 export function Question({ className, size = 24 }: IconProps) {
   return <QuestionIcon size={size} className={className} aria-hidden />;
 }
@@ -103,6 +116,18 @@ export function Computer({ className, size = 24 }: IconProps) {
 
 export function Keyboard({ className, size = 24 }: IconProps) {
   return <KeyboardIcon size={size} className={className} aria-hidden />;
+}
+
+export function Command({ className, size = 24 }: IconProps) {
+  return <PhCommand size={size} className={className} aria-hidden />;
+}
+
+export function Option({ className, size = 24 }: IconProps) {
+  return <PhOption size={size} className={className} aria-hidden />;
+}
+
+export function Control({ className, size = 24 }: IconProps) {
+  return <PhControl size={size} className={className} aria-hidden />;
 }
 
 export function Close({ className, size = 24 }: IconProps) {
@@ -120,3 +145,37 @@ export function Plus({ className, size = 24 }: IconProps) {
 export function Minus({ className, size = 24 }: IconProps) {
   return <MinusIcon size={size} className={className} aria-hidden />;
 }
+
+/** Icon-suffixed aliases — same components, preferred import names. */
+export {
+  ArrowsMove as ArrowsMoveIcon,
+  ArrowDown as ArrowDownIcon,
+  ArrowUp as ArrowUpIcon,
+  Back as BackIcon,
+  CaretDown as CaretDownIcon,
+  CaretRight as CaretRightIcon,
+  Check as CheckIcon,
+  CircleX as CircleXIcon,
+  Clock as ClockIcon,
+  Close as CloseIcon,
+  Command as CommandIcon,
+  Computer as ComputerIcon,
+  Control as ControlIcon,
+  DragVertical as DragVerticalIcon,
+  Export as ExportIcon,
+  Focus as FocusIcon,
+  Globe as GlobeIcon,
+  JsonFile as JsonFileIcon,
+  Keyboard as KeyboardIcon,
+  MarkdownFile as MarkdownFileIcon,
+  Minus as MinusIcon,
+  Moon as MoonIcon,
+  Option as OptionIcon,
+  Plus as PlusIcon,
+  Question as QuestionIcon,
+  Restore as RestoreIcon,
+  Sun as SunIcon,
+  Trash as TrashIcon,
+  ArrowsMove as DragIcon,
+  Close as XIcon,
+};

@@ -5,8 +5,8 @@ import {
   APP_DIALOG,
   DESTRUCTIVE_TRASH_ICON,
   DIALOG_HEADER,
-  DRAWER_MUTED_TEXT,
-  DRAWER_TEXT,
+  MUTED_TEXT,
+  PRIMARY_TEXT,
 } from "src/constants/ui";
 import { Back, Close, Trash } from "src/icons";
 import { cn } from "src/utils";
@@ -148,7 +148,7 @@ export function DeletionConfirmDialog({
           <header className={cn(DIALOG_HEADER, "pb-8")}>
             <h2
               id="deletion-confirm-title"
-              className={cn("text-xl leading-tight font-medium", DRAWER_TEXT)}
+              className={cn("text-xl leading-tight font-medium", PRIMARY_TEXT)}
             >
               {copy.title}
             </h2>
@@ -167,17 +167,17 @@ export function DeletionConfirmDialog({
           <div className="space-y-8 px-5 pb-5">
             <p
               id="deletion-confirm-description"
-              className={cn("text-base leading-6", DRAWER_MUTED_TEXT)}
+              className={cn("text-base leading-6", MUTED_TEXT)}
             >
               {copy.description}
             </p>
 
             <div className="flex items-center justify-end gap-2">
-              <Button onClick={onCancel} variant="ghost" size="sm">
+              <Button onClick={onCancel} variant="ghost">
                 <Back size={16} className="text-current" />
                 {copy.cancelLabel}
               </Button>
-              <Button onClick={onConfirm} variant="destructive" size="sm">
+              <Button onClick={onConfirm} variant="destructive">
                 <Trash size={16} className={DESTRUCTIVE_TRASH_ICON} />
                 {copy.confirmLabel}
               </Button>

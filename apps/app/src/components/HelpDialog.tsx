@@ -1,13 +1,29 @@
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "src/components/Button";
-import { APP_DIALOG, DIALOG_HEADER, KBD_CLASS } from "src/constants/ui";
-import { Close } from "src/icons";
+import { HelpContent } from "src/components/Help";
+import {
+  APP_DIALOG,
+  DIALOG_HEADER,
+  KBD_CLASS,
+  MUTED_TEXT,
+} from "src/constants/ui";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  CloseIcon,
+  CommandIcon,
+  ControlIcon,
+  DragIcon,
+  OptionIcon,
+} from "src/icons";
 import { cn } from "src/utils";
+import type { DefaultSvgProps } from "src/utils";
 
 type Key = {
   display: string;
   label?: string;
+  icon?: (props: DefaultSvgProps) => React.JSX.Element;
 };
 
 type Combo = Key[];
@@ -25,8 +41,12 @@ type ShortcutSection = {
 const ENTER: Key = { display: "enter" };
 const SHIFT: Key = { display: "shift" };
 const ESC: Key = { display: "esc", label: "escape" };
-const ARROW_UP: Key = { display: "↑", label: "up arrow" };
-const ARROW_DOWN: Key = { display: "↓", label: "down arrow" };
+const ARROW_UP: Key = { display: "", icon: ArrowUpIcon, label: "up arrow" };
+const ARROW_DOWN: Key = {
+  display: "",
+  icon: ArrowDownIcon,
+  label: "down arrow",
+};
 
 function detectIsMac(): boolean {
   if (typeof navigator === "undefined") {
@@ -44,10 +64,10 @@ function detectIsMac(): boolean {
 
 function buildSections(isMac: boolean): ShortcutSection[] {
   const completeModifier: Key = isMac
-    ? { display: "⌘", label: "command" }
-    : { display: "ctrl", label: "control" };
+    ? { display: "", icon: CommandIcon, label: "command" }
+    : { display: "", icon: ControlIcon, label: "control" };
   const altModifier: Key = isMac
-    ? { display: "⌥", label: "option" }
+    ? { display: "", icon: OptionIcon, label: "option" }
     : { display: "alt", label: "alt" };
 
   return [
@@ -91,14 +111,22 @@ function buildSections(isMac: boolean): ShortcutSection[] {
         },
         {
           label: "move list",
-          combos: [[{ display: "drag header", label: "drag the list header" }]],
+          combos: [
+            [
+              {
+                display: "drag",
+                icon: DragIcon,
+                label: "drag the move list control",
+              },
+            ],
+          ],
         },
       ],
     },
   ];
 }
 
-type HotkeysDialogProps = {
+type HelpDialogProps = {
   open: boolean;
   onClose: () => void;
 };
@@ -125,9 +153,16 @@ function Keys({ combos }: { combos: Combo[] }) {
               )}
               <kbd
                 aria-label={key.label}
-                className={cn(KBD_CLASS, "min-w-8 text-center text-sm")}
+                className={cn(
+                  KBD_CLASS,
+                  "inline-flex min-h-8 min-w-8 items-center justify-center gap-1 text-sm",
+                  key.icon && !key.display && "px-1.5"
+                )}
               >
                 {key.display}
+                {key.icon ? (
+                  <key.icon size={14} className="text-current" />
+                ) : null}
               </kbd>
             </span>
           ))}
@@ -137,7 +172,7 @@ function Keys({ combos }: { combos: Combo[] }) {
   );
 }
 
-export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
+export function HelpDialog({ open, onClose }: HelpDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isMac] = useState(detectIsMac);
   const sections = useMemo(() => buildSections(isMac), [isMac]);
@@ -197,7 +232,7 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
   return (
     <dialog
       ref={dialogRef}
-      aria-labelledby="hotkeys-dialog-title"
+      aria-labelledby="help-dialog-title"
       onClose={onClose}
       onCancel={onClose}
       onClick={handleClick}
@@ -210,48 +245,57 @@ export function HotkeysDialog({ open, onClose }: HotkeysDialogProps) {
     >
       <div className="flex max-h-[85vh] flex-col">
         <header className={DIALOG_HEADER}>
-          <h2 id="hotkeys-dialog-title" className="text-xl font-medium">
-            keyboard shortcuts
+          <h2 id="help-dialog-title" className="text-xl font-medium">
+            help
           </h2>
           <Button
             autoFocus
-            aria-label="Close keyboard shortcuts"
+            aria-label="Close help"
             onClick={onClose}
             variant="ghost"
             size="icon-sm"
             className="absolute top-4 right-4 shrink-0"
           >
-            <Close size={18} className="dark:text-ink-dark text-black" />
+            <CloseIcon size={18} className="dark:text-ink-dark text-black" />
           </Button>
         </header>
 
-        <div className="custom-scrollbar grid gap-x-20 gap-y-8 overflow-y-auto px-5 py-5 sm:grid-cols-2">
-          {sections.map((section, sectionIdx) => {
-            const headingId = `hotkeys-section-${sectionIdx}`;
+        <div className="custom-scrollbar space-y-8 overflow-y-auto px-5 py-5">
+          <HelpContent />
 
-            return (
-              <section key={section.title} aria-labelledby={headingId}>
-                <h3 id={headingId} className="mb-3 text-lg font-medium">
-                  {section.title}
-                </h3>
-                <dl className="space-y-3">
-                  {section.shortcuts.map((shortcut) => (
-                    <div
-                      key={shortcut.label}
-                      className="flex items-center justify-between gap-4"
-                    >
-                      <dt className="text-base whitespace-nowrap">
-                        {shortcut.label}
-                      </dt>
-                      <dd className="m-0">
-                        <Keys combos={shortcut.combos} />
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </section>
-            );
-          })}
+          <div className="grid gap-x-20 gap-y-8 sm:grid-cols-2">
+            {sections.map((section, sectionIdx) => {
+              const headingId = `hotkeys-section-${sectionIdx}`;
+
+              return (
+                <section key={section.title} aria-labelledby={headingId}>
+                  <h3 id={headingId} className="mb-3 text-lg font-medium">
+                    {section.title}
+                  </h3>
+                  <dl className="space-y-3">
+                    {section.shortcuts.map((shortcut) => (
+                      <div
+                        key={shortcut.label}
+                        className="flex items-center justify-between gap-4"
+                      >
+                        <dt
+                          className={cn(
+                            "text-base whitespace-nowrap",
+                            MUTED_TEXT
+                          )}
+                        >
+                          {shortcut.label}
+                        </dt>
+                        <dd className="m-0">
+                          <Keys combos={shortcut.combos} />
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              );
+            })}
+          </div>
         </div>
       </div>
     </dialog>

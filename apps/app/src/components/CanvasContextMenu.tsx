@@ -10,7 +10,7 @@ import {
   ContextMenuTrigger,
   menuItemContentClassName,
 } from "src/components/ContextMenu";
-import { DESTRUCTIVE_TRASH_ICON, DRAWER_MUTED_TEXT } from "src/constants/ui";
+import { DESTRUCTIVE_TRASH_ICON, MUTED_TEXT } from "src/constants/ui";
 import {
   CircleX,
   Export,
@@ -97,11 +97,11 @@ export function CanvasContextMenu({
           </ContextMenuSubTrigger>
           <ContextMenuSubContent sideOffset={8} alignOffset={-4}>
             <ContextMenuItem onSelect={() => onExport("md")}>
-              <MarkdownFile size={16} className={DRAWER_MUTED_TEXT} />
+              <MarkdownFile size={16} className={MUTED_TEXT} />
               .md
             </ContextMenuItem>
             <ContextMenuItem onSelect={() => onExport("json")}>
-              <JsonFile size={16} className={DRAWER_MUTED_TEXT} />
+              <JsonFile size={16} className={MUTED_TEXT} />
               .json
             </ContextMenuItem>
           </ContextMenuSubContent>

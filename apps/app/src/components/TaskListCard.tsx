@@ -4,8 +4,8 @@ import { TaskRow } from "src/components/TaskRow";
 import { Tooltip } from "src/components/Tooltip";
 import {
   ACTION_ACCENT_SURFACE,
-  DRAWER_HEADER_HOVER,
-  DRAWER_MUTED_TEXT,
+  HOVER_SURFACE,
+  MUTED_TEXT,
 } from "src/constants/ui";
 import {
   pressFeedbackClassName,
@@ -194,8 +194,8 @@ export const TaskListCard = memo(function TaskListCard({
             className={cn(
               "border-line-light flex min-h-10 w-full items-center justify-center gap-2 border-t",
               "dark:border-hairline-dark dark:bg-surface-dark bg-white text-sm font-medium",
-              DRAWER_MUTED_TEXT,
-              DRAWER_HEADER_HOVER,
+              MUTED_TEXT,
+              HOVER_SURFACE,
               pressFeedbackGroupClassName("add-row")
             )}
           >
@@ -220,7 +220,7 @@ export const TaskListCard = memo(function TaskListCard({
               aria-hidden="true"
               className={cn(
                 "h-9 w-2 rounded-full border border-black bg-white",
-                "dark:border-muted-dark dark:bg-muted-dark"
+                "dark:border-ink-light dark:bg-muted-dark"
               )}
             />
           </button>

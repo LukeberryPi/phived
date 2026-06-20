@@ -3,7 +3,6 @@ import { HelmetProvider } from "react-helmet-async";
 import {
   Header,
   Head,
-  HelpDrawer,
   MobileActionBar,
   TaskHistoryDrawer,
 } from "src/components";
@@ -30,7 +29,6 @@ export function TasksPageShell({ children }: PropsWithChildren) {
       </HelmetProvider>
       {children}
       <Header />
-      <HelpDrawer />
       <TaskHistoryDrawer />
       <MobileActionBar />
     </div>

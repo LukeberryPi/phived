@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Button } from "src/components/Button";
-import { HotkeysDialog } from "src/components/HotkeysDialog";
+import { HelpDialog } from "src/components/HelpDialog";
 import { ThemeIndicator } from "src/components/ThemeIndicator";
 import { useDarkMode } from "src/contexts";
 import { pressFeedbackClassName } from "src/constants/motion";
-import { FLOATING_CHROME_Z } from "src/constants/ui";
-import { Keyboard } from "src/icons";
+import { CONTROL_BUTTON, FLOATING_CHROME_Z } from "src/constants/ui";
+import { Question } from "src/icons";
 import { cn } from "src/utils";
 
 const logoClassName = cn(
@@ -14,15 +13,9 @@ const logoClassName = cn(
   pressFeedbackClassName
 );
 
-/** Header actions float over the dotted canvas as frosted glass (translucent
- * canvas tint + backdrop blur) and keep the calm font-normal weight; the
- * shared Button supplies the ghost hover + press. */
-const headerActionClassName =
-  "bg-canvas-light/80 font-normal backdrop-blur-md dark:bg-canvas-dark/80";
-
 export function Header() {
   const { themePreference, toggleDarkMode } = useDarkMode();
-  const [hotkeysOpen, setHotkeysOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const themeIconClassName = "text-black dark:text-ink-dark";
 
@@ -56,32 +49,32 @@ export function Header() {
           phived
         </a>
         <nav className="pointer-events-auto flex h-full items-center justify-between gap-4">
-          <Button
+          <button
+            type="button"
             onClick={toggleDarkMode}
             aria-label={`Theme: ${themePreference}`}
-            variant="ghost"
-            className={headerActionClassName}
+            className={CONTROL_BUTTON}
           >
             <ThemeIndicator
               preference={themePreference}
               className={themeIconClassName}
               showLabel
             />
-          </Button>
-          <Button
+          </button>
+          <button
+            type="button"
             aria-haspopup="dialog"
-            aria-expanded={hotkeysOpen}
-            aria-label="show hotkeys"
-            onClick={() => setHotkeysOpen(true)}
-            variant="ghost"
-            className={headerActionClassName}
+            aria-expanded={helpOpen}
+            aria-label="show help"
+            onClick={() => setHelpOpen(true)}
+            className={CONTROL_BUTTON}
           >
-            <Keyboard size={20} className="dark:text-ink-dark text-black" />
-            show hotkeys
-          </Button>
+            <Question size={20} className="dark:text-ink-dark text-black" />
+            show help
+          </button>
         </nav>
       </header>
-      <HotkeysDialog open={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
+      <HelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
     </>
   );
 }
