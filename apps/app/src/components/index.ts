@@ -3,7 +3,6 @@ export { Header } from "src/components/Header";
 export { CanvasBoard } from "src/components/CanvasBoard";
 export { CanvasContextMenu } from "src/components/CanvasContextMenu";
 export { Head } from "src/components/Head";
-export { HelpDrawer } from "src/components/HelpDrawer";
 export { MobileActionBar } from "src/components/MobileActionBar";
 export { TasksPageShell } from "src/components/TasksPageShell";
 export { TaskHistoryDrawer } from "src/components/TaskHistoryDrawer";

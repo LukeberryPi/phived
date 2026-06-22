@@ -7,10 +7,10 @@ import {
 } from "src/constants/motion";
 import {
   DESTRUCTIVE_ACTION,
-  DRAWER_HEADER_HOVER,
-  DRAWER_MUTED_TEXT,
-  DRAWER_SURFACE,
-  DRAWER_TEXT,
+  HOVER_SURFACE,
+  MUTED_TEXT,
+  PRIMARY_TEXT,
+  SURFACE,
 } from "src/constants/ui";
 import { CaretRight } from "src/icons";
 import { cn } from "src/utils";
@@ -22,7 +22,7 @@ export const ContextMenuSub = ContextMenuPrimitive.Sub;
 const menuSurfaceClassName = cn(
   "context-menu-content custom-scrollbar z-[70] min-w-52 overflow-hidden rounded-2xl shadow-none",
   "border border-line-light dark:border-hairline-dark",
-  DRAWER_SURFACE
+  SURFACE
 );
 
 // The row itself only carries the hover background + group marker; the inner
@@ -30,10 +30,14 @@ const menuSurfaceClassName = cn(
 // whole row. Exported so `asChild` items (e.g. links) can match the layout.
 const menuItemClassName = cn(
   "relative flex min-h-12 w-full select-none items-center px-4 text-sm outline-none",
-  DRAWER_TEXT,
-  DRAWER_HEADER_HOVER,
+  PRIMARY_TEXT,
+  HOVER_SURFACE,
   pressFeedbackGroupClassName("menu-item"),
-  "data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-45"
+  // Keep pointer events so `cursor-not-allowed` actually shows (Radix still
+  // blocks selection via the `disabled` prop); suppress the hover background
+  // so a disabled item reads as inert.
+  "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-45",
+  "data-[disabled]:hover:bg-transparent dark:data-[disabled]:hover:bg-transparent"
 );
 
 export const menuItemContentClassName = cn(
@@ -98,7 +102,7 @@ export const ContextMenuSubTrigger = forwardRef<
   >
     <span className={menuItemContentClassName}>
       {children}
-      <CaretRight size={16} className={cn("ml-auto", DRAWER_MUTED_TEXT)} />
+      <CaretRight size={16} className={cn("ml-auto", MUTED_TEXT)} />
     </span>
   </ContextMenuPrimitive.SubTrigger>
 ));

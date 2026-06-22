@@ -88,11 +88,6 @@ struct HelpView: View {
             Text("Your tasks live on a canvas now. Spawn as many lists as you need and give each one a tag, like **work** or **personal**.")
             Text("**Double-click** anywhere on the canvas (or press **new list**) to spawn a list. Use its move control to position it.")
             Text("Drag the canvas to pan and pinch to zoom. Lists grow as you type, and finished tasks move to history when you press **done**.")
-            Text("No login. No ads. No distractions.")
-            HStack(spacing: 4) {
-                Link("Open Source", destination: URL(string: "https://github.com/lukeberrypi/phived")!).underline()
-                Text("and free. Forever.")
-            }
         }
         .font(.custom("DM Sans", size: 14))
         .padding(20)

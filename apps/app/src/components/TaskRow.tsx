@@ -10,7 +10,7 @@ import {
   pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
-import { DragVertical } from "src/icons";
+import { Check, DragVertical } from "src/icons";
 import { cn } from "src/utils";
 
 type TaskRowProps = {
@@ -21,6 +21,7 @@ type TaskRowProps = {
   isLast: boolean;
   isDragging: boolean;
   anotherRowIsDragging: boolean;
+  belowIsDragging: boolean;
   onChange: (event: FormEvent<HTMLInputElement>, index: number) => void;
   onKeyDown: (event: KeyboardEvent<HTMLInputElement>, index: number) => void;
   onDragPointerDown: (event: PointerEvent<HTMLElement>, index: number) => void;
@@ -35,6 +36,7 @@ export function TaskRow({
   isLast,
   isDragging,
   anotherRowIsDragging,
+  belowIsDragging,
   onChange,
   onKeyDown,
   onDragPointerDown,
@@ -42,6 +44,9 @@ export function TaskRow({
 }: TaskRowProps) {
   const isEmpty = task.trim() === "";
   const someRowIsDragging = isDragging || anotherRowIsDragging;
+  // Drop the divider when the next row is lifting away to reorder, so the
+  // detached card doesn't sit beneath a stray hairline.
+  const showDivider = !isLast && !isDragging && !belowIsDragging;
 
   return (
     <li data-task-row className={cn("relative", isDragging && "z-10 px-1")}>
@@ -66,7 +71,7 @@ export function TaskRow({
             "dark:bg-surface-dark dark:text-ink-dark",
             !isEmpty && "group-hover/row:pr-2",
             someRowIsDragging && "cursor-grabbing",
-            !isLast && !isDragging && ROW_DIVIDER,
+            showDivider && ROW_DIVIDER,
             isDragging && "rounded-2xl"
           )}
         />
@@ -75,12 +80,12 @@ export function TaskRow({
           tabIndex={-1}
           onPointerDown={(event) => onDragPointerDown(event, index)}
           className={cn(
-            "flex touch-none items-center justify-center bg-white",
+            "group/drag flex touch-none items-center justify-center bg-white",
             isDragging ? "pr-3" : "pr-2",
-            "text-black placeholder:select-none",
-            "dark:bg-surface-dark dark:text-ink-dark",
+            "placeholder:select-none",
+            "dark:bg-surface-dark",
             isDragging ? "cursor-grabbing" : "hover:cursor-grab",
-            !isLast && !isDragging && ROW_DIVIDER,
+            showDivider && ROW_DIVIDER,
             isEmpty || anotherRowIsDragging
               ? "hidden"
               : isDragging
@@ -88,7 +93,14 @@ export function TaskRow({
                 : HOVER_REVEAL
           )}
         >
-          <DragVertical className="dark:text-ink-dark origin-center text-black" />
+          <DragVertical
+            className={cn(
+              "ease origin-center transition-[color,scale] duration-150 motion-reduce:scale-100",
+              "text-muted-light dark:text-muted-dark",
+              "pointer-fine:group-hover/drag:scale-110 pointer-fine:group-hover/drag:text-black",
+              "dark:pointer-fine:group-hover/drag:text-ink-dark"
+            )}
+          />
         </span>
         <button
           aria-label="complete task"
@@ -104,7 +116,9 @@ export function TaskRow({
             isEmpty || someRowIsDragging ? "hidden" : HOVER_REVEAL
           )}
         >
-          <span className={pressFeedbackGroupChildClassName("done")}>done</span>
+          <span className={pressFeedbackGroupChildClassName("done")}>
+            <Check size={18} className="text-current" />
+          </span>
         </button>
       </div>
     </li>

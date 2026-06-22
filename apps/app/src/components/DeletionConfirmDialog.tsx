@@ -5,8 +5,8 @@ import {
   APP_DIALOG,
   DESTRUCTIVE_TRASH_ICON,
   DIALOG_HEADER,
-  DRAWER_MUTED_TEXT,
-  DRAWER_TEXT,
+  MUTED_TEXT,
+  PRIMARY_TEXT,
 } from "src/constants/ui";
 import { Back, Close, Trash } from "src/icons";
 import { cn } from "src/utils";
@@ -145,10 +145,10 @@ export function DeletionConfirmDialog({
     >
       {copy && (
         <div className="overflow-hidden rounded-2xl">
-          <header className={DIALOG_HEADER}>
+          <header className={cn(DIALOG_HEADER, "pb-8")}>
             <h2
               id="deletion-confirm-title"
-              className={cn("text-xl leading-tight font-medium", DRAWER_TEXT)}
+              className={cn("text-xl leading-tight font-medium", PRIMARY_TEXT)}
             >
               {copy.title}
             </h2>
@@ -158,30 +158,30 @@ export function DeletionConfirmDialog({
               onClick={onCancel}
               variant="ghost"
               size="icon-sm"
-              className="absolute top-1/2 right-4 shrink-0 -translate-y-1/2"
+              className="absolute top-4 right-4 shrink-0"
             >
               <Close size={18} className="dark:text-ink-dark text-black" />
             </Button>
           </header>
 
-          <div className="px-5 py-5">
+          <div className="space-y-8 px-5 pb-5">
             <p
               id="deletion-confirm-description"
-              className={cn("text-base leading-6", DRAWER_MUTED_TEXT)}
+              className={cn("text-base leading-6", MUTED_TEXT)}
             >
               {copy.description}
             </p>
-          </div>
 
-          <div className="flex items-center justify-end gap-2 px-5 pb-5">
-            <Button onClick={onCancel} variant="ghost" size="sm">
-              <Back size={16} className="text-current" />
-              {copy.cancelLabel}
-            </Button>
-            <Button onClick={onConfirm} variant="destructive" size="sm">
-              <Trash size={16} className={DESTRUCTIVE_TRASH_ICON} />
-              {copy.confirmLabel}
-            </Button>
+            <div className="flex items-center justify-end gap-2">
+              <Button onClick={onCancel} variant="ghost">
+                <Back size={16} className="text-current" />
+                {copy.cancelLabel}
+              </Button>
+              <Button onClick={onConfirm} variant="destructive">
+                <Trash size={16} className={DESTRUCTIVE_TRASH_ICON} />
+                {copy.confirmLabel}
+              </Button>
+            </div>
           </div>
         </div>
       )}
