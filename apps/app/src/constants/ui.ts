@@ -82,9 +82,12 @@ export const CONTROL_BUTTON = cn(
 export const CONTROL_SEGMENT = cn(
   "flex h-full min-h-0 select-none items-center justify-center px-3 text-sm font-medium",
   PRIMARY_TEXT,
-  "transition-[scale,background-color] duration-150 ease-out-strong motion-reduce:scale-100",
+  "transition-[scale,background-color,filter] duration-150 ease-out-strong motion-reduce:scale-100",
   "hover:bg-surface-hover-light dark:hover:bg-surface-hover-dark",
-  "active:scale-95",
+  // Press darkens the hovered fill on light and lifts it on dark, matching the
+  // chrome buttons so the press continues the hover direction instead of only
+  // scaling.
+  "active:scale-95 active:brightness-90 dark:active:brightness-125",
   FOCUS_RING,
   "focus-visible:outline-offset-[-2px]"
 );
