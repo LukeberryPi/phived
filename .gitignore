@@ -9,7 +9,6 @@ lerna-debug.log*
 
 node_modules
 dist
-apps/macos-app/dist
 dev-dist
 dist-ssr
 *.local

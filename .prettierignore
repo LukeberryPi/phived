@@ -3,7 +3,6 @@ node_modules
 dist
 dist-ssr
 dev-dist
-apps/macos-app/dist
 .astro
 .vite
 .build
