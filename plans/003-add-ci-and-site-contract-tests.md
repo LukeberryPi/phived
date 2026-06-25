@@ -48,22 +48,24 @@ export function isAppPath(pathname = "") {
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Lint | `bun run lint` | exit 0 |
-| Tests | `bun run test:scripts` | exit 0; site contract tests pass |
-| Check | `bun run check` | exit 0 |
-| Build | `bun run build:site` | exit 0; assembled dist exists |
+| Purpose | Command                | Expected on success              |
+| ------- | ---------------------- | -------------------------------- |
+| Lint    | `bun run lint`         | exit 0                           |
+| Tests   | `bun run test:scripts` | exit 0; site contract tests pass |
+| Check   | `bun run check`        | exit 0                           |
+| Build   | `bun run build:site`   | exit 0; assembled dist exists    |
 
 ## Scope
 
 **In scope**:
+
 - `.github/workflows/check.yml` (create)
 - `package.json`
 - `scripts/site-contract.test.mjs` (create)
 - `scripts/build-site.mjs`
 
 **Out of scope**:
+
 - App UI code under `apps/app/src`
 - Astro page copy under `apps/web/src`
 - macOS build/test changes

@@ -41,11 +41,11 @@ though the application itself is healthy.
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Install | `bun install --frozen-lockfile` | exit 0 |
-| Search | `rg -n "node\\.js|npm|npx|package-lock|tailwind\\.config|postcss\\.config" README.md .nvmrc eslint.config.js package.json` | no stale migration matches |
-| Full gate | `bun run check` | exit 0 |
+| Purpose   | Command                         | Expected on success |
+| --------- | ------------------------------- | ------------------- | --- | ------------ | ----------------- | ----------------------------------------------------------------- | -------------------------- |
+| Install   | `bun install --frozen-lockfile` | exit 0              |
+| Search    | `rg -n "node\\.js               | npm                 | npx | package-lock | tailwind\\.config | postcss\\.config" README.md .nvmrc eslint.config.js package.json` | no stale migration matches |
+| Full gate | `bun run check`                 | exit 0              |
 
 ## Scope
 
@@ -131,4 +131,3 @@ metadata. Plan 001's `bun run check` is the regression gate.
 
 Keep package-manager instructions in one place and use `bun run check` as the
 single contributor verification command once plan 001 lands.
-

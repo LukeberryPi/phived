@@ -35,17 +35,18 @@ matching the child dev servers.
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Audit | `bun audit --audit-level high` | no high vulnerabilities, or documented upstream blocker |
-| Lint | `bun run lint` | exit 0 |
-| Typecheck | `bun run typecheck` | exit 0 |
-| Check | `bun run check` | exit 0 |
-| Preview smoke | `bun run build:site` then `bun scripts/preview-site.mjs` | `/sw.js` has no-cache header |
+| Purpose       | Command                                                  | Expected on success                                     |
+| ------------- | -------------------------------------------------------- | ------------------------------------------------------- |
+| Audit         | `bun audit --audit-level high`                           | no high vulnerabilities, or documented upstream blocker |
+| Lint          | `bun run lint`                                           | exit 0                                                  |
+| Typecheck     | `bun run typecheck`                                      | exit 0                                                  |
+| Check         | `bun run check`                                          | exit 0                                                  |
+| Preview smoke | `bun run build:site` then `bun scripts/preview-site.mjs` | `/sw.js` has no-cache header                            |
 
 ## Scope
 
 **In scope**:
+
 - `package.json`
 - `bun.lock`
 - `vercel.json`
@@ -56,6 +57,7 @@ matching the child dev servers.
 - `apps/web/src/layouts/Base.astro`
 
 **Out of scope**:
+
 - Replacing analytics product/vendor choice beyond `/app` removal.
 - App runtime state/persistence changes.
 - macOS code.
