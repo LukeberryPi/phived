@@ -13,13 +13,11 @@
     "dev": "bun run dev:app & bun run dev:web & wait",
     "dev:app": "bun --cwd apps/app dev",
     "dev:web": "bun --cwd apps/web dev",
-    "build": "bun run build:site && bun run build:macos",
+    "build": "bun run build:site",
     "build:app": "bun --cwd apps/app build",
     "build:web": "bun --cwd apps/web build",
     "build:site": "bun scripts/build-site.mjs",
     "start": "bun scripts/serve-site.mjs",
-    "build:macos": "sh apps/macos-app/scripts/build-app.sh",
-    "dev:macos": "bun run build:macos && open apps/macos-app/dist/Phived.app",
     "lint": "bun run lint:app && bun run lint:web && bun run lint:packages && bun run lint:scripts",
     "lint:app": "bun --cwd apps/app lint",
     "lint:web": "bun --cwd apps/web lint",
@@ -37,8 +35,6 @@
     "preview": "bun run build:site && bun scripts/serve-site.mjs",
     "preview:app": "bun --cwd apps/app preview",
     "preview:web": "bun --cwd apps/web preview",
-    "test:macos": "bun run build:macos && PHIVED_SELF_TEST=1 apps/macos-app/dist/Phived.app/Contents/MacOS/Phived",
-    "test:macos:xctest": "swift test --package-path apps/macos-app",
     "prepare": "lefthook install || true"
   },
   "devDependencies": {

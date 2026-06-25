@@ -17,7 +17,6 @@ See [`CONTEXT.md`](CONTEXT.md) for canonical surface names and
 
 - `apps/web` — Astro public web app served at `phived.com/`
 - `apps/app` — Vite, React, and TypeScript task app served at `phived.com/app`
-- `apps/macos-app` — native SwiftUI macOS app
 - `packages/tokens` — shared design tokens consumed by the web and app surfaces
 
 ## accessing locally
@@ -50,7 +49,7 @@ run a dev server:
 to see the production-shaped combined site (`/` + `/app` on one origin), use
 `bun run preview` below.
 
-Build the deployable site and native app:
+Build the deployable site:
 
 `bun run build`
 
@@ -62,26 +61,12 @@ Preview the built site locally:
 
 `bun run preview`
 
-Build and open the native app:
-
-`bun run dev:macos`
-
-The packaged app is written to `apps/macos-app/dist/Phived.app`.
-
 Run checks:
 
 - `bun run check`
 - `bun run lint`
 - `bun run typecheck`
 - `bun run test:app`
-- `bun run test:macos`
-
-With a full Xcode installation selected, run the XCTest suite with:
-
-`bun run test:macos:xctest`
-
-See [`docs/macos-parity.md`](docs/macos-parity.md) for the native parity
-contract and verification workflow.
 
 ---
 
