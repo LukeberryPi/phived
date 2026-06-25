@@ -1,4 +1,4 @@
-# 0001 — Local task identity
+# 007 — Local task identity
 
 ## Goal
 
@@ -39,7 +39,7 @@ the whole point.
   AND the new `tasks: { id, text }[]` (validate). This is what migrates existing
   users. localStorage continues to store `Task[]` (padding included).
 - **No `order`/fractional index field yet.** Array position remains the order.
-  Fractional ordering is introduced in [0003]/[0004] at the sync boundary. If
+  Fractional ordering is introduced in [009]/[010] at the sync boundary. If
   this plan seems to need an order key, STOP.
 - **Keep action callbacks index-based.** Do not switch to id-addressed
   mutations; that is a later, sync-driven change. The only id usage added now is
@@ -187,7 +187,7 @@ other change.
 These tests encode the behaviour contract; keep the behaviour, update the shape.
 
 - Add a shared helper in each affected test (or inline) `texts(tasks) =>
-  tasks.map((t) => t.text)` and assert on `texts(...)` where the old test
+tasks.map((t) => t.text)` and assert on `texts(...)` where the old test
   compared string arrays.
 - `taskList.test.ts`: build inputs with `{ id, text }` (a tiny
   `task(text) => ({ id: crypto.randomUUID(), text })` factory). Assert results

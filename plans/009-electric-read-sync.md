@@ -1,14 +1,14 @@
-# 0003 — Electric read sync + gatekeeper
+# 009 — Electric read sync + gatekeeper
 
 ## Goal
 
 Entitled, signed-in users stream **their own** cloud rows (lists, tasks, history)
 into the app through a **private** Electric service fronted by an authorizing
 proxy on the single origin. **Reads only** in this phase — editing still uses
-localStorage; the write path is [0004]. Anonymous and non-entitled users are
+localStorage; the write path is [010]. Anonymous and non-entitled users are
 completely unaffected.
 
-> Depends on [0002] (Postgres + server + Better Auth + entitlement) and on
+> Depends on [008] (Postgres + server + Better Auth + entitlement) and on
 > Postgres logical replication being available.
 
 ## Decisions (do not deviate)
@@ -18,15 +18,15 @@ completely unaffected.
   a **persistent volume** for Electric state, **no public domain**.
 - **Proxy auth** pattern (not gatekeeper tokens). The server's `/sync/*` route
   validates the Better Auth session + `isEntitled`, **injects `where user_id =
-  '<me>'`**, appends `secret=ELECTRIC_SECRET`, and reverse-proxies to private
+'<me>'`**, appends `secret=ELECTRIC_SECRET`, and reverse-proxies to private
   Electric. The client never sees the secret and cannot widen the shape.
 - App-data schema is created here, every table carrying `user_id` for shape
-  scoping. `task` gets the fractional `order` (text) deferred from [0001] and a
+  scoping. `task` gets the fractional `order` (text) deferred from [007] and a
   soft-delete `deleted_at`.
 - Client uses `@electric-sql/client` + TanStack DB `electricCollectionOptions`
   pointed at the same-origin `/sync/v1/shape`. Read mapping: order cloud tasks by
-  `order` → array position; re-synthesize empty padding client-side (the [0001]
-  rule). 
+  `order` → array position; re-synthesize empty padding client-side (the [007]
+  rule).
 - Keep this phase **flag-gated**: when entitled + sync flag on, the canvas reads
   from the synced collections; editing stays local (or write-through disabled) so
   we never ship a "looks editable but isn't synced" state to real users. The
@@ -34,7 +34,7 @@ completely unaffected.
 
 ## External prerequisites
 
-- `wal_level=logical` already enabled on Postgres per [0002] (preferred: the
+- `wal_level=logical` already enabled on Postgres per [008] (preferred: the
   Postgres service's Custom Start Command flags). A good starting point is
   Railway's official **"Deploy ElectricSQL with your own Postgres"** template.
 - Electric service on Railway (private): `DATABASE_URL` (the **direct**,
@@ -46,19 +46,21 @@ completely unaffected.
 ## Scope (touch only these)
 
 New:
+
 - DB migration: `list`, `task`, `task_history` (DDL below).
 - `apps/server/src/sync-proxy.ts` — the `/sync/*` authorizing reverse proxy.
 - `apps/app/src/sync/collections.ts` — Electric collections; plus the flag-gated
   read-swap glue in the canvas context.
 
 Edited:
+
 - `apps/server` route table (mount `/sync/*` with auth + entitlement
   middleware).
 - Infra notes / `railway.json` for the Electric service (or document here for
   the operator).
 
 Do **not**: implement any write handlers/mutations, merge, or account deletion
-([0004]).
+([010]).
 
 ## Drift check (run first)
 
@@ -68,7 +70,7 @@ psql "$DATABASE_URL" -c '\dt' | rg -n '"?user"?|entitlement' || echo "auth/entit
 bun run check
 ```
 
-If [0002] artifacts are absent, STOP — this plan builds on them.
+If [008] artifacts are absent, STOP — this plan builds on them.
 
 ## Steps (in order)
 
@@ -86,8 +88,8 @@ If [0002] artifacts are absent, STOP — this plan builds on them.
    mode and pass through the relevant offset/handle/cursor query params).
 4. **Client collections (read-only).** Define `listCollection`,
    `taskCollection`, `historyCollection` via `electricCollectionOptions({ id,
-   schema, getKey: (r) => r.id, shapeOptions: { url: "/sync/v1/shape", params: {
-   table } } })`. No `onInsert/onUpdate/onDelete` yet.
+schema, getKey: (r) => r.id, shapeOptions: { url: "/sync/v1/shape", params: {
+table } } })`. No `onInsert/onUpdate/onDelete` yet.
 5. **Read swap (flag-gated).** When entitled + sync flag on, render the canvas
    from the collections: group `task` rows by `list_id`, sort by `order`, map to
    the in-memory `Task[]` (Phase 1 shape) and re-pad empties; lists from `list`;
@@ -148,7 +150,7 @@ create index on task_history (user_id);
 
 ## STOP conditions
 
-- Electric can't connect/replicate → re-check the [0002] checklist before
+- Electric can't connect/replicate → re-check the [008] checklist before
   stopping: `SHOW wal_level` is `logical` (set via Custom Start Command flags so
   it survives restarts), the role has `REPLICATION`, the URL is the **direct**
   (non-pooled) connection, and a persistent volume is attached. STOP only if all
@@ -156,9 +158,9 @@ create index on task_history (user_id);
 - The proxy cannot guarantee `user_id` scoping (any cross-user leakage) → STOP;
   security blocker, do not ship.
 - You find you must implement writes to make the read experience usable for real
-  users → that's [0004]; keep this phase flag-gated instead.
+  users → that's [010]; keep this phase flag-gated instead.
 
 ## Out of scope
 
-The write path, optimistic mutations, fractional-order *writes*, first-sign-in
-merge, account deletion ([0004]).
+The write path, optimistic mutations, fractional-order _writes_, first-sign-in
+merge, account deletion ([010]).

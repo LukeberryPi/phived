@@ -1,4 +1,4 @@
-# 0002 — Backend foundation (Postgres, server, Better Auth, Polar)
+# 008 — Backend foundation (Postgres, server, Better Auth, Polar)
 
 ## Goal
 
@@ -8,7 +8,7 @@ a new Bun/Hono server that also mounts Better Auth (passwordless) and Polar
 subscription/webhooks under `/api/*`; a user can sign in (magic link + Google)
 and subscribe via Polar; entitlement state is persisted in Postgres. The task
 app's day-to-day behaviour is unchanged — the auth/subscribe surface is additive
-and flag-gated until [0003]/[0004].
+and flag-gated until [009]/[010].
 
 > Version-sensitive: the Better Auth and Polar snippets below match docs current
 > at planning time. Verify against current docs while implementing; if an API
@@ -39,57 +39,62 @@ and flag-gated until [0003]/[0004].
 publishes an official "Deploy ElectricSQL with your own Postgres" template, and
 there are confirmed user deployments). It is **not** a blocker; it is a known
 config step:
+
 - Provision Postgres, then enable `wal_level=logical`. **Preferred method:** add
   flags to the Postgres service's **Custom Start Command** so the value survives
   the image's boot-time `postgresql.auto.conf` rewrite:
   `-c wal_level=logical -c max_wal_senders=10 -c max_replication_slots=10`, then
   redeploy. **Simpler alternative:** `ALTER SYSTEM SET wal_level='logical';
-  SELECT pg_reload_conf();` then restart the deployment — but on some Railway
+SELECT pg_reload_conf();` then restart the deployment — but on some Railway
   Postgres images this reverts to `replica` after restart, so verify with
   `SHOW wal_level;` and fall back to the start-command flags (or fork
   `railwayapp-templates/postgres`) if it does.
 - Electric needs a role with the `REPLICATION` attribute (Railway's default
   superuser has it) and a **direct** (non-pooled) connection (Railway's default
-  Postgres connection is direct). Capture the direct URL for Electric in [0003].
+  Postgres connection is direct). Capture the direct URL for Electric in [009].
 - Electric also needs a **persistent volume** for shape storage
   (`ELECTRIC_STORAGE_DIR`, e.g. `/var/lib/electric/persistent`) — provisioned
-  with the Electric service in [0003].
+  with the Electric service in [009].
 - Electric and Postgres remain **private** (no public domain). Only the server
   service is public.
 
 **Polar** (use **sandbox** first)
+
 - Organization + a **subscription product** with monthly and annual prices;
   capture product IDs.
 - `POLAR_ACCESS_TOKEN`; a webhook endpoint at
   `https://phived.com/api/auth/polar/webhooks`; capture `POLAR_WEBHOOK_SECRET`.
 
 **Google**
+
 - OAuth client; redirect URI `https://phived.com/api/auth/callback/google`
   (+ `http://localhost:<port>/...` for dev). Capture id/secret.
 
 **Resend** (or chosen provider)
+
 - API key + verified sender domain.
 
 ## Env vars (server service)
 
-| var | purpose |
-|---|---|
-| `DATABASE_URL` | app Postgres connection (pooled OK) |
-| `BETTER_AUTH_SECRET` | Better Auth signing secret |
-| `BETTER_AUTH_URL` | `https://phived.com` |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth |
-| `RESEND_API_KEY` | magic-link email |
-| `POLAR_ACCESS_TOKEN` | Polar SDK |
-| `POLAR_WEBHOOK_SECRET` | webhook signature verification |
-| `POLAR_PRODUCT_ID_MONTHLY` / `_ANNUAL` | checkout products |
-| `POLAR_SERVER` | `sandbox` or `production` |
-| `PORT`, `BIND_HOST=0.0.0.0` | from ADR 0003 |
+| var                                         | purpose                             |
+| ------------------------------------------- | ----------------------------------- |
+| `DATABASE_URL`                              | app Postgres connection (pooled OK) |
+| `BETTER_AUTH_SECRET`                        | Better Auth signing secret          |
+| `BETTER_AUTH_URL`                           | `https://phived.com`                |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth                        |
+| `RESEND_API_KEY`                            | magic-link email                    |
+| `POLAR_ACCESS_TOKEN`                        | Polar SDK                           |
+| `POLAR_WEBHOOK_SECRET`                      | webhook signature verification      |
+| `POLAR_PRODUCT_ID_MONTHLY` / `_ANNUAL`      | checkout products                   |
+| `POLAR_SERVER`                              | `sandbox` or `production`           |
+| `PORT`, `BIND_HOST=0.0.0.0`                 | from ADR 0003                       |
 
 Never commit secrets; use Railway service variables and git-ignored `.env`.
 
 ## Scope (touch only these)
 
 New:
+
 - `apps/server/**` — the Bun/Hono server (static via `site-contract.mjs`,
   `/api/*`, health), with `src/auth.ts`, `src/db.ts` (pool + migration runner),
   `src/entitlement.ts`, `src/session.ts`.
@@ -98,6 +103,7 @@ New:
   UI.
 
 Edited:
+
 - root `package.json` (workspaces += `apps/server`; `start`/`build`/`dev`
   scripts target the new server).
 - `railway.json` (`startCommand` → the new server).
@@ -105,7 +111,7 @@ Edited:
   unchanged.
 
 Do **not**: create `list`/`task` tables, deploy Electric, or wire any sync
-(those are [0003]).
+(those are [009]).
 
 ## Drift check (run first)
 
@@ -121,27 +127,27 @@ If `bun run check` is not green at HEAD, STOP (start from green).
 
 1. **Scaffold `apps/server` (Hono + Bun).** Serve `dist/` using the values in
    `scripts/site-contract.mjs`: `/sw.js` with `Cache-Control: public,
-   max-age=0, must-revalidate`, the security headers, the `/app/*` SPA fallback,
+max-age=0, must-revalidate`, the security headers, the `/app/*` SPA fallback,
    `process.env.PORT`, `BIND_HOST`. Health `GET /` → 200. Port the existing
    `scripts/*.test` coverage (or add equivalents) so the contract stays tested.
    Update root `start` + `railway.json` to launch it. Keep `bun run preview`
    exercising the same server (dev/preview/prod parity, ADR 0003).
 2. **DB layer.** `pg` Pool from `DATABASE_URL`; a small SQL migration runner
-   (plain `.sql` files are fine). 
+   (plain `.sql` files are fine).
 3. **Better Auth.** `betterAuth({ database: pool, baseURL: BETTER_AUTH_URL,
-   secret, socialProviders: { google }, plugins: [magicLink({ sendMagicLink →
-   Resend }), polar({...}) ], advanced: { cookies: SameSite=Lax, secure } })`.
+secret, socialProviders: { google }, plugins: [magicLink({ sendMagicLink →
+Resend }), polar({...}) ], advanced: { cookies: SameSite=Lax, secure } })`.
    Generate/apply auth tables with the Better Auth CLI. Mount
    `app.on(["GET","POST"], "/api/auth/*", (c) => auth.handler(c.req.raw))`.
 4. **Polar + entitlement.** Configure `polar({ client, createCustomerOnSignUp:
-   true, use: [ checkout({ products: [monthly, annual] }), portal(), webhooks({
-   secret, onSubscriptionActive, onSubscriptionUpdated, onSubscriptionCanceled,
-   onSubscriptionRevoked, onCustomerStateChanged }) ] })`. In the handlers,
+true, use: [ checkout({ products: [monthly, annual] }), portal(), webhooks({
+secret, onSubscriptionActive, onSubscriptionUpdated, onSubscriptionCanceled,
+onSubscriptionRevoked, onCustomerStateChanged }) ] })`. In the handlers,
    upsert `entitlement(user_id, status, polar_customer_id, polar_subscription_id,
-   current_period_end, updated_at)`. Add `getEntitlement(userId)` and
+current_period_end, updated_at)`. Add `getEntitlement(userId)` and
    `isEntitled(status)` in `src/entitlement.ts`.
 5. **Client auth surface (flag-gated).** `createAuthClient({ plugins:
-   [magicLinkClient(), polarClient()] })`. Minimal UI: sign in (magic link +
+[magicLinkClient(), polarClient()] })`. Minimal UI: sign in (magic link +
    Google), show subscription state, `authClient.checkout({ slug })`, portal
    link, sign out — all behind a flag (e.g. `VITE_SYNC_UI`, default off) so
    production UX is unchanged until later phases.
@@ -189,4 +195,4 @@ bun run check
 ## Out of scope
 
 `list`/`task` tables, Electric, the gatekeeper proxy, any sync, account deletion
-([0003]/[0004]).
+([009]/[010]).

@@ -1,4 +1,4 @@
-# 0004 — Write path, merge, account deletion
+# 010 — Write path, merge, account deletion
 
 ## Goal
 
@@ -9,7 +9,7 @@ cloud data. A lapsed subscription reverts the app to local-only without touching
 local data. After this, paid cross-device sync is fully live and the sync flag is
 turned on.
 
-> Depends on [0003] (read sync, collections, the `/sync` proxy, app-data
+> Depends on [009] (read sync, collections, the `/sync` proxy, app-data
 > schema). Re-read ADR 0004 and ADR 0005 before starting.
 
 ## Decisions (do not deviate)
@@ -24,7 +24,7 @@ turned on.
   cosmetic.
 - **Task ordering = fractional index** (e.g. `fractional-indexing`) stored in
   `task.order`; inserts/reorders compute an order between neighbours. This is the
-  ordering deferred in [0001].
+  ordering deferred in [007].
 - **Deletes = soft-delete tombstones** (`deleted_at`) so offline deletes merge
   deterministically; a server-side job purges old tombstones.
 - **Completion** = insert a `task_history` row + soft-delete the task in one
@@ -43,6 +43,7 @@ turned on.
 ## Scope (touch only these)
 
 New:
+
 - `apps/server/src/sync-write.ts` — mutation endpoints (lists, tasks, history,
   complete, reorder), each returning `{ txid }`.
 - `apps/server/src/account.ts` — account deletion.
@@ -51,6 +52,7 @@ New:
 - tombstone purge (cron/route + notes).
 
 Edited:
+
 - `apps/app` canvas context: in sync mode (entitled + flag) route mutations
   through the collections; otherwise localStorage (unchanged).
 - `apps/app` settings UI: subscription management (portal), account deletion,
@@ -65,7 +67,7 @@ rg -n "/sync" apps/server/src || echo "DRIFT: 0003 proxy missing"
 bun run check
 ```
 
-If [0003] artifacts are absent, STOP.
+If [009] artifacts are absent, STOP.
 
 ## Steps (in order)
 
@@ -76,10 +78,10 @@ If [0003] artifacts are absent, STOP.
    `SELECT pg_current_xact_id()::xid::text` (a.k.a. `txid_current()`) **in the
    same transaction / on the same direct connection** — this is the value
    TanStack DB awaits.
-2. **Client write handlers.** Add `onInsert/onUpdate/onDelete` to the [0003]
+2. **Client write handlers.** Add `onInsert/onUpdate/onDelete` to the [009]
    collections, calling the API and returning `{ txid }`; then `awaitTxId`. In
    sync mode, replace index-based local edits with id + order operations (the
-   [0001] task identity makes this clean).
+   [007] task identity makes this clean).
 3. **Fractional ordering.** Add the lib; compute `order` on insert/reorder; strip
    empty padding before any upload/write (padding is view-only, never synced).
 4. **First sign-in merge (`merge.ts`).** On the first authenticated load that has
@@ -96,7 +98,7 @@ If [0003] artifacts are absent, STOP.
 
 - Two browsers, same entitled user: an edit on A appears on B within stream
   latency; an offline edit on A reconciles on reconnect with **no lost tasks**;
-  concurrent edits to *different* tasks both survive; the *same* task's text edit
+  concurrent edits to _different_ tasks both survive; the _same_ task's text edit
   resolves last-write-wins.
 - Non-entitled: mutations return 402; the app stays local; no data loss.
 - First sign-in with local data uploads it; a fresh device downloads it.
@@ -111,7 +113,7 @@ If [0003] artifacts are absent, STOP.
   connection and returns the correct txid before continuing.
 - Any path can read or write across `user_id` → STOP; security blocker.
 - Any concurrent scenario can lose a non-empty task → STOP; this is the exact
-  correctness guarantee [0001] existed to enable.
+  correctness guarantee [007] existed to enable.
 
 ## Out of scope
 
