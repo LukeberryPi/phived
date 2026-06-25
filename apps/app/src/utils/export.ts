@@ -32,7 +32,7 @@ export function buildCanvasMarkdown(
       lines.push(`## ${headingText(list.tag, `list ${index + 1}`)}`, "");
 
       const tasks = list.tasks
-        .map(escapeMarkdownText)
+        .map((task) => escapeMarkdownText(task.text))
         .filter((task) => task.length > 0);
 
       if (tasks.length === 0) {

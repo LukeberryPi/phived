@@ -139,14 +139,17 @@ describe("buildListsFromLegacyTasks", () => {
 
     expect(lists).toHaveLength(1);
     expect(lists[0].tag).toBe("");
-    expect(lists[0].tasks.every((task) => task === "")).toBe(true);
+    expect(lists[0].tasks.every((task) => task.text === "")).toBe(true);
   });
 
   test("migrates general tasks into the centered list", () => {
     const lists = buildListsFromLegacyTasks(["one", "two"], null);
 
     expect(lists).toHaveLength(1);
-    expect(lists[0].tasks.slice(0, 2)).toEqual(["one", "two"]);
+    expect(lists[0].tasks.slice(0, 2).map((task) => task.text)).toEqual([
+      "one",
+      "two",
+    ]);
   });
 
   test("migrates daily tasks into a second list tagged daily beside it", () => {
@@ -154,7 +157,7 @@ describe("buildListsFromLegacyTasks", () => {
 
     expect(lists).toHaveLength(2);
     expect(lists[1].tag).toBe("daily");
-    expect(lists[1].tasks[0]).toBe("water plants");
+    expect(lists[1].tasks[0].text).toBe("water plants");
     expect(lists[1].x).toBeGreaterThanOrEqual(lists[0].x + LIST_WIDTH);
     expect(lists[1].y).toBe(lists[0].y);
   });
@@ -163,7 +166,7 @@ describe("buildListsFromLegacyTasks", () => {
     const lists = buildListsFromLegacyTasks(null, ["water plants"]);
 
     expect(lists).toHaveLength(2);
-    expect(lists[0].tasks.every((task) => task === "")).toBe(true);
+    expect(lists[0].tasks.every((task) => task.text === "")).toBe(true);
     expect(lists[1].tag).toBe("daily");
   });
 });

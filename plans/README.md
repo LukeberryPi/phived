@@ -19,7 +19,7 @@ sequential plans; each one leaves the app shippable.
 
 | Plan | Title                                                     | Depends on | Status |
 | ---- | --------------------------------------------------------- | ---------- | ------ |
-| 007  | Local task identity                                       | –          | TODO   |
+| 007  | Local task identity                                       | –          | DONE   |
 | 008  | Backend foundation (Postgres, server, Better Auth, Polar) | –          | TODO   |
 | 009  | Electric read sync + gatekeeper                           | 008        | TODO   |
 | 010  | Write path, merge, account deletion                       | 007, 009   | TODO   |

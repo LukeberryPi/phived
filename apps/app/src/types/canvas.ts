@@ -1,3 +1,8 @@
+export type Task = {
+  id: string;
+  text: string;
+};
+
 export type TaskList = {
   id: string;
   tag: string;
@@ -5,7 +10,7 @@ export type TaskList = {
   y: number;
   /** Custom width in canvas px; lists without one use the default width. */
   width?: number;
-  tasks: string[];
+  tasks: Task[];
 };
 
 export type TaskLists = TaskList[];

@@ -5,7 +5,7 @@ import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { TaskListCard } from "src/components/TaskListCard";
 import type { TaskListActions } from "src/contexts/CanvasTasksContext/CanvasTasksContext.types";
-import type { TaskList } from "src/types/canvas";
+import type { Task, TaskList } from "src/types/canvas";
 import { LIST_WIDTH } from "src/utils/canvas";
 
 function createActions(): TaskListActions {
@@ -27,12 +27,14 @@ function createActions(): TaskListActions {
   };
 }
 
+const task = (text: string): Task => ({ id: crypto.randomUUID(), text });
+
 const list: TaskList = {
   id: "list-1",
   tag: "work",
   x: 100,
   y: 100,
-  tasks: ["one", "", "", "", ""],
+  tasks: [task("one"), task(""), task(""), task(""), task("")],
 };
 
 let root: Root | null = null;

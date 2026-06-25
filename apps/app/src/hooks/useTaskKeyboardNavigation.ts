@@ -1,10 +1,11 @@
 import type { KeyboardEvent, RefObject } from "react";
+import type { Task } from "src/types/canvas";
 import { MIN_TASK_ROWS } from "src/utils/taskList";
 
 type UseTaskKeyboardNavigationOptions = {
   taskListRef: RefObject<HTMLElement | null>;
   tagRef: RefObject<HTMLInputElement | null>;
-  tasks: string[];
+  tasks: Task[];
   onDone: (index: number) => void;
   addTaskRow: () => void;
   insertTaskRowBelow: (index: number) => void;
@@ -93,7 +94,7 @@ export function useTaskKeyboardNavigation({
       event.preventDefault();
       const previousTask = tasks[index - 1];
 
-      if (!isFirstTask && previousTask.trim() === "") {
+      if (!isFirstTask && previousTask.text.trim() === "") {
         return focusTaskInput(taskList, index - 1);
       }
 
@@ -118,7 +119,7 @@ export function useTaskKeyboardNavigation({
       event.preventDefault();
       const nextTask = tasks[index + 1];
 
-      if (!isLastTask && nextTask.trim() === "") {
+      if (!isLastTask && nextTask.text.trim() === "") {
         return focusTaskInput(taskList, index + 1);
       }
 
