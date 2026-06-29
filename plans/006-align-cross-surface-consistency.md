@@ -40,16 +40,17 @@ plan aligns the user-facing and contributor-facing surfaces.
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Install | `bun install` | exit 0 |
-| Typecheck | `bun run typecheck` | exit 0 |
-| Lint | `bun run lint` | exit 0 |
-| Check | `bun run check` | exit 0 |
+| Purpose   | Command             | Expected on success |
+| --------- | ------------------- | ------------------- |
+| Install   | `bun install`       | exit 0              |
+| Typecheck | `bun run typecheck` | exit 0              |
+| Lint      | `bun run lint`      | exit 0              |
+| Check     | `bun run check`     | exit 0              |
 
 ## Scope
 
 **In scope**:
+
 - `apps/web/src/pages/index.astro`
 - `apps/web/src/layouts/Base.astro`
 - `apps/app/index.html`
@@ -63,6 +64,7 @@ plan aligns the user-facing and contributor-facing surfaces.
 - `package.json`, `apps/app/package.json`, `apps/web/package.json`, `bun.lock`
 
 **Out of scope**:
+
 - Redesigning the landing page layout.
 - Adding a macOS download pipeline.
 - Replacing the theme UI beyond aligning semantics.

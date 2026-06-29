@@ -34,7 +34,8 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
   const [lists, setLists] = useLocalStorage<TaskLists>(
     "canvasLists",
     initialLists,
-    parseTaskLists
+    parseTaskLists,
+    { persistParsedValue: true }
   );
   const [taskHistory, setTaskHistory] = useLocalStorage<TaskHistory>(
     "taskHistory",
@@ -198,7 +199,7 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
   const completeTask = useCallback(
     (listId: string, taskIndex: number) => {
       const list = listsRef.current.find((item) => item.id === listId);
-      const completedText = list?.tasks[taskIndex]?.trim() ?? "";
+      const completedText = list?.tasks[taskIndex]?.text.trim() ?? "";
 
       if (!list || !completedText) {
         return;

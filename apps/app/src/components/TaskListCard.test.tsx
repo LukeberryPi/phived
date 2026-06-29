@@ -7,6 +7,7 @@ import { TaskListCard } from "src/components/TaskListCard";
 import type { TaskListActions } from "src/contexts/CanvasTasksContext/CanvasTasksContext.types";
 import type { TaskList } from "src/types/canvas";
 import { LIST_WIDTH } from "src/utils/canvas";
+import { createTask } from "src/utils/taskList";
 
 function createActions(): TaskListActions {
   return {
@@ -32,7 +33,13 @@ const list: TaskList = {
   tag: "work",
   x: 100,
   y: 100,
-  tasks: ["one", "", "", "", ""],
+  tasks: [
+    createTask("one"),
+    createTask(),
+    createTask(),
+    createTask(),
+    createTask(),
+  ],
 };
 
 let root: Root | null = null;

@@ -26,8 +26,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Planning & architecture docs (local / agent-generated)
-docs/
-plans/
-CONTEXT.md

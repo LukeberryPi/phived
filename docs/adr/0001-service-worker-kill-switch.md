@@ -83,7 +83,7 @@ unchanged in spirit but the file moved:
 - The authoritative kill-switch now ships from `apps/web/public/sw.js` and is
   emitted at the combined output's `dist/sw.js`, i.e. still served at the origin
   root `/sw.js` with the same `Cache-Control: public, max-age=0,
-  must-revalidate` header (now declared in the post-split `vercel.json`).
+must-revalidate` header (now declared in the post-split `vercel.json`).
 - The "DO NOT DELETE" rule now applies to `apps/web/public/sw.js`. The old
   `apps/app/public/sw.js` was removed so there is only one kill-switch source.
 - The SPA catch-all rewrite is now scoped to `/app/*`, so the original failure

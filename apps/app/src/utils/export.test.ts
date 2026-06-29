@@ -4,10 +4,24 @@ import { describe, expect, test } from "bun:test";
 import { buildCanvasJson, buildCanvasMarkdown } from "src/utils/export";
 import type { TaskLists } from "src/types/canvas";
 import type { TaskHistory } from "src/types/taskHistory";
+import { createTask } from "src/utils/taskList";
 
 const lists: TaskLists = [
-  { id: "list-1", tag: "work", x: 0, y: 0, tasks: ["ship it", "", ""] },
-  { id: "list-2", tag: "", x: 10, y: 20, width: 320, tasks: ["", ""] },
+  {
+    id: "list-1",
+    tag: "work",
+    x: 0,
+    y: 0,
+    tasks: [createTask("ship it"), createTask(), createTask()],
+  },
+  {
+    id: "list-2",
+    tag: "",
+    x: 10,
+    y: 20,
+    width: 320,
+    tasks: [createTask(), createTask()],
+  },
 ];
 
 const taskHistory: TaskHistory = [

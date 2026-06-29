@@ -46,13 +46,13 @@ test framework/runtime.
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Install | `bun install --frozen-lockfile` | exit 0, no lockfile changes |
-| Typecheck | `bun run typecheck` | exit 0, no errors |
-| Tests | `bun test` | exit 0, all tests pass |
-| Lint | `bun run lint` | exit 0, no errors |
-| Full gate | `bun run check` | exit 0 |
+| Purpose   | Command                         | Expected on success         |
+| --------- | ------------------------------- | --------------------------- |
+| Install   | `bun install --frozen-lockfile` | exit 0, no lockfile changes |
+| Typecheck | `bun run typecheck`             | exit 0, no errors           |
+| Tests     | `bun test`                      | exit 0, all tests pass      |
+| Lint      | `bun run lint`                  | exit 0, no errors           |
+| Full gate | `bun run check`                 | exit 0                      |
 
 ## Scope
 

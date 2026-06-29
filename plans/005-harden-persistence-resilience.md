@@ -50,15 +50,16 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| App tests | `bun run test:app` | all tests pass |
-| Typecheck | `bun run typecheck:app` | exit 0 |
-| Check | `bun run check` | exit 0 |
+| Purpose   | Command                 | Expected on success |
+| --------- | ----------------------- | ------------------- |
+| App tests | `bun run test:app`      | all tests pass      |
+| Typecheck | `bun run typecheck:app` | exit 0              |
+| Check     | `bun run check`         | exit 0              |
 
 ## Scope
 
 **In scope**:
+
 - `apps/app/src/hooks/useLocalStorage.ts`
 - `apps/app/src/hooks/useCanvasViewport.ts`
 - `apps/app/src/contexts/CanvasTasksContext/CanvasTasksContextProvider.tsx`
@@ -66,6 +67,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 - Existing app tests under `apps/app/src/**/*.test.ts(x)`
 
 **Out of scope**:
+
 - Server persistence, auth, or sync.
 - Cross-tab merge UI beyond a simple warning/ignore behavior.
 - macOS persistence.

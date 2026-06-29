@@ -106,9 +106,9 @@ export const TaskListCard = memo(function TaskListCard({
 
     return (
       <TaskRow
-        key={idx}
+        key={task.id}
         index={idx}
-        task={task}
+        task={task.text}
         autoFocus={idx === 0 && autoFocusFirstRow}
         placeholder={idx === 0 && noTasks ? `${placeholder}?` : ""}
         isLast={idx === list.tasks.length - 1}

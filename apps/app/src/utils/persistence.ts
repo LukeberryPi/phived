@@ -1,11 +1,11 @@
-import type { TaskList, TaskLists, Viewport } from "src/types/canvas";
+import type { Task, TaskList, TaskLists, Viewport } from "src/types/canvas";
 import type { TaskHistory, TaskHistoryEntry } from "src/types/taskHistory";
 import {
   clampListPosition,
   clampListWidth,
   LIST_WIDTH,
 } from "src/utils/canvas";
-import { withTrailingEmptyRow } from "src/utils/taskList";
+import { createTask, withTrailingEmptyRow } from "src/utils/taskList";
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
@@ -18,6 +18,19 @@ function isString(value: unknown): value is string {
 function isStringArray(value: unknown): value is string[] {
   return (
     Array.isArray(value) && value.every((item) => typeof item === "string")
+  );
+}
+
+function isTaskArray(value: unknown): value is Task[] {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        !!item &&
+        typeof item === "object" &&
+        typeof (item as { id?: unknown }).id === "string" &&
+        typeof (item as { text?: unknown }).text === "string"
+    )
   );
 }
 
@@ -40,7 +53,13 @@ function parseTaskList(value: unknown): TaskList | null {
     return null;
   }
 
-  if (!isStringArray(record.tasks)) {
+  let tasks: Task[];
+
+  if (isTaskArray(record.tasks)) {
+    tasks = record.tasks.map((task) => ({ id: task.id, text: task.text }));
+  } else if (isStringArray(record.tasks)) {
+    tasks = record.tasks.map(createTask);
+  } else {
     return null;
   }
 
@@ -53,7 +72,7 @@ function parseTaskList(value: unknown): TaskList | null {
     tag: record.tag,
     ...position,
     ...(width !== undefined ? { width } : {}),
-    tasks: withTrailingEmptyRow(record.tasks),
+    tasks: withTrailingEmptyRow(tasks),
   };
 }
 

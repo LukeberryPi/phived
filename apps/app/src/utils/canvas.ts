@@ -1,6 +1,7 @@
-import type { TaskList, TaskLists, Viewport } from "src/types/canvas";
+import type { Task, TaskList, TaskLists, Viewport } from "src/types/canvas";
 import {
   createEmptyTasks,
+  createTask,
   taskListHasTasks,
   withTrailingEmptyRow,
 } from "src/utils/taskList";
@@ -135,7 +136,7 @@ export function createTaskList(
   x: number,
   y: number,
   tag = "",
-  tasks: string[] = createEmptyTasks()
+  tasks: Task[] = createEmptyTasks()
 ): TaskList {
   return {
     id: crypto.randomUUID(),
@@ -153,7 +154,7 @@ export function canvasHasContent(lists: TaskLists): boolean {
   return lists.some(listHasContent);
 }
 
-export function createCanvasCenterList(tasks?: string[]): TaskList {
+export function createCanvasCenterList(tasks?: Task[]): TaskList {
   return createTaskList(
     CANVAS_WIDTH / 2 - LIST_WIDTH / 2,
     CANVAS_HEIGHT / 2 - 280,
@@ -201,18 +202,15 @@ function readLegacyTasks(key: string): string[] | null {
   return null;
 }
 
-/**
- * Pure core of the v1 migration: the general list lands at the canvas
- * center; daily tasks (whose recurrence no longer exists) become a second
- * list tagged "daily" beside it.
- */
 export function buildListsFromLegacyTasks(
   generalTasks: string[] | null,
   dailyTasks: string[] | null
 ): TaskLists {
   const lists = [
     createCanvasCenterList(
-      generalTasks ? withTrailingEmptyRow(generalTasks) : undefined
+      generalTasks
+        ? withTrailingEmptyRow(generalTasks.map(createTask))
+        : undefined
     ),
   ];
 
@@ -222,7 +220,7 @@ export function buildListsFromLegacyTasks(
         lists[0].x + LIST_WIDTH + LEGACY_DAILY_LIST_GAP,
         lists[0].y,
         "daily",
-        withTrailingEmptyRow(dailyTasks)
+        withTrailingEmptyRow(dailyTasks.map(createTask))
       )
     );
   }
