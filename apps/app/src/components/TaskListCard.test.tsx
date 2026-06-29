@@ -1,13 +1,13 @@
 /// <reference types="bun" />
 
-import { afterEach, describe, expect, mock, test } from "bun:test";
-import { act } from "react";
+import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
+import { act, useMemo, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { TaskListCard } from "src/components/TaskListCard";
 import type { TaskListActions } from "src/contexts/CanvasTasksContext/CanvasTasksContext.types";
-import type { TaskList } from "src/types/canvas";
+import type { Task, TaskList } from "src/types/canvas";
 import { LIST_WIDTH } from "src/utils/canvas";
-import { createTask } from "src/utils/taskList";
+import { createTask, reorderTaskRows } from "src/utils/taskList";
 
 function createActions(): TaskListActions {
   return {
@@ -215,5 +215,182 @@ describe("TaskListCard auto width", () => {
     changeInputValue(input, "do taskssssssssssssssssssssssss");
 
     expect(actions.resizeList).toHaveBeenCalledWith("list-1", LIST_WIDTH + 12);
+  });
+});
+
+/**
+ * Renders a real, stateful list so Alt+Arrow reordering actually mutates the
+ * task order and re-renders, the way the provider does in the app. The mocked
+ * actions used elsewhere can't surface the focus regression because they never
+ * reorder, so focus would always appear to "stay put".
+ */
+function ReorderHarness({ initialTasks }: { initialTasks: Task[] }) {
+  const [tasks, setTasks] = useState(initialTasks);
+  const actions = useMemo<TaskListActions>(
+    () => ({
+      ...createActions(),
+      moveTaskUp: (_listId: string, index: number) =>
+        setTasks((prev) => reorderTaskRows(prev, index, index - 1)),
+      moveTaskDown: (_listId: string, index: number) =>
+        setTasks((prev) => reorderTaskRows(prev, index, index + 1)),
+    }),
+    []
+  );
+
+  return (
+    <TaskListCard
+      list={{ ...list, tasks }}
+      stackIndex={0}
+      zoomRef={{ current: 1 }}
+      autoFocusFirstRow={false}
+      focused={false}
+      dimmed={false}
+      canDeleteList
+      onToggleFocus={() => {}}
+      actions={actions}
+    />
+  );
+}
+
+function renderReorderHarness(initialTasks: Task[]) {
+  container = document.createElement("div");
+  document.body.appendChild(container);
+  root = createRoot(container);
+
+  act(() => {
+    root!.render(<ReorderHarness initialTasks={initialTasks} />);
+  });
+
+  return container.querySelector("section")!;
+}
+
+function getRowInputs(section: HTMLElement) {
+  return Array.from(section.querySelectorAll<HTMLInputElement>("ul input"));
+}
+
+function getRowValues(section: HTMLElement) {
+  return getRowInputs(section).map((input) => input.value);
+}
+
+function activeInputValue() {
+  return (document.activeElement as HTMLInputElement | null)?.value;
+}
+
+/**
+ * Regression contract for Alt+Arrow reordering: the moved row must keep focus
+ * after the reorder commits, so the user can press the shortcut repeatedly to
+ * walk a task up or down. The bug focused the displaced row instead, which
+ * (because rows reuse DOM nodes via stable keys) carried focus to the wrong
+ * task and made every second press swap it straight back.
+ */
+describe("TaskListCard Alt+Arrow reordering", () => {
+  // Focus is restored inside requestAnimationFrame so it runs after the reorder
+  // renders. Capture the callbacks and flush them only once the DOM has
+  // updated, mirroring the browser's "after the commit" timing.
+  let pendingFrames: FrameRequestCallback[] = [];
+  let originalRequestAnimationFrame: typeof requestAnimationFrame;
+
+  beforeEach(() => {
+    pendingFrames = [];
+    originalRequestAnimationFrame = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = ((callback: FrameRequestCallback) => {
+      pendingFrames.push(callback);
+      return pendingFrames.length;
+    }) as typeof requestAnimationFrame;
+  });
+
+  afterEach(() => {
+    globalThis.requestAnimationFrame = originalRequestAnimationFrame;
+  });
+
+  function pressAltArrow(key: "ArrowUp" | "ArrowDown") {
+    act(() => {
+      document.activeElement?.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key,
+          altKey: true,
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+    });
+
+    // The reorder has now committed; run the queued focus callback against the
+    // updated DOM, just as the next animation frame would in the browser.
+    const frames = pendingFrames;
+    pendingFrames = [];
+    act(() => {
+      frames.forEach((frame) => frame(0));
+    });
+  }
+
+  test("keeps focus on a task moved up so it can move more than once", () => {
+    const section = renderReorderHarness([
+      createTask("alpha"),
+      createTask("bravo"),
+      createTask("charlie"),
+      createTask("delta"),
+      createTask("echo"),
+    ]);
+
+    const charlie = getRowInputs(section).find(
+      (input) => input.value === "charlie"
+    )!;
+    act(() => charlie.focus());
+
+    pressAltArrow("ArrowUp");
+    expect(getRowValues(section)).toEqual([
+      "alpha",
+      "charlie",
+      "bravo",
+      "delta",
+      "echo",
+    ]);
+    expect(activeInputValue()).toBe("charlie");
+
+    pressAltArrow("ArrowUp");
+    expect(getRowValues(section)).toEqual([
+      "charlie",
+      "alpha",
+      "bravo",
+      "delta",
+      "echo",
+    ]);
+    expect(activeInputValue()).toBe("charlie");
+  });
+
+  test("keeps focus on a task moved down so it can move more than once", () => {
+    const section = renderReorderHarness([
+      createTask("alpha"),
+      createTask("bravo"),
+      createTask("charlie"),
+      createTask("delta"),
+      createTask("echo"),
+    ]);
+
+    const alpha = getRowInputs(section).find(
+      (input) => input.value === "alpha"
+    )!;
+    act(() => alpha.focus());
+
+    pressAltArrow("ArrowDown");
+    expect(getRowValues(section)).toEqual([
+      "bravo",
+      "alpha",
+      "charlie",
+      "delta",
+      "echo",
+    ]);
+    expect(activeInputValue()).toBe("alpha");
+
+    pressAltArrow("ArrowDown");
+    expect(getRowValues(section)).toEqual([
+      "bravo",
+      "charlie",
+      "alpha",
+      "delta",
+      "echo",
+    ]);
+    expect(activeInputValue()).toBe("alpha");
   });
 });
