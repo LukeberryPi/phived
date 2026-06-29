@@ -1,0 +1,31 @@
+{
+  "name": "@phived/server",
+  "private": true,
+  "version": "1.3.0",
+  "type": "module",
+  "packageManager": "bun@1.3.8",
+  "engines": {
+    "bun": ">=1.3.8"
+  },
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "auth:generate": "BETTER_AUTH_SCHEMA_GENERATE=true bun x @better-auth/cli@latest generate --config src/auth.ts --output migrations/0001_better_auth.sql --yes"
+  },
+  "dependencies": {
+    "@polar-sh/better-auth": "^1.8.4",
+    "@polar-sh/sdk": "^0.47.0",
+    "better-auth": "^1.6.22",
+    "hono": "^4.12.27",
+    "pg": "^8.22.0",
+    "resend": "^6.16.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.20.0",
+    "typescript": "^6.0.3"
+  }
+}

@@ -39,5 +39,27 @@ export default tseslint.config(
       eqeqeq: ["error", "always"],
     },
   },
+  {
+    // The Bun/Hono server (apps/server) is linted here, against the root
+    // ESLint toolchain, so the monorepo keeps a single ESLint major version.
+    files: ["apps/server/**/*.ts"],
+    extends: [tseslint.configs.recommended],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: { ...globals.node, Bun: "readonly" },
+    },
+    rules: {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports" },
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      eqeqeq: ["error", "always"],
+    },
+  },
   prettier
 );
