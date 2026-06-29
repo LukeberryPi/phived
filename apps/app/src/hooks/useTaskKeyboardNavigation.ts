@@ -54,13 +54,17 @@ export function useTaskKeyboardNavigation({
       );
     }
 
+    // Reorders run through an async state update, so the rows haven't swapped
+    // yet. Focus the moved task after the re-render commits, otherwise we'd
+    // focus the row currently sitting at the destination (the other task),
+    // which then carries focus to the wrong place once the DOM reorders.
     if (event.altKey && event.key === "ArrowUp") {
       event.preventDefault();
       if (isFirstTask) {
         return;
       }
       moveTaskUp(index);
-      return focusTaskInput(taskList, index - 1);
+      return requestAnimationFrame(() => focusTaskInput(taskList, index - 1));
     }
 
     if (event.altKey && event.key === "ArrowDown") {
@@ -69,7 +73,7 @@ export function useTaskKeyboardNavigation({
         return;
       }
       moveTaskDown(index);
-      return focusTaskInput(taskList, index + 1);
+      return requestAnimationFrame(() => focusTaskInput(taskList, index + 1));
     }
 
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
