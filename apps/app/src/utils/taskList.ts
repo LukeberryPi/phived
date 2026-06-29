@@ -1,14 +1,14 @@
 import type { Task } from "src/types/canvas";
 
+export function createTask(text = ""): Task {
+  return { id: crypto.randomUUID(), text };
+}
+
 /** A list never renders fewer than this many rows, even when empty. */
 export const MIN_TASK_ROWS = 5;
 
-function createEmptyTask(): Task {
-  return { id: crypto.randomUUID(), text: "" };
-}
-
 export function createEmptyTasks(): Task[] {
-  return Array.from({ length: MIN_TASK_ROWS }, createEmptyTask);
+  return Array.from({ length: MIN_TASK_ROWS }, () => createTask());
 }
 
 export function taskListHasTasks(tasks: Task[]): boolean {
@@ -29,14 +29,13 @@ export function withTrailingEmptyRow(tasks: Task[]): Task[] {
       ? [...tasks]
       : [
           ...tasks,
-          ...Array.from(
-            { length: MIN_TASK_ROWS - tasks.length },
-            createEmptyTask
+          ...Array.from({ length: MIN_TASK_ROWS - tasks.length }, () =>
+            createTask()
           ),
         ];
 
   if ((padded[padded.length - 1]?.text ?? "").trim() !== "") {
-    padded.push(createEmptyTask());
+    padded.push(createTask());
   }
 
   return padded;
@@ -58,7 +57,7 @@ export function changeTaskAt(
 }
 
 export function addEmptyTaskRow(tasks: Task[]): Task[] {
-  return [...tasks, createEmptyTask()];
+  return [...tasks, createTask()];
 }
 
 export function insertEmptyTaskRowBelow(tasks: Task[], index: number): Task[] {
@@ -67,7 +66,7 @@ export function insertEmptyTaskRowBelow(tasks: Task[], index: number): Task[] {
   }
 
   const inserted = [...tasks];
-  inserted.splice(index + 1, 0, createEmptyTask());
+  inserted.splice(index + 1, 0, createTask());
   return inserted;
 }
 
@@ -77,7 +76,7 @@ export function insertEmptyTaskRowAbove(tasks: Task[], index: number): Task[] {
   }
 
   const inserted = [...tasks];
-  inserted.splice(index, 0, createEmptyTask());
+  inserted.splice(index, 0, createTask());
   return inserted;
 }
 
@@ -120,7 +119,7 @@ export function restoreTaskText(tasks: Task[], text: string): Task[] {
   const emptyIndex = findFirstEmptyTaskIndex(restored);
 
   if (emptyIndex === -1) {
-    restored.push({ id: crypto.randomUUID(), text });
+    restored.push(createTask(text));
   } else {
     restored[emptyIndex] = { ...restored[emptyIndex], text };
   }

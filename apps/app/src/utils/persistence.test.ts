@@ -8,8 +8,8 @@ import {
   parseTaskLists,
   parseViewport,
 } from "src/utils/persistence";
+import { createTask } from "src/utils/taskList";
 
-const task = (text: string): Task => ({ id: crypto.randomUUID(), text });
 const texts = (list: Task[]): string[] => list.map((item) => item.text);
 
 const fallbackLists: TaskLists = [
@@ -18,7 +18,13 @@ const fallbackLists: TaskLists = [
     tag: "",
     x: 100,
     y: 200,
-    tasks: [task(""), task(""), task(""), task(""), task("")],
+    tasks: [
+      createTask(),
+      createTask(),
+      createTask(),
+      createTask(),
+      createTask(),
+    ],
   },
 ];
 
@@ -37,7 +43,7 @@ describe("parseTaskLists", () => {
   });
 
   test("accepts valid task lists and preserves stored task ids", () => {
-    const stored = [task("one"), task("")];
+    const stored = [createTask("one"), createTask()];
     const lists = [
       { id: "a", tag: "work", x: 10, y: 20, width: 300, tasks: stored },
     ];

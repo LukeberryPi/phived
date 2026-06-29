@@ -2,10 +2,9 @@
 
 import { describe, expect, test } from "bun:test";
 import { buildCanvasJson, buildCanvasMarkdown } from "src/utils/export";
-import type { Task, TaskLists } from "src/types/canvas";
+import type { TaskLists } from "src/types/canvas";
 import type { TaskHistory } from "src/types/taskHistory";
-
-const task = (text: string): Task => ({ id: crypto.randomUUID(), text });
+import { createTask } from "src/utils/taskList";
 
 const lists: TaskLists = [
   {
@@ -13,7 +12,7 @@ const lists: TaskLists = [
     tag: "work",
     x: 0,
     y: 0,
-    tasks: [task("ship it"), task(""), task("")],
+    tasks: [createTask("ship it"), createTask(), createTask()],
   },
   {
     id: "list-2",
@@ -21,7 +20,7 @@ const lists: TaskLists = [
     x: 10,
     y: 20,
     width: 320,
-    tasks: [task(""), task("")],
+    tasks: [createTask(), createTask()],
   },
 ];
 

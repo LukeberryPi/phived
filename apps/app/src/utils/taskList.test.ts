@@ -5,6 +5,7 @@ import {
   MIN_TASK_ROWS,
   addEmptyTaskRow,
   changeTaskAt,
+  createTask,
   createEmptyTasks,
   insertEmptyTaskRowAbove,
   insertEmptyTaskRowBelow,
@@ -16,8 +17,7 @@ import {
 } from "src/utils/taskList";
 import type { Task } from "src/types/canvas";
 
-const task = (text: string): Task => ({ id: crypto.randomUUID(), text });
-const tasks = (...values: string[]): Task[] => values.map(task);
+const tasks = (...values: string[]): Task[] => values.map(createTask);
 const texts = (list: Task[]): string[] => list.map((item) => item.text);
 
 describe("task list utilities", () => {

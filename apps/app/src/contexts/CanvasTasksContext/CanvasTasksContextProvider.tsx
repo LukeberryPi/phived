@@ -34,7 +34,8 @@ export const CanvasTasksContextProvider = ({ children }: PropsWithChildren) => {
   const [lists, setLists] = useLocalStorage<TaskLists>(
     "canvasLists",
     initialLists,
-    parseTaskLists
+    parseTaskLists,
+    { persistParsedValue: true }
   );
   const [taskHistory, setTaskHistory] = useLocalStorage<TaskHistory>(
     "taskHistory",

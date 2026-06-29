@@ -5,7 +5,7 @@ import {
   clampListWidth,
   LIST_WIDTH,
 } from "src/utils/canvas";
-import { withTrailingEmptyRow } from "src/utils/taskList";
+import { createTask, withTrailingEmptyRow } from "src/utils/taskList";
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
@@ -58,7 +58,7 @@ function parseTaskList(value: unknown): TaskList | null {
   if (isTaskArray(record.tasks)) {
     tasks = record.tasks.map((task) => ({ id: task.id, text: task.text }));
   } else if (isStringArray(record.tasks)) {
-    tasks = record.tasks.map((text) => ({ id: crypto.randomUUID(), text }));
+    tasks = record.tasks.map(createTask);
   } else {
     return null;
   }
