@@ -48,8 +48,6 @@ describe("server app security headers", () => {
           betterAuthUrl: "https://example.test",
           googleClientId: "google-id",
           googleClientSecret: "google-secret",
-          resendApiKey: "resend-key",
-          magicLinkFrom: "phived <login@phived.com>",
           polarAccessToken: "polar-token",
           polarWebhookSecret: "polar-webhook",
           polarProductIdMonthly: "prod-monthly",

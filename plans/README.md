@@ -87,12 +87,17 @@ bug; each is independently shippable. **Executors: apply these on the
 `sync/backend-foundation` working tree, not a fresh branch off `main`** — the
 in-scope files only exist there.
 
-| Plan | Title                                                      | Priority | Effort | Risk | Depends on | Status |
-| ---- | ---------------------------------------------------------- | -------: | -----: | ---- | ---------- | ------ |
-| 011  | Unit tests for the server env boundary + entitlement       |       P1 |      S | LOW  | –          | DONE   |
-| 012  | Decouple the Postgres pool from full API-env validation    |       P2 |      S | LOW  | –          | DONE   |
-| 013  | Correct the stale RESEND_API_KEY env-example docs          |       P2 |      S | LOW  | –          | DONE   |
-| 014  | Remove redundant `serve-site.mjs` + duplicate routing test |       P2 |    S–M | MED  | –          | DONE   |
+| Plan | Title                                                      | Priority | Effort | Risk | Depends on | Status     |
+| ---- | ---------------------------------------------------------- | -------: | -----: | ---- | ---------- | ---------- |
+| 011  | Unit tests for the server env boundary + entitlement       |       P1 |      S | LOW  | –          | DONE       |
+| 012  | Decouple the Postgres pool from full API-env validation    |       P2 |      S | LOW  | –          | DONE       |
+| 013  | Correct the stale RESEND_API_KEY env-example docs          |       P2 |      S | LOW  | –          | SUPERSEDED |
+| 014  | Remove redundant `serve-site.mjs` + duplicate routing test |       P2 |    S–M | MED  | –          | DONE       |
+
+> Plan 013 is **superseded**: magic-link sign-in (and the Resend dependency) were
+> dropped in favor of Google-only auth, so the `RESEND_API_KEY` /
+> `MAGIC_LINK_FROM` lines it corrected no longer exist in
+> `apps/server/.env.example`.
 
 ### Order & why
 
@@ -116,9 +121,6 @@ only while `site.test.ts` is green.
 
 ### Findings considered and rejected (this review)
 
-- **Static handler buffers files via `readFile` instead of streaming**: true, but
-  the assembled site is a handful of small files; not worth the added complexity
-  at this scale. (Revisit only if large assets are served directly.)
 - **CSP `connect-src` / relative checkout `successUrl` may break when sync ships**:
   real but premature — the sync UI is flag-gated and the actual wiring lands in
   009/010; re-audit the CSP and Polar URLs there, not now. (Recorded as a

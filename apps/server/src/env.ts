@@ -1,5 +1,5 @@
 // Minimal environment boundary for the server. Static-only mode is allowed when
-// DATABASE_URL is absent; once the DB is configured, the auth/billing/email
+// DATABASE_URL is absent; once the DB is configured, the auth/billing
 // surface must have its required configuration instead of silently substituting
 // empty strings. The Better Auth schema generator opts into placeholders for
 // non-DB values so it can still introspect the auth config during development.
@@ -12,8 +12,6 @@ export interface ApiEnv {
   betterAuthUrl: string;
   googleClientId: string;
   googleClientSecret: string;
-  resendApiKey: string;
-  magicLinkFrom: string;
   polarAccessToken: string;
   polarWebhookSecret: string;
   polarProductIdMonthly: string;
@@ -61,8 +59,6 @@ export function getApiEnv(): ApiEnv {
       "GOOGLE_CLIENT_SECRET",
       allowPlaceholders
     ),
-    resendApiKey: valueOrPlaceholder("RESEND_API_KEY", allowPlaceholders),
-    magicLinkFrom: read("MAGIC_LINK_FROM") ?? "phived <login@phived.com>",
     polarAccessToken: valueOrPlaceholder(
       "POLAR_ACCESS_TOKEN",
       allowPlaceholders

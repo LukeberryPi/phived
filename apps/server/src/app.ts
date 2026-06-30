@@ -43,9 +43,9 @@ export async function createServerApp(
       console.log(`[db] applied migrations: ${applied.join(", ")}`);
     }
 
-    // Better Auth handles sign-in (magic link + Google) and, via the Polar
-    // plugin, checkout/portal/webhooks — all under /api/auth/* (single `*`
-    // wildcard, per the Hono integration docs).
+    // Better Auth handles Google sign-in and, via the Polar plugin,
+    // checkout/portal/webhooks — all under /api/auth/* (single `*` wildcard,
+    // per the Hono integration docs).
     app.on(["GET", "POST"], "/api/auth/*", (c) => api.auth.handler(c.req.raw));
 
     app.get("/api/me", api.createSessionMiddleware(api.auth), async (c) => {

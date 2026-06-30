@@ -2,7 +2,7 @@
 // Bun/Hono server (via apps/server/src/static-handler.ts) calls this Web
 // Request/Response handler so /sw.js, security headers, and the /app/*
 // fallback are defined in exactly one place.
-import { readFile, stat } from "node:fs/promises";
+import { stat } from "node:fs/promises";
 import path from "node:path";
 import {
   appMountDir,
@@ -116,5 +116,5 @@ async function sendFile(req, filePath, baseHeaders, extraHeaders = {}) {
     return new Response(null, { status: 200, headers });
   }
 
-  return new Response(await readFile(filePath), { status: 200, headers });
+  return new Response(Bun.file(filePath), { status: 200, headers });
 }

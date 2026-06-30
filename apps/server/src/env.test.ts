@@ -9,8 +9,6 @@ const KEYS = [
   "BETTER_AUTH_URL",
   "GOOGLE_CLIENT_ID",
   "GOOGLE_CLIENT_SECRET",
-  "RESEND_API_KEY",
-  "MAGIC_LINK_FROM",
   "POLAR_ACCESS_TOKEN",
   "POLAR_WEBHOOK_SECRET",
   "POLAR_PRODUCT_ID_MONTHLY",
@@ -47,7 +45,6 @@ function setFullApiEnv(): void {
   process.env.BETTER_AUTH_URL = "https://example.test";
   process.env.GOOGLE_CLIENT_ID = "google-id";
   process.env.GOOGLE_CLIENT_SECRET = "google-secret";
-  process.env.RESEND_API_KEY = "resend-key";
   process.env.POLAR_ACCESS_TOKEN = "polar-token";
   process.env.POLAR_WEBHOOK_SECRET = "polar-webhook";
   process.env.POLAR_PRODUCT_ID_MONTHLY = "prod-monthly";
@@ -91,7 +88,6 @@ describe("getApiEnv", () => {
     const env = getApiEnv();
     expect(env.databaseUrl).toBe("postgres://localhost:5432/test");
     expect(env.polarServer).toBe("sandbox");
-    expect(env.magicLinkFrom).toBe("phived <login@phived.com>"); // default
   });
 
   test("selects the production Polar server only when explicitly set", () => {

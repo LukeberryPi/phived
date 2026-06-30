@@ -1,4 +1,4 @@
-// Better Auth (passwordless: magic link + Google) with the Polar billing plugin
+// Better Auth (Google sign-in) with the Polar billing plugin
 // (checkout / portal / webhooks), backed by the shared Postgres pool. This is
 // the single config the Better Auth CLI introspects to generate the auth
 // tables (see `bun --cwd apps/server auth:generate`) and the instance the
@@ -8,9 +8,7 @@
 import { Polar } from "@polar-sh/sdk";
 import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
 import { betterAuth } from "better-auth";
-import { magicLink } from "better-auth/plugins";
 import type { Pool } from "pg";
-import { Resend } from "resend";
 import { getPool } from "./db";
 import { getApiEnv, type ApiEnv } from "./env";
 import { isEntitled, upsertEntitlement } from "./entitlement";
@@ -43,7 +41,6 @@ export function createAuth(apiEnv: ApiEnv, pool: Pool = getPool()) {
     accessToken: apiEnv.polarAccessToken,
     server: apiEnv.polarServer,
   });
-  const resend = new Resend(apiEnv.resendApiKey);
 
   return betterAuth({
     database: pool,
@@ -56,16 +53,6 @@ export function createAuth(apiEnv: ApiEnv, pool: Pool = getPool()) {
       },
     },
     plugins: [
-      magicLink({
-        sendMagicLink: async ({ email, url }) => {
-          await resend.emails.send({
-            from: apiEnv.magicLinkFrom,
-            to: email,
-            subject: "Your phived sign-in link",
-            text: `Sign in to phived:\n\n${url}\n\nThis link expires shortly. If you didn't request it, you can ignore this email.`,
-          });
-        },
-      }),
       polar({
         client: polarClient,
         createCustomerOnSignUp: true,

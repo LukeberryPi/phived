@@ -22,7 +22,7 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: "module",
-      globals: { ...globals.node },
+      globals: { ...globals.node, Bun: "readonly" },
     },
     rules: {
       "no-unused-vars": [

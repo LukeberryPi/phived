@@ -19,8 +19,6 @@ interface MeResponse {
 
 export default function SyncAccount() {
   const { data: session, isPending } = authClient.useSession();
-  const [email, setEmail] = useState("");
-  const [busy, setBusy] = useState(false);
   const [entitled, setEntitled] = useState<boolean | null>(null);
 
   const user = session?.user ?? null;
@@ -56,23 +54,6 @@ export default function SyncAccount() {
       cancelled = true;
     };
   }, [userId]);
-
-  const sendMagicLink = useCallback(async () => {
-    if (!email) {
-      return;
-    }
-    setBusy(true);
-    const { error } = await authClient.signIn.magicLink({
-      email,
-      callbackURL: APP_CALLBACK,
-    });
-    setBusy(false);
-    if (error) {
-      toast.error(error.message ?? "Could not send the sign-in link.");
-      return;
-    }
-    toast.success("Check your email for a sign-in link.");
-  }, [email]);
 
   const signInWithGoogle = useCallback(async () => {
     await authClient.signIn.social({
@@ -148,27 +129,8 @@ export default function SyncAccount() {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="you@example.com"
-            className={cn(
-              "rounded-xl border px-3 py-2 outline-none",
-              "border-black/30 bg-white text-black",
-              "dark:border-edge-dark dark:bg-canvas-dark dark:text-ink-dark"
-            )}
-          />
           <Button
             variant="accent"
-            size="sm"
-            disabled={busy || !email}
-            onClick={() => void sendMagicLink()}
-          >
-            Email me a link
-          </Button>
-          <Button
-            variant="surface"
             size="sm"
             onClick={() => void signInWithGoogle()}
           >
