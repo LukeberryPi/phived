@@ -12,12 +12,33 @@ just you and your next few steps.
 
 ## repository
 
-See [`CONTEXT.md`](CONTEXT.md) for canonical surface names and
-[`docs/adr/`](docs/adr/) for deployment and routing decisions.
+phived is a small monorepo. In production the whole `phived.com` origin is
+assembled from several surfaces and served behind a single server:
+
+- `/` — the public web app (`apps/web`, Astro)
+- `/app` — the task canvas (`apps/app`, Vite + React + TypeScript), built with
+  base `/app/`
+- `/sw.js` — the kill-switch service worker at the origin root (see ADR 0001)
+- `/api` — the optional auth + billing surface (`apps/server`, Bun + Hono), off
+  by default
+
+[`scripts/site-contract.mjs`](scripts/site-contract.mjs) is the single source of
+truth for that routing and the baseline security headers, so local preview and
+production can't drift. [`scripts/build-site.mjs`](scripts/build-site.mjs)
+assembles the static `dist/`, and `apps/server` serves it (plus `/api`) in
+preview and production.
+
+Workspaces:
 
 - `apps/web` — Astro public web app served at `phived.com/`
-- `apps/app` — Vite, React, and TypeScript task app served at `phived.com/app`
-- `packages/tokens` — shared design tokens consumed by the web and app surfaces
+- `apps/app` — Vite + React + TypeScript task app served at `phived.com/app`
+- `apps/server` — Bun + Hono server: serves the combined site and hosts the
+  flag-gated `/api` auth + billing surface (see ADR 0005)
+- `packages/tokens` — shared design tokens so web and app can't drift visually
+- `packages/ui` — shared UI primitives (e.g. button variants)
+
+See [`CONTEXT.md`](CONTEXT.md) for canonical surface names and
+[`docs/adr/`](docs/adr/) for the routing, hosting, and auth/billing decisions.
 
 ## accessing locally
 
@@ -63,10 +84,37 @@ Preview the built site locally:
 
 Run checks:
 
-- `bun run check`
-- `bun run lint`
-- `bun run typecheck`
-- `bun run test:app`
+- `bun run check` — the full CI gate: format check, lint, typecheck, all tests
+  (app, scripts, server), and the site build. A green run means a green pipeline.
+- `bun run lint` / `bun run typecheck` — just those steps across every workspace
+- `bun run test:app` / `bun run test:server` / `bun run test:scripts` — scoped
+  tests
+
+### local dev vs production shape
+
+`bun run dev` runs **two separate dev servers** — Astro for the web app and Vite
+for the task app (mounted under `/app`) — on different ports. That's fast for
+iteration, but it is _not_ what production looks like.
+
+In production everything is one origin: `/`, `/app`, `/sw.js`, and `/api` are
+served together by `apps/server`. To exercise that shape locally — same-origin
+routing, the assembled `dist/`, and the kill-switch — run `bun run preview`.
+
+Gotchas:
+
+- Anything that touches `/api` (sign-in, subscribe) is same-origin and only
+  works under `bun run preview` with the server env configured — not
+  `bun run dev`. See [`apps/server/.env.example`](apps/server/.env.example) and
+  [ADR 0005](docs/adr/0005-auth-and-billing-for-sync.md).
+- Task-app assets are based at `/app/`. Hard-coded `/assets/...` URLs work in
+  `dev` but break in the combined build (the build asserts the `/app/` base).
+
+### git hooks
+
+`bun install` installs a single [lefthook](https://lefthook.dev) `pre-push` hook
+that runs `bun run check` — the same gate as CI. lefthook is the only hook
+manager (there is no husky setup), so a green push means a green pipeline. Bypass
+in an emergency with `git push --no-verify`.
 
 ---
 
