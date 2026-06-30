@@ -8,3 +8,5 @@ dev-dist
 .build
 bun.lock
 *.log
+*.env*
+apps/server/migrations

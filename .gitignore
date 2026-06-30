@@ -16,6 +16,11 @@ dist-ssr
 .build
 .astro
 
+# Environment / secrets (never commit; use Railway service variables locally too)
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

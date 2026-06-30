@@ -17,9 +17,10 @@ feature.
 
 ## Decision
 
-**Identity: Better Auth, passwordless.** Sign-in is email magic link + Google
-OAuth; no passwords (no reset flows, no credential-stuffing surface, lowest
-friction). Anonymous use stays entirely local — there is **no** server-side user
+**Identity: Better Auth, Google OAuth.** Sign-in is Google OAuth; no passwords
+(no reset flows, no credential-stuffing surface, lowest friction). Magic-link
+email sign-in was dropped to avoid an email-delivery dependency (Resend);
+re-adding it later is additive. Anonymous use stays entirely local — there is **no** server-side user
 until a person chooses to sign up — so Better Auth's anonymous-user plugin is not
 used; carrying existing local tasks into an account is handled by the
 first-sign-in merge below.
