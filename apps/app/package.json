@@ -18,6 +18,7 @@
     "check": "bun run lint && bun run typecheck && bun test && bun run build"
   },
   "dependencies": {
+    "@phived/tasks": "workspace:*",
     "@phived/tokens": "workspace:*",
     "@phived/ui": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",

@@ -1,0 +1,41 @@
+{
+  "name": "@phived/ios",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@expo-google-fonts/dm-sans": "^0.4.2",
+    "@expo/metro-runtime": "~56.0.15",
+    "@phived/tasks": "workspace:*",
+    "@phived/tokens": "workspace:*",
+    "expo": "~56.0.12",
+    "expo-font": "~56.0.7",
+    "expo-status-bar": "~56.0.4",
+    "phosphor-react-native": "^3.0.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.85.3",
+    "react-native-svg": "15.15.4",
+    "react-native-web": "^0.21.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/react": "~19.2.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.3",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.18.2"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "web": "expo start --web"
+  },
+  "private": true
+}

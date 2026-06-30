@@ -3,6 +3,8 @@
   "private": true,
   "version": "1.3.0",
   "exports": {
+    ".": "./native.ts",
+    "./native": "./native.ts",
     "./tokens.css": "./tokens.css"
   }
 }

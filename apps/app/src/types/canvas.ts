@@ -1,7 +1,6 @@
-export type Task = {
-  id: string;
-  text: string;
-};
+import type { Task } from "@phived/tasks";
+
+export type { Task };
 
 export type TaskList = {
   id: string;
