@@ -1,7 +1,10 @@
-import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 import { useCanvasTasksContext } from "src/contexts";
 import { countFilledTasks } from "src/utils";
 
+// Keeps the document title in sync with the number of ongoing tasks. The static
+// title and favicons live in index.html; only the task count is dynamic, so a
+// plain effect replaces what react-helmet-async used to do here.
 export function Head() {
   const { lists } = useCanvasTasksContext();
 
@@ -14,11 +17,9 @@ export function Head() {
   const title =
     `${titlePrefix} phived, the anti-procrastination to-do list`.trim();
 
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <link rel="icon" href="/favicon-16.png" sizes="16x16" />
-      <link rel="icon" href="/favicon-32.png" sizes="32x32" />
-    </Helmet>
-  );
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  return null;
 }

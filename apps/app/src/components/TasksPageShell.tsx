@@ -1,5 +1,4 @@
 import type { KeyboardEvent, PropsWithChildren } from "react";
-import { HelmetProvider } from "react-helmet-async";
 import {
   Header,
   Head,
@@ -24,9 +23,7 @@ export function TasksPageShell({ children }: PropsWithChildren) {
       onKeyDown={handleKeyDown}
       className={cn("h-full w-full", "dark:bg-canvas-dark bg-canvas-light")}
     >
-      <HelmetProvider>
-        <Head />
-      </HelmetProvider>
+      <Head />
       {children}
       <Header />
       <TaskHistoryDrawer />
