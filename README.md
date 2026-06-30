@@ -18,6 +18,7 @@ See [`CONTEXT.md`](CONTEXT.md) for canonical surface names and
 - `apps/web` — Astro public web app served at `phived.com/`
 - `apps/app` — Vite, React, and TypeScript task app served at `phived.com/app`
 - `apps/ios` — Expo MVP of the task app for native and web debugging
+- `packages/tasks` — shared task model (types and pure list helpers) for every surface
 - `packages/tokens` — shared design tokens consumed by the web and app surfaces
 
 ## accessing locally
