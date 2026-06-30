@@ -17,6 +17,7 @@ See [`CONTEXT.md`](CONTEXT.md) for canonical surface names and
 
 - `apps/web` — Astro public web app served at `phived.com/`
 - `apps/app` — Vite, React, and TypeScript task app served at `phived.com/app`
+- `apps/ios` — Expo MVP of the task app for native and web debugging
 - `packages/tokens` — shared design tokens consumed by the web and app surfaces
 
 ## accessing locally
@@ -44,6 +45,9 @@ run a dev server:
 
 - `bun run dev` — runs both apps at once
 - `bun run dev:app` — only the task app (Vite)
+- `bun run dev:ios` — only the Expo app
+- `bun --cwd apps/ios ios` — run the Expo app in the iOS simulator
+- `bun --cwd apps/ios web` — run the Expo app in a browser
 - `bun run dev:web` — only the public web app (Astro)
 
 to see the production-shaped combined site (`/` + `/app` on one origin), use
