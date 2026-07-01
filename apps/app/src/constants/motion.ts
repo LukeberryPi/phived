@@ -25,7 +25,8 @@ const pressFeedbackGroupActiveClassNames = {
   "bar-action":
     "group-active/bar-action:scale-95 group-active/bar-action:brightness-90",
   done: "group-active/done:scale-95 group-active/done:brightness-90",
-  "add-row": "group-active/add-row:scale-95 group-active/add-row:brightness-90",
+  "add-row":
+    "group-active/add-row:scale-95 group-active/add-row:brightness-90 dark:group-active/add-row:brightness-125",
   "menu-item":
     "group-active/menu-item:scale-95 group-active/menu-item:brightness-90",
 } as const;
