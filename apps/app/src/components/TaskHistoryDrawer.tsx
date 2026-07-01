@@ -54,7 +54,7 @@ function HistoryPanelHeader({
   return (
     <div
       className={cn(
-        "sticky top-0 z-10 flex min-h-12 items-center gap-2 px-4",
+        "relative sticky top-0 z-10 flex min-h-12 items-center gap-2 pr-10 pl-4",
         SURFACE,
         ROW_DIVIDER
       )}
@@ -67,12 +67,15 @@ function HistoryPanelHeader({
         aria-label="Close history"
         onClick={onClose}
         className={cn(
-          "ml-auto flex size-8 shrink-0 items-center justify-center rounded-full",
+          "absolute top-1/2 right-1 flex size-8 shrink-0 -translate-y-1/2 items-center justify-center rounded-full",
           "dark:hover:bg-surface-hover-dark hover:bg-surface-hover-light",
           pressFeedbackClassName
         )}
       >
-        <CaretDown size={18} className="dark:text-ink-dark text-black" />
+        <CaretDown
+          size={18}
+          className="dark:text-ink-dark translate-x-0.5 text-black"
+        />
       </button>
     </div>
   );

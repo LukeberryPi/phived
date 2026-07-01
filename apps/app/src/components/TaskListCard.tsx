@@ -9,6 +9,7 @@ import {
 } from "src/constants/ui";
 import {
   pressFeedbackClassName,
+  pressFeedbackGroupChildClassName,
   pressFeedbackGroupClassName,
 } from "src/constants/motion";
 import { placeholders } from "src/content";
@@ -192,15 +193,24 @@ export const TaskListCard = memo(function TaskListCard({
             type="button"
             onClick={() => actions.addTaskRow(list.id)}
             className={cn(
-              "border-line-light flex min-h-10 w-full items-center justify-center gap-2 border-t",
+              "border-line-light flex min-h-10 w-full items-center justify-center border-t",
               "dark:border-hairline-dark dark:bg-surface-dark bg-white text-sm font-medium",
               MUTED_TEXT,
               HOVER_SURFACE,
+              "ease-out-strong transition-[filter] duration-150 motion-reduce:transition-none",
+              "active:brightness-90 dark:active:brightness-125",
               pressFeedbackGroupClassName("add-row")
             )}
           >
-            <Plus size={16} className="text-current" />
-            add row
+            <span
+              className={cn(
+                "flex items-center gap-2",
+                pressFeedbackGroupChildClassName("add-row")
+              )}
+            >
+              <Plus size={16} className="text-current" />
+              add row
+            </span>
           </button>
         </div>
         <Tooltip label="resize list" disabled={isResizing}>
